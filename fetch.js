@@ -26,8 +26,9 @@ const makeRequest = (issueURL) => {
         if (issues.length > 0) {
           const possibleDependencyIssues = issues.filter(
             (i) =>
-            (i.title && i.title.match('/dependency|undeclared/')) ||
-            (i.body && i.body.match('/dependency|undeclared/')),
+            (i.title && i.title.match(/depend|undeclared/)) ||
+            (i.body && i.body.match(/depend|undeclared|import/)) ||
+            (i.labels && i.labels.some((l) => l.name.match(/bug/)))
           );
           const mapped = possibleDependencyIssues.map((i) => {
             return {
@@ -35,6 +36,7 @@ const makeRequest = (issueURL) => {
               title: i.title,
               body: i.body,
               repo: i.repository_url,
+              labels: (i.labels && i.labels.some(l => l.name)) ? i.labels.map(l => l.name) : [],
             };
           });
           if (mapped && mapped.length > 0) {
@@ -43,7 +45,7 @@ const makeRequest = (issueURL) => {
                 .replace('https://api.github.com/repos/', '')
                 .replace(/.*\//, '');
               const dumped = yaml.safeDump(mapped);
-              writeFileSync(`fetched_issues/${name}.yaml`, dumped);
+              fs.writeFileSync(`fetched_issues/${name}.yaml`, dumped);
             } catch (err) {
               console.error(err);
             }
@@ -68,6 +70,7 @@ const checked = fs.readdir('fetched_issues', (err, files) => {
         delete repositories[checked];
       }
 
+      let timeout = 1000
       for (const name in repositories) {
         const repo = repositories[name];
         if (!repo.source) continue;
@@ -77,7 +80,8 @@ const checked = fs.readdir('fetched_issues', (err, files) => {
         split.splice(1, 0, 'api.github.com/repos');
         split[3] = '/issues?state=all&per_page=100';
         const issueURL = split.join('');
-        makeRequest(issueURL);
+        setTimeout(() => makeRequest(issueURL), timeout)
+        timeout += 1000
       }
     },
   );
