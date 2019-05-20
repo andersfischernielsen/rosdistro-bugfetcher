@@ -1,0 +1,13 @@
+- url: 'https://github.com/stonier/py_trees_msgs/issues/6'
+  title: '[infra] external bouncy dependencies needed'
+  body: "Not yet available in the ros2 ecosystem (source:\r\n\r\n* [x] `uuid_msgs` (sources) &rarr; PR #9\r\n* [ ] `uuid_msgs` (binaries)\r\n* [ ] `actionlib_msgs` (sources)\r\n* [ ] `actionlib_msgs` (binaries)"
+  repo: 'https://api.github.com/repos/stonier/py_trees_msgs'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/stonier/py_trees_msgs/pull/5'
+  title: '[bouncy] upgrade for ament/ros2'
+  body: "First pass with the following goals in mind:\r\n\r\n* [x] upgrade `package.xml`\r\n* [x] include only blackboard watcher services (no dependencies needed)\r\n* [x] resolve build time bugs\r\n"
+  repo: 'https://api.github.com/repos/stonier/py_trees_msgs'
+  labels:
+    - 'component:infra'
+    - 'type:enhancement'

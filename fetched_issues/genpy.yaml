@@ -1,0 +1,538 @@
+- url: 'https://github.com/ros/genpy/pull/99'
+  title: Make message parsing more robust
+  body: "Using the latest ros:kinetic-robot docker image with some custom messages leads to the following error message, when reading the bag messages via the Python API:\r\n`invalid input to generate_dynamic: dependent type is missing 'MSG:' type declaration header`\r\n\r\nThe culprit seems to be an empty line at the beginning of `dep_msg`."
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/issues/97'
+  title: 'Undefined names: ''package'' and ''name'' in generator.py'
+  body: "[flake8](http://flake8.pycqa.org) testing of https://github.com/ros/genpy on Python 3.6.3\r\n\r\n$ __flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics__\r\n```\r\n./src/genpy/generator.py:743:76: F821 undefined name 'package'\r\n        raise MsgGenerationException(\"Cannot generate .msg for %s/%s: %s\"%(package, name, str(e)))\r\n                                                                           ^\r\n./src/genpy/generator.py:743:85: F821 undefined name 'name'\r\n        raise MsgGenerationException(\"Cannot generate .msg for %s/%s: %s\"%(package, name, str(e)))\r\n                                                                                    ^\r\n./src/genpy/message.py:231:35: F821 undefined name 'unicode'\r\n            if type(field_val) == unicode:\r\n                                  ^\r\n./src/genpy/message.py:604:17: F821 undefined name 'reload'\r\n                reload(pypkg)\r\n                ^\r\n4     F821 undefined name 'package'\r\n4\r\n```"
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/issues/81'
+  title: PyPI release ?
+  body: "How about doing a pypi release of genpy ?\r\n\r\nIt would allow a user from python to generate ROS message classes by calling `genpy.genpy_main.genmain` directly from any python script (ROS or not), and would make interfacing with ROS from other python frameworks easier, I think...\r\n\r\nMy current usecase is that I want to run test on generated python messages classes using tox.\r\n\r\nDepending on a debian package, that need to be installed on a specific system, and then accessed through a bash script that setup a environment variable, is quite overkill...\r\n\r\nIf I had genpy as a `pip install`able package, generating messages just before testing would be much easier, and platform independent...\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - question
+- url: 'https://github.com/ros/genpy/issues/73'
+  title: Message hashes don't change with contents
+  body: "Eg:\r\n\r\n```\r\n$ python\r\nPython 2.7.11 (default, Jan 22 2016, 08:29:18) \r\n[GCC 4.2.1 Compatible Apple LLVM 7.0.2 (clang-700.1.81)] on darwin\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> from std_msgs.msg import Int8\r\n>>> foo = Int8()\r\n>>> foo.data = 1\r\n>>> hash(foo)\r\n275653405\r\n>>> foo.data = 2\r\n>>> hash(foo)\r\n275653405  # Should be different!\r\n>>> bar = Int8()\r\n>>> bar.data = 1\r\n>>> hash(bar)\r\n275876165  # Should be the same as the first one!\r\n```\r\n\r\nThe default `hash` method supplied with `object` is based on identity rather than fields, hence the above behaviour.\r\n\r\nInstead, generated messages should supply a `__hash__` function which hashes the data, possibly as simple as just passing the message's string representation to `hash`."
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/issues/68'
+  title: reserved Python keywords in an array of custom message type
+  body: >
+    Usually message fields with a name that equals a reserved Python keyword
+    like "from" are renamed to e.g. "from_". Unfortunately this does not seem to
+    work when the keyword name is used in a sub field of an array of custom
+    messages.
+
+    This results in a SyntaxError exception when importing the generated Python
+    message wrapper.
+
+
+    The easiest way to reproduce this is to change
+    "genpy/test/msg/TestString.msg" from:
+
+    `string data`
+
+    to:
+
+    `string from`
+
+
+    Regenerate the test messages:
+
+
+    ```
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestFillEmbedTime.msg
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestFillSimple.msg
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestManyFields.msg
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestMsgArray.msg
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestPrimitiveArray.msg
+
+    ./scripts/genmsg_py.py -p genpy -Igenpy:`pwd`/test/msg -o src/genpy/msg
+    `pwd`/test/msg/TestString.msg
+
+    ```
+
+
+    And then run the genpy test suite:
+
+
+    ```
+
+    catkin_make -DCATKIN_ENABLE_TESTING=1
+
+    catkin_make run_tests
+
+    ```
+
+
+    This produces the following error (3 times):
+
+
+    ```
+
+    ERROR: test_fill_message_args_embed_time
+    (test.test_genpy_message.MessageTest)
+
+    ----------------------------------------------------------------------
+
+    Traceback (most recent call last):
+      File "/home/dorian/src/ros-stacks/catkin/src/genpy/test/test_genpy_message.py", line 185, in test_fill_message_args_embed_time
+        from genpy.msg import TestFillEmbedTime
+      File "/home/dorian/src/ros-stacks/catkin/src/genpy/src/genpy/msg/__init__.py", line 1, in <module>
+        from ._TestFillEmbedTime import *
+      File "/home/dorian/src/ros-stacks/catkin/src/genpy/src/genpy/msg/_TestFillEmbedTime.py", line 87
+        _x = val1.from
+                     ^
+    SyntaxError: invalid syntax
+
+    ```
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/pull/64'
+  title: fix default value of lists to not expand to N items in the generated code
+  body: >
+    For an example field `uint32[10] foo` the generated code look as follows:
+
+
+    Without this patch: `self.foo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]`
+
+
+    With this patch: `self.foo = [0] * 10`
+
+
+    And now imagine `N` being `134217728` as in ros/ros_comm#808 :bomb:
+
+
+    I would propose to also backport this patch to Indigo and Jade after it has
+    been merged.
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/pull/62'
+  title: Add the __ne__ magic method
+  body: >
+    In Python 2, if you do not define a magic method, such as `__eq__` for
+    equality, or `__ne__` for inequality, it defaults to comparing the object
+    IDs, which are random. That causes checking for inequality (`msg_1 !=
+    msg_2`) to work unexpectedly. (i.e., even if the messages are equal, it
+    would return True.) In fact, the Python 2 docs say that it is best to add
+    them too.
+
+
+    In Python 3, `__ne__` is simply the inverse of `__eq__` if it is not
+    defined.
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/pull/58'
+  title: warn about using floor division of durations
+  body: >
+    Fixes #49.
+
+
+    This adds a `RuntimeWarning` for using floor division with integer dividers.
+    Imo it is reasonable to add this warning to all supported distros since it
+    is informing the user that something unexpected is going on. I don't see a
+    use case where this behavior is actually intended. If existing code
+    currently uses this it will result in a warning and the code an easily be
+    updated.
+
+
+    Regarding the question if the class should always implement true division
+    (for all or only newer ROS distros): Python has the same situation when
+    doing integer division. Some might call it really bad default behavior but
+    that's how Python does it. And there is a clean way (`from __future__ import
+    division`) to explicitly use true division (which is the same across
+    division operations across various types). Therefore I think it is
+    reasonable to not change the current implementation.
+
+
+    A division by float already does a true division. And if the user requests
+    an explicit float division that is what he wants. The fact that is performs
+    the floor on seconds is reasonable imo. Updating the integer version of the
+    function to return a more similar result is not necessary since the
+    recommendation is to not use the function in the first place.
+
+
+    @ros/ros_team @eric-wieser Please review this carefully to be considered for
+    merge and release as mentioned.
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/issues/42'
+  title: exception in serialize uses undefined _x variable
+  body: >
+    Filled originally as ros/ros_comm#705 by @felixduvallet:
+
+
+    Several of the std_msgs implementations use an undefined `_x` variable in
+    `serialize()`. For example, _Int32.py has:
+
+
+    ``` python
+
+    def serialize(self, buff):
+        """
+        serialize message into buffer
+        :param buff: buffer, ``StringIO``
+        """
+        try:
+          buff.write(_struct_i.pack(self.data))
+        except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
+        except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    ```
+
+
+    Any exception in publishing the message will try to access `str(_x)`, where
+    `_x` is undefined. As a comparison, _String.py defines:
+
+
+    ``` python
+
+    _x = self.data
+
+    ```
+
+
+    A minimal failing example is a publisher that attempts to send a message
+    without casting it properly:
+
+
+    ``` python
+
+    import rospy
+
+    import std_msgs
+
+
+    rospy.init_node('talker')
+
+    pub = rospy.Publisher('/foo', std_msgs.msg.Int32, queue_size=1)
+
+    rospy.sleep(1)
+
+    msg = std_msgs.msg.Int32('1')  # NOTE: the type is incorrect
+
+    pub.publish(msg)  # This should raise a struct.error
+
+    ```
+
+
+    The equivalent call for a String message will correctly raise an exception:
+
+    `rospy.exceptions.ROSSerializationException: field data must be of type str`
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/issues/37'
+  title: Problem with customized message
+  body: >
+    I meet a bug when using rosbag filter with a customized message. I've
+    located the bug to this function:
+    https://github.com/ros/genpy/blob/indigo-devel/src/genpy/dynamic.py#L81 
+
+
+    ``` python
+
+    def _gen_dyn_modify_references(py_text, types):
+
+    ```
+
+
+    I have a customized message like this:
+
+
+    ```
+
+    my_message_package/Odometry
+      std_msgs/uint8 flags
+      std_msgs/string info
+      nav_msgs/Odometry odom
+      ......
+    ```
+
+
+    Unfortunately, as is shown above, my customized message is
+    **my_message_package/Odometry**, while there is a standard
+    **nav_msgs/Odometry**. The package names are different, but the **type**
+    names are the **same**.
+
+
+    The generated .py script is attached:
+
+
+    ```
+
+    """autogenerated by genpy from my_message_package/Odometry.msg. Do not
+    edit."""
+
+    import sys
+
+    python3 = True if sys.hexversion > 0x03000000 else False
+
+    import genpy
+
+    import struct
+
+
+    class _nav_msgs__Odometry(genpy.Message):
+      _md5sum = "94d99f86002b25504a5d3354fa1ad709"
+      _type = "my_message_package/Odometry"
+      _has_header = False #flag to mark the presence of a Header object
+    .............
+
+    ```
+
+
+    The function `def _gen_dyn_modify_references(py_text, types)` just simply
+    substitutes the class name. In my situation, the `class
+    Odometry(genpy.Message)` should be substituted with
+    `_my_message_package__Odometry`, but the **nav_msgs/Odometry** is first
+    touched during iteration, so it is substituted with `_nav_msgs__Odometry`
+
+
+    In order to solve the problem, I add few lines to tell this function what is
+    the current working package. See this pull request.  That means that after
+    the comment line `"""autogenerated by genpy from
+    my_message_package/Odometry.msg. Do not edit."""`, now_pkg is
+    **my_message_package**, not nav_msgs/Odometry, such that it would not
+    substitute this Odometry with **_nav_msgs__Odometry**. When the next comment
+    line is detected, the now_pkg will change. The detection is simply a
+    re-expression.
+
+
+    But the solution is not so "elegant". I'd like to see if anyone has more
+    elegant way to fix this.
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/pull/36'
+  title: fix Duration.abs() when sec is zero and add a test for it
+  body: |
+    Addresses #35.
+
+    @esteve @tfoote @wjwwood Please review.
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/issues/35'
+  title: rospy absolute duration bug
+  body: >2
+     Hello,
+    I use ROS hydro and I think I found an error in the code of the
+    rospy.Duration class
+
+
+    When I do : 
+
+
+    > print abs(rospy.Duration.from_sec(0.5))
+
+
+    it prints -500000000 instead of 500000000. That's because the code only
+    takes into account the number of seconds. 
+
+    cf : https://github.com/ros/genpy/blob/indigo-devel/src/genpy/rostime.py
+
+
+    ```
+        def __abs__(self):
+            """
+            Absolute value of this duration
+            :returns: positive :class:`Duration`
+            """
+            if self.secs > 0:
+                return self
+            return self.__neg__()
+    ```
+
+
+    It should be :
+
+
+    ```
+        def __abs__(self):
+            """
+            Absolute value of this duration
+            :returns: positive :class:`Duration`
+            """
+            if self.secs < 0 or (self.secs == 0 and self.nsecs<0):
+                return self.__neg__()
+            return self
+    ```
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genpy/pull/34'
+  title: pretty print non-ascii string in list-type message
+  body: >
+    By this change, we can see non-ascii string human readably in list-type or
+    tuple-type message.
+
+
+    test script:
+
+    - run the script that publishes non-ascii string.
+
+
+    ``` python
+
+    # test.py
+
+    # -*- coding: utf-8 -*-
+
+
+    import rospy
+
+    from test.msg import StringArray # this message has string[] data
+
+
+    rospy.init_node("foo")
+
+    pub = rospy.Publisher("/string", StringArray)
+
+    while not rospy.is_shutdown():
+        msg = StringArray()
+        msg.data = ["ほげ", "ふが", "ბარ", "кот", "foo"]
+        pub.publish(msg)
+        rospy.sleep(1.0)
+    ```
+
+
+    ``` bash
+
+    $ roscore &
+
+    $ python test.py
+
+    ```
+
+    - in another terminal, `rostopic echo`
+
+
+    **BEFORE**
+
+
+    ``` bash
+
+    $ rostopic echo /string
+
+    data: ['\xe3\x81\xbb\xe3\x81\x92', '\xe3\x81\xb5\xe3\x81\x8c',
+    '\xe1\x83\x91\xe1\x83\x90\xe1\x83\xa0', '\xd0\xba\xd0\xbe\xd1\x82', 'foo']
+
+
+    ---
+
+    ```
+
+
+    **AFTER**
+
+
+    ``` bash
+
+    $ rostopic echo /string
+
+    data: ['ほげ', 'ふが', 'ბარ', 'кот', 'foo']
+
+
+    ---
+
+    ```
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/pull/33'
+  title: Use numpy.array's "offset" param instead of slicing
+  body: |
+    Passing an offset into numpy.array instead of slicing should prevent an
+    additional copy of the data being created by the slice operation. This is
+    important for really big message types like OccupancyGrids.
+
+    Documentation of the offset parameter:
+    http://docs.scipy.org/doc/numpy/reference/generated/numpy.frombuffer.html
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/pull/27'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/issues/7'
+  title: >-
+    genpy tests can't use std_msgs in their tests as it's not in the dependency
+    list
+  body: >
+    Error output:
+
+    http://jenkins.willowgarage.com:8080/view/groovy_devel/job/devel-groovy-genpy-precise-amd64/8/testReport/junit/test.test_genpy_message/MessageTest/test_Message_check_types/
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/unittest/case.py", line 327, in run
+        testMethod()
+      File "/tmp/2012-09-11_17.35.54.905907/genpy/test/test_genpy_message.py", line 57, in test_Message_check_types
+        from std_msgs.msg import String, UInt16MultiArray, MultiArrayLayout, MultiArrayDimension
+    ImportError: No module named std_msgs.msg
+
+    ```
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/pull/6'
+  title: Don't delete the temporary file before importing it
+  body: >
+    I've no idea how this actually worked on *nix. NamedTemporaryFile() has an
+    argument variable 'delete' with default value of 'True'. This implies it
+    should delete immediately as soon as the file is closed. 
+
+
+    It didn't on linux, but did on windows and the subsequent import failed.
+
+
+    This just ensures we don't delete it. It will naturally disappear when the
+    directory is deleted at exit (from the line above). 
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []
+- url: 'https://github.com/ros/genpy/pull/4'
+  title: Patch for py3k compat of message-init-files
+  body: >
+    Generated-modules are relative imports and should be imported with a ".". (
+    http://docs.python.org/release/3.0.1/whatsnew/3.0.html#removed-syntax )
+  repo: 'https://api.github.com/repos/ros/genpy'
+  labels: []

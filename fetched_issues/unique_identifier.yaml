@@ -1,0 +1,15 @@
+- url: 'https://github.com/ros-geographic-info/unique_identifier/pull/8'
+  title: convert to package format 2
+  body: >-
+    As per title. This doesn't change any of the dependencies, only update to
+    package format 2
+  repo: 'https://api.github.com/repos/ros-geographic-info/unique_identifier'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/unique_identifier/issues/5'
+  title: release fix for wrong dependency on catkin into hydro
+  body: >
+    While the issue has been fixed long time ago
+    c371dc353c5f07a9d500b7ba77d5903eb1685d44 it has not been released since
+    than.
+  repo: 'https://api.github.com/repos/ros-geographic-info/unique_identifier'
+  labels: []

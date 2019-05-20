@@ -1,0 +1,249 @@
+- url: 'https://github.com/ros/diagnostics/pull/105'
+  title: Fix httplib import for Python 3.
+  body: "Per the official docs:\r\n\r\n> The `httplib` module has been renamed to http.client in Python 3. The 2to3 tool will automatically adapt imports when converting your sources to Python 3.\r\n\r\nhttps://docs.python.org/2/library/httplib.html#module-httplib"
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/104'
+  title: Ros2 migrate self test
+  body: "migrate `self_test`.\r\n\r\nThis PR seems large because of the removal of gtest. \r\n\r\nCI:\r\n* Linux [![Build Status](http://ci.ros2.org/buildStatus/icon?job=ci_linux&build=6496)](http://ci.ros2.org/job/ci_linux/6496/)\r\n* Linux-aarch64 [![Build Status](http://ci.ros2.org/buildStatus/icon?job=ci_linux-aarch64&build=2851)](http://ci.ros2.org/job/ci_linux-aarch64/2851/)\r\n* macOS [![Build Status](http://ci.ros2.org/buildStatus/icon?job=ci_osx&build=5326)](http://ci.ros2.org/job/ci_osx/5326/)\r\n* Windows [![Build Status](http://ci.ros2.org/buildStatus/icon?job=ci_windows&build=6300)](http://ci.ros2.org/job/ci_windows/6300/)\r\n\r\nI rewrote most of the test infrastructure for it to make it pure gtest and does not depend on any launch files."
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/96'
+  title: update CMakeLists.txt to search for local gtest first
+  body: "gtest `1.7.0` on Windows causes the following error:\r\n```\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(1374): error C2011: 'testing::internal::AutoHandle': 'class' type redefinition\r\nC:\\opt\\rosdeps\\x64\\include\\gtest/internal/gtest-port.h(1511): note: see declaration of 'testing::internal::AutoHandle'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3381): error C2440: 'delete': cannot convert from 'const testing::internal::scoped_ptr<testing::internal::GTestFlagSaver>' to 'void*'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3381): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3667): error C2511: 'testing::TestInfo::TestInfo(const std::string &,const std::string &,const char *,const char *,testing::internal::TypeId,testing::internal::TestFactoryBase *)': overloaded member function not found in 'testing::TestInfo'\r\nC:\\opt\\rosdeps\\x64\\include\\gtest/gtest.h(644): note: see declaration of 'testing::TestInfo'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3676): error C2550: 'testing::TestInfo::{ctor}': constructor initializer lists are only allowed on constructor definitions\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3710): error C2661: 'testing::TestInfo::TestInfo': no overloaded function takes 6 arguments\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3709): error C2789: 'test_info': an object of const-qualified type must be initialized\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(3709): note: see declaration of 'test_info'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7120): error C2079: 'testing::internal::WindowsDeathTest::write_handle_' uses undefined class 'testing::internal::AutoHandle'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7122): error C2079: 'testing::internal::WindowsDeathTest::child_handle_' uses undefined class 'testing::internal::AutoHandle'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7127): error C2079: 'testing::internal::WindowsDeathTest::event_handle_' uses undefined class 'testing::internal::AutoHandle'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7222): error C2672: 'testing::internal::StreamableToString': no matching overloaded function found\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7728): error C2079: 'parent_process_handle' uses undefined class 'testing::internal::AutoHandle'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7728): error C2440: 'initializing': cannot convert from 'HANDLE' to 'int'\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(7728): note: There is no context in which this conversion is possible\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(9553): error C2065: 'defined_test_names_': undeclared identifier\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(9554): error C2065: 'defined_test_names_': undeclared identifier\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(9570): error C2065: 'defined_test_names_': undeclared identifier\r\nC:\\ros\\catkin_ws\\upstream\\ros-desktop\\src\\diagnostics\\diagnostic_aggregator\\gtest-1.7.0\\gtest-all.cc(9571): error C2065: 'defined_test_names_': undeclared identifier\r\nNMAKE : fatal error U1077: 'C:\\PROGRA~2\\MIB055~1\\Preview\\ENTERP~1\\VC\\Tools\\MSVC\\1416~1.270\\bin\\Hostx64\\x64\\cl.exe' : return code '0x2'\r\nStop.\r\nNMAKE : fatal error U1077: '\"C:\\Program Files (x86)\\Microsoft Visual Studio\\Preview\\Enterprise\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\nmake.exe\"' : return code '0x2'\r\nStop.\r\nNMAKE : fatal error U1077: '\"C:\\Program Files (x86)\\Microsoft Visual Studio\\Preview\\Enterprise\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\nmake.exe\"' : return code '0x2'\r\nStop.\r\n```\r\n\r\nsince a lot of ROS projects use gtest for testing, and gtest is already in a stable `1.8.x` state, change to use global gtest and delete local gtest binaries"
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/issues/81'
+  title: Release into melodic
+  body: >-
+    It looks like all of the dependencies for `diagnostics` are available in
+    Melodic, so it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/issues/74'
+  title: Travis build fails since ca. 2 months
+  body: "For the Travis build of this repo, they currently seem to fail on \r\n```python\r\nImportError: \"from catkin_pkg.package import parse_package\" failed: No module named catkin_pkg.package\r\n```\r\nThis Python package is in the python-catkin-pkg, which is a dependency of python-catkin, which is [installed](https://github.com/ros/diagnostics/blob/indigo-devel/.travis.yml#L14) in the .travis-file. \r\n\r\nCurrently there are 2 PRs failing on that error:\r\n- https://github.com/ros/diagnostics/pull/72 fails at https://travis-ci.org/ros/diagnostics/builds/335289179#L2299\r\n- https://github.com/ros/diagnostics/pull/73 fails at https://travis-ci.org/ros/diagnostics/builds/336956455#L2162 (mine, which triggered me to check out other PRs as well). \r\n\r\nAnother recent PR does not fail on this error but fails already earlier: https://github.com/ros/diagnostics/pull/70 "
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/59'
+  title: Source the environment when running Travis tests.
+  body: "This should fix the test failures which look like this:\r\n\r\n```\r\nTraceback (most recent call last):\r\n  File \"/usr/lib/python2.7/dist-packages/nose/loader.py\", line 411, in loadTestsFromName\r\n    addr.filename, addr.module)\r\n  File \"/usr/lib/python2.7/dist-packages/nose/importer.py\", line 47, in importFromPath\r\n    return self.importFromDir(dir_path, fqname)\r\n  File \"/usr/lib/python2.7/dist-packages/nose/importer.py\", line 94, in importFromDir\r\n    mod = load_module(part_fqname, fh, filename, desc)\r\n  File \"/home/travis/build/ros/diagnostics/diagnostic_analysis/test/bag_csv_test.py\", line 51, in <module>\r\n    from diagnostic_analysis.exporter import LogExporter\r\nImportError: No module named diagnostic_analysis.exporter\r\n```"
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/issues/54'
+  title: FrequencyStatusParam is not thread safe
+  body: >
+    The Struct is storing pointers to the min_freq_ and max_freq_ that are being
+    accessed from the FrequencyStatus class using scoped_locks protecting only
+    the object itself but not the data that can be altered using the struct. 
+
+    Also, the data are not checked prior being dereferenced, but I guess this is
+    not as important since it will most likely cause problems at the start time
+    compared to the thread safety issue that could cause problems at any point
+    of the lifetime of the application.
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/53'
+  title: '[WIP] Handling unloading of diagnostics by service'
+  body: >
+    First iteration on attempting to solve the problem highlighted by #50.
+
+    - Stores the bond, analyzer into a vector of pairs (previously just the
+    bond)
+
+    - Toggles loaded<->unloaded whenever a service call to `add_diagnostics` is
+    made depending on if it is not yet loaded or already loaded.
+
+
+    Kind of aiming for a minimum delta here. I would say tackling this more
+    properly should require the addition of a separate `remove_diagnostics`
+    service with its own type (or at least a dual-purpose name for the
+    `diagnostics_msgs/AddDiagnostics` srv).
+
+
+    If this is required, I can push this PR in that direction.
+
+
+    Just a reminder for us, will also need a cherry-pick across to the master
+    branch.
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/38'
+  title: Remove stray architecture_independent export
+  body: >
+    This should have been removed with
+    https://github.com/ros/diagnostics/commit/3c1da654a1a2e0d26d2c1e96b047220f13e52c57
+
+
+    Example build break:
+    http://csc.mcs.sdsmt.edu/jenkins/job/ros-indigo-diagnostic-common-diagnostics_binaryrpm_heisenbug_i386/44/console
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/issues/36'
+  title: diagnostics_common_diagnostics doesn't build on OSX
+  body: >
+    As seen on ROS answers:
+    http://answers.ros.org/question/199874/no-definition-of-libsensors4-dev-for-os-osx/
+
+
+    Doesn't build on OSX because libsensors4-dev isn't available on OSX.
+
+
+    @mitchellwills thoughts on how to fix this? It's easy enough to make the
+    build process skip the libsensors node if libsensors isn't available, but
+    we'd still have to figure out how to specify the dependency properly,
+    because ROS doesn't support the notion of system-specific or optional
+    dependencies.
+
+
+    Thoughts?
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/23'
+  title: Add dependency on message generation
+  body: >
+    Without this, sometimes the diagnostic aggregator is built before the
+    diagnostic_msgs messages are generated. This is only an issue when using
+    common_msgs from source, so nobody noticed until now.
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/pull/22'
+  title: Remove stray architechture_independent flags
+  body: >
+    This flag should be used for package which do not contain
+    architecture-specific files. Compiled binaries are such a file, and these
+    packages contain them.
+
+
+    See:
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []
+- url: 'https://github.com/ros/diagnostics/issues/14'
+  title: fix reference to example.cpp in manifest.dox file
+  body: >
+    Currently http://docs.ros.org/groovy/api/diagnostic_updater/html/index.html
+    links to the `example.cpp` file from _rosconsole_.
+
+
+    The reference to `example.cpp` is not unique since other packages which this
+    package depends on also contain a file with that name. Therefore you need to
+    reference the file with its relative location from the `manifest.dox` file:
+    https://github.com/ros/diagnostics/blob/groovy-devel/diagnostic_updater/mainpage.dox#L25
+
+
+    ```
+
+    Example uses of these classes can be found in \ref src/example.cpp.
+
+    ```
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels:
+    - bug
+- url: 'https://github.com/ros/diagnostics/issues/12'
+  title: some tests fail
+  body: >
+    Some tests were not building properly (linker issue). I fixed that in
+    a69d7625fa8fb1b4ff82065cc0cfef2461a73c87. But some of the tests fail:
+
+
+    ```
+
+    [ERROR] [1381942884.706085587]: No analyzers initialzed in AnalyzerGroup
+    /analyzer_loader/analyzers
+
+    /data/code/hydro_catkin_ws/src/diagnostics/diagnostic_aggregator/test/analyzer_loader.cpp:56:
+    Failure
+
+    Value of: analyzer_group.init(path, nh)
+      Actual: false
+    Expected: true
+
+    [  FAILED  ] AnalyzerLoader.analyzerLoading (355 ms)
+
+
+
+
+    -- run_tests.py: execute commands
+      /usr/bin/cmake -E make_directory /data/code/hydro_catkin_ws/build/test_results/diagnostic_analysis
+      /usr/bin/nosetests -P --process-timeout=60 /data/code/hydro_catkin_ws/src/diagnostics/diagnostic_analysis/test/bag_csv_test.py --with-xunit --xunit-file=/data/code/hydro_catkin_ws/build/test_results/diagnostic_analysis/nosetests-test.bag_csv_test.py.xml
+    E
+
+    ======================================================================
+
+    ERROR: Failure: ImportError (No module named diagnostic_analysis.exporter)
+
+    ----------------------------------------------------------------------
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/dist-packages/nose/loader.py", line 390, in loadTestsFromName
+        addr.filename, addr.module)
+      File "/usr/lib/python2.7/dist-packages/nose/importer.py", line 39, in importFromPath
+        return self.importFromDir(dir_path, fqname)
+      File "/usr/lib/python2.7/dist-packages/nose/importer.py", line 86, in importFromDir
+        mod = load_module(part_fqname, fh, filename, desc)
+      File "/data/code/hydro_catkin_ws/src/diagnostics/diagnostic_analysis/test/bag_csv_test.py", line 51, in <module>
+        from diagnostic_analysis.exporter import LogExporter
+    ImportError: No module named diagnostic_analysis.exporter
+
+    -------------------- >> begin captured logging << --------------------
+
+    rospy.topics: INFO: topicmanager initialized
+
+    --------------------- >> end captured logging << ---------------------
+
+
+    ----------------------------------------------------------------------
+
+    Ran 1 test in 0.001s
+
+
+    FAILED (errors=1)
+
+
+
+    [ RUN      ] DiagnosticUpdater.testFrequencyStatus
+
+    /data/code/hydro_catkin_ws/src/diagnostics/diagnostic_updater/test/diagnostic_updater_test.cpp:141:
+    Failure
+
+    Value of: stat[1].level
+      Actual: '\x1' (1)
+    Expected: 0
+
+    within max frequency but reported error
+
+    /data/code/hydro_catkin_ws/src/diagnostics/diagnostic_updater/test/diagnostic_updater_test.cpp:142:
+    Failure
+
+    Value of: stat[2].level
+      Actual: '\x1' (1)
+    Expected: 0
+
+    within min frequency but reported error
+
+    [  FAILED  ] DiagnosticUpdater.testFrequencyStatus (521 ms)
+
+    [ RUN      ] DiagnosticUpdater.testTimeStampStatus
+
+    /data/code/hydro_catkin_ws/src/diagnostics/diagnostic_updater/test/diagnostic_updater_test.cpp:166:
+    Failure
+
+    Value of: stat[2].level
+      Actual: '\x1' (1)
+    Expected: 0
+
+    now not accepted
+
+    [  FAILED  ] DiagnosticUpdater.testTimeStampStatus (0 ms)
+
+    ```
+
+
+    and finally, self_test/no_id_selftest never ends... so I could not run the
+    other tests...
+  repo: 'https://api.github.com/repos/ros/diagnostics'
+  labels: []

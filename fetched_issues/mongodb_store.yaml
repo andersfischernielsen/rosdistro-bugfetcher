@@ -1,0 +1,42 @@
+- url: 'https://github.com/strands-project/mongodb_store/pull/231'
+  title: Melodic devel
+  body: 'readded  MongoClient as a system dependency '
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/issues/230'
+  title: ROS melodic support
+  body: "Hi, \r\n\r\nI've created a branch (https://github.com/bbferka/mongodb_store/tree/melodic-devel)  on my fork for melodic. As of Ubuntu bionic libmongocxx legacy can be a system dependency (Yay!).  So far I have only run it with unit tests, which all run through OK.  \r\n\r\nFor now I've only added a CATKIN_IGNORE to libmongocxx_ros, but I think it could also be removed in the future.  \r\n\r\nIf there is an appropriate branch to which I can send a PR I would gladly do so. "
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/issues/222'
+  title: release with C++11 compatibility?
+  body: "Hi, \r\n\r\nI was wondering if it would be possible to release libmongocxx_ros with the ``c++11=on`` set in the CMake? Would this introduce any unforeseen issues? We are planning on releasing our [package](https://www.github.com/robosherlock/robosherlock) as a binary for kinetic but it depends on monogcxx and needs C++11. As it currently is we migrated from `26compat` to `legacy`, but we needed to compile it from source with the c++11 flags, otherwise we get undefined behavior, probably because of the [C++11 ABI compatibility breaks](https://gcc.gnu.org/wiki/Cxx11AbiCompatibility)"
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/pull/210'
+  title: Updated to build on OS X with the mongo client legacy version.
+  body: >-
+    This makes a couple of changes. For libmongocxx_ros the paths for openssl
+    are added to the scons command and all ".so" and set to ".so" or ".dylib"
+    depending on platform. For mongodb_log this removes the explicit linking of
+    mongoclient which isn't needed since catkin_libraries includes the lib
+    created by libmongocxx_ros.
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/pull/199'
+  title: had to add `ca-certificates` as `build_depend`
+  body: "as the build step (git clone) in the cmake command to build the binary packages failed.\r\n\r\n@hawesie this is your birthday present ;-)\r\n\r\nThe problem was that the binary package wouldn't build as it involved calling git clone which won't work because it can't check the authenticity of github.com without `ca-certificates` being installed at build time.\r\nPlease re-release once this is done.\r\n\r\nIt works on the new build-farm because the build environment always already includes the ca-certificates, but we can't assume it."
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/issues/196'
+  title: check_connection_to_mongod doesn't work with more recent versions of pymongo
+  body: "If you are using a recent version of pymongo (I am using v3.4), then [check_connection_to_mongod](https://github.com/strands-project/mongodb_store/blob/hydro-devel/mongodb_store/src/mongodb_store/util.py#L16) doesn't work. Specifically, this line is the problem:\r\n\r\n```py\r\nfrom pymongo import Connection\r\n```\r\n\r\nI confirmed that this works with pymongo v2.3 but not with v3.4."
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []
+- url: 'https://github.com/strands-project/mongodb_store/issues/176'
+  title: >-
+    Mongo C++ header location not exposed to depending packages on
+    Kinetic/Xenial
+  body: "On Ubuntu 16.04, the legacy drivers for mongo-cxx-driver are no longer included.  FindMongoClient.cmake works for building mongodb_store, but depending packages don't have access to that cmake file, and thus can't find the mongo cxx headers.   I'm not a cmake expert, nor do I have particular knowledge about how things should be done here, but exporting the header location in the catkin_package fixed the build for me.\r\n\r\n```\r\ndiff --git a/mongodb_store/CMakeLists.txt b/mongodb_store/CMakeLists.txt\r\nindex d43d32f..ece2e0d 100644\r\n--- a/mongodb_store/CMakeLists.txt\r\n+++ b/mongodb_store/CMakeLists.txt\r\n@@ -48,8 +48,8 @@ generate_messages(\r\n \r\n \r\n catkin_package(\r\n- INCLUDE_DIRS include\r\n- LIBRARIES message_store \r\n+ INCLUDE_DIRS include ${MongoClient_INCLUDE_DIR}\r\n+ LIBRARIES message_store\r\n  CATKIN_DEPENDS mongodb_store_msgs\r\n  DEPENDS MongoClient\r\n )\r\n```"
+  repo: 'https://api.github.com/repos/strands-project/mongodb_store'
+  labels: []

@@ -1,0 +1,575 @@
+- url: 'https://github.com/ros-visualization/visualization_tutorials/issues/45'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are available in Melodic, so it
+    would be great to get it released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-visualization/visualization_tutorials'
+  labels: []
+- url: 'https://github.com/ros-visualization/visualization_tutorials/issues/39'
+  title: qt5 not supported for rviz_python_tutorial
+  body: "This probably hasn't worked since kinetic\r\n\r\nIt will give:\r\n```\r\n$ rosrun rviz_python_tutorial myviz.py \r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/rviz_python_tutorial/myviz.py\", line 26, in <module>\r\n    class MyViz( QWidget ):\r\nNameError: name 'QWidget' is not defined\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/visualization_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/visualization_tutorials/issues/8'
+  title: 'rviz_plugin_tutorials: Linkedit errors for Hydro on OS X'
+  body: >
+    When building the Hydro version on OS X I get:
+
+
+    ```
+
+    ==> Processing catkin package: 'rviz_plugin_tutorials'
+
+    ==> Creating build directory: 'build_isolated/rviz_plugin_tutorials'
+
+    ==> Building with env: '/Users/william/hydro/install_isolated/env.sh'
+
+    ==> cmake /Users/william/hydro/src/rviz_plugin_tutorials
+    -DCATKIN_DEVEL_PREFIX=/Users/william/hydro/devel_isolated/rviz_plugin_tutorials
+    -DCMAKE_INSTALL_PREFIX=/Users/william/hydro/install_isolated in
+    '/Users/william/hydro/build_isolated/rviz_plugin_tutorials'
+
+    -- The C compiler identification is Clang 4.2.0
+
+    -- The CXX compiler identification is Clang 4.2.0
+
+    -- Check for working C compiler: /usr/bin/cc
+
+    -- Check for working C compiler: /usr/bin/cc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Check for working CXX compiler: /usr/bin/c++
+
+    -- Check for working CXX compiler: /usr/bin/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /Users/william/hydro/devel_isolated/rviz_plugin_tutorials
+
+    -- Using CMAKE_PREFIX_PATH: /Users/william/hydro/install_isolated
+
+    -- This workspace overlays: /Users/william/hydro/install_isolated
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.2")
+
+    -- Using default Python package layout
+
+    -- Found PY_em: /Library/Python/2.7/site-packages/em.pyc
+
+    -- Using CATKIN_ENABLE_TESTING: ON
+
+    -- Using CATKIN_TEST_RESULTS_DIR:
+    /Users/william/hydro/build_isolated/rviz_plugin_tutorials/test_results
+
+    -- Found gtest: gtests will be built
+
+    -- catkin 0.5.70
+
+    -- Looking for Q_WS_X11
+
+    -- Looking for Q_WS_X11 - not found
+
+    -- Looking for Q_WS_WIN
+
+    -- Looking for Q_WS_WIN - not found
+
+    -- Looking for Q_WS_QWS
+
+    -- Looking for Q_WS_QWS - not found
+
+    -- Looking for Q_WS_MAC
+
+    -- Looking for Q_WS_MAC - found
+
+    -- Looking for QT_MAC_USE_COCOA
+
+    -- Looking for QT_MAC_USE_COCOA - found
+
+    -- Found Qt4: /usr/local/bin/qmake (found version "4.8.4")
+
+    -- Configuring done
+
+    -- Generating done
+
+    -- Build files have been written to:
+    /Users/william/hydro/build_isolated/rviz_plugin_tutorials
+
+    ==> make -j4 -l4 in
+    '/Users/william/hydro/build_isolated/rviz_plugin_tutorials'
+
+    [  7%] [ 15%] [ 23%] [ 30%] Generating src/moc_teleop_panel.cxx
+
+    Generating src/moc_drive_widget.cxx
+
+    Generating src/moc_plant_flag_tool.cxx
+
+    Generating src/moc_imu_display.cxx
+
+    Scanning dependencies of target rviz_plugin_tutorials
+
+    [ 38%] [ 46%] [ 53%] [ 61%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/drive_widget.cpp.o
+
+    Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/imu_visual.cpp.o
+
+    Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/imu_display.cpp.o
+
+    Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/plant_flag_tool.cpp.o
+
+    [ 69%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/teleop_panel.cpp.o
+
+    [ 76%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/moc_drive_widget.cxx.o
+
+    [ 84%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/moc_imu_display.cxx.o
+
+    [ 92%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/moc_plant_flag_tool.cxx.o
+
+    [100%] Building CXX object
+    CMakeFiles/rviz_plugin_tutorials.dir/src/moc_teleop_panel.cxx.o
+
+    Linking CXX shared library
+    /Users/william/hydro/devel_isolated/rviz_plugin_tutorials/lib/librviz_plugin_tutorials.dylib
+
+    Undefined symbols for architecture x86_64:
+      "class_loader::class_loader_private::AbstractMetaObjectBase::addOwningClassLoader(class_loader::ClassLoader*)", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::AbstractMetaObjectBase::setAssociatedLibraryPath(std::string)", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::AbstractMetaObjectBase::AbstractMetaObjectBase(std::string const&, std::string const&)", referenced from:
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Display>::AbstractMetaObject(std::string const&, std::string const&) in imu_display.cpp.o
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Tool>::AbstractMetaObject(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Panel>::AbstractMetaObject(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::AbstractMetaObjectBase::~AbstractMetaObjectBase()", referenced from:
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Display>::AbstractMetaObject(std::string const&, std::string const&) in imu_display.cpp.o
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Tool>::AbstractMetaObject(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          class_loader::class_loader_private::AbstractMetaObject<rviz::Panel>::AbstractMetaObject(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::getFactoryMapForBaseClass(std::string const&)", referenced from:
+          std::map<std::string, class_loader::class_loader_private::AbstractMetaObjectBase*, std::less<std::string>, std::allocator<std::pair<std::string const, class_loader::class_loader_private::AbstractMetaObjectBase*> > >& class_loader::class_loader_private::getFactoryMapForBaseClass<rviz::Display>() in imu_display.cpp.o
+          std::map<std::string, class_loader::class_loader_private::AbstractMetaObjectBase*, std::less<std::string>, std::allocator<std::pair<std::string const, class_loader::class_loader_private::AbstractMetaObjectBase*> > >& class_loader::class_loader_private::getFactoryMapForBaseClass<rviz::Tool>() in plant_flag_tool.cpp.o
+          std::map<std::string, class_loader::class_loader_private::AbstractMetaObjectBase*, std::less<std::string>, std::allocator<std::pair<std::string const, class_loader::class_loader_private::AbstractMetaObjectBase*> > >& class_loader::class_loader_private::getFactoryMapForBaseClass<rviz::Panel>() in teleop_panel.cpp.o
+      "class_loader::class_loader_private::getCurrentlyActiveClassLoader()", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::getCurrentlyLoadingLibraryName()", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::getPluginBaseToFactoryMapMapMutex()", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "class_loader::class_loader_private::hasANonPurePluginLibraryBeenOpened(bool)", referenced from:
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "console_bridge::log(char const*, int, console_bridge::LogLevel, char const*, ...)", referenced from:
+          (anonymous namespace)::ProxyExec0::ProxyExec0() in imu_display.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::ImuDisplay, rviz::Display>(std::string const&, std::string const&) in imu_display.cpp.o
+          (anonymous namespace)::ProxyExec0::ProxyExec0() in plant_flag_tool.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::PlantFlagTool, rviz::Tool>(std::string const&, std::string const&) in plant_flag_tool.cpp.o
+          (anonymous namespace)::ProxyExec0::ProxyExec0() in teleop_panel.cpp.o
+          void class_loader::class_loader_private::registerPlugin<rviz_plugin_tutorials::TeleopPanel, rviz::Panel>(std::string const&, std::string const&) in teleop_panel.cpp.o
+      "message_filters::Connection::disconnect()", referenced from:
+          void tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::connectInput<message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > > >(message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+      "message_filters::Connection::Connection(boost::function<void (message_filters::Connection const&)> const&, boost::signals::connection)", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::registerFailureCallback(boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> const&) in imu_display.cpp.o
+      "message_filters::Connection::Connection(boost::function<void ()> const&)", referenced from:
+          message_filters::Connection message_filters::SimpleFilter<sensor_msgs::Imu_<std::allocator<void> > >::registerCallback<boost::_bi::bind_t<void, boost::_mfi::mf1<void, rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&>, boost::_bi::list2<boost::_bi::value<rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >*>, boost::arg<1> > > >(boost::_bi::bind_t<void, boost::_mfi::mf1<void, rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&>, boost::_bi::list2<boost::_bi::value<rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >*>, boost::arg<1> > > const&) in imu_display.cpp.o
+          message_filters::Connection message_filters::SimpleFilter<sensor_msgs::Imu_<std::allocator<void> > >::registerCallback<boost::_bi::bind_t<void, boost::_mfi::mf2<void, rviz::FrameManager, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, rviz::Display*>, boost::_bi::list3<boost::_bi::value<rviz::FrameManager*>, boost::arg<1>, boost::_bi::value<rviz::Display*> > > >(boost::_bi::bind_t<void, boost::_mfi::mf2<void, rviz::FrameManager, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, rviz::Display*>, boost::_bi::list3<boost::_bi::value<rviz::FrameManager*>, boost::arg<1>, boost::_bi::value<rviz::Display*> > > const&) in imu_display.cpp.o
+          message_filters::Connection message_filters::SimpleFilter<sensor_msgs::Imu_<std::allocator<void> > >::registerCallback<tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >, ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&>(void (tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::*)(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&), tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >*) in imu_display.cpp.o
+      "tf::Transformer::addTransformsChangedListener(boost::function<void ()>)", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::init() in imu_display.cpp.o
+      "tf::Transformer::removeTransformsChangedListener(boost::signals::connection)", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+      "ros::NodeHandle::advertise(ros::AdvertiseOptions&)", referenced from:
+          ros::Publisher ros::NodeHandle::advertise<geometry_msgs::Twist_<std::allocator<void> > >(std::string const&, unsigned int, bool) in teleop_panel.cpp.o
+      "ros::NodeHandle::subscribe(ros::SubscribeOptions&)", referenced from:
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in moc_imu_display.cxx.o
+      "ros::NodeHandle::NodeHandle(ros::NodeHandle const&)", referenced from:
+          rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >::onInitialize() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::MessageFilter(tf::Transformer&, std::string const&, unsigned int, ros::NodeHandle, ros::Duration) in imu_display.cpp.o
+      "ros::NodeHandle::NodeHandle(std::string const&, std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > > const&)", referenced from:
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::Subscriber() in imu_display.cpp.o
+          rviz_plugin_tutorials::TeleopPanel::TeleopPanel(QWidget*) in teleop_panel.cpp.o
+      "ros::NodeHandle::~NodeHandle()", referenced from:
+          rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >::onInitialize() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::MessageFilter(tf::Transformer&, std::string const&, unsigned int, ros::NodeHandle, ros::Duration) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::~Subscriber() in imu_display.cpp.o
+          rviz_plugin_tutorials::TeleopPanel::TeleopPanel(QWidget*) in teleop_panel.cpp.o
+          rviz_plugin_tutorials::TeleopPanel::~TeleopPanel() in moc_teleop_panel.cxx.o
+      "ros::NodeHandle::operator=(ros::NodeHandle const&)", referenced from:
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in moc_imu_display.cxx.o
+      "ros::Subscriber::shutdown()", referenced from:
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::unsubscribe() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::unsubscribe() in moc_imu_display.cxx.o
+      "ros::Subscriber::~Subscriber()", referenced from:
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::~Subscriber() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::Subscriber() in imu_display.cpp.o
+          message_filters::Subscriber<sensor_msgs::Imu_<std::allocator<void> > >::subscribe(ros::NodeHandle&, std::string const&, unsigned int, ros::TransportHints const&, ros::CallbackQueueInterface*) in moc_imu_display.cxx.o
+      "ros::DurationBase<ros::Duration>::fromSec(double)", referenced from:
+          ros::Duration::Duration(double) in imu_display.cpp.o
+      "ros::serialization::throwStreamOverrun()", referenced from:
+          void ros::serialization::Serializer<double>::read<ros::serialization::IStream>(ros::serialization::IStream&, double&) in imu_display.cpp.o
+          void ros::serialization::ArraySerializer<double, 9ul, void>::read<ros::serialization::IStream>(ros::serialization::IStream&, boost::array<double, 9ul>&) in imu_display.cpp.o
+          void ros::serialization::Serializer<std::string>::read<ros::serialization::IStream>(ros::serialization::IStream&, std::string&) in imu_display.cpp.o
+          void ros::serialization::Serializer<unsigned int>::read<ros::serialization::IStream>(ros::serialization::IStream&, unsigned int&) in imu_display.cpp.o
+          void ros::serialization::Serializer<double>::write<ros::serialization::OStream>(ros::serialization::OStream&, double) in teleop_panel.cpp.o
+          void ros::serialization::Serializer<unsigned int>::write<ros::serialization::OStream>(ros::serialization::OStream&, unsigned int) in teleop_panel.cpp.o
+          void ros::serialization::Serializer<double>::read<ros::serialization::IStream>(ros::serialization::IStream&, double&) in moc_imu_display.cxx.o
+          ...
+      "ros::ok()", referenced from:
+          rviz_plugin_tutorials::TeleopPanel::sendVel() in teleop_panel.cpp.o
+      "ros::Time::now()", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+      "ros::Timer::~Timer()", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::MessageFilter(tf::Transformer&, std::string const&, unsigned int, ros::NodeHandle, ros::Duration) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::init() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+      "ros::console::initialize()", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::console::g_initialized", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::console::setLogLocationLevel(ros::console::LogLocation*, ros::console::levels::Level)", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::console::initializeLogLocation(ros::console::LogLocation*, std::string const&, ros::console::levels::Level)", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::console::checkLogLocationEnabled(ros::console::LogLocation*)", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::console::print(ros::console::FilterBase*, log4cxx::Logger*, ros::console::levels::Level, char const*, int, char const*, char const*, ...)", referenced from:
+          rviz_plugin_tutorials::ImuDisplay::processMessage(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::add(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessages() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::clear() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+          ...
+      "ros::Publisher::shutdown()", referenced from:
+          rviz_plugin_tutorials::TeleopPanel::setTopic(QString const&) in teleop_panel.cpp.o
+      "ros::Publisher::~Publisher()", referenced from:
+          rviz_plugin_tutorials::TeleopPanel::TeleopPanel(QWidget*) in teleop_panel.cpp.o
+          rviz_plugin_tutorials::TeleopPanel::setTopic(QString const&) in teleop_panel.cpp.o
+          rviz_plugin_tutorials::TeleopPanel::~TeleopPanel() in moc_teleop_panel.cxx.o
+      "boost::signals::connection::connection(boost::signals::connection const&)", referenced from:
+          message_filters::Connection::getBoostConnection() const in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+      "boost::signals::connection::~connection()", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::registerFailureCallback(boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::disconnectFailure(message_filters::Connection const&) in imu_display.cpp.o
+          boost::signals::detail::slot_base::data_t::~data_t() in imu_display.cpp.o
+          message_filters::Connection::~Connection() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::MessageFilter(tf::Transformer&, std::string const&, unsigned int, ros::NodeHandle, ros::Duration) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::init() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+          ...
+      "boost::signals::connection::operator=(boost::signals::connection const&)", referenced from:
+          message_filters::Connection::operator=(message_filters::Connection const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::init() in imu_display.cpp.o
+      "boost::signals::detail::signal_base::signal_base(boost::function2<bool, boost::signals::detail::stored_group, boost::signals::detail::stored_group> const&, boost::any const&)", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::signal2(boost::last_value<void> const&, std::less<int> const&) in imu_display.cpp.o
+      "boost::signals::detail::signal_base::~signal_base()", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::~signal2() in imu_display.cpp.o
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::signal2(boost::last_value<void> const&, std::less<int> const&) in imu_display.cpp.o
+      "boost::signals::detail::named_slot_map::end()", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::operator()(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason) in imu_display.cpp.o
+      "boost::signals::detail::named_slot_map::begin()", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::operator()(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason) in imu_display.cpp.o
+      "boost::signals::detail::signal_base_impl::connect_slot(boost::any const&, boost::signals::detail::stored_group const&, boost::shared_ptr<boost::signals::detail::slot_base::data_t>, boost::signals::connect_position)", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::connect(boost::slot<boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> > const&, boost::signals::connect_position) in imu_display.cpp.o
+      "boost::signals::detail::call_notification::call_notification(boost::shared_ptr<boost::signals::detail::signal_base_impl> const&)", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::operator()(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason) in imu_display.cpp.o
+      "boost::signals::detail::call_notification::~call_notification()", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::operator()(boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason) in imu_display.cpp.o
+      "boost::signals::detail::slot_base::create_connection()", referenced from:
+          boost::slot<boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::slot<boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >(boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> const&) in imu_display.cpp.o
+      "boost::signals::trackable::~trackable()", referenced from:
+          boost::signal2<void, boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason, boost::last_value<void>, int, std::less<int>, boost::function<void (boost::shared_ptr<sensor_msgs::Imu_<std::allocator<void> > const> const&, tf::filter_failure_reasons::FilterFailureReason)> >::~signal2() in imu_display.cpp.o
+      "tf::Transformer::canTransform(std::string const&, std::string const&, ros::Time const&, std::string*) const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+      "tf::Transformer::getLatestCommonTime(std::string const&, std::string const&, ros::Time&, std::string*) const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+      "ros::NodeHandle::createTimer(ros::Duration, boost::function<void (ros::TimerEvent const&)> const&, bool, bool) const", referenced from:
+          ros::Timer ros::NodeHandle::createTimer<tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > > >(ros::Duration, void (tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::*)(ros::TimerEvent const&), tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >*, bool, bool) const in imu_display.cpp.o
+      "ros::DurationBase<ros::Duration>::operator==(ros::Duration const&) const", referenced from:
+          ros::DurationBase<ros::Duration>::operator!=(ros::Duration const&) const in imu_display.cpp.o
+      "ros::TimeBase<ros::Time, ros::Duration>::operator==(ros::Time const&) const", referenced from:
+          ros::TimeBase<ros::Time, ros::Duration>::operator!=(ros::Time const&) const in imu_display.cpp.o
+      "ros::TimeBase<ros::Time, ros::Duration>::operator>=(ros::Time const&) const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+      "ros::TimeBase<ros::Time, ros::Duration>::operator<(ros::Time const&) const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+      "ros::TimeBase<ros::Time, ros::Duration>::operator+(ros::Duration const&) const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::testMessage(ros::MessageEvent<sensor_msgs::Imu_<std::allocator<void> > const> const&) in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::checkFailures() in imu_display.cpp.o
+      "ros::Publisher::Impl::isValid() const", referenced from:
+          ros::Publisher::operator void*() const in teleop_panel.cpp.o
+          void ros::Publisher::publish<geometry_msgs::Twist_<std::allocator<void> > >(geometry_msgs::Twist_<std::allocator<void> > const&) const in teleop_panel.cpp.o
+      "ros::Publisher::publish(boost::function<ros::SerializedMessage ()> const&, ros::SerializedMessage&) const", referenced from:
+          void ros::Publisher::publish<geometry_msgs::Twist_<std::allocator<void> > >(geometry_msgs::Twist_<std::allocator<void> > const&) const in teleop_panel.cpp.o
+      "boost::signals::connection::disconnect() const", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::disconnectFailure(message_filters::Connection const&) in imu_display.cpp.o
+    ld: symbol(s) not found for architecture x86_64
+
+    clang: error: linker command failed with exit code 1 (use -v to see
+    invocation)
+
+    make[2]: ***
+    [/Users/william/hydro/devel_isolated/rviz_plugin_tutorials/lib/librviz_plugin_tutorials.dylib]
+    Error 1
+
+    make[1]: *** [CMakeFiles/rviz_plugin_tutorials.dir/all] Error 2
+
+    make: *** [all] Error 2
+
+    ```
+
+
+    I will have a fix soon.
+  repo: 'https://api.github.com/repos/ros-visualization/visualization_tutorials'
+  labels: []
+- url: 'https://github.com/ros-visualization/visualization_tutorials/issues/4'
+  title: build errors on OSX
+  body: >
+    Building rviz_plugin_tutorials on OS X 10.8.3 is yielding a linking error,
+    it would seem. (Note: I actually run `rosmake -a --pre-clean`, having
+    successfully followed the instructions on
+    http://www.ros.org/wiki/groovy/Installation/OSX/Homebrew/Source#Installation_Instructions_for_Groovy_in_OSX).
+
+
+    ```
+
+    Undefined symbols for architecture x86_64:
+      "message_filters::Connection::disconnect()", referenced from:
+          rviz::MessageFilterDisplay<sensor_msgs::Imu_<std::allocator<void> > >::onInitialize() in imu_display.cpp.o
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::~MessageFilter() in imu_display.cpp.o
+    ```
+
+
+    full log: http://pastie.org/pastes/7360215/text
+
+
+    Adding `<depend package="message_filters"/>` to the manifest.xml file for
+    visualisation_tutorials/rviz_plugin_tutorials then gives the following.
+
+
+    ```
+
+    Undefined symbols for architecture x86_64:
+      "tf::Transformer::addTransformsChangedListener(boost::function<void ()>)", referenced from:
+          tf::MessageFilter<sensor_msgs::Imu_<std::allocator<void> > >::init() in imu_display.cpp.o
+    ```
+
+
+    full log: http://pastie.org/pastes/7360257/text
+
+
+    Now, also adding `<depend package="tf"/>` to the same manifest.xml file
+    gives the following.
+
+
+    ```
+
+    Undefined symbols for architecture x86_64:
+      "Ogre::Quaternion::IDENTITY", referenced from:
+          rviz_plugin_tutorials::ImuVisual::ImuVisual(Ogre::SceneManager*, Ogre::SceneNode*) in imu_visual.cpp.o
+          rviz_plugin_tutorials::PlantFlagTool::onInitialize() in plant_flag_tool.cpp.o
+          rviz_plugin_tutorials::PlantFlagTool::makeFlag(Ogre::Vector3 const&) in plant_flag_tool.cpp.o
+    ```
+
+
+    full log: http://pastie.org/pastes/7360289/text
+
+
+    In all of the above cases this is the only package that fails to build
+    (running `rosmake -a`) and the tail of the output looks something like this
+    in each case:
+
+
+    ```
+
+    [ rosmake ] Output from build of package rviz_plugin_tutorials written to:
+
+    [ rosmake ]   
+    /Users/alex/.ros/rosmake/rosmake_output-20130408-050334/rviz_plugin_tutorials/build_output.log
+
+    [rosmake-0] Finished <<< rviz_plugin_tutorials [FAIL] [ 76.76 seconds
+    ]                             
+
+    [ rosmake ] Halting due to failure in package rviz_plugin_tutorials. 
+
+    [ rosmake ] Waiting for other threads to complete.
+
+    [ rosmake ] Output from build of package turtle_actionlib written to:... [ 2
+    Active 85/88 Complete ]
+
+    [ rosmake ]   
+    /Users/alex/.ros/rosmake/rosmake_output-20130408-050334/turtle_actionlib/build_output.log
+
+    [rosmake-1] Finished <<< turtle_actionlib [PASS] [ 56.78 seconds ] [ 3
+    warnings [ 1 deprecated ]  ] 
+
+    [ rosmake ] Output from build of package actionlib_tutorials written to: [ 1
+    Active 86/88 Complete ]
+
+    [ rosmake ]   
+    /Users/alex/.ros/rosmake/rosmake_output-20130408-050334/actionlib_tutorials/build_output.log
+
+    [rosmake-5] Finished <<< actionlib_tutorials [PASS] [ 91.02 seconds ] [ 5
+    warnings  ]               
+
+    [ rosmake ]
+    Results:                                                                                
+
+    [ rosmake ] Cleaned 88
+    packages.                                                                    
+
+    [ rosmake ] Built 88 packages with 1
+    failures.                                                      
+
+    [ rosmake ] Summary output to
+    directory                                                             
+
+    [ rosmake ] /Users/alex/.ros/rosmake/rosmake_output-20130408-050334
+
+    ```
+
+
+    I am unable to get rid of this last issue with "undefined symbols" however,
+    and am not even sure my previous attempted fixes are the right way to go
+    about it. Any help would be appreciated.
+  repo: 'https://api.github.com/repos/ros-visualization/visualization_tutorials'
+  labels: []
+- url: 'https://github.com/ros-visualization/visualization_tutorials/issues/3'
+  title: rviz_plugin_tutorials fails to compile on OS X
+  body: >
+    See:
+
+
+    http://answers.ros.org/question/56553/rosmake-fails-on-os-x/
+
+    http://pastie.org/pastes/6368348/text
+
+
+    The failure:
+
+
+    ```
+
+    {-------------------------------------------------------------------------------
+      -- Looking for Q_WS_MAC
+      -- Looking for Q_WS_MAC - found
+      -- Looking for QT_MAC_USE_COCOA
+      -- Looking for QT_MAC_USE_COCOA - found
+      -- Found Qt4: /usr/local/bin/qmake (found version "4.8.4") 
+      [rosbuild] Couldn't find source file /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/build/src/moc_drive_widget.cxx; assuming that it is in /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials and will be generated later
+      [rosbuild] Couldn't find source file /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/build/src/moc_imu_display.cxx; assuming that it is in /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials and will be generated later
+      [rosbuild] Couldn't find source file /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/build/src/moc_plant_flag_tool.cxx; assuming that it is in /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials and will be generated later
+      [rosbuild] Couldn't find source file /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/build/src/moc_teleop_panel.cxx; assuming that it is in /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials and will be generated later
+      -- Configuring done
+      -- Generating done
+      -- Build files have been written to: /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/build
+      cd build && make -j -l8
+      Scanning dependencies of target rospack_genmsg_libexe
+      [  0%] Built target rospack_genmsg_libexe
+      Scanning dependencies of target rosbuild_precompile
+      [  0%] Built target rosbuild_precompile
+      [  7%] Generating src/moc_teleop_panel.cxx
+      [ 15%] Generating src/moc_plant_flag_tool.cxx
+      [ 23%] Generating src/moc_imu_display.cxx
+      [ 30%] Generating src/moc_drive_widget.cxx
+      Scanning dependencies of target rviz_plugin_tutorials
+      [ 38%] Building CXX object CMakeFiles/rviz_plugin_tutorials.dir/src/drive_widget.cpp.o
+      /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/src/drive_widget.cpp:113:23: error: variable length array of non-POD element type 'QPointF'
+          QPointF left_track[ step_count ];
+                            ^
+      /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/src/drive_widget.cpp:114:24: error: variable length array of non-POD element type 'QPointF'
+          QPointF right_track[ step_count ];
+                             ^
+      In file included from /Users/alex/ros_ws/visualization_tutorials/rviz_plugin_tutorials/src/drive_widget.cpp:34:
+      In file included from /usr/local/Cellar/qt/4.8.4/include/QtGui/QMouseEvent:1:
+      In file included from /usr/local/Cellar/qt/4.8.4/include/QtGui/qevent.h:52:
+      /usr/local/Cellar/qt/4.8.4/include/QtGui/qmime.h:119:10: warning: private field 'type' is not used [-Wunused-private-field]
+          char type;
+               ^
+      1 warning and 2 errors generated.
+      make[3]: *** [CMakeFiles/rviz_plugin_tutorials.dir/src/drive_widget.cpp.o] Error 1
+      make[2]: *** [CMakeFiles/rviz_plugin_tutorials.dir/all] Error 2
+      make[1]: *** [all] Error 2
+    -------------------------------------------------------------------------------}
+
+    [ rosmake ] Output from build of package rviz_plugin_tutorials written to:
+
+    [ rosmake ]   
+    /Users/alex/.ros/rosmake/rosmake_output-20130302-173409/rviz_plugin_tutorials/build_output.log
+
+    [rosmake-3] Finished <<< rviz_plugin_tutorials [FAIL] [ 25.69 seconds ]
+
+    ```
+
+
+    I do not have the full error log, but perhaps someone could update the
+    ticket with that.
+  repo: 'https://api.github.com/repos/ros-visualization/visualization_tutorials'
+  labels:
+    - bug

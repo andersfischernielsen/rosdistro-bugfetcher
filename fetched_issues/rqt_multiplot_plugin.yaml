@@ -1,0 +1,156 @@
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/pull/19'
+  title: fix issues when plotting constant values
+  body: "This fixes the following bugs:\r\n\r\n- if e.g. a constant y value is plotted the y-scale is empty\r\n- if e.g. a constant y value is plotted outside of the invisible y-scale, the curve is not shown"
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels:
+    - bug
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/issues/18'
+  title: Plotting non-float values
+  body: "Plotting booleans and/or uint8 does not seem to work:\r\n\r\n    rostopic pub /bla std_msgs/UInt8 -r 10 -- 2\r\n    rqt_multiplot # plot /bla/receipt_time vs /bla/data\r\n"
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels:
+    - bug
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/issues/17'
+  title: Loading/importing multiple (consecutive) bag files
+  body: >-
+    Bag data recorded over a longer period of time tends to get unwieldy, for
+    this reason we split it up into 1GB chunks. Existing tools like `rqt_bag`
+    and `rosbag` support this well and one can load multiple bags for instance
+    by providing `*.bag` as an argument. The same capability would be very
+    useful for rqt_multiplot (both via command line and/or via selecting
+    multiple files for import).
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels:
+    - enhancement
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/issues/16'
+  title: More verbose output when failing to plot with a given config
+  body: "I made multiple configs for plotting and mainly want to use those with the \"Import from bag file\" functionality. This works well most of the time, but sometimes it just doesn't work and \"nothing happens\". The same happens to a lesser extend when playing back bag files. Some plotting configs work, some do not and it is completely unclear what the reasons could be. The existing verbose output option does not provide any useful information.\r\n\r\nI'm currently using rqt_multiplot cloned from source (master) in my indigo setup.\r\n\r\nHere is an [example bag file](https://drive.google.com/open?id=0B1hU91jkd7VwVkwwdlpZV0VjQk0).\r\n\r\nIf I clear my config, then select [argo_tracker_joint_trajectory_controller_state.xml](https://github.com/tu-darmstadt-ros-pkg/hector_rqt_multiplot_config/blob/master/config/argo_tracker_joint_trajectory_controller_state.xml) and import the bag file I get a plot and the following on the terminal:\r\n<pre>\r\n[ INFO] [1484693965.379257674, 1484649926.288922911]: Loaded configuration from [file:///home/kohlbrecher/argo2/src/hector_rqt_multiplot_config/config/argo_tracker_joint_trajectory_controller_state.xml]\r\n[ INFO] [1484693976.333224726, 1484649926.288922911]: Read bag from [file:///media/kohlbrecher/data/argo_log/driving_test_paul/2017-01-17-23-48-52.bag]\r\n</pre>\r\n\r\nIf I clear my config, then select [pdout.xml](https://github.com/tu-darmstadt-ros-pkg/hector_rqt_multiplot_config/blob/master/config/pdout.xml) and import the bag file I get no plot and the following on the terminal:\r\n<pre>\r\n[ INFO] [1484693997.489607086, 1484649926.288922911]: Loaded configuration from [file:///home/kohlbrecher/argo2/src/hector_rqt_multiplot_config/config/pdout.xml]\r\n[ INFO] [1484694009.362378172, 1484649926.288922911]: Read bag from [file:///media/kohlbrecher/data/argo_log/driving_test_paul/2017-01-17-23-48-52.bag]\r\n</pre>\r\n\r\nAny hints and improvements indicating to the user what is going wrong are appreciated :)"
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels: []
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/issues/11'
+  title: Issues on Mac OS
+  body: >
+    First off, this is awesome— thanks for sharing!
+
+
+    When I try to build from source on Yosemite, I get the following:
+
+
+    ```
+
+    Errors     << rqt_multiplot:cmake
+    /Users/mikepurvis/multiplot_ws/logs/rqt_multiplot/build.cmake.000.log                                               
+
+    CMake Error: The following variables are used in this project, but they are
+    set to NOTFOUND.
+
+    Please set them or make sure they are set and tested correctly in the CMake
+    files:
+
+    QWT_INCLUDE_DIRS
+       used as include directory in directory /Users/mikepurvis/multiplot_ws/src/rqt_multiplot_plugin/rqt_multiplot
+       used as include directory in directory /Users/mikepurvis/multiplot_ws/src/rqt_multiplot_plugin/rqt_multiplot
+       used as include directory in directory /Users/mikepurvis/multiplot_ws/src/rqt_multiplot_plugin/rqt_multiplot
+    ```
+
+
+    This seems to be because `qwt` is in an OSX "framework", so its headers
+    can't be found given the current `find_path` hints:
+
+
+    ```
+
+    $ brew list qwt
+
+    /usr/local/Cellar/qwt/6.1.3/doc/html/ (1416 files)
+
+    /usr/local/Cellar/qwt/6.1.3/doc/man/ (144 files)
+
+    /usr/local/Cellar/qwt/6.1.3/features/ (3 files)
+
+    /usr/local/Cellar/qwt/6.1.3/lib/qt4/plugins/designer/libqwt_designer_plugin.dylib
+
+    /usr/local/Cellar/qwt/6.1.3/lib/qwt.framework/ (101 files)
+
+    ```
+
+
+    I hacked around this to get a build:
+
+
+    ```
+
+    @@ -28,6 +28,7 @@ find_path(
+         /usr/include/qwt-qt4
+         /usr/include/qwt
+         /usr/local/include/qwt
+    +    /usr/local/Cellar/qwt/6.1.3/lib/qwt.framework/Headers
+     )
+    ```
+
+
+    But now I get a runtime issue on startup:
+
+
+    ```
+
+    $ rosrun rqt_multiplot rqt_multiplot 
+
+    Could not import "pyqt" bindings of qt_gui_cpp library - so C++ plugins will
+    not be available:
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/site-packages/qt_gui_cpp/cpp_binding_helper.py", line 43, in <module>
+        import libqt_gui_cpp_sip
+    ImportError:
+    dlopen(/opt/ros/indigo/lib/python2.7/site-packages/qt_gui_cpp/libqt_gui_cpp_sip.so,
+    2): Library not loaded: @rpath/libclass_loader.dylib
+      Referenced from: /opt/ros/indigo/lib/python2.7/site-packages/qt_gui_cpp/libqt_gui_cpp_sip.so
+      Reason: image not found
+    ```
+
+
+    But the missing library is definitely present:
+
+
+    ```
+
+    $ ls -la /opt/ros/indigo/lib/libclass_loader.dylib 
+
+    -rwxr-xr-x  1 mikepurvis  wheel  138276  3 Aug 23:37
+    /opt/ros/indigo/lib/libclass_loader.dylib
+
+    ```
+
+
+    Anyhow, I'm enjoying this on my Ubuntu VM; would love to get it working
+    natively on OS X. Thanks again for the package and any suggestions!
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels:
+    - help wanted
+- url: 'https://github.com/ANYbotics/rqt_multiplot_plugin/issues/2'
+  title: Crash with Kinetic
+  body: >
+    Hi,
+
+
+    I've followed the instruction to build from source to try to use multiplot
+    on Ubuntu 16.04 with Ros kinetic.
+
+    The cakin_make process was successful but unfortunately the plugin encounter
+    a issue at launch.
+
+
+    If launch through rqt, rqt crash without warning.
+
+    If launch with rosrun rqt_multiplot rqt_multiplot, the following error is
+    observed: Segmentation fault (core dumped)
+
+
+    Is their specific step/workaround to use this tool with Kinetic?
+
+
+    Thanks
+  repo: 'https://api.github.com/repos/ANYbotics/rqt_multiplot_plugin'
+  labels:
+    - bug

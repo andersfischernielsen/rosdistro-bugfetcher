@@ -1,0 +1,30 @@
+- url: 'https://github.com/aws-robotics/utils-common/pull/30'
+  title: Add macro for ros1/2 finding gtest and gmock
+  body: "The macro `find_common_test_packages` will use ament or catkin to link to gtest and gmock libraries.\r\n\r\n**Note:** You must add dependencies on gtest and gmock in the package.xml still\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/utils-common/pull/21'
+  title: Add ROS2 dependencies to package.xml
+  body: "\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/utils-common/pull/16'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/utils-common/pull/5'
+  title: Adding build_depend on git.
+  body: ''
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/utils-common/pull/4'
+  title: add git as a buildtool depend
+  body: "To support checking out the external project from git\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/utils-common/pull/1'
+  title: Adding libssl-dev dependency and making ROS_VERSION optional
+  body: "\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/utils-common'
+  labels: []

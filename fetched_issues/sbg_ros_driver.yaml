@@ -1,0 +1,13 @@
+- url: 'https://github.com/SBG-Systems/sbg_ros_driver/issues/6'
+  title: 'std::put_time is not available on Debian Jessie'
+  body: "Builds of sbg_ros_driver are failing on Debian Jessie due to missing std::put_time\r\n\r\nhttp://repositories.ros.org/status_page/ros_kinetic_dj.html?q=REGRESSION\r\nhttp://repositories.ros.org/status_page/ros_kinetic_djv8.html?q=REGRESSION\r\n\r\nFor example: http://build.ros.org/view/Kbin_dj_dJ64/job/Kbin_dj_dJ64__sbg_driver__debian_jessie_amd64__binary/107/console\r\n```\r\n23:11:47 /tmp/binarydeb/ros-kinetic-sbg-driver-1.1.6/src/ellipse.cpp: In member function ‘bool Ellipse::end_mag_calibration()’:\r\n23:11:47 /tmp/binarydeb/ros-kinetic-sbg-driver-1.1.6/src/ellipse.cpp:849:10: error: ‘put_time’ is not a member of ‘std’\r\n23:11:47    oss << std::put_time(&tm, \"mag_calib_%Y_%m_%d-%Hh%Mmin%Ss.txt\");\r\n23:11:47           ^\r\n23:11:47 make[4]: *** [CMakeFiles/ellipse.dir/src/ellipse.cpp.o] Error 1\r\n23:11:47 CMakeFiles/ellipse.dir/build.make:80: recipe for target 'CMakeFiles/ellipse.dir/src/ellipse.cpp.o' failed\r\n```\r\n\r\nI believe that the c++ version available in Jessie doesn't have support for that method\r\nhttp://en.cppreference.com/w/cpp/io/manip/put_time\r\n\r\nWe're preparing a Kinetic sync: https://discourse.ros.org/t/preparing-for-kinetic-sync-2018-06-06/5034\r\n\r\nI'd usually let this regress and move on but since this will be the last sync for Jessie wanted to ping a little bit more agressively. If you're not using it on Jessie and don't have any users on Jessie that's fine too. Supporting this will not be necessary after this sync, and this can just be closed.\r\n"
+  repo: 'https://api.github.com/repos/SBG-Systems/sbg_ros_driver'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/SBG-Systems/sbg_ros_driver/issues/4'
+  title: sbgEComHandle Error SBG_NOT_READY
+  body: "Hi Guys, I currently have an SBG Eclipse that I am trying to integrate. \r\nI managed to chance upon this driver which is great.\r\nHowever, when i run the driver, it keeps printing `[ERROR] [1507812084.649448000]: sbgEComHandle ErrorSBG_NOT_READY: A device isn't ready (Rx isn't ready for example).`\r\n\r\nI have traced it to `sbg_ros_driver/sbgECom/src/sbgECom.c` which is called the `do while` loop to read all the frames. The comments above the function states that it is supposed to receive a `SBG_NO_ERROR`. But I am not sure why I am getting the `SBG_NOT_READY`. Could anybody verify whether this is normal? "
+  repo: 'https://api.github.com/repos/SBG-Systems/sbg_ros_driver'
+  labels:
+    - bug

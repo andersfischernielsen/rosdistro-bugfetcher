@@ -1,0 +1,104 @@
+- url: 'https://github.com/ros-drivers/openni2_camera/pull/92'
+  title: Fix missing dependency on roswtf plugin.
+  body: "This depends on https://github.com/ros/rosdistro/pull/19379\r\n\r\nWithout usbutils installed/available, `roswtf` plugin fails with unintuitive error message like the following.\r\n\r\n```\r\n\r\nLoaded plugin tf.tfwtf\r\nLoaded plugin openni2_launch.wtf_plugin\r\nNo package or stack in context\r\n================================================================================\r\nStatic checks summary:\r\n\r\nFound 1 warning(s).\r\nWarnings are things that may be just fine, but are sometimes at fault\r\n\r\n:\r\n\r\n================================================================================\r\nBeginning tests of your ROS graph. These may take awhile...\r\nanalyzing graph...\r\n... done analyzing graph\r\nrunning graph rules...\r\n... done running graph rules\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/roswtf/__init__.py\", line 224, in _roswtf_main\r\n      p(ctx)\r\n        File \"/opt/ros/kinetic/lib/python2.7/dist-packages/openni2_launch/wtf_plugin.py\", line 114, in roswtf_plugin_online\r\n    error_rule(r, r[0](ctx), ctx)\r\n      File \"/opt/ros/kinetic/lib/python2.7/dist-packages/openni2_launch/wtf_plugin.py\", line 86, in sensor_notfound\r\n          id_manufacturer=id_manufacturer, id_product=id_product)\r\n    File \"/opt/ros/kinetic/lib/python2.7/dist-packages/openni2_launch/wtf_plugin.py\", line 56, in _device_notfound_subproc\r\n        df = subprocess.check_output(\"lsusb\")\r\n  File \"/usr/lib/python2.7/subprocess.py\", line 567, in check_output\r\n      process = Popen(stdout=PIPE, *popenargs, **kwargs)\r\n        File \"/usr/lib/python2.7/subprocess.py\", line 711, in __init__\r\n    errread, errwrite)\r\n      File \"/usr/lib/python2.7/subprocess.py\", line 1343, in _execute_child\r\n          raise child_exception\r\nOSError: [Errno 2] No such file or directory\r\n[Errno 2] No such file or directory\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni2_camera/issues/88'
+  title: >-
+    Required arguments id_manufacturer, id_product not set in
+    openni2_tf_prefix.launch
+  body: "Commit ff647b83d86c introduced a regression because `openni2_tf_prefix.launch` was not updated with the arguments `id_manufacturer` and `id_product`, which are since then required by `device.launch.xml`. Instead, `openni2.launch` was modified appropriately.\r\n\r\nThis means that currently `openni2_tf_prefix.launch` cannot be used if `load_driver` is true. "
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/openni2_camera/pull/55'
+  title: Move openni2_launch package into this repository
+  body: "`openni2_camera` package only contains node and nodelet library, and I assume most of its users use it via `openni2.launch` from `openni2_launch` package, which is maintained in [another repo](https://github.com/ros-drivers/openni2_launch) separately. IMO these two repos were separately started during the very early development phase, which made sense at that time. Now that development has slowed down, we can merge two repos into one to reduce maintenance effort.\r\n\r\nVery similar suggestion is made at https://github.com/ros-drivers/openni_launch/issues/30.\r\n\r\n**Implementation**\r\nI'd suggest simply moving `openni2_launch` pkg into `openni2_camera` repo, which is already done in this PR. Folder structure:\r\n```\r\nopenni2_camera$ tree -L 2\r\n.\r\n├── openni2_camera\r\n│\_\_ ├── cfg\r\n│\_\_ ├── CHANGELOG.rst\r\n│\_\_ ├── CMakeLists.txt\r\n│\_\_ ├── include\r\n│\_\_ ├── openni2_nodelets.xml\r\n│\_\_ ├── package.xml\r\n│\_\_ ├── README.md\r\n│\_\_ ├── ros\r\n│\_\_ ├── src\r\n│\_\_ ├── srv\r\n│\_\_ └── test\r\n└── openni2_launch\r\n    ├── CHANGELOG.rst\r\n    ├── CMakeLists.txt\r\n    ├── launch\r\n    └── package.xml\r\n\r\n9 directories, 8 files\r\n```\r\n\r\nCommit history for the new package should be all preserved from its repo except the merge commits. To retain all commit history, the following set of commands is used ([reference](http://www.pixelite.co.nz/article/extracting-file-folder-from-git-repository-with-full-git-history/)):\r\n```\r\n$ cd openni2_camera\r\n$ git checkout -b merge/openni2_camera\r\n$ mkdir openni2_camera\r\n$ mv * openni2_camera/\r\n$ git add openni2_camera\r\n$ git status\r\n$ git rm C* launch/* p*\r\n$ git commit -m \"openni2_camera package as a subfolder.\"\r\n\r\n$ cd ../openni2_launch\r\n$ mkdir openni2_launch\r\n$ mv * openni2_launch/\r\n$ git add openni2_launch/\r\n$ git rm C* launch/* p*\r\n$ git commit -m \"openni2_launch package as a subfolder.\"\r\n$ git log --pretty=email --patch-with-stat --reverse --full-index --binary -- . > /tmp/patch\r\n\r\n$ cd ../openni2_camera\r\n$ git am < /tmp/patch\r\n```\r\n\r\n**Future plan for the external repo**\r\nOnce this PR gets merged, https://github.com/ros-drivers/openni2_launch should be deprecated. Existing issues can be automatically imported into this repo.\r\n"
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni2_camera/issues/50'
+  title: Adding functionality to set CloseRange property
+  body: "While testing the new Asus Xtion 2 (which is a great unit btw, anybody who wants more information is welcome to ask) I found out that it features a close range mode.\r\nI can toggle it in the newest version of the NiViewer and the important part of the code can be found here:\r\nhttps://github.com/OpenNI/OpenNI2/blob/115cf06c6efea32304182d293eca16ca883c9150/Source/Tools/NiViewer/Device.cpp#L365\r\n\r\nIt would be great to have the functionality to set this property in ROS.\r\n\r\nThere are two reasons for this:\r\nFirst thing is that in close range mode it is possible to see objects down to a distance between approx. 10 to 25 cm depending on the color and surface.\r\nThis is a huge benefit for navigation in narrow environments.\r\nWhereas the second point is crucial for some applications:\r\nThe Xtion 2 is based on TOF and not Structured Light. This introduces the problem with non explicit distance values.\r\nToday I did some testing and in normal mode at a distance of approx. 11 meters the objects (a white wall in my case) led to points directly in front of the camera.\r\nThe close range mode dims the emitter so that when it is activated instead of getting wrong values I get no distance values from objects with a distance greater than 11 meters. Which surely is the better deal."
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni2_camera/issues/43'
+  title: openni2_driver_lib needs a dependency on GetSerial
+  body: >
+    It's failing to build on Xenial 64 due to this:
+    http://build.ros.org/view/Kbin_uX64/job/Kbin_uX64__openni2_camera__ubuntu_xenial_amd64__binary/22/console
+
+
+    ```
+
+    23:34:17 /usr/lib/ccache/x86_64-linux-gnu-g++   -DROSCONSOLE_BACKEND_LOG4CXX
+    -DROS_PACKAGE_NAME=\"openni2_camera\" -Dopenni2_driver_lib_EXPORTS
+    -I/tmp/binarydeb/ros-kinetic-openni2-camera-0.2.6/obj-x86_64-linux-gnu/devel/include
+    -I/tmp/binarydeb/ros-kinetic-openni2-camera-0.2.6/include
+    -I/opt/ros/kinetic/include -I/usr/include/openni2  -g -O2
+    -fstack-protector-strong -Wformat -Werror=format-security -DNDEBUG
+    -Wdate-time -D_FORTIFY_SOURCE=2  -fPIC   -o
+    CMakeFiles/openni2_driver_lib.dir/src/openni2_driver.cpp.o -c
+    /tmp/binarydeb/ros-kinetic-openni2-camera-0.2.6/src/openni2_driver.cpp
+
+    23:34:21 In file included from
+    /tmp/binarydeb/ros-kinetic-openni2-camera-0.2.6/src/openni2_driver.cpp:32:0:
+
+    23:34:21
+    /tmp/binarydeb/ros-kinetic-openni2-camera-0.2.6/include/openni2_camera/openni2_driver.h:54:38:
+    fatal error: openni2_camera/GetSerial.h: No such file or directory
+
+    23:34:21 compilation terminated.
+
+    ```
+
+
+    I believe [this
+    line](https://github.com/ros-drivers/openni2_camera/blob/2dc246feb39f13a8e7f8b362dc1c5478abae668d/CMakeLists.txt#L54)
+    needs the additional dependency `${PROJECT_NAME}_generate_messages_cpp`
+
+
+    Surprisingly this is the only platform where it is failing due to this race
+    condition. 
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni2_camera/issues/14'
+  title: Driver does not retry when configuration fails?
+  body: >
+    This isn't actually actionable right now, but keeping logging here for
+    future debugging. On startup I saw:
+
+
+    ```
+     [ERROR] [1380501149.547482947]: Unsupported color video mode - Resolution: 640x480@30Hz Format: RGB888
+    ```
+
+
+    Followed by lots of:
+
+
+    ```
+
+    [ERROR] [1380501211.906861555]: Rectified topic
+    '/head_camera/depth/image_rect_raw' requested but camera publishing
+    '/head_camera/depth/camera_info' is uncalibrated
+
+    [ WARN] [1380501171.307709212]: [image_transport] Topics
+    '/head_camera/depth/image_rect_raw' and '/head_camera/depth/camera_info' do
+    not appear to be synchronized. In the last 10s:
+        Image messages received:      0
+        CameraInfo messages received: 150
+        Synchronized pairs:           0
+    ```
+
+
+    We never reconnected, but restarting my launch file worked. We should
+    probably retry when configuration fails.
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels:
+    - bug
+    - question
+- url: 'https://github.com/ros-drivers/openni2_camera/pull/3'
+  title: added libopenni2-dev dependency
+  body: ''
+  repo: 'https://api.github.com/repos/ros-drivers/openni2_camera'
+  labels: []

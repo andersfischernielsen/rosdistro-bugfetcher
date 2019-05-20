@@ -1,0 +1,5 @@
+- url: 'https://github.com/Slamtec/rplidar_ros/issues/13'
+  title: A2 too much inf even indoors at midnight without ceramic tile
+  body: "inf data may up to 1/3\r\nWhat can I do with this? Should I support power independently beside USB? Or change some setting. I use the default setting.\r\n"
+  repo: 'https://api.github.com/repos/Slamtec/rplidar_ros'
+  labels: []

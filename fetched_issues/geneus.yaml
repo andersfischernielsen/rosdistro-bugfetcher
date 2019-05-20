@@ -1,0 +1,765 @@
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/52'
+  title: '[geneus_main.py] suppress warning'
+  body: "To suppress errors like this:\r\n\r\n```bash\r\nWarnings << jsk_baxter_startup:symlink /home/travis/ros/ws_jsk_robot/logs/jsk_baxter_startup/build.symlink.000.log\r\nWarning: Cannot symlink from /home/travis/ros/ws_jsk_robot/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/manifest.l to existing file /home/travis/ros/ws_jsk_robot/devel/share/roseus/ros/baxter_maintenance_msgs/manifest.l\r\nWarning: Source hash: 58fe04e2e8539e5be98168e26638ee4d\r\nWarning: Dest hash: a30d8e179f01bff293addfaa2f484218\r\nWarning: Cannot symlink from /home/travis/ros/ws_jsk_robot/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_core_msgs/manifest.l to existing file /home/travis/ros/ws_jsk_robot/devel/share/roseus/ros/baxter_core_msgs/manifest.l\r\nWarning: Source hash: 666b4d242a1d6795d4320ffadfd052ae\r\nWarning: Dest hash: 707d28cf190a5fbf6aea616884b82abf\r\n```\r\n\r\nTo merge this pull request:\r\n\r\n- Pros\r\n  - Never show the warning\r\n  - depends written in `manifest.l` are in an alphabetical order\r\n- Cons\r\n  - Never written timestamp in `manifest.l` (still we can know by looking file created timestamp)"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/issues/51'
+  title: Is genmeg generating euslisp msg files for packages installed from deb?
+  body: "Is genmeg generating euslisp msg files for packages installed from deb?\r\n\r\nHere is the problem I encountered:\r\n\r\nI added `jsk_footstep_planner` test on for travis.\r\nhttps://travis-ci.org/jsk-ros-pkg/jsk_control/builds/174396909\r\n\r\n`jsk_footstep_planner` depends on `jsk_footstep_msgs`.\r\nOn travis, `jsk_footstep_msgs` is installed from deb, e.g., `ros-indigo-jsk-footstep-msgs`.\r\n\r\nHowever, the message generation for `jsk_footstep_msgs` is not executed and euslisp test using `JSK_FOOTSTEP_MSGS::FOOOTSTEP` fails.\r\nhttps://s3.amazonaws.com/archive.travis-ci.org/jobs/174396911/log.txt\r\n\r\nOn my laptop, I tested the following command:\r\n```\r\ncatkin bt --summarize --force-cmake --dry-run\r\n```\r\nFor this test, I prepared source of `jsk_footsetp_planner` and install `jsk_footstep_msgs` from deb.\r\nThe results are as follows:\r\n```\r\nnozawa@nozawa-ThinkPad-W540:~/ros/indigo/src/jsk-ros-pkg/jsk_control/jsk_footstep_planner$ catkin bt --summarize --force-cmake --dry-run\r\n==> Expanding alias 'bt' from 'catkin bt --summarize --force-cmake --dry-run' to 'catkin b --this --summarize --force-cmake --dry-run'\r\n==> Expanding alias 'b' from 'catkin b --this --summarize --force-cmake --dry-run' to 'catkin build --this --summarize --force-cmake --dry-run'\r\n---------------------------------------------------------------------------------\r\nProfile:                     default\r\nExtending:          [cached] /home/nozawa/ros/indigo_parent/devel:/opt/ros/indigo\r\nWorkspace:                   /home/nozawa/ros/indigo\r\nSource Space:       [exists] /home/nozawa/ros/indigo/src\r\nBuild Space:        [exists] /home/nozawa/ros/indigo/build\r\nDevel Space:        [exists] /home/nozawa/ros/indigo/devel\r\nInstall Space:     [missing] /home/nozawa/ros/indigo/install\r\nDESTDIR:                     None\r\n---------------------------------------------------------------------------------\r\nIsolate Develspaces:         False\r\nInstall Packages:            False\r\nIsolate Installs:            False\r\n---------------------------------------------------------------------------------\r\nAdditional CMake Args:       None\r\nAdditional Make Args:        None\r\nAdditional catkin Make Args: None\r\nInternal Make Job Server:    True\r\n---------------------------------------------------------------------------------\r\nWhitelisted Packages:        None\r\nBlacklisted Packages:        None\r\n---------------------------------------------------------------------------------\r\nWorkspace configuration appears valid.\r\n--------------------------------------------------------------------------------- \r\nFound '212' packages in 0.5 seconds. \r\nPackages to be built: \r\n- dynamic_tf_publisher    (catkin) \r\n- euscollada              (catkin) \r\n- image_view2             (catkin) \r\n- jsk_data                (catkin) \r\n- jsk_gui_msgs            (catkin) \r\n- jsk_hark_msgs           (catkin) \r\n- jsk_recognition_msgs    (catkin) \r\n- jsk_topic_tools         (catkin) \r\n- jsk_recognition_utils   (catkin) \r\n- jsk_pcl_ros_utils       (catkin) \r\n- jsk_pcl_ros             (catkin) \r\n- jsk_rviz_plugins        (catkin) \r\n- resized_image_transport (catkin) \r\n- roseus                  (catkin) \r\n- pr2eus                  (catkin) \r\n- pr2eus_moveit           (catkin) \r\n- jsk_interactive_marker  (catkin) \r\n- jsk_footstep_planner    (catkin) \r\nTotal packages: 18 \r\n```\r\nIn this case, `jsk_footsetp_msgs` is not included for catkin build target.\r\nTherefore, the message generation for packages installed from deb seems not to be executed.\r\n\r\nIf this situation is expected behavior, how can I use geneus message generation for packages installed from deb?"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/issues/47'
+  title: failing on catkin_tools 0.4.x
+  body: >
+    ```
+
+    Scanning dependencies of target nodelet_generate_messages_eus
+
+    Scanning dependencies of target pcl_msgs_generate_messages_eus
+
+    Scanning dependencies of target bond_generate_messages_eus
+
+    Scanning dependencies of target dynamic_tf_publisher_generate_messages_eus
+
+    Scanning dependencies of target jsk_recognition_msgs_generate_messages_eus
+
+    Scanning dependencies of target posedetection_msgs_generate_messages_eus
+
+    [  0%] [  1%] [  1%] [  1%] [  1%] [  1%] Generating EusLisp code from
+    baxter_maintenance_msgs/CalibrateArmData.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmEnable.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/TareEnable.msg
+
+    [  1%] Generating EusLisp code from
+    baxter_maintenance_msgs/CalibrateArmData.msg
+
+    [  2%] Generating EusLisp code from baxter_maintenance_msgs/TareData.msg
+
+    [  2%] Generating EusLisp code from
+    baxter_maintenance_msgs/CalibrateArmData.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmData.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmData.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmData.msg
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [TareData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [TareData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmEnable.l]
+    Error 3
+
+    make[2]: *** Waiting for unfinished jobs....
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/TareEnable.l]
+    Error 3
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    [  2%] ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/all]
+    Error 2
+
+    make[1]: make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[2]: *** Waiting for unfinished jobs....
+
+    *** Waiting for unfinished jobs....
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    [  2%] [  3%] ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmEnable.msg
+
+    [  3%] Generating EusLisp code from baxter_maintenance_msgs/TareData.msg
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[2]: *** Waiting for unfinished jobs....
+
+    [  4%] Generating EusLisp code from
+    baxter_maintenance_msgs/CalibrateArmEnable.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/TareEnable.msg
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    [  4%] ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmEnable.msg
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/TareData.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/nodelet_generate_messages_eus.dir/all] Error 2
+
+    Generating EusLisp code from baxter_maintenance_msgs/UpdateSource.msg
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[2]: *** Waiting for unfinished jobs....
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    [  5%] ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmData.l]
+    Error 3
+
+    make[2]: *** Waiting for unfinished jobs....
+
+    [  6%] Generating EusLisp code from
+    baxter_maintenance_msgs/UpdateSources.msg
+
+    Generating EusLisp code from baxter_maintenance_msgs/CalibrateArmEnable.msg
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+    ERROR:  Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmEnable.l]
+    Error 3
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmEnable.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/bond_generate_messages_eus.dir/all] Error 2
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/TareData.l]
+    Error 3
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [TareData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [TareData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmEnable.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/pcl_msgs_generate_messages_eus.dir/all] Error 2
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 752, in generate_msg_from_spec
+        msgs = msg_list(package, search_path, '.msg')
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 739, in msg_list
+        files.extend([f for f in os.listdir(d) if f.endswith(ext)])
+    OSError: [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    ERROR:  [Errno 2] No such file or directory:
+    '/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg'
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/TareEnable.l]
+    Error 3
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/UpdateSource.l]
+    Error 3
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [UpdateSource] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [UpdateSource] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/geneus_main.py", line 168, in genmain
+        retcode = generate_msg(options.package, args[1:], options.outdir, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 721, in generate_msg
+        generate_msg_from_spec(msg_context, spec, search_path, out_dir, pkg)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/geneus/generate.py", line 749, in generate_msg_from_spec
+        genmsg.msg_loader.load_depends(msg_context, spec, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 344, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 313, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 119, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 85, in get_msg_file
+        (base_type, package, str(search_path[package])))
+    MsgNotFound: Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    ERROR:  Cannot locate message [CalibrateArmData] in package
+    [baxter_maintenance_msgs] with paths
+    [['/home/wkentaro/ros/test_geneus/devel/.private/baxter_maintenance_msgs/share/baxter_maintenance_msgs/msg']]
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/UpdateSources.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/posedetection_msgs_generate_messages_eus.dir/all]
+    Error 2
+
+    make[2]: ***
+    [/home/wkentaro/ros/test_geneus/devel/.private/jsk_baxter_startup/share/roseus/ros/baxter_maintenance_msgs/msg/CalibrateArmEnable.l]
+    Error 3
+
+    make[1]: *** [CMakeFiles/dynamic_tf_publisher_generate_messages_eus.dir/all]
+    Error 2
+
+    make: *** [all] Error 2
+
+    ```
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/44'
+  title: add comment that 152683d depends on comment line
+  body: |
+    add comment that 152683d of #42 depends on comment line
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/42'
+  title: do not overwrite pkg_map
+  body: >
+    background:
+
+    - ros-indigo-roseus is already installed
+
+    - jsk_roseus is in workspace too
+
+
+    problem:
+
+    `get_pkg_map` returns roseus package under /opt/ros/indigo, not workspace
+
+
+    failure case:
+
+    https://travis-ci.org/jsk-ros-pkg/geneus/builds/92400732
+
+
+    ```
+
+    -- catkin 0.6.16
+
+    -- Using these message generators: gencpp;geneus;genlisp;genpy
+
+    CMake Error at /opt/ros/indigo/share/catkin/cmake/catkinConfig.cmake:75
+    (find_package):
+      Could not find a package configuration file provided by
+      "actionlib_tutorials" with any of the following names:
+        actionlib_tutorialsConfig.cmake
+        actionlib_tutorials-config.cmake
+      Add the installation prefix of "actionlib_tutorials" to CMAKE_PREFIX_PATH
+      or set "actionlib_tutorials_DIR" to a directory containing one of the above
+      files.  If "actionlib_tutorials" provides a separate development package or
+      SDK, be sure it has been installed.
+    Call Stack (most recent call first):
+      CMakeLists.txt:7 (find_package)
+    ```
+
+
+    which i added actionlib_tutorials to the run_depend, but not released yet
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/37'
+  title: '[package.xml] Now doesn''t depend on python-rospkg'
+  body: null
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/issues/36'
+  title: Remove python-rospkg from run_depends?
+  body: |
+    I think now geneus does not depend on `python-rospkg`.
+    Can I remove it from package.xml?
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/issues/33'
+  title: Many ``Could not find roseus messages for xx`` Errors
+  body: >
+    This seems to happen because the dependent messages are not generated.
+
+
+    assigned to @wkentaro .
+
+
+    ``` sh
+
+    $ ros::load-ros-manifest "jsk_2014_picking_challenge"
+
+    [ERROR] [1433371514.068088794]: Could not find roseus messages for
+    rosserial_arduino under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh rosserial_arduino
+
+    [ERROR] [1433371514.068190572]: Could not find roseus messages for
+    rosserial_arduino under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh rosserial_arduino
+
+    [ERROR] [1433371514.068467274]: Could not find roseus messages for
+    rosserial_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh rosserial_msgs
+
+    [ERROR] [1433371514.075040270]: Could not find roseus messages for
+    rosserial_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh rosserial_msgs
+
+    [ERROR] [1433371514.210329008]: Could not find roseus messages for
+    octomap_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh octomap_msgs
+
+    [ERROR] [1433371514.210394269]: Could not find roseus messages for
+    octomap_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh octomap_msgs
+
+    [ERROR] [1433371514.210731303]: Could not find roseus messages for
+    people_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh people_msgs
+
+    [ERROR] [1433371514.210780763]: Could not find roseus messages for
+    people_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh people_msgs
+
+    [ERROR] [1433371514.309467958]: Could not find roseus messages for
+    ml_classifiers under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh ml_classifiers
+
+    [ERROR] [1433371514.309552627]: Could not find roseus messages for
+    ml_classifiers under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh ml_classifiers
+
+    [ERROR] [1433371514.333480766]: Could not find roseus messages for
+    roscpp_tutorials under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh roscpp_tutorials
+
+    [ERROR] [1433371514.333557711]: Could not find roseus messages for
+    roscpp_tutorials under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh roscpp_tutorials
+
+    [ERROR] [1433371514.627470831]: Could not find roseus messages for
+    shape_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh shape_msgs
+
+    [ERROR] [1433371514.627553169]: Could not find roseus messages for
+    shape_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh shape_msgs
+
+    [ERROR] [1433371514.627906030]: Could not find roseus messages for
+    object_recognition_msgs under
+    (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh object_recognition_msgs
+
+    [ERROR] [1433371514.627962906]: Could not find roseus messages for
+    object_recognition_msgs under
+    (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh object_recognition_msgs
+
+    [ERROR] [1433371514.669822096]: Could not find roseus messages for
+    stereo_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh stereo_msgs
+
+    [ERROR] [1433371514.669913918]: Could not find roseus messages for
+    stereo_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh stereo_msgs
+
+    [ERROR] [1433371514.745084190]: Could not find roseus messages for
+    laser_assembler under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh laser_assembler
+
+    [ERROR] [1433371514.745154503]: Could not find roseus messages for
+    laser_assembler under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh laser_assembler
+
+    [ERROR] [1433371515.044842971]: Could not find roseus messages for
+    moveit_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh moveit_msgs
+
+    [ERROR] [1433371515.044912674]: Could not find roseus messages for
+    moveit_msgs under (/home/wkentaro/ros/indigo/devel/share/roseus/ros
+    /opt/ros/indigo/share/roseus/ros)
+
+    try rosrun roseus generate-all-msg-srv.sh moveit_msgs
+
+    ```
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/21'
+  title: >-
+    [geneus/geneus_main.py] fix to use catkin_pkg.paackage to get only
+    exec_depends]
+  body: |
+    this is another implementation of #20
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/20'
+  title: >-
+    [geneus/geneus_main.py] fix to use catkin_pkg.paackage to get only
+    exec_depends]
+  body: |
+    @wkentaro, please check if this ok for you
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/18'
+  title: '[geneus_main.py] Resolve package dependencies with attention to the order'
+  body: |
+    After #17 
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/17'
+  title: '[geneus_main.py] Resolve package dependencies with attention to the order'
+  body: |
+    This is to solve these issue::
+    - https://github.com/jsk-ros-pkg/geneus/pull/16
+    - https://github.com/start-jsk/2014-semi/issues/196
+    - https://github.com/jsk-ros-pkg/jsk_roseus/issues/257
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/12'
+  title: >-
+    fix not to use get_depends, which cause eerror when the package is not
+    installed
+  body: null
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/10'
+  title: '[geneus_main.py] use rospack to find build(only msg/srv) dependency'
+  body: null
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/8'
+  title: >-
+    fix load-rospackage orders -  [src/geneus/geneus_main.py] add comments - fix
+    ros::load-ros-package order by dependencies
+  body: null
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/7'
+  title: 'fix ros::load-ros-package order by dependencies'
+  body: |
+    refered from https://github.com/jsk-ros-pkg/jsk_recognition/issues/701
+    I think it resolve the problem.
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/5'
+  title: Use integer-vector in euslisp for array of char in ros message type
+  body: |
+    Fix for https://github.com/jsk-ros-pkg/geneus/issues/4
+
+    @k-okada Please review it, it is important for hrpsys_ros_bridge robots.
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/geneus/pull/1'
+  title: 'rewrited version of genus, only depends on genmsg'
+  body: null
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/geneus'
+  labels: []

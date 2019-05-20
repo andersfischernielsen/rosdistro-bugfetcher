@@ -1,0 +1,141 @@
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/35'
+  title: 'Python3 Compatibility Variable Type long '
+  body: "There is an issue in \r\nrqt_bag/plugins/raw_view.py\r\nand\r\nrqt_bag_plugins/plot_view.py\r\nregarding PEP 0237.\r\nPython 3 handles _long_ data types as an _int_,  _long_ is therefore not available:\r\n\r\n`\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/rqt_bag/plugins/message_view.py\", line 92, in event\r\n    self.message_viewed(bag, msg_data)\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/rqt_bag/plugins/raw_view.py\", line 65, in message_viewed\r\n    self.message_tree.set_message(msg)\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/rqt_bag/plugins/raw_view.py\", line 103, in set_message\r\n    self._add_msg_object(None, '', '', msg, msg._type)\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/rqt_bag/plugins/raw_view.py\", line 186, in _add_msg_object\r\n    if type(obj) in [int, long, float]:\r\nNameError: name 'long' is not defined\r\n`"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/24'
+  title: Cannot open bag file if path contains unicode characters
+  body: "I tried to open a bag file `/home/victor/Téléchargements/data_2018-02-28-12-10-50.bag`\r\n```\r\n$ rqt_bag\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 264, in _handle_load_clicked\r\n    self.load_bag(filename[0])\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 267, in load_bag\r\n    qDebug(\"Loading '%s'...\" % filename)\r\nTypeError: qDebug(str): argument 1 has unexpected type 'unicode'\r\n\r\n```\r\n\r\nThe `é` in the path name causes the problem.\r\nTested on ROS Kinetic\r\n\r\n---\r\n\r\nCommenting the two `qDebug` lines in the code makes the import work.\r\n\r\n---\r\n\r\nhttp://doc.qt.io/qt-5/qtextcodec.html#fromUnicode\r\n\r\nSeems like it would solve the problem."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/23'
+  title: 'ImportError: cannot import name qInfo'
+  body: "```\r\nabner@abner-XPS-8700:~/bagfiles$ rqt_bag nsh_indoor_outdoor.bag \r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/bin/rqt_bag\", line 5, in <module>\r\n    from rqt_bag.bag import Bag\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag.py\", line 39, in <module>\r\n    from .bag_widget import BagWidget\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 40, in <module>\r\n    from python_qt_binding.QtCore import Qt, qInfo, qWarning, Signal\r\n\r\n```\r\n\r\nMy ros is kinetic and system is Ubuntu 16.04.\r\nI remember that I had encountered before, but also solved. I modified a few words of a file about QT to fix the error. But now I can not find the URL for that solution, and I forget how to fix it."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/21'
+  title: Cannot launch with Ubuntu 16.04
+  body: "Since a week or so, I cannot start rqt_bag:\r\n\r\n```\r\n$ rqt_bag\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/bin/rqt_bag\", line 5, in <module>\r\n    from rqt_bag.bag import Bag\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag.py\", line 39, in <module>\r\n    from .bag_widget import BagWidget\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 40, in <module>\r\n    from python_qt_binding.QtCore import Qt, qInfo, qWarning, Signal\r\nImportError: cannot import name qInfo\r\n```\r\n\r\nAlso reported here:\r\nhttps://answers.ros.org/question/274739/rqt_bag-cannot-import-name-qinfo/\r\n\r\nThis happened after a system update"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/20'
+  title: cannot import name qInfo
+  body: "Hello, when I try to run rqt_bag from the terminal I get the following error:\r\n\r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/bin/rqt_bag\", line 5, in <module>\r\n    from rqt_bag.bag import Bag\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag.py\", line 39, in <module>\r\n    from .bag_widget import BagWidget\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 40, in <module>\r\n    from python_qt_binding.QtCore import Qt, qInfo, qWarning, Signal\r\nImportError: cannot import name qInfo\r\n```\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/19'
+  title: Crash on Kinetics. ImportError
+  body: "I am experiencing a problem roughly similar to this:\r\n\r\nhttps://github.com/ros-visualization/rqt/issues/112\r\n\r\n> Traceback (most recent call last):\r\n>   File \"/opt/ros/kinetic/lib/rqt_bag/rqt_bag\", line 5, in <module>\r\n>     from rqt_bag.bag import Bag\r\n>   File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag.py\", line 39, in <module>\r\n>     from .bag_widget import BagWidget\r\n>   File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/bag_widget.py\", line 40, in <module>\r\n>     from python_qt_binding.QtCore import Qt, qInfo, qWarning, Signal\r\n> ImportError: cannot import name qInfo\r\n\r\nUnfortunately I followed those suggestion but my problem seems to be different.\r\n\r\nthese are some information from my system.\r\n\r\nrosversion rqt_bag: 0.4.10\r\n```\r\npython\r\nPython 2.7.12 (default, Nov 19 2016, 06:48:10) \r\n[GCC 5.4.0 20160609] on linux2\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> import python_qt_binding\r\n>>> print(python_qt_binding.QT_BINDING)\r\npyqt\r\n>>> from python_qt_binding.QtWidgets import QWidget\r\n>>> print(python_qt_binding.QT_BINDING_VERSION)\r\n5.5.1\r\n>>> print(python_qt_binding.QT_BINDING_MODULES)\r\n{'QtGui': <module 'PyQt5.QtGui' from '/usr/lib/python2.7/dist-packages/PyQt5/QtGui.x86_64-linux-gnu.so'>, 'QtSvg': <module 'PyQt5.QtSvg' from '/usr/lib/python2.7/dist-packages/PyQt5/QtSvg.x86_64-linux-gnu.so'>, 'QtWidgets': <module 'PyQt5.QtWidgets' from '/usr/lib/python2.7/dist-packages/PyQt5/QtWidgets.x86_64-linux-gnu.so'>, 'QtNetwork': <module 'PyQt5.QtNetwork' from '/usr/lib/python2.7/dist-packages/PyQt5/QtNetwork.x86_64-linux-gnu.so'>, 'QtXml': <module 'PyQt5.QtXml' from '/usr/lib/python2.7/dist-packages/PyQt5/QtXml.x86_64-linux-gnu.so'>, 'QtWebKitWidgets': <module 'PyQt5.QtWebKitWidgets' from '/usr/lib/python2.7/dist-packages/PyQt5/QtWebKitWidgets.x86_64-linux-gnu.so'>, 'QtCore': <module 'PyQt5.QtCore' from '/usr/lib/python2.7/dist-packages/PyQt5/QtCore.x86_64-linux-gnu.so'>, 'QtOpenGL': <module 'PyQt5.QtOpenGL' from '/usr/lib/python2.7/dist-packages/PyQt5/QtOpenGL.x86_64-linux-gnu.so'>}\r\n>>> import PyQt5\r\n>>> from PyQt5 import QtWidget\r\n>>> print PyQt5.QtCore.PYQT_VERSION_STR\r\n5.5.1\r\n\r\n```\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/6'
+  title: only first bag of a multi-bag timeline gets plotted
+  body: >-
+    _From @chuck-h on April 10, 2015 22:6_
+
+
+    plot_view has a single member, self.bag, and uses bag.read_messages(). It
+    seems this would want to change to something based on
+    timeline.get_entries()?
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#310_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/5'
+  title: plot view becomes corrupt/duplicated when closing and reopening
+  body: >-
+    _From @trainman419 on March 30, 2015 17:28_
+
+
+    Found when testing and reviewing #306 and #307:
+
+
+    If I open a plot view for a topic, close it, and reopen it, the plot view
+    now contains two copies of every UI element.
+
+
+    I suspect this is because the layout isn't properly cleared out when the
+    Widget is reopened, and in the past this has been masked by #306.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#309_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/4'
+  title: Array in SubMessage not shown in raw-view
+  body: >-
+    _From @alex-gee on February 26, 2015 17:10_
+
+
+    This issue is that i use
+
+
+    OuterMessage:
+
+    Header header
+
+    ClusterMsg[] clusters
+
+
+    ClusterMsg:
+
+    uint8[] indices
+
+    string label
+
+
+    But the content inside the raw view looks like in the image.
+
+    If i play the bagfile and listen with "rostopic echo /labels" i can see that
+    the array is filled correctly
+
+
+    Update: The problem could be the "uint8". Apparently there is some cast to
+    (int) missing before calling the print function.
+
+
+    ![rqt_bag_issue](https://cloud.githubusercontent.com/assets/1726021/6397101/adb1d36e-bde2-11e4-9c4d-3d618c51897f.png)
+
+
+    greetings!
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#305_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_bag/issues/3'
+  title: rqt_bag --clock does not work
+  body: >-
+    _From @trainman419 on June 6, 2014 1:3_
+
+
+    Playing back a bag file with --clock doesn't work. The clock is only
+    published 2 or 3 times per second, and doesn't appear to increase linearly.
+
+
+    I suspect the issue here is that rospy is using the clock it's publishing
+    and creating some kind of feedback look.
+
+
+    The GUI is also unresponsive while playing back my bag files; this may or
+    may not be related to timer issues caused by using --clock.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#244_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_bag'
+  labels:
+    - bug

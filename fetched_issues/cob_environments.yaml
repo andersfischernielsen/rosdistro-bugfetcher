@@ -1,0 +1,25 @@
+- url: 'https://github.com/ipa320/cob_environments/pull/70'
+  title: add dependency to roslaunch
+  body: ''
+  repo: 'https://api.github.com/repos/ipa320/cob_environments'
+  labels: []
+- url: 'https://github.com/ipa320/cob_environments/pull/47'
+  title: change dependency from gazebo to gazebo_ros
+  body: ''
+  repo: 'https://api.github.com/repos/ipa320/cob_environments'
+  labels: []
+- url: 'https://github.com/ipa320/cob_environments/pull/39'
+  title: Changes on raw3-1 robot. Not sure about the ogre dependency.
+  body: ''
+  repo: 'https://api.github.com/repos/ipa320/cob_environments'
+  labels: []
+- url: 'https://github.com/ipa320/cob_environments/pull/38'
+  title: Hydro dev
+  body: >
+    The commits before 19. Aug are a merge with the new groovy_dev version (SRS
+    objects and wall textures) , the commits from 20.August  are specific for
+    hydro, updated some package.xml with gazebo_ros dependency, and created a
+    new empty.world inside cob_gazebo_worlds, the gazebo_ros has sun as light,
+    it is dark.
+  repo: 'https://api.github.com/repos/ipa320/cob_environments'
+  labels: []

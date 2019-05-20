@@ -1,0 +1,31 @@
+- url: 'https://github.com/ros-drivers/ackermann_msgs/pull/3'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros-drivers/ackermann_msgs'
+  labels: []
+- url: 'https://github.com/ros-drivers/ackermann_msgs/issues/2'
+  title: find a better home for this package
+  body: >
+    Other ROS packages depend on it. It should not remain in my personal github
+    account.
+  repo: 'https://api.github.com/repos/ros-drivers/ackermann_msgs'
+  labels: []

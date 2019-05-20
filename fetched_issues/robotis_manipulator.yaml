@@ -1,0 +1,8 @@
+- url: 'https://github.com/ROBOTIS-GIT/robotis_manipulator/pull/5'
+  title: Change to inclusive joint limits
+  body: "Using inclusive limits. This avoids limits errors when e.g. clicking on `Gripper open` on `open_manipulator_control_gui`.\r\n\r\n```\r\n[ERROR] [checkLimit] Goal value exceeded limit. The moving stop.\r\n```\r\n\r\nAs always, am open to discussions about if this is the right thing to do or not."
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/robotis_manipulator'
+  labels:
+    - bug
+    - enhancement
+    - solved

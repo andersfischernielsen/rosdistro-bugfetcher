@@ -1,0 +1,392 @@
+- url: 'https://github.com/ros-perception/image_common/issues/125'
+  title: Bloom build for ROS 2 Dashing release
+  body: "Hi @mjcarroll,\r\nWe are going to bloom build ros2_object_analytics and ros2_intel_release for ROS2 D release, but our packages depend on image_common. Would you please help to build image_common for ROS 2 Dashing release? Or someone else would help on this? Thanks. "
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/pull/118'
+  title: add DLL import/export macro
+  body: >-
+    add DLL import/export macro, following instructions in [ROS
+    wiki](http://wiki.ros.org/win_ros/Contributing/Dll%20Exports)
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/109'
+  title: '[ROS2] CameraPublisher::getTopic returns empty string'
+  body: "Ubuntu 18\r\nROS2 Crystal Clemmys \r\n\r\nWhile `image_transport::CameraPublisher::getInfoTopic` works as expected, the function `image_transport::CameraPublisher::getTopic` returns an empty string."
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels:
+    - bug
+    - ros2
+- url: 'https://github.com/ros-perception/image_common/pull/104'
+  title: Pointer api updates
+  body: "Change the free function variants of the image_transport API to no longer depend on needed a SharedPtr .\r\n\r\nIf you want to create image_transport Publishers or Subscribers as part of the subclass constructor, there was no way to get a shared pointer to the node instance itself to pass in. shared_from_this is not allowed in constructors for reasons listed here: https://en.cppreference.com/w/cpp/memory/enable_shared_from_this\r\n\r\nIf the previous behavior is desired, there is still the image_transport::ImageTransport object.\r\n\r\nRequires ros2/message_filters#14"
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/91'
+  title: 'On Mac, `camera_calibration_parsers_wrapper` cannot be imported in python'
+  body: "The library `camera_calibration_parser_wrapper` on Mac is built as `camera_calibration_parsers_wrapper.dylib`, but python only imports packages with the extension `.so`.\r\n\r\nI believe this can be fixed by setting the suffix explicitly, by e.g.\r\n```\r\nset_target_properties(${package_name}_wrapper PROPERTIES SUFFIX \".so\")\r\n```\r\nCompare line 97 in the CMakeLists file for `tf2_py`, https://github.com/ros/geometry2/blob/melodic-devel/tf2_py/CMakeLists.txt. Will test and attach a PR if it works."
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/69'
+  title: Cannot import name writeCalibration
+  body: "I installed `camera_calibration_parsers`[1] and tired to write camera calibration file. I noticed that the code is throwing errors. See below ipython terminal:\r\n\r\n```\r\nravi@home:~/ros_ws$ ipython\r\nPython 2.7.6 (default, Oct 26 2016, 20:30:19) \r\nType \"copyright\", \"credits\" or \"license\" for more information.\r\n\r\nIPython 5.5.0 -- An enhanced Interactive Python.\r\n?         -> Introduction and overview of IPython's features.\r\n%quickref -> Quick reference.\r\nhelp      -> Python's own help system.\r\nobject?   -> Details about 'object', use 'object??' for extra details.\r\n\r\nIn [1]: from camera_calibration_parsers import writeCalibration\r\n---------------------------------------------------------------------------\r\nImportError                               Traceback (most recent call last)\r\n<ipython-input-1-75175e0c4582> in <module>()\r\n----> 1 from camera_calibration_parsers import writeCalibration\r\n\r\nImportError: cannot import name writeCalibration\r\n\r\nIn [2]: from camera_calibration_parsers import readCalibration\r\n\r\nIn [3]: \r\n```\r\n`readCalibration` works but `writeCalibration` doesn't. I debug the issue and found out that `writeCalibration` doesn't exist. Please see below ipython terminal screenshot:\r\n\r\n![ccp](https://user-images.githubusercontent.com/1439011/32492077-5f362a14-c3fc-11e7-8f5e-28ef4a8f5032.png)\r\n\r\nAny workaround, please? I am using Python in ROS Indigo on Ubuntu 14.04 LTS PC.\r\n\r\n[1] https://github.com/ros-perception/image_common.git (branch: hydro-devel)"
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/pull/63'
+  title: Add camera_calibration_parsers dependency to camera_info_manager
+  body: "Proposed fix for #62 \r\nI pulled up the components lookup to ensure they can be found, because catkin_package expects its CATKIN_DEPENDS to be find_package-able."
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/62'
+  title: Missing catkin-dependency from info-manager to calibration-parsers
+  body: "The camera_info_manager includes and links against libraries from camera_calibration_parsers. However, there is no corresponding dependency added to the catkin_package-call.\r\nAdding this dependency caused a linker error in a dependent package (cv_camera) with my cross-compilation build."
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/51'
+  title: image_proc build fails on Fedora 23
+  body: >
+    I am trying to install ROS Jade from source based on the guide. The build of
+    image_proc fails as follows:
+
+
+    ``` make
+
+    johannes ~/ros_catkin_ws/build_isolated/image_proc$
+    /home/johannes/ros_catkin_ws/install_isolated/env.sh make -j4 -l4
+
+    [  7%] Generating dynamic reconfigure files from cfg/CropDecimate.cfg:
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/CropDecimateConfig.h
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/python2.7/site-packages/image_proc/cfg/CropDecimateConfig.py
+
+    [ 15%] Generating dynamic reconfigure files from cfg/Rectify.cfg:
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/RectifyConfig.h
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/python2.7/site-packages/image_proc/cfg/RectifyConfig.py
+
+    [ 23%] Generating dynamic reconfigure files from cfg/Debayer.cfg:
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/DebayerConfig.h
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/python2.7/site-packages/image_proc/cfg/DebayerConfig.py
+
+    Generating reconfiguration files for Rectify in image_proc
+
+    Wrote header file in
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/RectifyConfig.h
+
+    Generating reconfiguration files for CropDecimate in image_proc
+
+    Generating reconfiguration files for Debayer in image_proc
+
+    Wrote header file in
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/CropDecimateConfig.h
+
+    Wrote header file in
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/include/image_proc/DebayerConfig.h
+
+    [ 23%] Built target image_proc_gencfg
+
+    Scanning dependencies of target image_proc
+
+    [ 30%] Building CXX object
+    CMakeFiles/image_proc.dir/src/libimage_proc/processor.cpp.o
+
+    [ 38%] Building CXX object
+    CMakeFiles/image_proc.dir/src/nodelets/debayer.cpp.o
+
+    [ 46%] Building CXX object
+    CMakeFiles/image_proc.dir/src/nodelets/rectify.cpp.o
+
+    [ 53%] Building CXX object
+    CMakeFiles/image_proc.dir/src/nodelets/crop_decimate.cpp.o
+
+    [ 61%] Building CXX object
+    CMakeFiles/image_proc.dir/src/libimage_proc/advertisement_checker.cpp.o
+
+    [ 69%] Building CXX object
+    CMakeFiles/image_proc.dir/src/nodelets/edge_aware.cpp.o
+
+    [ 76%] Building CXX object
+    CMakeFiles/image_proc.dir/src/nodelets/crop_non_zero.cpp.o
+
+    [ 84%] Linking CXX shared library
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/libimage_proc.so
+
+    [ 84%] Built target image_proc
+
+    [ 92%] Building CXX object
+    CMakeFiles/image_proc_exe.dir/src/nodes/image_proc.cpp.o
+
+    [100%] Linking CXX executable
+    /home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/image_proc/image_proc
+
+    /home/johannes/ros_catkin_ws/install_isolated/lib/libcv_bridge.so: undefined
+    reference to `cv::imencode(std::__cxx11::basic_string<char,
+    std::char_traits<char>, std::allocator<char> > const&, cv::_InputArray
+    const&, std::vector<unsigned char, std::allocator<unsigned char> >&,
+    std::vector<int, std::allocator<int> > const&)'
+
+    collect2: error: ld returned 1 exit status
+
+    CMakeFiles/image_proc_exe.dir/build.make:160: recipe for target
+    '/home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/image_proc/image_proc'
+    failed
+
+    make[2]: ***
+    [/home/johannes/ros_catkin_ws/devel_isolated/image_proc/lib/image_proc/image_proc]
+    Error 1
+
+    CMakeFiles/Makefile2:648: recipe for target
+    'CMakeFiles/image_proc_exe.dir/all' failed
+
+    make[1]: *** [CMakeFiles/image_proc_exe.dir/all] Error 2
+
+    Makefile:138: recipe for target 'all' failed
+
+    make: *** [all] Error 2
+
+    ```
+
+
+    I suppose it has something to do with the gcc5 version on Fedora which also
+    uses the c++11 ABI
+
+
+    Johannes
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/pull/47'
+  title: Only link against needed Boost libraries
+  body: |
+    9829b02 introduced a python dependency into find_package(Boost..) which
+    results in ${Boost_LIBRARIES} containing boost_python and such a
+    dependency to libpython at link time. With this patch we only link
+    against the needed libraries.
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []
+- url: 'https://github.com/ros-perception/image_common/issues/42'
+  title: 'camera_info_manager: don''t treat catkin_INCLUDE_DIRS as system-dir'
+  body: >
+    I was installing ROS indigo (desktop-full) on a Fedora23 machine, following
+    the "Installing from source" guide. I got the following error for the
+    camera_info_manager package (full output):
+
+
+    ``` make
+
+    [kb0n@kb0n-macfed catkin_ws]$ ./src/catkin/bin/catkin_make_isolated
+    --install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-std=gnu++03
+    -DCMAKE_C_FLAGS=-std=gnu++03 --install-space /opt/ros/indigo --pkg
+    camera_info_manager
+
+    Base path: /home/kb0n/ros/catkin_ws
+
+    Source space: /home/kb0n/ros/catkin_ws/src
+
+    Build space: /home/kb0n/ros/catkin_ws/build_isolated
+
+    Devel space: /home/kb0n/ros/catkin_ws/devel_isolated
+
+    Install space: /opt/ros/indigo
+
+    Additional CMake Arguments: -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_CXX_FLAGS=-std=gnu++03 -DCMAKE_C_FLAGS=-std=gnu++03
+
+    ==> Processing catkin package: 'camera_info_manager'
+
+    ==> Creating build directory: 'build_isolated/camera_info_manager'
+
+    ==> Building with env: '/opt/ros/indigo/env.sh'
+
+    ==> cmake /home/kb0n/ros/catkin_ws/src/image_common/camera_info_manager
+    -DCATKIN_DEVEL_PREFIX=/home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager
+    -DCMAKE_INSTALL_PREFIX=/opt/ros/indigo -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_CXX_FLAGS=-std=gnu++03 -DCMAKE_C_FLAGS=-std=gnu++03 -G Unix
+    Makefiles in '/home/kb0n/ros/catkin_ws/build_isolated/camera_info_manager'
+
+    -- The C compiler identification is GNU 5.1.1
+
+    -- The CXX compiler identification is GNU 5.1.1
+
+    -- Check for working C compiler: /usr/lib64/ccache/cc
+
+    -- Check for working C compiler: /usr/lib64/ccache/cc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Detecting C compile features
+
+    -- Detecting C compile features - done
+
+    -- Check for working CXX compiler: /usr/lib64/ccache/c++
+
+    -- Check for working CXX compiler: /usr/lib64/ccache/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Detecting CXX compile features
+
+    -- Detecting CXX compile features - done
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager
+
+    -- Using CMAKE_PREFIX_PATH:
+    /opt/ros/indigo;/opt/ros/fuerte/share/catkin/cmake/Modules;/opt/ros/fuerte
+
+    -- This workspace overlays: /opt/ros/indigo
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.10")
+
+    -- Using PYTHON_EXECUTABLE: /usr/bin/python
+
+    -- Using default Python package layout
+
+    -- Found PY_em: /usr/lib/python2.7/site-packages/em.pyc
+
+    -- Using empy: /usr/lib/python2.7/site-packages/em.pyc
+
+    -- Using CATKIN_ENABLE_TESTING: ON
+
+    -- Call enable_testing()
+
+    -- Using CATKIN_TEST_RESULTS_DIR:
+    /home/kb0n/ros/catkin_ws/build_isolated/camera_info_manager/test_results
+
+    -- Found gtest: gtests will be built
+
+    -- Using Python nosetests: /usr/bin/nosetests-2.7
+
+    -- catkin 0.6.16
+
+    -- Boost version: 1.58.0
+
+    -- Configuring done
+
+    -- Generating done
+
+    -- Build files have been written to:
+    /home/kb0n/ros/catkin_ws/build_isolated/camera_info_manager
+
+    ==> make -j2 -l2 in
+    '/home/kb0n/ros/catkin_ws/build_isolated/camera_info_manager'
+
+    Scanning dependencies of target camera_info_manager
+
+    [ 25%] Building CXX object
+    CMakeFiles/camera_info_manager.dir/src/camera_info_manager.cpp.o
+
+    [ 50%] Linking CXX shared library
+    /home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager/lib/libcamera_info_manager.so
+
+    [ 50%] Built target camera_info_manager
+
+    Scanning dependencies of target unit_test
+
+    [ 75%] Building CXX object CMakeFiles/unit_test.dir/tests/unit_test.cpp.o
+
+    [100%] Linking CXX executable
+    /home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager/lib/camera_info_manager/unit_test
+
+    CMakeFiles/unit_test.dir/tests/unit_test.cpp.o: In function
+    `delete_file(std::__cxx11::basic_string<char, std::char_traits<char>,
+    std::allocator<char> >)':
+
+    unit_test.cpp:(.text+0x27f): undefined reference to
+    `ros::console::print(ros::console::FilterBase*, log4cxx::Logger*,
+    ros::console::levels::Level, std::__cxx11::basic_stringstream<char,
+    std::char_traits<char>, std::allocator<char> > const&, char const*, int,
+    char const*)'
+
+    CMakeFiles/unit_test.dir/tests/unit_test.cpp.o: In function
+    `expected_calibration()':
+
+    unit_test.cpp:(.text+0x8d31): undefined reference to
+    `sensor_msgs::distortion_models::PLUMB_BOB[abi:cxx11]'
+
+    CMakeFiles/unit_test.dir/tests/unit_test.cpp.o: In function
+    `ros::ServiceClient::deserializeFailed(std::exception const&)':
+
+    unit_test.cpp:(.text._ZN3ros13ServiceClient17deserializeFailedERKSt9exception[_ZN3ros13ServiceClient17deserializeFailedERKSt9exception]+0xf0):
+    undefined reference to `ros::console::print(ros::console::FilterBase*,
+    log4cxx::Logger*, ros::console::levels::Level, char const*, int, char
+    const*, char const*, ...)'
+
+    collect2: error: ld returned 1 exit status
+
+    CMakeFiles/unit_test.dir/build.make:121: recipe for target
+    '/home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager/lib/camera_info_manager/unit_test'
+    failed
+
+    make[2]: ***
+    [/home/kb0n/ros/catkin_ws/devel_isolated/camera_info_manager/lib/camera_info_manager/unit_test]
+    Error 1
+
+    CMakeFiles/Makefile2:1001: recipe for target 'CMakeFiles/unit_test.dir/all'
+    failed
+
+    make[1]: *** [CMakeFiles/unit_test.dir/all] Error 2
+
+    Makefile:138: recipe for target 'all' failed
+
+    make: *** [all] Error 2
+
+    <== Failed to process package 'camera_info_manager':
+      Command '['/opt/ros/indigo/env.sh', 'make', '-j2', '-l2']' returned non-zero exit status 2
+
+    Reproduce this error by running:
+
+    ==> cd /home/kb0n/ros/catkin_ws/build_isolated/camera_info_manager &&
+    /opt/ros/indigo/env.sh make -j2 -l2
+
+
+    Command failed, exiting.
+
+    ```
+
+
+    The CFLAGS/CXXFLAGS didn't make any difference. 
+
+    After intensive testing, it turns out that line 15 in `CMakeLists.txt` was
+    the culprit:
+
+
+    ``` CMake
+
+    include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
+
+    ```
+
+
+    Removing `SYSTEM` fixed it for me.
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/image_common/issues/34'
+  title: '[image_transport] ABI incompatibility?'
+  body: >
+    The recent changes in image_transport between releases 1.11.4 and 1.11.5
+    seems to have caused an ABI incompatibility, so that code that was compiled
+    against 1.11.4 segfaults after a system has been updated to use
+    image_transport 1.11.5. I believe this is due to ABI changes introduced by
+    adding virtual methods in the header files
+    [publisher_plugin.h](https://github.com/ros-perception/image_common/compare/1.11.4...1.11.5#diff-37e26753ceea13057059291c6252ef6b)
+    and
+    [raw_publisher.h](https://github.com/ros-perception/image_common/compare/1.11.4...1.11.5#diff-47bb4d29d3dcc8f65af4e93335a98c77). 
+
+    Since updating to 1.11.5 we have observed random segmentation faults in a
+    number of components that use image_transport, including just running
+    `roslaunch openni_launch openni.launch` with a Kinect connected, but also
+    others (e.g. our own code). The backtraces always pointed to
+    `image_transport:: PublisherPlugin::advertise` or in other cases to
+    `image_transport:: PublisherPlugin::publish`. 
+
+
+    I feel that it was wrong to bump just the "patch" component of the version
+    number in this one. Could this be the reason to the problems we are
+    observing? I have had the experience in the past that these kinds of changes
+    lead to segmentation faults when depending projects / packages have not been
+    recompiled.
+  repo: 'https://api.github.com/repos/ros-perception/image_common'
+  labels: []

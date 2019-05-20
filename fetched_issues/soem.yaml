@@ -1,0 +1,13 @@
+- url: 'https://github.com/mgruhler/soem/issues/9'
+  title: Using SOEM 1.3.1. from @OpenEthercatSociety
+  body: 'According to Arthur Ketels, there are some important changes.'
+  repo: 'https://api.github.com/repos/mgruhler/soem'
+  labels: []
+- url: 'https://github.com/mgruhler/soem/issues/5'
+  title: Release for ROS Jade?
+  body: >
+    Package robotiq_ethercat depends on this package so cannot currently be
+    installed on Jade from debian. Could someone release this package again?
+    Thanks!
+  repo: 'https://api.github.com/repos/mgruhler/soem'
+  labels: []

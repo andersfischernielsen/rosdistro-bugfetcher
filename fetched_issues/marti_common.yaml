@@ -1,0 +1,60 @@
+- url: 'https://github.com/swri-robotics/marti_common/issues/518'
+  title: >-
+    swri_transform_util/initialize_origin.py unsubscribes from GPSFix/NavSatFix
+    topics even if they're invalid
+  body: >-
+    If the initialize_origin.py script gets a GPSFix or NavSatFix mesage that is
+    invalid, it logs the fact that it's invalid, but then it unsubscribes from
+    the topic anyway and can never get a valid one.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/marti_common/issues/497'
+  title: 'swri_transform_util: TransformManager::GetTransform Always has 0.1s Timeout'
+  body: "TransformManager::GetTransform always waits 0.1 seconds for a transform if it isn't defined. This is causing problems in mapviz (see [mapviz#524](https://github.com/swri-robotics/mapviz/issues/524)). \r\n\r\n@malban's proposed solution is as follows:\r\n\r\n> I think the best solution is to create a new version of the function with a timeout parameter:\r\n>\r\n> ```bool TransformManager::GetTransform(\r\n> const std::string& target_frame,\r\n> const std::string& source_frame,\r\n> const ros::Time& time,\r\n> const ros::Duration& timeout,\r\n> tf::StampedTransform& transform) const\r\n> ```\r\n>\r\n> The old function can be implemented by calling the new function with the 0.1 timeout to prevent breaking existing code that might depend on the timeout. Creating a new function instead of replacing the old one will also keep the API compatible with already compiled code."
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - enhancement
+- url: 'https://github.com/swri-robotics/marti_common/issues/494'
+  title: Polygon intersection function doesn't handle possible exception.
+  body: >-
+    A geos::util::TopologyException is thrown and not handled if the polygons
+    passed into PolygonIntersectionArea are self intersecting.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/marti_common/pull/480'
+  title: Add missing cv_bridge dependency.
+  body: Add missing cv_bridge dependency.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_common/issues/462'
+  title: '[swri_image_util] Building Failing Due to Missing Header'
+  body: >-
+    See
+    http://build.ros.org/job/Ldev__marti_common__ubuntu_xenial_amd64/5/display/redirect
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/marti_common/issues/447'
+  title: 'swri_transform_util: initialize_origin.py does not set stamp'
+  body: >-
+    In Indigo, when `initialize_origin.py` is run with a manual origin, it does
+    not set `header.stamp` of the `gps_common/GpsFix` message it publishes.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/marti_common/issues/444'
+  title: swri_transform_util handles "/wgs84" but not "wgs84"
+  body: >-
+    See swri-robotics/mapviz#478.  I would expect `swri_transform_util` to
+    handle whatever its `wgs84_frame` is set to regardless of whether it has a
+    slash in front of it or not.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/marti_common/pull/443'
+  title: 'Merge together the indigo, jade, and kinetic branches'
+  body: "Maintaining three different branches for different ROS distributions is a pain and also unnecessary, so I've merged all of them together.  This branch builds and all tests pass on indigo, jade, kinetic, and lunar.  Don't look too hard at that commit list, it's ugly.\r\n\r\nThis PR targets the `indigo-devel` branch, but after it is merged, we should rename that branch to `master`, lock down all of the distro-specific branches, and then release a new version (0.3.0) to all distros.\r\n\r\nNot very much needed to be changed to make everything compatible, but some notable things are:\r\n1. Packages that use OpenCV (`swri_geometry_util`, `swri_image_util`, `swri_opencv_util`, and `swri_transform_util`) have a rosdep on `cv_bridge` and don't specify a version when calling `find_package` in their `CMakeLists.txt`; this means they'll use OpenCV 2 on Indigo and Jade and OpenCV 3 on Kinetic and Lunar.\r\n2. `swri_image_util` depends on Qt 5.\r\n3. Nodes and utilities in `swri_transform_util` previously used the `gps_common/GPSFix` message on Indigo and `sensor_msgs/NavSatFix` (or Pose, or GeoPose, or whatever else was appropriate) on Jade and later.  Now they will all handle all of them.  This is a little ugly in `initialize_origin.py` because it was basically completely rewritten for NavSatFix support.  The right thing to do would be to rewrite it again to handle every case gracefully, but that's a bit beyond the scope of this PR, so instead it just detects whether your ${ROS_DISTRO} is \"indigo\" or not and changes behavior appropriately."
+  repo: 'https://api.github.com/repos/swri-robotics/marti_common'
+  labels: []

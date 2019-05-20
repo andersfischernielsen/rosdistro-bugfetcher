@@ -1,0 +1,492 @@
+- url: 'https://github.com/wjwwood/serial/issues/182'
+  title: Bizzare error when running program built with serial as dependency
+  body: "```\r\n$ valgrin ./Oscilloscope\r\n==5140== Memcheck, a memory error detector\r\n==5140== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.\r\n==5140== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info\r\n==5140== Command: Release/Oscilloscope\r\n==5140== \r\n**terminate called after throwing an instance of 'serial::IOException'\r\n  what():  IO Exception (2): No such file or directory, file /home/aviallon/git/serial-git/src/serial/src/impl/unix.cc, line 151.**\r\n==5140== \r\n==5140== Process terminating with default action of signal 6 (SIGABRT): dumping core\r\n==5140==    at 0x6D7186B: raise (in /usr/lib/libc-2.27.so)\r\n==5140==    by 0x6D5C40D: abort (in /usr/lib/libc-2.27.so)\r\n==5140==    by 0x6260449: __gnu_cxx::__verbose_terminate_handler() [clone .cold.1] (vterminate.cc:95)\r\n==5140==    by 0x62669D5: __cxxabiv1::__terminate(void (*)()) (eh_terminate.cc:47)\r\n==5140==    by 0x6266A12: std::terminate() (eh_terminate.cc:57)\r\n==5140==    by 0x6266C47: __cxa_throw (eh_throw.cc:95)\r\n==5140==    by 0x4E3E7EA: ??? (in /usr/lib/libserial.so)\r\n==5140==    by 0x4E425F8: serial::Serial::SerialImpl::SerialImpl(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, serial::bytesize_t, serial::parity_t, serial::stopbits_t, serial::flowcontrol_t) (in /usr/lib/libserial.so)\r\n==5140==    by 0x4E3F010: serial::Serial::Serial(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, serial::Timeout, serial::bytesize_t, serial::parity_t, serial::stopbits_t, serial::flowcontrol_t) (in /usr/lib/libserial.so)\r\n==5140==    by 0x116350: Oscilloscope (oscilloscope.h:46)\r\n==5140==    by 0x116350: main (main.cpp:533)\r\n==5140== \r\n==5140== HEAP SUMMARY:\r\n==5140==     in use at exit: 51,993 bytes in 294 blocks\r\n==5140==   total heap usage: 346 allocs, 52 frees, 165,980 bytes allocated\r\n==5140== \r\n==5140== LEAK SUMMARY:\r\n==5140==    definitely lost: 0 bytes in 0 blocks\r\n==5140==    indirectly lost: 0 bytes in 0 blocks\r\n==5140==      possibly lost: 1,786 bytes in 22 blocks\r\n==5140==    still reachable: 50,207 bytes in 272 blocks\r\n==5140==                       of which reachable via heuristic:\r\n==5140==                         newarray           : 1,536 bytes in 16 blocks\r\n==5140==         suppressed: 0 bytes in 0 blocks\r\n==5140== Rerun with --leak-check=full to see details of leaked memory\r\n==5140== \r\n==5140== For counts of detected and suppressed errors, rerun with: -v\r\n==5140== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\r\n```\r\n\r\nI really don't understand what happens, I tried to build the package myself, but failed with same bug as #175. I think there is a problem within serial itself (which is why I post that here)."
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/175'
+  title: 'ImportError: No module named catkin.environment_cache'
+  body: "When I try to run the `make` command y get the following error:\r\n```ImportError: No module named catkin.environment_cache```\r\n\r\nThis is the output of ```make``` command\r\n\r\n```\r\n $ cmake -Dcatkin_DIR=/opt/ros/indigo/share/catkin/cmake/ ..\r\n-- The C compiler identification is GNU 5.4.1\r\n-- The CXX compiler identification is GNU 5.4.1\r\n-- Check for working C compiler: /usr/bin/cc\r\n-- Check for working C compiler: /usr/bin/cc -- works\r\n-- Detecting C compiler ABI info\r\n-- Detecting C compiler ABI info - done\r\n-- Detecting C compile features\r\n-- Detecting C compile features - done\r\n-- Check for working CXX compiler: /usr/bin/c++\r\n-- Check for working CXX compiler: /usr/bin/c++ -- works\r\n-- Detecting CXX compiler ABI info\r\n-- Detecting CXX compiler ABI info - done\r\n-- Detecting CXX compile features\r\n-- Detecting CXX compile features - done\r\n-- Using CATKIN_DEVEL_PREFIX: /home/Angel/serial/build/devel\r\n-- Using CMAKE_PREFIX_PATH:\r\n-- Found PythonInterp: /usr/bin/python (found version \"2.7.6\")\r\n-- Using PYTHON_EXECUTABLE: /usr/bin/python\r\n-- Using Debian Python package layout\r\n-- Using empy: /usr/bin/empy\r\n-- Using CATKIN_ENABLE_TESTING: ON\r\n-- Call enable_testing()\r\n-- Using CATKIN_TEST_RESULTS_DIR: /home/Angel/serial/build/test_results\r\n-- Looking for pthread.h\r\n-- Looking for pthread.h - found\r\n-- Looking for pthread_create\r\n-- Looking for pthread_create - not found\r\n-- Looking for pthread_create in pthreads\r\n-- Looking for pthread_create in pthreads - not found\r\n-- Looking for pthread_create in pthread\r\n-- Looking for pthread_create in pthread - found\r\n-- Found Threads: TRUE\r\n-- Found gtest sources under '/usr/src/gtest': gtests will be built\r\n-- Using Python nosetests: /usr/bin/nosetests-2.7\r\n-- catkin 0.6.19\r\nTraceback (most recent call last):\r\n  File \"/home/Angel/serial/build/catkin_generated/generate_cached_setup.py\", lin                                                                      e 20, in <module>\r\n    from catkin.environment_cache import generate_environment_script\r\nImportError: No module named catkin.environment_cache\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/safe_execute_process.cmake:11                                                                       (message):\r\n  execute_process(/usr/bin/python\r\n  \"/home/Angel/serial/build/catkin_generated/generate_cached_setup.py\")\r\n  returned error code 1\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/all.cmake:186 (safe_execute_process)\r\n  /opt/ros/indigo/share/catkin/cmake/catkinConfig.cmake:20 (include)\r\n  CMakeLists.txt:5 (find_package)\r\n\r\n\r\n-- Configuring incomplete, errors occurred!\r\nSee also \"/home/Angel/serial/build/CMakeFiles/CMakeOutput.log\".\r\nSee also \"/home/Angel/serial/build/CMakeFiles/CMakeError.log\".\r\n```\r\n\r\nHow can fix the error?"
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/pull/171'
+  title: remove references to no longer available uninstall command
+  body: 'fixes https://github.com/wjwwood/serial/issues/107'
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - bug
+    - documentation
+- url: 'https://github.com/wjwwood/serial/issues/170'
+  title: Unresolved symbol error visual studio 2017
+  body: >-
+    Everytime i try to compile with visual studio 2017, i'm getting in trouble
+    with an unresolved symbol error (LNK2019)... How can I fix that ?
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - awaiting feedback
+    - bug
+- url: 'https://github.com/wjwwood/serial/pull/165'
+  title: Fix CMake warning for rt and pthread.
+  body: "Squelches the following CMake warning when building on Linux:\r\n\r\n```\r\n-- ==> add_subdirectory(serial)\r\nCMake Warning at share/catkin/cmake/catkin_package.cmake:166 (message):\r\n  catkin_package() DEPENDS on 'rt' but neither 'rt_INCLUDE_DIRS' nor\r\n  'rt_LIBRARIES' is defined.\r\nCall Stack (most recent call first):\r\n  share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  serial/CMakeLists.txt:14 (catkin_package)\r\n\r\nCMake Warning at share/catkin/cmake/catkin_package.cmake:166 (message):\r\n  catkin_package() DEPENDS on 'pthread' but neither 'pthread_INCLUDE_DIRS'\r\n  nor 'pthread_LIBRARIES' is defined.\r\nCall Stack (most recent call first):\r\n  share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  serial/CMakeLists.txt:14 (catkin_package)\r\n```\r\n\r\nHowever, this would also be fixed by merging #133, so it depends a bit on the next steps for that PR."
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - bug
+- url: 'https://github.com/wjwwood/serial/pull/164'
+  title: Serial port read returns no data with Arduino Leonardo
+  body: "I ran into a problem with an Arduino Leonardo board.   When first plugged I was able to open the serial port without error, but could not read any data from the device.   I tried explicitly setting each of the serial parameters, but the only thing that was working for me was to run PuTTY before running my own code that uses 'serial', in which case the port would work correctly, only to fail again the next time I plugged in the board.\r\n\r\nThis patch borrows the boilerplate device control block settings from PuTTY to initialize the serial device, which fixes the problem with 'serial'."
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - awaiting feedback
+    - bug
+- url: 'https://github.com/wjwwood/serial/issues/163'
+  title: >-
+    catkin package 'serial' is not listed as a build dependency in the
+    package.xml
+  body: "Hello!\r\nI am trying to build a catkin package which includes the library serial  but i receive this error \r\n\r\n> **CMake Error at /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:196 (message):\r\n  catkin_package() the catkin package 'serial' has been find_package()-ed but\r\n  is not listed as a build dependency in the package.xml\r\n  Call Stack (most recent call first):\r\n  /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  thesis/CMakeLists.txt:25 (catkin_package)**\r\n\r\nCould anyone help?Thanks in advance!\r\n\r\n"
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/161'
+  title: flush() does not work for Windows and Linux
+  body: "According to your documentation the `flush()` function should flush both input and output buffers. However both for Windows and Linux platforms it doesn't work properly - buffers are not cleared.\r\n\r\nCorrect and tested implementation:\r\n\r\nWindows\r\n `PurgeComm(fd_, PURGE_RXCLEAR | PURGE_TXCLEAR);`\r\n\r\nLinux\r\n   `tcflush(fd_, TCIOFLUSH);`\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - awaiting feedback
+    - bug
+- url: 'https://github.com/wjwwood/serial/issues/156'
+  title: Issue on complie
+  body: "I am using the cmakelist you mentioned #52 , but when I type \"make\". It shows the error:\r\ncd build && cmake -DCMAKE_INSTALL_PREFIX=/tmp/usr/local .. -- The C compiler identification is AppleClang 8.1.0.8020038 -- The CXX compiler identification is AppleClang 8.1.0.8020038 -- Check for working C compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc -- Check for working C compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc -- works -- Detecting C compiler ABI info -- Detecting C compiler ABI info - done -- Detecting C compile features -- Detecting C compile features - done -- Check for working CXX compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -- Check for working CXX compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -- works -- Detecting CXX compiler ABI info -- Detecting CXX compiler ABI info - done -- Detecting CXX compile features -- Detecting CXX compile features - done -- Configuring done -- Generating done -- Build files have been written to: /Users/weiguo/iCloud Drive (Archive)/Documents/zoom/cppRs232/serial/build cd build && /Applications/Xcode.app/Contents/Developer/usr/bin/make Scanning dependencies of target serial [ 20%] Building CXX object CMakeFiles/serial.dir/src/serial.cc.o [ 40%] Building CXX object CMakeFiles/serial.dir/src/impl/unix.cc.o [ 60%] Linking CXX static library libserial.a [ 60%] Built target serial Scanning dependencies of target serial_example [ 80%] Building CXX object CMakeFiles/serial_example.dir/examples/serial_example.cc.o [100%] Linking CXX executable serial_example Undefined symbols for architecture x86_64: \"serial::list_ports()\", referenced from: enumerate_ports() in serial_example.cc.o ld: symbol(s) not found for architecture x86_64 clang: error: linker command failed with exit code 1 (use -v to see invocation) make[3]: *** [serial_example] Error 1 make[2]: *** [CMakeFiles/serial_example.dir/all] Error 2 make[1]: *** [all] Error 2 make: *** [serial] Error 2\r\n\r\nplease kindly advice."
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/152'
+  title: 'undefined reference to `serial::list_ports()''    2'
+  body: "My issue is similar to issue #78, but after telling the linker where to find the library and trying a couple other things, the problem persists. Also, my installation put the headers and the library in a tmp folder instead of the usual include directories (headers in /tmp/usr/local/include and library in /tmp/usr/local/lib as opposed to the usual /usr/local/include and /usr/local/lib respectively). After telling the compiler where to look for both headers and library with the command, \r\n `g++ serial_example.cc  -o serial -L/tmp/usr/local/lib/libserial.so -I/tmp/usr/local/include`\r\n it can find them but still fails to compile. I ran the \"make test\", results below:\r\n\r\n$ make test\r\ncd build && cmake -DCMAKE_INSTALL_PREFIX=/tmp/usr/local ..\r\n-- Using CATKIN_DEVEL_PREFIX: /home/localadmin/apps/serial-master/build/devel\r\n-- Using CMAKE_PREFIX_PATH: /opt/ros/indigo\r\n-- This workspace overlays: /opt/ros/indigo\r\n-- Using PYTHON_EXECUTABLE: /usr/bin/python\r\n-- Using Debian Python package layout\r\n-- Using empy: /usr/bin/empy\r\n-- Using CATKIN_ENABLE_TESTING: ON\r\n-- Call enable_testing()\r\n-- Using CATKIN_TEST_RESULTS_DIR: /home/localadmin/apps/serial-master/build/test_results\r\n-- Found gtest sources under '/usr/src/gtest': gtests will be built\r\n-- Using Python nosetests: /usr/bin/nosetests-2.7\r\n-- catkin 0.6.19\r\n-- Configuring done\r\n-- Generating done\r\n-- Build files have been written to: /home/localadmin/apps/serial-master/build\r\ncd build && make run_tests\r\nmake[1]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nmake[2]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nmake[3]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target gtest\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n[  8%] Building CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o\r\n[ 16%] Linking CXX shared library libgtest.so\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[ 16%] Built target gtest\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target gtest_main\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n[ 25%] Building CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o\r\n[ 33%] Linking CXX shared library libgtest_main.so\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[ 33%] Built target gtest_main\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[ 66%] Built target serial\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target serial-test\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n[ 75%] Building CXX object tests/CMakeFiles/serial-test.dir/unix_serial_tests.cc.o\r\n[ 83%] Linking CXX executable ../devel/lib/serial/serial-test\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[ 83%] Built target serial-test\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target serial-test-timer\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n[ 91%] Building CXX object tests/CMakeFiles/serial-test-timer.dir/unit/unix_timer_tests.cc.o\r\n[100%] Linking CXX executable ../devel/lib/serial/serial-test-timer\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target serial-test-timer\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target tests\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target tests\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target clean_test_results_serial\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nRemoving test result files from '/home/localadmin/apps/serial-master/build/test_results/serial'\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target clean_test_results_serial\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target _run_tests_serial_gtest_serial-test\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n-- run_tests.py: execute commands\r\n  /home/localadmin/apps/serial-master/build/devel/lib/serial/serial-test --gtest_output=xml:/home/localadmin/apps/serial-master/build/test_results/serial/gtest-serial-test.xml\r\n[==========] Running 4 tests from 1 test case.\r\n[----------] Global test environment set-up.\r\n[----------] 4 tests from SerialTests\r\n[ RUN      ] SerialTests.readWorks\r\n[       OK ] SerialTests.readWorks (227 ms)\r\n[ RUN      ] SerialTests.writeWorks\r\n[       OK ] SerialTests.writeWorks (0 ms)\r\n[ RUN      ] SerialTests.timeoutWorks\r\n[       OK ] SerialTests.timeoutWorks (249 ms)\r\n[ RUN      ] SerialTests.partialRead\r\n[       OK ] SerialTests.partialRead (250 ms)\r\n[----------] 4 tests from SerialTests (727 ms total)\r\n\r\n[----------] Global test environment tear-down\r\n[==========] 4 tests from 1 test case ran. (728 ms total)\r\n[  PASSED  ] 4 tests.\r\n-- run_tests.py: verify result \"/home/localadmin/apps/serial-master/build/test_results/serial/gtest-serial-test.xml\"\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target _run_tests_serial_gtest_serial-test\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target _run_tests_serial_gtest_serial-test-timer\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\n-- run_tests.py: execute commands\r\n  /home/localadmin/apps/serial-master/build/devel/lib/serial/serial-test-timer --gtest_output=xml:/home/localadmin/apps/serial-master/build/test_results/serial/gtest-serial-test-timer.xml\r\n[==========] Running 2 tests from 1 test case.\r\n[----------] Global test environment set-up.\r\n[----------] 2 tests from timer_tests\r\n[ RUN      ] timer_tests.short_intervals\r\n[       OK ] timer_tests.short_intervals (933 ms)\r\n[ RUN      ] timer_tests.overlapping_long_intervals\r\n[       OK ] timer_tests.overlapping_long_intervals (1011 ms)\r\n[----------] 2 tests from timer_tests (1944 ms total)\r\n\r\n[----------] Global test environment tear-down\r\n[==========] 2 tests from 1 test case ran. (1944 ms total)\r\n[  PASSED  ] 2 tests.\r\n-- run_tests.py: verify result \"/home/localadmin/apps/serial-master/build/test_results/serial/gtest-serial-test-timer.xml\"\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target _run_tests_serial_gtest_serial-test-timer\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target _run_tests_serial_gtest\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target _run_tests_serial_gtest\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target _run_tests_serial\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target _run_tests_serial\r\nmake[4]: Entering directory `/home/localadmin/apps/serial-master/build'\r\nScanning dependencies of target run_tests\r\nmake[4]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\n[100%] Built target run_tests\r\nmake[3]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[2]: Leaving directory `/home/localadmin/apps/serial-master/build'\r\nmake[1]: Leaving directory `/home/localadmin/apps/serial-master/build'"
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/148'
+  title: 'Functions of flush, flushInput, and flushOutput'
+  body: "I have recently cloned the project and I'm a bit confused by the documentation for `flush`, `flushInput`, and `flushOutput` when trying to implement the latter two for Windows.\r\n\r\nCurrently the comment for `flush` says it `flushes the input and output buffers`, while the comments for `flushInput` and `flushOutput` say that they `flush only the input/output buffers`. The Unix implementation of the three functions, however, uses `tcdrain` and `tcflush`, and according to [this page](https://linux.die.net/man/3/tcdrain), `tcdrain() waits until all output written to the object referred to by fd has been transmitted.`, which I believe means that the data in the output buffer will be sent through the port before they get cleared, while the input buffer will be kept intact; `tcflush() discards data written to the object referred to by fd but not transmitted, or data received but not read, depending on the value of queue_selector`, which I believe means that the data in the input buffer will be cleared, and the data in the output buffer will be cleared without being sent through the port.\r\n\r\nAnyway, if flush means sending the data and then clearing the buffer, \"flushing\" an input buffer makes no sense to me (It's already sent to me, right?). So the best interpretation I can make is that `flush` flushes the output buffer, while `flushInput` and `flushOutput` clear the input/output buffers.\r\n\r\nBy the way, `flushInput` and `flushOutput` are currently unimplemented on windows. If they are meant to clear the buffer without sending their contents, [`PurgeComm`](https://msdn.microsoft.com/en-us/library/windows/desktop/aa363428(v=vs.85).aspx) will do the job."
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/pull/140'
+  title: Update documentation
+  body: |
+    This request:
+    - fixes a minor typo
+    - Adds Doxygen to the list of dependencies
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/135'
+  title: Removing catkin as a required dependency
+  body: >
+    We're currently using `serial` as a C++ library in a project that doesn't
+    use python or catkin. We've been able to build the library by removing some
+    of the `catkin` related stuff in CMakeLists.txt. Would you consider a pull
+    request where `catkin` is an option? e.g.
+
+
+    ```
+
+    option(SERIAL_USE_CATKIN "Enable CATKIN packaging and so on" ON)
+
+    ```
+
+
+    This would let us track your source more easily and hopefully make the
+    library easier to build (`apt-get instal catkin` drags in 37 extra packages
+    for me).
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/pull/133'
+  title: Remove Catkin dependency while keeping CMake's find_package() feature
+  body: >
+    From a Catkin project, it is straightforward to add a dependency on a
+    "normal" CMake package. However, the opposite is not true.
+
+
+    This PR relates to #123 and #111 , but with the following 2 changes:
+
+    1. Catkin dependency is fully removed: only CMake is required
+
+    2. Compatibility with `find_package()` feature is preserved
+
+
+    Here is how a project can depend on this library:
+    https://github.com/dbolkensteyn/serial-lib-consumer
+
+    I've tested that one both on Linux and Windows - but I do not have an Mac OS
+    X machine available at the moment.
+
+
+    I wanted to keep this PR small, but IMO the following should be done
+    afterwards:
+
+    1. Remove `Makefile`, `visual_studio` as well as `serial.sublime-project` :
+    Those files should not be persisted in the SCM, as they are supposed to be
+    generated by CMake
+
+    2. Update the `README.md` instructions - relates to #114
+
+    3. [Unrelated] Merge `CHANGELOG.rst` with `changes.txt`?
+
+
+    Also, this PR isn't ready to be merged just yet: For instance, I've still
+    have to re-enable the support for testing.
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels:
+    - enhancement
+    - next API change
+- url: 'https://github.com/wjwwood/serial/pull/131'
+  title: 'Problem: catkin is a required build dependency'
+  body: >
+    Solution: make it optional
+
+
+    Background: I'm building control software for a scientific instrument and I
+    wanted to use your serial library. It's compiled inside a Docker using a
+    Fedora base image. I tried to `dnf install catkin` and I couldn't get cmake
+    to find catkin after messing around with ros' environment scripts and such.
+    And catkin is completely irrelevant to what I'm doing, so I just made it an
+    optional build dependency (on by default).
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/129'
+  title: How to add the library to my code after "make install"
+  body: >
+    Hi, I wanna add the library to my own code, but I don't know how to include
+    it in the Cmakelists file.
+
+    It gives me an error  "fatal error: serial/serial.h"
+
+    This is how my CMakeLists looks like
+
+
+    cmake_minimum_required(VERSION 2.8.3)
+
+    project(serial_sensor)
+
+    set (BINNAME serial_sensor)
+
+    set (SRCS1 ${SRCS1} src/serial_sensor.cpp)
+
+    find_package(catkin REQUIRED COMPONENTS
+      roscpp
+      rospy
+      std_msgs
+      tf
+      message_generation
+    )
+
+    add_message_files(
+      FILES
+      Altitude.msg
+      Heading.msg
+      Pressure.msg
+    )
+
+    generate_messages(
+       DEPENDENCIES
+       std_msgs
+    )
+
+    catkin_package(
+      LIBRARIES serial
+      CATKIN_DEPENDS message_runtime
+    )
+
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+    include_directories(include ${catkin_INCLUDE_DIRS})
+
+    add_executable(serial_motors src/serial_motors.cpp)
+
+    target_link_libraries(serial_motors ${catkin_LIBRARIES})
+
+    add_executable (${BINNAME} ${SRCS1})
+
+    add_dependencies(${BINNAME} ${PROJECT_NAME}_generate_messages_cpp)
+
+    target_link_libraries(${BINNAME} ${catkin_LIBRARIES})
+
+
+    I ve followed the "how to" till the "make install" and this last command
+    gives me
+
+
+    Install the project...
+
+    -- Install configuration: ""
+
+    -- Installing: /tmp/usr/local/_setup_util.py
+
+    -- Installing: /tmp/usr/local/env.sh
+
+    -- Installing: /tmp/usr/local/setup.bash
+
+    -- Installing: /tmp/usr/local/setup.sh
+
+    -- Installing: /tmp/usr/local/setup.zsh
+
+    -- Installing: /tmp/usr/local/.rosinstall
+
+    -- Installing: /tmp/usr/local/lib/pkgconfig/serial.pc
+
+    -- Installing: /tmp/usr/local/share/serial/cmake/serialConfig.cmake
+
+    -- Installing: /tmp/usr/local/share/serial/cmake/serialConfig-version.cmake
+
+    -- Installing: /tmp/usr/local/share/serial/package.xml
+
+    -- Installing: /tmp/usr/local/lib/libserial.so
+
+    -- Installing: /tmp/usr/local/include/serial/serial.h
+
+    -- Installing: /tmp/usr/local/include/serial/v8stdint.h
+
+
+    is it strange that it installs under the tmp folder?
+
+    Thank you
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/128'
+  title: How to add the library to my code after "make install"
+  body: >
+    Hi, I wanna add the library to my own code, but I don't know how to include
+    it in the Cmakelists file.
+
+    It gives me an error  "fatal error: serial/serial.h"
+
+    This is how my CMakeLists looks like
+
+
+    ``` cmake
+
+    cmake_minimum_required(VERSION 2.8.3)
+
+    project(serial_sensor)
+
+
+    # Set the name to use for the executable.
+
+    set (BINNAME serial_sensor)
+
+    ## Set the source files to use with the executable.
+
+    set (SRCS1 ${SRCS1} src/serial_sensor.cpp)
+
+    ## Find catkin macros and libraries
+
+    ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+
+    ## is used, also find other catkin packages
+
+    find_package(catkin REQUIRED COMPONENTS
+      roscpp
+      rospy
+      std_msgs
+      tf
+      message_generation
+    )
+
+
+    ## Generate messages in the 'msg' folder
+
+    add_message_files(
+      FILES
+      Altitude.msg
+      Heading.msg
+      Pressure.msg
+    )
+
+
+    ## Generate added messages and services with any dependencies listed here
+
+    generate_messages(
+       DEPENDENCIES
+       std_msgs
+    )
+
+
+    catkin_package(
+
+    #  INCLUDE_DIRS include
+      LIBRARIES serial
+      CATKIN_DEPENDS message_runtime
+    #  CATKIN_DEPENDS roscpp rospy std_msgs
+
+    #  DEPENDS system_lib
+
+    )
+
+
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+    include_directories(include ${catkin_INCLUDE_DIRS})
+
+
+    add_executable(serial_motors src/serial_motors.cpp)
+
+    target_link_libraries(serial_motors ${catkin_LIBRARIES})
+
+
+    add_executable (${BINNAME} ${SRCS1})
+
+    add_dependencies(${BINNAME} ${PROJECT_NAME}_generate_messages_cpp)
+
+    target_link_libraries(${BINNAME} ${catkin_LIBRARIES})
+
+    ```
+
+
+    I ve followed the "how to" till the "make install" and this last command
+    gives me
+
+    `Install the project...
+
+    -- Install configuration: ""
+
+    -- Installing: /tmp/usr/local/_setup_util.py
+
+    -- Installing: /tmp/usr/local/env.sh
+
+    -- Installing: /tmp/usr/local/setup.bash
+
+    -- Installing: /tmp/usr/local/setup.sh
+
+    -- Installing: /tmp/usr/local/setup.zsh
+
+    -- Installing: /tmp/usr/local/.rosinstall
+
+    -- Installing: /tmp/usr/local/lib/pkgconfig/serial.pc
+
+    -- Installing: /tmp/usr/local/share/serial/cmake/serialConfig.cmake
+
+    -- Installing: /tmp/usr/local/share/serial/cmake/serialConfig-version.cmake
+
+    -- Installing: /tmp/usr/local/share/serial/package.xml
+
+    -- Installing: /tmp/usr/local/lib/libserial.so
+
+    -- Installing: /tmp/usr/local/include/serial/serial.h
+
+    -- Installing: /tmp/usr/local/include/serial/v8stdint.h`
+
+    is it strange that it installs under the tmp folder?
+
+    Thank you
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []
+- url: 'https://github.com/wjwwood/serial/issues/109'
+  title: Serial library installation failed
+  body: >
+    When I run "sudo make" for installing serial library I get following
+    messages with error.
+
+
+    Can you please tell me what has gone wrong? I'm stuck here for two days now.
+
+
+    ```
+
+    cd build && cmake -DCMAKE_INSTALL_PREFIX=/opt/ros/jade/ ..
+
+    -- The C compiler identification is GNU 4.8.4
+
+    -- The CXX compiler identification is GNU 4.8.4
+
+    -- Check for working C compiler: /usr/bin/cc
+
+    -- Check for working C compiler: /usr/bin/cc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Detecting C compile features
+
+    -- Detecting C compile features - done
+
+    -- Check for working CXX compiler: /usr/bin/c++
+
+    -- Check for working CXX compiler: /usr/bin/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Detecting CXX compile features
+
+    -- Detecting CXX compile features - done
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /home/odroid/Downloads/serial-master/build/devel
+
+    -- Using CMAKE_PREFIX_PATH: 
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.6") 
+
+    -- Using PYTHON_EXECUTABLE: /usr/bin/python
+
+    -- Using Debian Python package layout
+
+    -- Using empy: /usr/bin/empy
+
+    -- Using CATKIN_ENABLE_TESTING: ON
+
+    -- Call enable_testing()
+
+    -- Using CATKIN_TEST_RESULTS_DIR:
+    /home/odroid/Downloads/serial-master/build/test_results
+
+    -- Looking for include file pthread.h
+
+    -- Looking for include file pthread.h - found
+
+    -- Looking for pthread_create
+
+    -- Looking for pthread_create - not found
+
+    -- Looking for pthread_create in pthreads
+
+    -- Looking for pthread_create in pthreads - not found
+
+    -- Looking for pthread_create in pthread
+
+    -- Looking for pthread_create in pthread - found
+
+    -- Found Threads: TRUE  
+
+    -- Found gtest sources under '/usr/src/gtest': gtests will be built
+
+    -- Using Python nosetests: /usr/bin/nosetests-2.7
+
+    -- catkin 0.6.14
+
+    Traceback (most recent call last):
+      File "/home/odroid/Downloads/serial-master/build/catkin_generated/generate_cached_setup.py", line 20, in <module>
+        from catkin.environment_cache import generate_environment_script
+    ImportError: No module named catkin.environment_cache
+
+    CMake Error at
+    /opt/ros/jade/share/catkin/cmake/safe_execute_process.cmake:11 (message):
+      execute_process(/usr/bin/python
+      "/home/odroid/Downloads/serial-master/build/catkin_generated/generate_cached_setup.py")
+      returned error code 1
+    Call Stack (most recent call first):
+      /opt/ros/jade/share/catkin/cmake/all.cmake:186 (safe_execute_process)
+      /opt/ros/jade/share/catkin/cmake/catkinConfig.cmake:20 (include)
+      CMakeLists.txt:5 (find_package)
+
+
+    -- Configuring incomplete, errors occurred!
+
+    See also
+    "/home/odroid/Downloads/serial-master/build/CMakeFiles/CMakeOutput.log".
+
+    See also
+    "/home/odroid/Downloads/serial-master/build/CMakeFiles/CMakeError.log".
+
+    make: *** [serial] Error 1
+
+    ```
+  repo: 'https://api.github.com/repos/wjwwood/serial'
+  labels: []

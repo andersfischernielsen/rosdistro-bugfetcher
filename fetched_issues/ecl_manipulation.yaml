@@ -1,0 +1,16 @@
+- url: 'https://github.com/stonier/ecl_manipulation/pull/5'
+  title: '[manipulation] no exception throwing declarations'
+  body: ''
+  repo: 'https://api.github.com/repos/stonier/ecl_manipulation'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_manipulation/issues/3'
+  title: Get rid of catkin warning if possible
+  body: |
+    When compiling with catkin:
+
+    ```
+    WARNING: Metapackage "ecl" must buildtool_depend on catkin.
+    ```
+  repo: 'https://api.github.com/repos/stonier/ecl_manipulation'
+  labels: []

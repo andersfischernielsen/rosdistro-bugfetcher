@@ -1,0 +1,245 @@
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/60'
+  title: How to communicate between ROS-node and  FlexBE-state
+  body: "●Q1\r\nI tried to read ros topic into Flexbe by using SubscriberState, but it seemed ROS topic data was not used in Flexbe.\r\n・Settings\r\n `ROS`\r\n rostopic pub /topic/a std_msgs/Int8 -r 1 1\r\n rostopic echo /topic/a \r\n `Flexbe`\r\n Behavior Dashboard -> Private Configuration -> topic_a = \"/topic/a\" \r\n Statemachine Editor 　Please see attached.\r\n・Aim\r\n  1: Read /topic/a(=1) , and Output output-Key-mapping \"message\" by using SubscriberState.\r\n  2: Recieve \"message\", and Judge \"message\"  is equal to  \"1\" or not by using CheckConditionState.\r\n  3: Output a log of the result \"true(message =1)\" or \"false(message ≠1)\" ,depending on the judgement by using LogState. This time, \"true\" is supposed to be displayed.\r\n・Result\r\n  In spite of using /topic/a(=message =1), the log displays \"false(message ≠1)\". \r\nWhen I tried to check the connection between ROS-publicher and Flexbe by rqt_graph, It seemed to be connected.(Please see attached.)  The value of /topic/a is checked by 「rostopic echo /topic/a」,\r\nand it always displays 「data:1」. But the CheckConditionState judged \"message\" was \"0\".\r\nWhat would you suggest I do?\r\n![statemachineeditor](https://user-images.githubusercontent.com/43458260/45943658-30814780-c022-11e8-8022-fffcb25558fc.jpg)\r\n![rosgraph](https://user-images.githubusercontent.com/43458260/45943662-337c3800-c022-11e8-85cb-d10e52efdcc3.png)\r\n●Q2\r\n  There are tree publisher states PublisherBoolState, PublisherEmptyState, PublisherStringState.\r\n  Do you know how to publish \"Int\" data?\r\n●Q3\r\n  Do you know how to implement Service communication(Request and Response) in FlexBE?\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/pull/56'
+  title: >-
+    flexbe_states: create symlink to behavior and state sources in installed
+    package path
+  body: "I had to add this cmake snippet to the `flexbe_states` package and also to all our custom state and behavior packages to fix an error message in the FlexBE App when running from install-space:\r\n\r\n```\r\nSetting up ROS connection...\r\nChecking 257 ROS packages for states and behaviors...\r\nROS connection running!\r\n\r\n\r\nParsing sourcecode...\r\nCode parsing completed.\r\nBuilding behavior state machine...\r\nUnable to find state definition for: CheckConditionState\r\nPlease check your workspace settings.\r\nUnable to find state definition for: CalculationState\r\nPlease check your workspace settings.\r\nUnable to find state definition for: FlexibleServiceCallerState\r\nPlease check your workspace settings.\r\n```\r\n\r\nAnother alternative is to always install an additional copy of the `src` folder to the package dir (`${CATKIN_PACKAGE_SHARE_DESTINATION}`), independent of the files installed to `lib/`.\r\n\r\nA better approach would be to patch the FlexBE App such that it can find the source code using python:\r\n```\r\n$ python -c 'import flexbe_states; print(flexbe_states.__path__)'\r\n['/path/to/install/space/lib/python2.7/dist-packages/flexbe_states']\r\n```\r\nor relative to the package path:\r\n```\r\n$ echo $(rospack find flexbe_states)/../../lib/python2.7/dist-packages/flexbe_states\r\n/path/to/install/space/share/flexbe_states/../../lib/python2.7/dist-packages/flexbe_states\r\n```\r\nBut I don't know enough about JavaScript and the underlying mechanics to propose such a patch. The relevant code seems to be in [src/io/io_packageparser.js](https://github.com/FlexBE/flexbe_app/blob/develop/src/io/io_packageparser.js).\r\n\r\nIt does not make sense to modify behaviors in an install-space or if the sources are not writable by the current user, e.g. because they are owned by root. But I assume the FlexBE App would still need to find the sources in order to only run a behavior. It would be a nice-to-have that the respective controls (\"Statemachine Editor\", \"Save Behavior\", ...) are disabled in those cases."
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/49'
+  title: flexbe_testing test fails
+  body: "```\r\nrein@ruvu2 $ rostest selftest.test \r\n... logging to /home/rein/dev/project-x/home/log/rostest-ruvu2-927.log\r\n[ROSUNIT] Outputting test results to /home/rein/dev/project-x/home/test_results/flexbe_testing/rostest-selftest.xml\r\n[Testcase: testflexbe_testing] ... ok\r\n\r\n[ROSTEST]-----------------------------------------------------------------------\r\n\r\n[flexbe_testing.rosunit-flexbe_testing/test_import_only_pass][passed]\r\n[flexbe_testing.rosunit-flexbe_testing/test_sub_unavailable_outcome][passed]\r\n[flexbe_testing.rosunit-flexbe_testing/test_sub_unavailable_pass][FAILURE]------\r\nState did not pass flexbe tests.\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 329, in run\r\n    testMethod()\r\n  File \"/home/rein/dev/project-x/src/flexbe_testing/src/flexbe_testing/state_tester.py\", line 248, in _test_call\r\n    test_self.assertTrue(passed, \"State did not pass flexbe tests.\")\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 422, in assertTrue\r\n    raise self.failureException(msg)\r\n--------------------------------------------------------------------------------\r\n\r\n[flexbe_testing.rosunit-flexbe_testing/test_test_add_outcome][passed]\r\n[flexbe_testing.rosunit-flexbe_testing/test_test_add_pass][FAILURE]-------------\r\nState did not pass flexbe tests.\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 329, in run\r\n    testMethod()\r\n  File \"/home/rein/dev/project-x/src/flexbe_testing/src/flexbe_testing/state_tester.py\", line 248, in _test_call\r\n    test_self.assertTrue(passed, \"State did not pass flexbe tests.\")\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 422, in assertTrue\r\n    raise self.failureException(msg)\r\n--------------------------------------------------------------------------------\r\n\r\n\r\nSUMMARY\r\n * RESULT: FAIL\r\n * TESTS: 5\r\n * ERRORS: 0\r\n * FAILURES: 2\r\n\r\nrostest log file is in /home/rein/dev/project-x/home/log/rostest-ruvu2-927.log\r\n```"
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/44'
+  title: 'Question: Best way to generate code & pass in parameters/arguments'
+  body: "Thanks for making this package!\r\n\r\nAfter reading through the documentation and trying the tutorial, I have a couple questions:\r\n\r\n1) Ideally, I'd like to describe a Behavior in FlexBE's GUI and then generate a python module containing that Behavior described in SMACH (with no/minimal FlexBE dependencies).\r\n\r\ne.g:\r\n\r\n`$ python generatedbehavior.py`\r\n\r\nor\r\n\r\n```\r\n<node name=\"MyCoolFSM\" \r\n           pkg=\"behavior_hello_world_demo\" \r\n           type=\"hello_world_demo_sm.py\" \r\n           output=\"screen\" \r\n           args=\"-to_camera_1_topic camera_1/publish\r\n                     -from_camera_1_topic camera_1/subscribe\" \r\n                     -ros_rate 100.0\" \r\n/>\r\n```\r\n\r\nIs this currently supported/planned, or can you only run FlexBE generated behaviors via FlexBE?\r\n\r\n2) If I'm running a FlexBE-generated behavior from a *.launch file, I'd want to be able to pass in parameters/arguments. Something like this:\r\n\r\n```\r\n<node name=\"behavior_launcher\" \r\n           pkg=\"flexbe_widget\" \r\n           type=\"be_launcher\" \r\n           output=\"screen\" \r\n           args=\"-b my_behavior_1\" >\r\n  <param name=\"to_camera_1_topic\" value=\"camera_1/publish\" />\r\n  <param name=\"from_camera_1_topic\" value=\"camera_1/subscribe\" />\r\n  <param name=\"ros_rate\" value=\"100.0\" />\r\n</node>\r\n```\r\n\r\nor \r\n```\r\n<node name=\"behavior_launcher\" \r\n           pkg=\"flexbe_widget\" \r\n           type=\"be_launcher\" \r\n           output=\"screen\" \r\n           args=\"-b my_behavior_1 -to_camera_1_topic camera_1/publish\r\n                     -from_camera_1_topic camera_1/subscribe\" \r\n                     -ros_rate 100.0\" \r\n/>\r\n```\r\n\r\nThis type of functionality would be useful in using FlexBE-generated behaviors in conjunction with other ROS nodes, but it doesn't seem to be supported atm. Is there an accepted work-around that I'm missing?\r\n\r\nKeep up the good work!"
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/34'
+  title: Pycharm can't resolve flexbe references
+  body: "Hi, \r\n\r\nI've followed the installation steps on http://philserver.bplaced.net/fbe/download.php and ran the create_repo command. Although i executed this in the src-directory of my kinetic workspace, the command returned `The repository is not on the ROS_PACKAGE_PATH.\r\nRun the following command if this was not on purpose:\r\n  roscd && cd ../src && mv /home/benny/xenial_ws/src/calibration_controller_behaviors calibration_controller_behaviors`\r\n\r\nHowever `echo $ROS_PACKAGE_PATH` returns `/home/benny/xenial_ws/src/calibration_controller_behaviors/behaviors/behavior_example_behavior:/home/benny/xenial_ws/src/calibration_controller_behaviors/behaviors/behavior_hello_world_demo:/home/benny/xenial_ws/src/calibration_controller_behaviors/calibration_controller_flexbe_states:/home/benny/xenial_ws/src/rac_rosnodes/caltab_detector:/home/benny/xenial_ws/src/calibration_controller_behaviors/flexbe_behaviors:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_core:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_input:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_mirror:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_msgs:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_onboard:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_states:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_testing:/home/benny/xenial_ws/src/flexbe_behavior_engine/flexbe_widget:/home/benny/xenial_ws/src/robot_assisted_calibration:/home/benny/xenial_ws/src/universal_robot/universal_robot:/home/benny/xenial_ws/src/universal_robot/ur_bringup:/home/benny/xenial_ws/src/universal_robot/ur_description:/home/benny/xenial_ws/src/universal_robot/ur10_moveit_config:/home/benny/xenial_ws/src/universal_robot/ur3_moveit_config:/home/benny/xenial_ws/src/universal_robot/ur5_moveit_config:/home/benny/xenial_ws/src/universal_robot/ur_driver:/home/benny/xenial_ws/src/universal_robot/ur_gazebo:/home/benny/xenial_ws/src/universal_robot/ur_kinematics:/home/benny/xenial_ws/src/universal_robot/ur_msgs:/home/benny/xenial_ws/src/video_stream_opencv:/opt/ros/kinetic/share`\r\n\r\nI ran successfully the hello world behaviour inside of the chrome app as well as from the console.\r\nBut when I import the package `calibration_controller_flexbe_states` into pycharm and open the file `example_action_state.py`, pycharm can't resolve e.g. flexbe_core or flexbe_core.proxy, but other ros imports like rospy are working. \r\n\r\nI would prefer creating flexbe states with IDE support, so maybe you can help me using flexbe in pycharm.\r\n\r\nGreetings\r\nBenny"
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/pull/30'
+  title: 'use json parser to load data, remove whitespace, javascript object style'
+  body: "Use json as the transport for userdata for behavior execution actions. Also converts the nested dict that json.loads() emits into a nested javascript-style object, which means that states using the userdata can treat it like ROS messages of the correct type. I.e. something expecting a point_list of geometry_msgs/Point(s) can do point_list[0].z instead of point_list[0]['z'].\r\n\r\nHowever, this adds a dependency on the python lib addict https://github.com/mewwts/addict."
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/29'
+  title: Future of the FlexBE Chrome App
+  body: "Just to make sure you do not miss this important update: [Future of the FlexBE Chrome App](https://github.com/pschillinger/flexbe_chrome_app/issues/11)\r\n\r\nThe new feature of automatic detection of states and behaviors, as well as the feature to use multiple behavior packages will affect the behavior engine as well. Changes will be made available on a separate branch when a first version of the new app is released and only be merged after a transition period when the new app is considered stable. This merge will be announced in time.\r\n\r\nPlease let me know in the meantime if you experience any problems with the changes."
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/23'
+  title: State tests complete if userdata is missing in output
+  body: "When writing a state and a test state for it as described in http://wiki.ros.org/flexbe/Tutorials/Writing%20State%20Tests%20Using%20flexbe_testing, the test completes if one forgets to return userdata in the state.\r\n\r\nExample state:\r\n```python\r\n#!/usr/bin/env python\r\nimport rospy\r\n\r\nfrom flexbe_core import EventState\r\n\r\n\r\nclass MyTestState(EventState):\r\n  def __init(self):\r\n    super(MyTestState, self).__init(outcomes=['done', 'failed'],\r\n                                    input_keys=['input_switch'],\r\n                                    output_keys=['output_data'])\r\n\r\n  def execute(self, userdata):\r\n    if userdata.input_switch:\r\n      return 'done'\r\n    else:\r\n      return 'failed'\r\n```\r\n\r\nExample test:\r\n```yaml\r\npath: euroc_door_seal_flexbe_states.my_test_state\r\nclass: MyTestState\r\n\r\ninput:\r\n  input_switch: True\r\n\r\noutput:\r\n  output_data: 42\r\n\r\noutcome: done\r\n```\r\n\r\nI forgot to return the userdata field 'output_data' (clumsy my -.-), but the test won't ever complain, as it is simply skipped in the state_tester:\r\n```python\r\n# evaluate output\r\noutput_ok = True\r\nfor expected_key, expected_value in expected.iteritems():\r\n\tif expected_key in userdata.keys():\r\n\t\tequals = userdata[expected_key] == expected_value\r\n\t\tself._evaluation_tests['test_%s_output_%s' % (name.split('.')[0], expected_key)] = \\\r\n\t\t\tself._test_output(userdata[expected_key], expected_value)\r\n\t\tif not equals:\r\n\t\t\tif self._print_debug_negative: print '\\033[1m  -\\033[0m wrong result for %s: %s != %s' % (expected_key,\r\n\t\t\toutput_ok = False\r\nif len(expected) > 0 and output_ok:\r\n\tif self._print_debug_positive: print '\\033[1m  +\\033[0m all result outputs match expected'\r\n```\r\nI think, that an else-statement in the above code snipped inside state_tester would make sense, wouldn't it?"
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/18'
+  title: Concurrent state does not operate as expected
+  body: >
+    During testing I have noticed that the concurrent state only calls the
+    `on_start()` and `on_stop()` functions of the state that receives the arrow.
+    In addition, when running a looping behavior like the one described in the
+    image, only the `on_enter()` and `on_exit()` functions are called of the
+    state that receives the initial state arrow inside the concurrent state. 
+
+
+    I would expect all of the `on_enter()` and `on_exit()` functions for each
+    internal state to get called every time the concurrent state is activated.
+
+
+    It works perfect the first time the concurrent state is activated, but then
+    doesn't any other time the state is activated after the first. Killing the
+    behavior and restarting it fixes the problem. I don't have to restart FlexBE
+    for that to happen.
+
+
+    ![concurrent_test](https://cloud.githubusercontent.com/assets/3835053/17635393/127090cc-60a5-11e6-9665-148de12c1e33.png)
+
+
+    Concurrent test behavior:
+
+    [concurrent_test_behaviors.tar.gz](https://github.com/team-vigir/flexbe_behavior_engine/files/416053/concurrent_test_behaviors.tar.gz)
+
+
+    Log output when running the behavior:
+
+    [concurrent_test.txt](https://github.com/team-vigir/flexbe_behavior_engine/files/416054/concurrent_test.txt)
+
+
+    The logger I used to test:
+
+    [verbose_logger.txt](https://github.com/team-vigir/flexbe_behavior_engine/files/416055/verbose_logger.txt)
+
+    (It's a .py in disguise. GitHub wouldn't let me upload a .py) 
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels:
+    - bug
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/16'
+  title: No error is shown if a state is not loaded
+  body: >
+    If you create a state in your flexbe states folder and there is some issue
+    with it, it does not load, and there is also no error shown anywhere in the
+    interface. 
+
+    I.e. create an example state like:
+
+
+    ``` python
+
+    from flexbe_core import EventState, Logger
+
+
+    class ExampleState(EventState):
+        '''
+        This state has an output key, but no second string after the test. So it will not load.
+        #> input_key test
+        <= continue             All done.
+        '''
+
+        def __init__(self):
+            # Declare , input_keys, and output_keys by calling the super constructor with the corresponding arguments.
+            super(ExampleState, self).__init__(outcomes = ['continue'])
+            # Thus, we cannot save the starting time now and will do so later.
+            self._start_time = None
+
+
+        def execute(self, userdata):
+            return 'continue'
+    ```
+
+
+    This state will not load due to the line:
+
+
+    ```
+        #> input_key test
+    ```
+
+
+    It expects a second item after test, i.e. this will work:
+
+
+    ```
+        #> input_key test description
+    ```
+
+
+    But there is no error shown in the flexbe widget or anywhere else showing me
+    that this is the case. So it took a while to find out the issue. There
+    should be a warning or something that the state is not loaded and where it
+    went wrong. 
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/11'
+  title: Shutdown issues with Ctrl-c
+  body: >
+    I created a pull request that fixed some issues that I saw.
+
+    One of which due to : 
+
+
+    > `Interrupted mirror sleep.
+
+    > Exception in thread Thread-28:
+
+    > Traceback (most recent call last):
+
+    >   File "/usr/lib/python2.7/threading.py", line 801, in __bootstrap_inner
+
+    >     self.run()
+
+    >   File "/usr/lib/python2.7/threading.py", line 754, in run
+
+    >     self.__target(*self.__args, **self.__kwargs)
+
+    >   File
+    "/home/conner/CNURobotics/src/flexbe_behavior_engine/flexbe_mirror/src/flexbe_mirror/flexbe_mirror.py",
+    line 131, in _start_mirror
+
+    >     self._execute_mirror()
+
+    >   File
+    "/home/conner/CNURobotics/src/flexbe_behavior_engine/flexbe_mirror/src/flexbe_mirror/flexbe_mirror.py",
+    line 221, in _execute_mirror
+
+    >     rospy.loginfo('Mirror finished with result ' + result)
+
+    > TypeError: cannot concatenate 'str' and 'NoneType' objects
+
+    > ` 
+
+
+    The PR fixes that and lack of imported module.
+
+
+    One issue remains:
+
+
+    >  Exception in thread Thread-26 (most likely raised during interpreter
+    shutdown):
+
+    > Traceback (most recent call last):
+
+    >   File "/usr/lib/python2.7/threading.py", line 801, in __bootstrap_inner
+
+    >   File "/usr/lib/python2.7/threading.py", line 754, in run
+
+    >   File
+    "/home/conner/CNURobotics/src/flexbe_behavior_engine/flexbe_mirror/src/flexbe_mirror/flexbe_mirror.py",
+    line 131, in _start_mirror
+
+    >   File
+    "/home/conner/CNURobotics/src/flexbe_behavior_engine/flexbe_mirror/src/flexbe_mirror/flexbe_mirror.py",
+    line 212, in _execute_mirror
+
+    >   File
+    "/opt/ros/kinetic/lib/python2.7/dist-packages/smach/state_machine.py", line
+    359, in execute
+
+    >   File
+    "/home/conner/CNURobotics/src/flexbe_behavior_engine/flexbe_core/src/flexbe_core/core/lockable_state_machine.py",
+    line 46, in _update_once
+
+    >   File
+    "/opt/ros/kinetic/lib/python2.7/dist-packages/smach/state_machine.py", line
+    248, in _update_once
+
+    > <type 'exceptions.AttributeError'>: 'NoneType' object has no attribute
+    'InvalidUserCodeError'
+
+    > shutting down processing monitor...
+
+    > ... shutting down processing monitor complete
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/4'
+  title: sudo required for create_repo
+  body: >
+    The create_repo script tries to install rosbridge, which requires super user
+    privileges.
+
+
+    Can we just make rosbridge-server a run dependency, and not do this sudo.
+
+
+    Or can we just use `dpkg -s ros-jade-rosbridge-server` and check return
+    type, and only try sudo if not installed?
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []
+- url: 'https://github.com/team-vigir/flexbe_behavior_engine/issues/3'
+  title: flexbe create_repo asks for indigo packages on jade setup
+  body: >
+    Installing on a jade setup, and the dependency check was asking for
+    ros-indigo packages.
+
+
+    Need to check ROS_DISTRO environment
+  repo: 'https://api.github.com/repos/team-vigir/flexbe_behavior_engine'
+  labels: []

@@ -1,0 +1,298 @@
+- url: 'https://github.com/ros-controls/control_toolbox/pull/54'
+  title: RealtimePublisher only initialized if used.
+  body: >
+    Otherwise the Pid class depends on the existance of a ROS node even when the
+    math part is initialized only. (Pid() constructor and no init called)
+
+
+    This makes tests fail and could potentially lead to weird behaviours when
+    used elsewhere.
+
+
+    Currenly the prerelease fails like this:
+
+
+    ```
+
+    /tmp/catkin_workspace/devel_isolated/control_toolbox/lib/control_toolbox/pid_tests
+    --gtest_output=xml:/tmp/catkin_workspace/test_results/control_toolbox/gtest-pid_tests.xml
+
+    [==========] Running 10 tests from 2 test cases.
+
+    [----------] Global test environment set-up.
+
+    [----------] 6 tests from ParameterTest
+
+    [ RUN      ] ParameterTest.ITermBadIBoundsTest
+
+    [FATAL] [1462284621.736137091]: You must call ros::init() before creating
+    the first NodeHandle
+
+    Couldn't find an AF_INET address for []
+
+    Couldn't find an AF_INET address for []
+
+    [ERROR] [1462284621.737173293]: [registerPublisher] Failed to contact master
+    at [:0].  Retrying...
+
+    Couldn't find an AF_INET address for []
+
+    Couldn't find an AF_INET address for []
+
+    Couldn't find an AF_INET address for []
+
+    Couldn't find an AF_INET address for []
+
+    Couldn't find an AF_INET address for []
+
+    ```
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/pull/42'
+  title: 'Response to #40'
+  body: >
+    Could be that #40 happened mainly due to 2 things (well, 3, if you count my
+    awkwardness):
+
+    1. Lack of tests on command computation, as already requested by @adolfo-rt
+    in #41
+
+    2. The `computeCommand` method has two signatures with almost a replica of
+    code within -> Same code in two places requires update in two places -> The
+    chance of making a mistake when updating increases.
+
+
+    In this initial PR both are addressed, there are 2 separated commits to easy
+    the review.
+
+
+    First, in 9dc84fd548c0bd7df9d428cf60594fde24ea2b6d, the coverage of the PID
+    class test suite is increased with the following modification of current
+    tests:
+
+    - `zeroITermBadIBoundsTest`: I think that entering `i_max < i_min` should be
+    prevented, or at least warned. A suggested change to avoid bad i-bounds is
+    there commented because it would require a change in the `setGains` method
+    return type to `bool` instead of `void` and the current implementation
+    wouldn't pass the test. Another posibility would be to leave that return
+    type and just throw a warning if `i_max < i_min` is passed.
+
+    - `integrationWindupTest`: Now upper and lower bounds are tested.
+
+    - integrationWindupZeroGainTest: Untouched. However, it looks to me it is
+    useless with the current integral contribution implementation.
+
+    - `gainSettingCopyPIDTest`: Makeup in names for readability + Added test on
+    `reset()` method.
+
+
+    And the following additions, a new set of tests under the name
+    `CommandTest`, hopefully well described with comments:
+
+    - `proportionalOnlyTest`, `integralOnlyTest`, `derivativeOnlyTest`: Check
+    that the command computed using each contribution independently is correct.
+    Note that, they depend on the integral and differentiation schemes, and if
+    they change, the tests might not be valid anymore.
+
+    - `completePIDTest`: Few checks on the sum up of contributions. Same here,
+    the test depends on the integral and differentiation schemes.
+
+
+    Second, in 7fe5e126b05c4c915ecbb4c143ffef6b8c0ff5c1, only one method does
+    the PID command computation and writes to class members (except for
+    `p_error_last_`), which is the one with the signature that allows users to
+    pass a pre-computed error derivative. The other one calls this method
+    passing the error derivative computed with an internal differentiation
+    scheme. I couldn't find whether this is ROS-style compliant or not, and not
+    sure if it affects critically the performance, but surely it will reduce the
+    chance of making a mistake if the implementation is to be updated again.
+
+
+    PS: I didn't do anything with the DEPRECATED command computation methods.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/issues/40'
+  title: 'DANGEROUS: Wrong behavior at startup after 1.13.0 -> 1.13.1 upgrade'
+  body: >
+    After upgrading today I started my robot (KUKA LWR4+ with effort
+    joint_trajectory_controller and MoveIt) and it immediately started going at
+    full speed without any reason. I could observe this behavior consistently
+    until I downgraded control_toolbox to 1.13.0 (it tried to reach the same
+    position again and again at full speed, without any care for the joint
+    limits).
+
+
+    This is very dangerous (I had my hand on the red button by pure chance,
+    otherwise I would have damaged my robot very heavily).
+
+
+    Am I the only one with this problem? 
+
+
+    @carlosjoserg, I see there is a commit of yours there. Didn't you have any
+    problems with this? Strange, since we have the same setup.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels:
+    - bug
+- url: 'https://github.com/ros-controls/control_toolbox/issues/36'
+  title: Jade Release
+  body: >
+    `gazebo_ros_control` depends on this and it's part of "desktop-full", so it
+    would be nice to have an initial version of this out as soon as possible.
+
+
+    Thanks in advanced.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/pull/33'
+  title: Improvement on the integral contribution implementation
+  body: >
+    The integral of the error is computed in a class member, and the integral
+    contribution is computed as of it, instead of doing all together. Now,
+    setting the integral gain to zero dynamically cancel the integral
+    contribution.
+
+
+    Additional update:
+
+    Function `getCurrentPIDErrors(...)` now returns the integral of the position
+    error, and not the contribution. Because of this, also the tests were
+    modified. Tests `integrationWindupZeroGainTest` (actually, this one makes no
+    sense now, since the error is directly given instead of obtaining by diving
+    the term by the gain) and `integrationWindupTest` check the windup
+    constraint on the computed command.
+
+
+    I don't know how this affects the dependant packages, but I believe the
+    change is worthy.
+
+
+    Resolve #32.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/issues/18'
+  title: Broken pid tests
+  body: >
+    The pid_tests target has been broken for a while now, and it fails with the
+    following message:
+
+
+    ```
+
+    control_toolbox/test/pid_tests.cpp:170:33: error: passing ‘const
+    control_toolbox::Pid’ as ‘this’ argument of ‘control_toolbox::Pid::Gains
+    control_toolbox::Pid::getGains()’ discards qualifiers [-fpermissive]
+
+    ```
+
+
+    The offending code is:
+
+
+    ```
+
+    const Pid pid4(pid3);
+
+    Pid::Gains g3 = pid4.getGains();
+
+    ```
+
+
+    It's calling the non-const method `getGains()` of the const object `pid4`. 
+
+
+    Does it actually make sense to have a const `Pid` instance?. It would seem
+    that you can't do much with it anyway. If there is indeed need for accessing
+    the gains from a const instance, an API addition would be required. I tested
+    this and it works (tests pass), but is pretty ugly:
+
+
+    ``` c++
+
+    const Pid::Gains& Pid::getGains() const
+
+    {
+      return *(const_cast<realtime_tools::RealtimeBuffer<Gains>& >(gains_buffer_).readFromRT());
+    }
+
+    ```
+
+
+    Didn't take the time to see if a cleaner implementation is possible. Still,
+    I'd avoid it if there is no real need.
+
+
+    @davetcoleman could you take a look at it?. You wrote that part of the test
+    and worked on the pid implementation back in July.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels:
+    - bug
+- url: 'https://github.com/ros-controls/control_toolbox/pull/17'
+  title: Cleaned up CMake and removed unnecessary dependencies
+  body: >
+    While attempting to fix
+    https://github.com/ros-controls/control_toolbox/issues/13 I found lots of
+    stuff that needed cleaning up thanks to catkin_lint as well as my
+    experience. This is targeted for indigo, so as to not cause any dependency
+    changes in a stable release. However, it's only been tested in hydro, I just
+    created the `indigo-devel` branch just now so I can merge this in.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/pull/15'
+  title: Cleaned up CMake and removed unnecessary dependencies
+  body: >
+    While attempting to fix
+    https://github.com/ros-controls/control_toolbox/issues/13 I found lots of
+    stuff that needed cleaning up thanks to catkin_lint as well as my
+    experience. This is targeted for indigo, so as to not cause any dependency
+    changes in a stable release. However, it's only been tested in hydro, I just
+    created the `indigo-devel` branch just now so I can merge this in.
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/pull/14'
+  title: Unnecessary dependency on tf causing sensor_msgs bug
+  body: >
+    After investigating all of `control_toolbox`'s dependencies, I found this
+    one to be the one causing the problem in
+    https://github.com/ros-controls/control_toolbox/issues/13
+
+
+    @tfoote any idea why this might be?
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/issues/13'
+  title: need explicit dependency on sensor_msgs
+  body: >
+    When attempting to build in same catkin workspace as sensor_msgs, build
+    fails because control_toolbox doesn't explicitly list sensor_msgs as a
+    dependency.
+
+
+    fix:
+
+
+    package.xml
+
+    add < build_depend >sensor_msgs</ build_depend >
+
+    ~~and < run_depend >sensor_msgs< /run_depend >~~
+
+
+    ~~CMakeLists.xml~~
+
+    ~~find_package(catkin REQUIRED COMPONENTS~~
+
+    ~~...~~
+
+    ~~sensor_msgs~~
+
+    ~~)~~
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []
+- url: 'https://github.com/ros-controls/control_toolbox/pull/9'
+  title: Fix abs/fabs problem with Clang and libc++
+  body: |
+    Prevents the error: use of undeclared identifier 'abs'; did you mean 'fabs'?
+    with Clang 5 on Mac OS X Mavericks
+  repo: 'https://api.github.com/repos/ros-controls/control_toolbox'
+  labels: []

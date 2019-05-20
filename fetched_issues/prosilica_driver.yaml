@@ -1,0 +1,10 @@
+- url: 'https://github.com/ros-drivers/prosilica_driver/issues/16'
+  title: request for release on melodic
+  body: "our `pr2_robot` package depends on this \r\nhttps://travis-ci.com/PR2/pr2_robot/jobs/189534413"
+  repo: 'https://api.github.com/repos/ros-drivers/prosilica_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/prosilica_driver/pull/15'
+  title: Remove driver_base dependency as this package is deprecated
+  body: "Only the SensorLevels message is needed from this package, which is now\r\nprovided by dynamic_reconfigure in Kinetic."
+  repo: 'https://api.github.com/repos/ros-drivers/prosilica_driver'
+  labels: []

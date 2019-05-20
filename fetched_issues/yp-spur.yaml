@@ -1,0 +1,38 @@
+- url: 'https://github.com/openspur/yp-spur/issues/100'
+  title: ROS buildfarm Mdev build failure
+  body: "http://build.ros.org/view/Mdev/job/Mdev__yp-spur__ubuntu_bionic_amd64/17/console\r\nhttp://build.ros.org/view/Mdev/job/Mdev__yp-spur__ubuntu_bionic_amd64/18/console\r\n\r\nLooks caused by the build farm config for build_tool_depend cmake.\r\nAnother cmake package is also failing. http://build.ros.org/view/Mdev/job/Mdev__rc_genicam_api__ubuntu_bionic_amd64/17/console"
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels: []
+- url: 'https://github.com/openspur/yp-spur/pull/64'
+  title: Add exec_depend to catkin for ROS build
+  body: 'https://github.com/ros/rosdistro/pull/17462#issuecomment-381521378'
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels: []
+- url: 'https://github.com/openspur/yp-spur/pull/62'
+  title: Fix buildtool_depend in ROS manifest
+  body: ''
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels: []
+- url: 'https://github.com/openspur/yp-spur/pull/60'
+  title: Add run_depend to catkin in ROS package manifest
+  body: ''
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels: []
+- url: 'https://github.com/openspur/yp-spur/issues/35'
+  title: ypspur-coordinator error depending on OS kernel difference
+  body: "In these environment (Ubuntu16.04, kernel version 4.8), when running ypspur-coordinator, the follows error is occured.\r\n\r\n$ypspur-coordinator -d\r\n/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 -p beego.param\r\n\r\n++++++++++++++++++++++++++++++++++++++++++++++++++\r\nYamabicoProject-Spur\r\n Ver. 1.14.0\r\n++++++++++++++++++++++++++++++++++++++++++++++++++\r\n    with SSM\r\n\r\n SSM is not available.\r\nDevice Information\r\n Port    : /dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00\r\nWarn: Baudrate setting is not supported on this device.\r\nApplying parameters.\r\nYP-Spur coordinator started.\r\nWarn: Illegal packet 'SS038400' received.\r\nWarn: Illegal packet '04T' received.\r\nWarn: Illegal packet '' received.\r\nWarn: Illegal packet 'SS038400' received.\r\nWarn: Illegal packet '04T' received.\r\nWarn: Illegal packet '' received.\r\nWarn: Illegal packet 'AP@@@@@I' received.\r\n : \r\n : \r\n : \r\n\r\n- Solution\r\nPlease try 1 or 2.\r\n\r\n1. downgrade to kernel version 4.6\r\n\r\n2. correct the source code 'serial.c'.  please rewrite newtio.c_oflag from 0 to 1 "
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels:
+    - bug
+- url: 'https://github.com/openspur/yp-spur/issues/22'
+  title: Fix error message.
+  body: "`Decrease TORQUE_UNIT` must be `Decrease TORQUE_FINENESS`.\r\nhttps://github.com/openspur/yp-spur/blob/v1.15.0-rc4/src/param.c#L1288"
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels:
+    - bug
+- url: 'https://github.com/openspur/yp-spur/issues/16'
+  title: Socket IPC between 32bit machine and 64bit machine failed.
+  body: "原因と思われる箇所\r\nsh_bando@robobnd-l:~/lab/researches/programs/platform$ find ./open-spur/ -name \"*.h*\" | xargs grep -n 'long'\r\n\r\n./open-spur/include/command.h:63:void message_return( struct ipcmd_t *ipcmd, long retpid, YPSpur_msg * res_msg );\r\n./open-spur/include/ypparam.h:266: long msg_type;\r\n./open-spur/include/ypparam.h:267: long pid;\r\n./open-spur/include/ypparam.h:300:#define YPSPUR_MSG_SIZE (sizeof(YPSpur_msg) -sizeof(long))\r\n\r\n(Transferred from readmine ticket. Originally by S. Bando.)"
+  repo: 'https://api.github.com/repos/openspur/yp-spur'
+  labels:
+    - bug

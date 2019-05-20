@@ -1,0 +1,99 @@
+- url: 'https://github.com/uos/sick_tim/pull/75'
+  title: '[package] run_depend libusb-1.0 -> libusb-1.0-dev'
+  body: "Change run_depend to libusb-1.0-dev\r\n\r\nCMake Error: Project 'sick_tim' specifies '/usr/include/libusb-1.0' as an include dir, which is not found.\r\n\r\nIt looks like libusb headers are included in the headers exported by this project, so the **-dev** \r\nversion should be a `<run_depend>` (or `<build_export_depend>` after [REP-140](http://www.ros.org/reps/rep-0140.html)) \r\n\r\nThis error occurred on the ROS build farm, oddly on our doc job not the other jobs.\r\nhttp://build.ros.org/job/Mdoc__fetch_robots__ubuntu_bionic_amd64/2/console\r\n\r\nFull error:\r\n```\r\n03:23:52 -- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy\r\n03:23:52 CMake Error at /opt/ros/melodic/share/sick_tim/cmake/sick_timConfig.cmake:113 (message):\r\n03:23:52   Project 'sick_tim' specifies '/usr/include/libusb-1.0' as an include dir,\r\n03:23:52   which is not found.  It does neither exist as an absolute directory nor in\r\n03:23:52   '/opt/ros/melodic//usr/include/libusb-1.0'.  Check the website\r\n03:23:52   'http://wiki.ros.org/sick_tim' for information and consider reporting the\r\n03:23:52   problem.\r\n```"
+  repo: 'https://api.github.com/repos/uos/sick_tim'
+  labels: []
+- url: 'https://github.com/uos/sick_tim/pull/55'
+  title: sick mrs1000 driver
+  body: "  The pull request concerns the sick mrs 1000 support. The initialization of the device has to be different, due to that I have made the methods for initialization virtual and now the mrs1000 driver runs different init code. Also the support for PointCloud2 is new. \r\nSry for not having enough separate commits for the different stages of the code, I could not really test these interdependent code fragments, also I saw a limit in spending my time in a driver which needs – in a long term perspective – a rewrite. Probably I will have time for that in 2018, sometime.\r\ncheers "
+  repo: 'https://api.github.com/repos/uos/sick_tim'
+  labels:
+    - enhancement
+- url: 'https://github.com/uos/sick_tim/issues/42'
+  title: sick_tim310s01 does not work on Ubuntu Mate 16.04/Raspberry Pi 3
+  body: >
+    In a classroom setup we have tried to get the sick_tim310s01 node up an
+    running on a Raspberry Pi 3 running Ubuntu Mate 16.04. The setup works well
+    on a laptop running Ubuntu 16.04 but on the raspi it is apparently unable to
+    communicate with the TIM310 and causes a stack smashing error. (identical
+    files under ros workspace, just moving the usb cable) 
+
+
+    The sick_tim551_2050001 node works well under both configurations, so the
+    detected problem seems to be isolated to the sick_tim310s01 node.
+
+
+    The problem was reproduced independently by two student teams and the
+    lecturer.
+
+
+    Below is the rosout error when running on the raspi 3:
+
+
+    [ INFO] [1477006478.882499078]: SICK AG - TIM3XX - [1]
+
+    [ INFO] [1477006478.882742202]: ----------------------------------------
+
+    [ INFO] [1477006478.882878503]: Device Class: 0x0
+
+    [ INFO] [1477006478.882967096]: VendorID:     0x19a2
+
+    [ INFO] [1477006478.883064908]: ProductID:    0x5001
+
+    [ INFO] [1477006478.883150689]: ----------------------------------------
+
+    [ INFO] [1477006478.883266365]: Interfaces: 1
+
+    [ INFO] [1477006478.883350739]: ----------------------------------------
+
+    [ INFO] [1477006478.883440114]: Number of alternate settings: 1
+
+    [ INFO] [1477006478.883524540]: Interface number: 0
+
+    [ INFO] [1477006478.883607873]: Number of endpoints: 2
+
+    [ INFO] [1477006478.883692560]: Descriptor Type: 5
+
+    [ INFO] [1477006478.883777507]: EP Address: 129
+
+    [ INFO] [1477006478.883857507]: Descriptor Type: 5
+
+    [ INFO] [1477006478.883935111]: EP Address: 2
+
+    [ INFO] [1477006478.884030058]: ----------------------------------------
+
+    [ INFO] [1477006478.884250994]: LIBUSB - Claimed interface
+
+    [ERROR] [1477006479.885061559]: LIBUSB - Read Error: -7.
+
+    [ERROR] [1477006479.886348113]: SOPAS - Error reading variable
+    'SerialNumber'.
+
+    [ERROR] [1477006480.888117057]: LIBUSB - Read Error: -7.
+
+    [ERROR] [1477006480.889940222]: SOPAS - Error reading variable
+    'FirmwareVersion'.
+
+    **\* stack smashing detected ***:
+    /opt/ros/kinetic/lib/sick_tim/sick_tim310s01 terminated
+  repo: 'https://api.github.com/repos/uos/sick_tim'
+  labels: []
+- url: 'https://github.com/uos/sick_tim/pull/26'
+  title: Update package.xml
+  body: >
+    Change the dependency to libusb-1.0.  This change allows the package to
+    build in Ubuntu 14.04 / ROS Indigo.
+  repo: 'https://api.github.com/repos/uos/sick_tim'
+  labels: []
+- url: 'https://github.com/uos/sick_tim/pull/12'
+  title: sets dependencies and linking in the library
+  body: >
+    It was actually broken (detected on other machine) because the library
+    didn't have the _gencfg dependency.
+
+    Now works and the dependencies are factorized.
+
+
+    Sorry for the "noise".
+  repo: 'https://api.github.com/repos/uos/sick_tim'
+  labels: []

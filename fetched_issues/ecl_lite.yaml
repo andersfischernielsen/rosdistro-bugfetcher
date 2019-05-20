@@ -1,0 +1,162 @@
+- url: 'https://github.com/stonier/ecl_lite/pull/20'
+  title: Export ecl errors headers
+  body: ''
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/pull/18'
+  title: Make sure to ament_export_libraries.
+  body: "ament_export_libraries() ends up generating a setup.sh file\r\nfor each library that exports LD_LIBRARY_PATH.  This is\r\nimportant when building in isolated mode so that downstream\r\nconsumers of the libraries can find the library at runtime.\r\nThis commit also adds 'ament_package_xml()' where appropriate\r\nto ensure that the version numbers get set.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>"
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels: []
+- url: 'https://github.com/stonier/ecl_lite/pull/17'
+  title: Catch dependency errors building in isolation
+  body: Hadn't done this previously so a few errors were hiding.
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/pull/11'
+  title: Compile fixes for OSX
+  body: >
+    This isn't a great fix, but I wanted to at least flag that `SOCK_NONBLOCK`
+    isn't available on OSX. I believe that there's some combination of `fcntl()`
+    and/or `ioctl()` that we use to get the same effect.
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/issues/10'
+  title: Cotire guards
+  body: >
+    The cotire module is just using regular cmake variables to guard - and these
+    go out of scope, so it gets included by every package.
+
+
+    Make proper cached variables to guard...
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/issues/7'
+  title: Fails to build on OSX with catkin_make_isolated
+  body: >
+    I'm trying to install the turtulebot_simulator on OSX and `ecl_time_lite` is
+    failing to build.
+
+
+    ==> Processing catkin package: 'ecl_time_lite'
+
+    ==> Building with env:
+    '/Users/aradroids/overlay_ws/devel_isolated/ecl_mpl/env.sh'
+
+    ==> cmake /Users/aradroids/overlay_ws/src/ecl_lite/ecl_time_lite
+    -DCATKIN_DEVEL_PREFIX=/Users/aradroids/overlay_ws/devel_isolated/ecl_time_lite
+    -DCMAKE_INSTALL_PREFIX=/Users/aradroids/overlay_ws/install_isolated -G Unix
+    Makefiles in '/Users/aradroids/overlay_ws/build_isolated/ecl_time_lite'
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /Users/aradroids/overlay_ws/devel_isolated/ecl_time_lite
+
+    -- Using CMAKE_PREFIX_PATH:
+    /Users/aradroids/overlay_ws/devel_isolated/ecl_mpl;/Users/aradroids/overlay_ws/devel_isolated/ecl_exceptions;/Users/aradroids/overlay_ws/devel_isolated/ecl_errors;/Users/aradroids/overlay_ws/devel_isolated/ecl_eigen;/Users/aradroids/overlay_ws/devel_isolated/ecl_config;/Users/aradroids/overlay_ws/devel_isolated/ecl_command_line;/Users/aradroids/overlay_ws/devel_isolated/ecl_build;/Users/aradroids/overlay_ws/devel_isolated/ecl_license;/Users/aradroids/overlay_ws/devel_isolated/depthimage_to_laserscan;/Users/aradroids/overlay_ws/devel_isolated/create_node;/Users/aradroids/overlay_ws/devel_isolated/create_driver;/Users/aradroids/overlay_ws/devel_isolated/create_description;/Users/aradroids/overlay_ws/devel_isolated/capabilities;/Users/aradroids/overlay_ws/devel_isolated/bfl;/opt/ros/indigo
+
+    -- This workspace overlays:
+    /Users/aradroids/overlay_ws/devel_isolated/ecl_mpl;/Users/aradroids/overlay_ws/devel_isolated/ecl_exceptions;/Users/aradroids/overlay_ws/devel_isolated/ecl_errors;/Users/aradroids/overlay_ws/devel_isolated/ecl_eigen;/Users/aradroids/overlay_ws/devel_isolated/ecl_config;/Users/aradroids/overlay_ws/devel_isolated/ecl_command_line;/Users/aradroids/overlay_ws/devel_isolated/ecl_build;/Users/aradroids/overlay_ws/devel_isolated/ecl_license;/Users/aradroids/overlay_ws/devel_isolated/depthimage_to_laserscan;/Users/aradroids/overlay_ws/devel_isolated/create_node;/Users/aradroids/overlay_ws/devel_isolated/create_driver;/Users/aradroids/overlay_ws/devel_isolated/create_description;/Users/aradroids/overlay_ws/devel_isolated/capabilities;/opt/ros/indigo
+
+    -- Using PYTHON_EXECUTABLE: /usr/local/bin/python
+
+    -- Using default Python package layout
+
+    -- Using empy: /usr/local/lib/python2.7/site-packages/em.pyc
+
+    -- Using CATKIN_ENABLE_TESTING: ON
+
+    -- Call enable_testing()
+
+    -- Using CATKIN_TEST_RESULTS_DIR:
+    /Users/aradroids/overlay_ws/build_isolated/ecl_time_lite/test_results
+
+    -- Found gtest: gtests will be built
+
+    -- Using Python nosetests: /usr/local/bin/nosetests-2.7
+
+    -- catkin 0.6.14
+
+    -- Configuring done
+
+    CMake Warning (dev):
+      Policy CMP0042 is not set: MACOSX_RPATH is enabled by default.  Run "cmake
+      --help-policy CMP0042" for policy details.  Use the cmake_policy command to
+      set the policy and suppress this warning.
+
+      MACOSX_RPATH is not specified for the following targets:
+
+       ecl_time_lite
+
+    This warning is for project developers.  Use -Wno-dev to suppress it.
+
+
+    -- Generating done
+
+    -- Build files have been written to:
+    /Users/aradroids/overlay_ws/build_isolated/ecl_time_lite
+
+    ==> make -j4 -l4 in
+    '/Users/aradroids/overlay_ws/build_isolated/ecl_time_lite'
+
+    [ 85%] Built target ecl_time_lite
+
+    [100%] Building CXX object
+    src/examples/CMakeFiles/demo_time_functions.dir/time_functions.cpp.o
+
+    /Users/aradroids/overlay_ws/src/ecl_lite/ecl_time_lite/src/examples/time_functions.cpp:99:42:
+    error: 
+          no member named 'get_date_string' in namespace 'ecl'
+        std::cout << "Date String: " << ecl::get_date_string() << std::endl;
+                                        ~~~~~^
+    1 error generated.
+
+    make[2]: **\*
+    [src/examples/CMakeFiles/demo_time_functions.dir/time_functions.cpp.o] Error
+    1
+
+    make[1]: **\* [src/examples/CMakeFiles/demo_time_functions.dir/all] Error 2
+
+    make: **\* [all] Error 2
+
+    <== Failed to process package 'ecl_time_lite': 
+      Command '['/Users/aradroids/overlay_ws/devel_isolated/ecl_mpl/env.sh', 'make', '-j4', '-l4']' returned non-zero exit status 2
+
+    Reproduce this error by running:
+
+    ==> cd /Users/aradroids/overlay_ws/build_isolated/ecl_time_lite &&
+    /Users/aradroids/overlay_ws/devel_isolated/ecl_mpl/env.sh make -j4 -l4
+
+
+    Command failed, exiting.
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/issues/3'
+  title: Better winsock checking and exporting
+  body: >
+    Currently a mess inside ecl_io and I don't think it exports the correct
+    windows librarys for msvc or mingw right now.
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+    - wontfix
+- url: 'https://github.com/stonier/ecl_lite/issues/2'
+  title: Deploy .in files to the build dir
+  body: >
+    Having them configured in place mucks up parallel builds (cross compiling
+    and such).
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/ecl_lite/issues/1'
+  title: Shared/Static Libs macros
+  body: >
+    Macros defined in ecl/config/ecl.hpp need to be fixed up when we attack
+    mingw/msvc support again.
+  repo: 'https://api.github.com/repos/stonier/ecl_lite'
+  labels:
+    - bug

@@ -1,0 +1,7 @@
+- url: 'https://github.com/astuff/automotive_autonomy_msgs/pull/6'
+  title: Moving perception_msgs to astuff_sensor_msgs.
+  body: >-
+    This removes a cross-dependency between perception_msgs and
+    astuff_sensor_msgs/radar_msgs.
+  repo: 'https://api.github.com/repos/astuff/automotive_autonomy_msgs'
+  labels: []

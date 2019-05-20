@@ -1,0 +1,73 @@
+- url: 'https://github.com/fetchrobotics/fetch_ros/issues/117'
+  title: '[BUG] fetch.urdf links: bellows_link, bellows_link2 make robot bounce'
+  body: "**Describe the bug**\r\nI am porting the fetch URDF to bullet3. Looking through the URDF I found bellows_link and bellows_link2. They are causing the robot to every-so-often jump due to self collision.\r\n\r\nMain question, is it necessary to include a collision mesh for bellows_link2? It seems like it is just for visuals. \r\n\r\nWhen I comment out the bellows_link2 collision mesh, this problem is fixed. \r\n\r\n**To Reproduce**\r\n```\r\nClone https://github.com/josiahls/pybullet-gym/tree/bug_bellows_link_hopping\r\n\r\ncd pybulletgym/examples/fetch\r\npython test_fetch_envs.py\r\n```\r\nAfter a few iterations the fetch robot hops.\r\n\r\n**Expected behavior**\r\nThe robot stays completely still...\r\n\r\n**Screenshots**\r\n![fetch image](https://user-images.githubusercontent.com/19930483/55675241-d0e7dc80-588d-11e9-992f-1b675d78e5dd.gif)\r\n\r\n**catkin workspace (please complete the following information):**\r\nUsing pybullet3\r\n\r\n**Additional context**\r\nAs I said, commenting out the collision mesh for the bellows_link2 fixes the issue.\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_ros/pull/100'
+  title: removed hardcoded ROS distro from calibrate_robot
+  body: "Previously, the `indigo` distro was hard-coded into the `calibrate_robot` script. This change replaces the hard-coded string with the current distro codename through `rospkg.distro`. \r\n(see: http://docs.ros.org/independent/api/rospkg/html/rospkg_distro.html)\r\n\r\nThis makes the script compatible with melodic, not to mention any arbitrary distro."
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/issues/98'
+  title: libgazebo7 vs libgazebo9
+  body: "Hi all, when I clone this repo(fetch_ros/melodic-devel) into my workspace, and do rosdep install, it would occur error shown as below:\r\n\r\nexecuting command [sudo -H apt-get install libgazebo7-dev]\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nPackage libgazebo7-dev is not available, but is referred to by another package.\r\nThis may mean that the package is missing, has been obsoleted, or\r\nis only available from another source\r\nHowever the following packages replace it:\r\n  libgazebo9-dev:i386 libgazebo9-dev\r\n\r\nE: Package 'libgazebo7-dev' has no installation candidate\r\nERROR: the following rosdeps failed to install\r\n  apt: command [sudo -H apt-get install libgazebo7-dev] failed\r\n\r\n\r\nThen the rosdep procedure stopped. I have no idea whether it is done completely or not. I don't think it should be a huge problem. What can I do to fix it up, or how to ignore it? \r\n\r\nThanks in advance!!"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/issues/86'
+  title: upstream urdf/model.h broke a line in drivers
+  body: "There is a one line fix which needs to go into our private **fetch_drivers** code.\r\n\r\nI locally patched around in the meantime, and almost forgot that I had.\r\n\r\nI'm opening the ticket here in public to track it with the other **18.04 & Melodic** issues:\r\nThe line isn't very secret:\r\n\r\n```diff\r\n-  boost::shared_ptr<const urdf::Joint> urdf_joint = model.getJoint(joint->getName());\r\n+  std::shared_ptr<const urdf::Joint> urdf_joint = model.getJoint(joint->getName());\r\n```\r\n\r\nA backwards compatible patch for both **Indigo** & **Melodic** is possible, but then we need to ensure those customers running Indigo have at least this PR:\r\nhttps://github.com/ros/robot_model/pull/182 ( repo has since been broken up -> https://github.com/ros/urdf )"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_ros/pull/80'
+  title: '[Depth Layer] Fixes OpenCV3 symbol lookup error'
+  body: "Regression from #78 \r\nWhen Testing move_base on Melodic, had the following error:\r\n\r\n/opt/ros/melodic-stable/lib/move_base/move_base:\r\n  symbol lookup error:\r\n  /opt/ros/melodic-stable/lib/libfetch_depth_layer.so:\r\n  undefined symbol:\r\n  _ZN2cv4rgbd9depthTo3dERKNS_11_InputArrayES3_RKNS_12_OutputArrayES3_\r\n\r\n[move_base-3] process has died [pid 16834, exit code 127, ...]\r\n\r\nOriginally when I did the build last week I didn't yet have #78 merged, and still depended on opencv_candidate which found the OpenCV libs for us."
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/pull/77'
+  title: Update fetch.urdf to remove KDL warning using gazebo-7
+  body: "For Gazebo-7, a warning comes up saying:\r\n  The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.\r\n  As a workaround, you can add an extra dummy link to your URDF.\r\n\r\nHere is a link to the solution: https://answers.ros.org/question/192817/error-msg-the-root-link_base-has-an-inertia-specified-in-the-urdf-but-kdl/\r\n\r\nOf course, maybe there is a better way to do this without adding a dummy, and it would be important to verify that this still works in older versions of gazebo."
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/issues/74'
+  title: >-
+    How to obtain three out of the five head camera image topics "of interest"
+    (from the docs)?
+  body: "In the Fetch docs:\r\n\r\nhttp://docs.fetchrobotics.com/api_overview.html#head-camera-interface\r\n\r\non the head camera interface, it is stated that there are five topics of interests.\r\n\r\nWhen I do the following, though, it looks like only two out of the five happen to appear. (I'm using the standard ROS Indigo and Ubuntu 14.04.)\r\n\r\nFirst, I start by launching a simulator:\r\n\r\n```\r\nroslaunch fetch_gazebo playground.launch\r\n```\r\n\r\nand looks like the simulator is working. I move the Fetch around to get more interesting camera views:\r\n\r\n![screenshot from 2018-05-03 12 23 16](https://user-images.githubusercontent.com/5532096/39598417-52cf3534-4ecd-11e8-8039-424f73186b5b.png)\r\n\r\nI next run `python camera_simple.py` where the `camera_simple.py` script is as follows:\r\n\r\n```\r\nimport argparse, cv2, os, rospy, sys, threading\r\nfrom sensor_msgs.msg import Image, JointState, PointCloud2\r\nfrom cv_bridge import CvBridge, CvBridgeError\r\n\r\nclass SimpleData(object):\r\n\r\n    def __init__(self):\r\n        self._msg = None\r\n\r\n    def __call__(self, data):\r\n        self._msg = data\r\n\r\n    def get_data(self):\r\n        return self._msg\r\n\r\ndef main(args):\r\n    bridge = CvBridge()\r\n    rospy.init_node('main', anonymous=True)\r\n\r\n    topics = [ \r\n        ('head_camera/depth_registered/points', PointCloud2),\r\n        ('head_camera/depth_downsampled/points', PointCloud2), # None :(\r\n        ('head_camera/depth/image_raw', Image), # None :(\r\n        ('head_camera/depth/image', Image), # None :(\r\n        ('head_camera/rgb/image_raw', Image),\r\n    ]\r\n    data_collectors = [SimpleData() for _ in range(len(topics))]\r\n\r\n    for idx,item in enumerate(topics):\r\n        rospy.Subscriber(name=item[0],\r\n                         data_class=item[1],\r\n                         callback=data_collectors[idx], \r\n                         queue_size=1)\r\n    rospy.sleep(2)\r\n\r\n    while not rospy.is_shutdown():\r\n        data = [data_collectors[i].get_data() for i in range(len(data_collectors))]\r\n        depth = data[0]\r\n        imgraw = data[4]\r\n        print(\"\")\r\n        for item in data:\r\n            print(type(item))\r\n        img = bridge.imgmsg_to_cv2(imgraw, \"bgr8\")\r\n        name = 'test.png'\r\n        cv2.imshow(name, img)\r\n        cv2.imwrite(name, img)\r\n        cv2.waitKey(3)\r\n\r\n\r\nif __name__ == '__main__':\r\n    parser = argparse.ArgumentParser()\r\n    parser.add_argument('--robot', type=str, default='fetch')\r\n    parser.add_argument('--imdir', type=str, default='images/')\r\n    args = parser.parse_args()\r\n    main(args)\r\n```\r\n\r\nHowever, the result I get is:\r\n![screenshot from 2018-05-03 12 32 51](https://user-images.githubusercontent.com/5532096/39598661-30f747ca-4ece-11e8-8fbc-fbd8f7e1c53d.png)\r\n\r\nThe good news is that I can see the camera image topic `head_camera/rgb/image_raw` and the point cloud one `head_camera/depth_registered/points`. However it seems like the other three are `None`.\r\n\r\nHow do I obtain data for those other three topics? \r\n\r\n(On a side note, is there a way to convert the PointCould2 to a simple png image that I can then save for later?[ I haven't found anything from the ROS docs...](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html)) \r\n\r\nThanks for your help!"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/pull/47'
+  title: remove run_depend on metapackage
+  body: ''
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/pull/35'
+  title: 'run_depends on package, not meta-package'
+  body: >
+    as denoted in http://www.ros.org/reps/rep-0127.html#metapackage
+
+
+    ```
+
+    Catkin packages must depend directly on the packages they use, not on any
+    metapackages.
+
+    ```
+
+
+    This may cause problems when we try to test launch file using
+    `roslaunch_add_file_check`
+
+    - add roslaunch_add_file_check tests
+
+    - run_depends on package, not meta-package
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_ros/issues/30'
+  title: fetch_depth_layer consumes cpu even when costmaps are shutdown
+  body: |
+    Should implement activate/deactivate like the underlying voxel layer.
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_ros'
+  labels:
+    - bug

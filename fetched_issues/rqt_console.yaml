@@ -1,0 +1,11 @@
+- url: 'https://github.com/ros-visualization/rqt_console/pull/9'
+  title: remove unnecessary find_package call
+  body: "Follow up of #8.\r\n\r\nThere is no build dependency on `rcl_interfaces` and therefore the released package fails to build: http://build.ros2.org/view/Cbin_uB64/job/Cbin_uB64__rqt_console__ubuntu_bionic_amd64__binary/1/\r\n\r\nThere is no need to `find_package` that dependency in CMake."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_console'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_console/pull/8'
+  title: porting rqt_console to ros2
+  body: "This ports rqt_console to ros2\r\n\r\nThis port uses the log msg defined here: https://github.com/ros2/rcl_interfaces/blob/dc61c47dca17e2ee5f8f30993054c5c75a050ea3/rcl_interfaces/msg/Log.msg\r\n\r\nLog msg pr: https://github.com/ros2/rcl_interfaces/pull/53\r\nissue: https://github.com/ros2/rcl_interfaces/issues/50\r\n\r\nIt also depends on: https://github.com/ros-visualization/rqt/pull/161"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_console'
+  labels: []

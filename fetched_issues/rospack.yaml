@@ -1,0 +1,613 @@
+- url: 'https://github.com/ros/rospack/pull/97'
+  title: Add ros_environment as dependency
+  body: >-
+    Add ros_environment as run_dependency as on branch lunar-devel, as it is
+    needed for `rospack list-names` to work. See also
+    https://github.com/ros/rospack/commit/70eac5dec07311f9cacccddb301a8bc9b4efb671
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/issues/95'
+  title: '"Unsupported Pickle Protocol: 4" when calling rospack depends returning '
+  body: "Slowly working my way through the ROS tutorials. I followed the install instructions for Ubuntu 16.04 here (http://wiki.ros.org/kinetic/Installation/Ubuntu) and all seemed to go ok. After creating the workspace and a beginner_tutorials package, I tried following the tutorial by running `rospack depends1 beginner_tutorials` but this failed giving me the following error:\r\n\r\n```\r\nTraceback (most recent call last):\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/rospack.py\", line 59, in init_rospack_interface\r\n    lookup = _get_default_RosdepLookup(Options())\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/main.py\", line 130, in _get_default_RosdepLookup\r\n    verbose=options.verbose)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 633, in create_default\r\n    sources = load_cached_sources_list(sources_cache_dir=sources_cache_dir, verbose=verbose)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 533, in load_cached_sources_list\r\n    return parse_sources_data(cache_data, origin=cache_index, model=model)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 388, in parse_sources_data\r\n    raise InvalidData('line:\\n\\t%s\\n%s' % (line, e), origin=origin)\r\nrosdep2.core.InvalidData: line:\r\n\tyaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/osx-homebrew.yaml osx\r\nunsupported pickle protocol: 4\r\nTraceback (most recent call last):\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/rospack.py\", line 59, in init_rospack_interface\r\n    lookup = _get_default_RosdepLookup(Options())\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/main.py\", line 130, in _get_default_RosdepLookup\r\n    verbose=options.verbose)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 633, in create_default\r\n    sources = load_cached_sources_list(sources_cache_dir=sources_cache_dir, verbose=verbose)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 533, in load_cached_sources_list\r\n    return parse_sources_data(cache_data, origin=cache_index, model=model)\r\n  File \"/usr/lib/python2.7/dist-packages/rosdep2/sources_list.py\", line 388, in parse_sources_data\r\n    raise InvalidData('line:\\n\\t%s\\n%s' % (line, e), origin=origin)\r\nrosdep2.core.InvalidData: line:\r\n\tyaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/osx-homebrew.yaml osx\r\nunsupported pickle protocol: 4\r\n[rospack] Error: could not call python function 'rosdep2.rospack.init_rospack_interface'\r\n```\r\nGoogling it hasn't turned up anything useful. Apparently it could be some kind of python2 vs python3 issue but I'm not sure. Any thoughts?"
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros/rospack/pull/94'
+  title: Add delete whitespace settings for backward compatibility
+  body: "From this commit (https://github.com/ros/rospack/commit/cc463fa683ca4cfd79cfe71b73e1ca2ef13e4ae3), \r\nWhitespace is no longer erased. \r\n\r\nFor instance,  \r\n```\r\n<package>\r\n  <name>\r\n    jsk_interactive_marker\r\n  </name>\r\n  <description>\r\n    jsk interactive markers\r\n  </description>\r\n</package>\r\n```\r\n\r\nPrevious result of ```rospack plugins``` is following\r\n\r\n```\r\nroot@f9a401aa8506:/ros_ws/src/rospack# rospack plugins --attrib=plugin rviz\r\njsk_rviz_plugins /ros_ws/src/jsk_visualization/jsk_rviz_plugins/plugin_description.xml\r\njsk_interactive_marker /ros_ws/src/jsk_visualization/jsk_interactive_markers/jsk_interactive_marker/plugin_description.xml\r\nrviz /opt/ros/lunar/share/rviz/plugin_description.xml\r\n```\r\n\r\nBut, the result of current master is folllowing\r\n\r\n```\r\nroot@f9a401aa8506:/ros_ws/src/rospack# rospack plugins --attrib=plugin rviz\r\njsk_rviz_plugins /ros_ws/src/jsk_visualization/jsk_rviz_plugins/plugin_description.xml\r\n\r\n    jsk_interactive_marker\r\n   /ros_ws/src/jsk_visualization/jsk_interactive_markers/jsk_interactive_marker/plugin_description.xml\r\nrviz /opt/ros/lunar/share/rviz/plugin_description.xml\r\n```\r\nThis PR makes this behavior the same as before.\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rospack/pull/91'
+  title: enable to run rosstack depends for wetpackages
+  body: >-
+    with out this PR, 
+
+    ```
+            $ rospack depends image_common
+            [rospack] Error: no such package image_common
+    ```
+
+    this is ok, but 
+
+    ```
+            $ rosstack depends image_common
+            [rosstack] Error: stack 'image_common' depends on non-existent package 'camera_calibration_parsers' and rosdep claims that it is not a system dependency. Check the ROS_PACKAGE_PATH or try calling 'rosdep update'
+    ```
+
+    is not an expected behavior. Although this is `rosstack` command, but should
+    be work with `catkin` `metapackage`.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/pull/88'
+  title: add run_depend on ros_environment
+  body: >-
+    This package only works properly if the ROS environment variables have been
+    set. (https://github.com/ros/ros/issues/156)
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/rospack/issues/86'
+  title: '$rospack find       throws exception error '
+  body: "rospack find is giving runtime errors on my beaglebone board. Other rospack commands are running fine like rospack depends.\r\nHere is the screenshot  \r\n\r\n![](https://user-images.githubusercontent.com/18480929/34484604-b611f686-efeb-11e7-8621-44a05a6b5f4b.jpg)\r\nand here is the error message : \r\ndebian@beaglebone:~/catkin_ws$ rospack find\r\nterminate called after throwing an instance of 'rospack::Exception'\r\n  what():  error parsing manifest of package class_loader at /home/debian/ros_catkin_ws/install_isolated/share/class_loader/package.xml\r\nAborted\r\n\r\n\r\nalso after writing $rosrun and pressing tab it is throwing exception error written below :\r\n\r\ndebian@beaglebone:~/catkin_ws$ rosrun terminate called after throwing an instance of 'rospack::Exception'\r\n  what():  error parsing manifest of package class_loader at /home/debian/ros_catkin_ws/install_isolated/share/class_loader/package.xml\r\n\r\n\r\nalthough $ rosrun <pkg_name> <node_name> is running completely fine when typing the whole command without using tab \r\nwith using tab the console is like this ;\r\n\r\ndebian@beaglebone:~/catkin_ws$ rosrun ros_o3d_wall_f find: '': No such file or directory\r\no3d-find: '': No such file or directory\r\nfind: '': No such file or directory\r\n\r\no3d-pub  o3d-sub  \r\n \r\nhere i pressed tab after $rosrun ros_o3d_wall_f . And then there was this line added \"find: no such file or directory\" then again i pressed tab and line added was o3d-find: no such file or directory and when i pressed tab for the third time it should me the two nodes o3d -pub and o3d-sub. \r\ncan someone explain me this anomalous behavior. \r\ni  have installed ros on my board from source files as apt-get repository was unable to find it.  "
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - duplicate
+    - more-information-needed
+- url: 'https://github.com/ros/rospack/pull/76'
+  title: License check for individual package dependency or all ROS packages
+  body: "rospack depends --license  <package name> \r\nrospack depends --license --csv  <package name> \r\nrospack list-licenses\r\nrospack list-licenses --csv >license.csv \r\n"
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - more-information-needed
+- url: 'https://github.com/ros/rospack/pull/70'
+  title: Fixed inverted result code check in new TinyXML-2 code
+  body: "```\r\n$ rospack profile       \r\nterminate called after throwing an instance of 'rospack::Exception'\r\n  what():  error parsing manifest of package rviz at /usr/share/ros_packages/rviz/package.xml\r\n```\r\n\r\nActually XMLDocument::LoadFile returned XML_SUCCESS (== 0), but the current implementation throws an exception if LoadFile returns 0."
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rospack/issues/63'
+  title: rospack depends on rosdep
+  body: >
+    There's some discussion here:
+    https://github.com/ros/rospack/issues/5#issuecomment-12639101
+
+
+    And I can't actually find any instances of rosdep being needed by this code:
+    https://github.com/ros/rospack/search?q=rosdep&type=Code
+
+
+    Is the dependency completely vestigial at this point? If so, can it be
+    removed?
+
+
+    Our deployed robots are not development platforms; rosdep should not be
+    necessary as a runtime dependency of ROS; we'd like to eliminate having to
+    install and initialize it.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - question
+- url: 'https://github.com/ros/rospack/pull/59'
+  title: 'Fix memory leak in Rosstackage::addStackage'
+  body: >
+    This is a quick non-intrusive fix for a memory leak. Would be better to use
+    a shared_pointer or something that way.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rospack/pull/56'
+  title: '[In progress] Add license feature'
+  body: >
+    I open a PR to ask for comments although work is in progress.
+
+    I'm adding a command that returns the license of the dependency of a
+    package.
+
+
+    The example looks as the following (I know this needs lots of polish):
+
+
+    ```
+
+    $ rospack depends1 navfn
+
+    costmap_2d
+
+    geometry_msgs
+
+    nav_core
+
+    nav_msgs
+
+    pcl_conversions
+
+    pcl_ros
+
+    pluginlib
+
+    rosconsole
+
+    roscpp
+
+    tf
+
+    visualization_msgs
+
+
+    $ rospack license navfn
+
+    costmap_2d  BSD 
+
+    geometry_msgs   BSD 
+
+    nav_core    BSD 
+
+    nav_msgs    BSD 
+
+    pcl_conversions BSD 
+
+    pcl_ros BSD 
+
+    pluginlib   BSD Boost Software License 
+
+    rosconsole  BSD 
+
+    roscpp  BSD 
+
+    tf  BSD 
+
+    visualization_msgs  BSD 
+
+    ```
+
+
+    Below is just my note.
+
+
+    Requirement
+
+    - Implemented as upstream as possible --> so `rospack` should be a good
+    place?
+
+    - Multi-platform, not just on Ubuntu  --> Need ROS/Catkin specific tool that
+    can handle `package.xml` where the license is declared?
+
+    - Must work with all ROS packages whether it's deb or source.
+
+    - Make it as both 1) public API and 2) commandline option.
+
+    - No breakage for existing api.
+
+
+    Research for existing tools
+
+    - `debtree`: Great tool for speculating pkg dependency, with commanline
+    output and even GUi output. We can aim its output.
+
+    - `ldd`: Only works with libs.
+
+    - `Dependency Walker`: Only works on MS Windows.
+
+    - `binscan`: only works for binaries.
+
+    - `ELF Library Viewer`: only works for ELF executables.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - requires-changes
+- url: 'https://github.com/ros/rospack/issues/45'
+  title: 'nao_logger.py  ImportErro: No module named qi'
+  body: >
+    Hey guys, I am trying to connect my nao via remote pc to ros and am running
+    into some issues. It seems that I have my python path set correctly using
+
+
+    export
+    PYTHONPATH=~/pynaoqi/pynaoqi-python-2.7-naoqi-1.14-linux32/:$PYTHONPATH
+
+
+    and when I run individual nodes it seems to connect to them fine except for
+    the nao_logger.py node upon which I receive the following error.
+
+
+    Traceback (most recent call last): File
+    "/opt/ros/hydro/lib/nao_driver/nao_logger.py", line 24, in <module> import
+    qi
+
+
+    does anyone know what is causing this and how to fix it? Thank you so much.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - invalid
+- url: 'https://github.com/ros/rospack/issues/41'
+  title: deps-manifests doesn't work on hydro
+  body: >
+    I have a problem on Hydro running on Ubuntu 12.04
+
+    I tried installing ar_pose on seperate rosbuild workspace, but I had issues.
+
+    It seems like rospack deps-manifests is not working.
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/site.py", line 562, in <module>
+        main()
+      File "/usr/lib/python2.7/site.py", line 544, in main
+        known_paths = addusersitepackages(known_paths)
+      File "/usr/lib/python2.7/site.py", line 271, in addusersitepackages
+        user_site = getusersitepackages()
+      File "/usr/lib/python2.7/site.py", line 246, in getusersitepackages
+        user_base = getuserbase() # this will also set USER_BASE
+      File "/usr/lib/python2.7/site.py", line 236, in getuserbase
+        USER_BASE = get_config_var('userbase')
+      File "/usr/lib/python2.7/sysconfig.py", line 577, in get_config_var
+        return get_config_vars().get(name)
+      File "/usr/lib/python2.7/sysconfig.py", line 476, in get_config_vars
+        _init_posix(_CONFIG_VARS)
+      File "/usr/lib/python2.7/sysconfig.py", line 337, in _init_posix
+        makefile = _get_makefile_filename()
+      File "/usr/lib/python2.7/sysconfig.py", line 331, in _get_makefile_filename
+        return os.path.join(get_path('platstdlib').replace("/usr/local","/usr",1), "config" + (sys.pydebug and "_d" or ""), "Makefile")
+    AttributeError: 'module' object has no attribute 'pydebug'
+
+    ```
+
+
+    Problem is the when I open python I can access pydebug from sys module.
+
+    I changed this file /usr/lib/python2.7/sysconfig.py to print sys.executable
+    and it's running correct python from /usr/bin/python, from which I can
+    access pydebug.
+
+
+    I did a small work around and hardcoded 'False' instead of sys.pydebug, but
+    after I receive other error
+
+
+    ```
+         import subprocess
+       File "/usr/lib/python2.7/subprocess.py", line 429, in <module>
+          import select
+      ImportError: No module named select
+      Error in sys.excepthook:
+      Traceback (most recent call last):
+        File "/usr/lib/python2.7/dist-packages/apport_python_hook.py", line 63, in apport_excepthook
+          from io import StringIO
+        File "/usr/lib/python2.7/io.py", line 60, in <module>
+          import _io
+      ImportError: /usr/lib/python2.7/lib-dynload/_io.so: undefined symbol: PyUnicodeUCS4_EncodeUTF32
+
+      Original exception was:
+      Traceback (most recent call last):
+        File "/usr/lib/pymodules/python2.7/rosdep2/__init__.py", line 40, in <module>
+          from .installers import InstallerContext, Installer, \
+        File "/usr/lib/pymodules/python2.7/rosdep2/installers.py", line 32, in <module>
+          import subprocess
+        File "/usr/lib/python2.7/subprocess.py", line 429, in <module>
+          import select
+      ImportError: No module named select
+      [rospack] Error: could not find python module 'rosdep2.rospack'. is rosdep up-to-date (at least 0.10.4)?
+    ```
+
+
+    but my version of rosdep is 0.10.27, so I have no idea what is wrong with
+    this.
+
+
+    Thank in advance
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - invalid
+- url: 'https://github.com/ros/rospack/pull/36'
+  title: Add missing run_depend on roslib
+  body: >
+    rospack doesn't generate any error if roslib isn't installed, but it is
+    unable to find any packages without it
+
+
+    I would appreciate a backport to hydro and groovy for this one
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - invalid
+- url: 'https://github.com/ros/rospack/issues/22'
+  title: Will the rospack c++ API be updated to process catkin tags?
+  body: >
+    I'd like to be able to get a list of run/exec depends from a catkin
+    package.xml, but the rospack c++ API doesn't provide this abstraction. Is
+    the only option to parse the package.xml files manually?
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/issues/18'
+  title: >-
+    rospack depends-indent -- If there is a cycle, only prints error but not
+    packages (which would be useful for debugging)
+  body: >
+    Per this
+    [post](https://github.com/ros/rospack/issues/2#issuecomment-20201122), I
+    tried out `rospack depends-indent` in ROS Fuerte, but it did not print out a
+    list of packages if there was a cycle.
+
+
+    The usage outlined by Brian Gerkey would definitely help in this situation.
+
+
+    Package: ros-fuerte-rospack (2.0.13-1precise-20120908-1622-+0000)
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/issues/16'
+  title: The name of depends1 command argument is ridiculous
+  body: >
+    I'm a new ROS user, but a programmer for many years, and now that I'm
+    learning ROS I find a command call like:
+
+
+    rospack depends1 .... 
+
+
+    For any user is not obvious that depends1 refers to inmediate dependencies,
+    a different attribute name is required.
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/pull/13'
+  title: 'add rostree, write package dependency as dot format'
+  body: ''
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/pull/12'
+  title: 'add depends-dot, replacement of rxdep'
+  body: >
+    Add depends-dot command in order to provide equivalent function of rxdeps
+    (http://www.ros.org/wiki/rxdeps).  use following command to see depends
+    tree:
+
+
+    rospack depends-dot roscpp | dot | xdot
+    -                                       
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/issues/6'
+  title: rospack depends geometry_msgs vs rosmsg packages Header
+  body: >
+    Hi,
+
+
+    I am using ROS Fuerte on Ubuntu 12.04 and I have some problem in
+    understanding the consistency of the output of the following two commands:
+
+
+    $rospack depends geometry_msgs:
+
+    <nothing>
+
+
+    $rosmsg packages Header
+
+    ...
+
+    gazebo_msgs
+
+    gazebo_plugins
+
+    geometry_msgs <--
+
+    hpPackage
+
+    ...
+
+
+    So geometry_msgs is using the Header message from std_msgs, but
+    geometry_msgs does not depend on std_msgs. One example of using the Header
+    message is geometry_msgs/TwistStamped:
+
+
+    $rosmsg show geometry_msgs/TwistStamped
+
+    std_msgs/Header header <--
+      uint32 seq
+      time stamp
+      string frame_id
+    geometry_msgs/Twist twist
+      geometry_msgs/Vector3 linear
+        float64 x
+        float64 y
+        float64 z
+      geometry_msgs/Vector3 angular
+        float64 x
+        float64 y
+        float64 z
+
+    Isn't it a bug?
+
+
+    Best Regards, Stephan
+
+
+    p.s.: We had a discussion on answers.ros.org and came to the conclusion,
+    that we should file this issue here. The address to the discussion on
+    answers.ros.org is
+    http://answers.ros.org/question/53333/rospack-depends-geometry_msgs-vs-rosmsg-packages-header
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros/rospack/issues/4'
+  title: 'rospack segfaults SIGSEGV on Groovy, Precise, 32b'
+  body: >
+    Originally asked here (http://goo.gl/JKJn3), and I can confirm this happens
+    on my fresh-installed `Precise` 32 bit with `Groovy` (on VMWare Player).
+    I've never seen this has happened on 64b machines.
+
+
+    Setting up ros-groovy-rospack (2.1.15-0precise-20121225-1325-+0000)
+
+
+    ```
+
+    rosuserin@precise:~$ uname -a
+
+    Linux ubuntu 3.2.0-29-generic-pae #46-Ubuntu SMP Fri Jul 27 17:25:43 UTC
+    2012 i686 i686 i386 GNU/Linux
+
+    rosuserin@precise:~$ sudo apt-get update & apt-get dist-upgrade 
+
+    rosuserin@precise:~$ echo "source /opt/ros/groovy/setup.bash" >> ~/.bashrc
+
+    rosuserin@precise:~$ . ~/.bashrc
+
+    rosuserin@precise:~$ rospack depends1 roscpp
+
+    Segmentation fault (core dumped)
+
+    rosuserin@precise:~$ gdb rospack
+
+    GNU gdb (Ubuntu/Linaro 7.4-2012.04-0ubuntu2) 7.4-2012.04
+
+    Copyright (C) 2012 Free Software Foundation, Inc.
+
+    License GPLv3+: GNU GPL version 3 or later
+    <http://gnu.org/licenses/gpl.html>
+
+    This is free software: you are free to change and redistribute it.
+
+    There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+
+    and "show warranty" for details.
+
+    This GDB was configured as "i686-linux-gnu".
+
+    For bug reporting instructions, please see:
+
+    <http://bugs.launchpad.net/gdb-linaro/>...
+
+    Reading symbols from /opt/ros/groovy/bin/rospack...(no debugging symbols
+    found)...done.
+
+    (gdb) run depends1 roscpp
+
+    Starting program: /opt/ros/groovy/bin/rospack depends1 roscpp
+
+    [Thread debugging using libthread_db enabled]
+
+    Using host libthread_db library "/lib/i386-linux-gnu/libthread_db.so.1".
+
+
+    Program received signal SIGSEGV, Segmentation fault.
+
+    0xb7a29112 in PyObject_IsTrue () from /usr/lib/libpython2.7.so.1.0
+
+    (gdb) bt
+
+    #0  0xb7a29112 in PyObject_IsTrue () from /usr/lib/libpython2.7.so.1.0
+
+    #1  0xb7fabc40 in rospack::Rosstackage::isSysPackage(std::string const&) ()
+    from /opt/ros/groovy/lib/librospack.so
+
+    #2  0xb7fac8ee in
+    rospack::Rosstackage::computeDepsInternal(rospack::Stackage*, bool,
+    std::string const&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #3  0xb7faccb6 in rospack::Rosstackage::computeDeps(rospack::Stackage*,
+    bool) () from /opt/ros/groovy/lib/librospack.so
+
+    #4  0xb7fac8b9 in
+    rospack::Rosstackage::computeDepsInternal(rospack::Stackage*, bool,
+    std::string const&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #5  0xb7faccb6 in rospack::Rosstackage::computeDeps(rospack::Stackage*,
+    bool) () from /opt/ros/groovy/lib/librospack.so
+
+    #6  0xb7fac8b9 in
+    rospack::Rosstackage::computeDepsInternal(rospack::Stackage*, bool,
+    std::string const&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #7  0xb7faccb6 in rospack::Rosstackage::computeDeps(rospack::Stackage*,
+    bool) () from /opt/ros/groovy/lib/librospack.so
+
+    #8  0xb7fac8b9 in
+    rospack::Rosstackage::computeDepsInternal(rospack::Stackage*, bool,
+    std::string const&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #9  0xb7faccb6 in rospack::Rosstackage::computeDeps(rospack::Stackage*,
+    bool) () from /opt/ros/groovy/lib/librospack.so
+
+    #10 0xb7fac8b9 in
+    rospack::Rosstackage::computeDepsInternal(rospack::Stackage*, bool,
+    std::string const&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #11 0xb7faccb6 in rospack::Rosstackage::computeDeps(rospack::Stackage*,
+    bool) () from /opt/ros/groovy/lib/librospack.so
+
+    #12 0xb7fadbdf in rospack::Rosstackage::depsDetail(std::string const&, bool,
+    std::vector<rospack::Stackage*, std::allocator<rospack::Stackage*> >&) ()
+    from /opt/ros/groovy/lib/librospack.so
+
+    #13 0xb7fb29e2 in rospack::Rosstackage::deps(std::string const&, bool,
+    std::vector<std::string, std::allocator<std::string> >&)
+        () from /opt/ros/groovy/lib/librospack.so
+    #14 0xb7fc2496 in rospack::rospack_run(int, char**, rospack::Rosstackage&,
+    std::string&) ()
+       from /opt/ros/groovy/lib/librospack.so
+    #15 0x0804892e in main ()
+
+    ```
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []
+- url: 'https://github.com/ros/rospack/issues/2'
+  title: add circular dependency detection/help (04/08/12)
+  body: >
+    Migrated from code.ros.org, issue #3919 
+
+    Reported by:    tfoote
+
+    https://code.ros.org/trac/ros/ticket/3919
+
+
+    Description 
+
+
+    Right now rospack just errors when the recursion depth is too deep. This
+    error could easily be extended to detect and print the full cycle of the
+    self recursion.
+
+
+    It would help people in this situation: 
+    http://answers.ros.org/question/12626/circular-dependency
+
+
+    Change History
+
+
+    follow-up: ↓ 2   Changed 9 months ago by gerkey 
+
+
+    priority changed from major to minor
+
+    status changed from new to assigned
+
+    type changed from defect to enhancement
+
+    Indeed, that would be useful. In the meantime, you can do something like
+
+
+    rospack deps-indent > foo
+
+    Ctrl-C it after a bit, then look at the file to try to figure out where
+    things go off the rails.
+
+     http://ros.org/doc/api/rospkg/html/rospack.html#rospack-depends-indent-package
+
+    in reply to: ↑ 1   Changed 9 months ago by gerkey 
+
+
+    Replying to gerkey:
+
+
+    {{{ rospack deps-indent > foo }}}
+
+
+    That should have a package name in it, e.g.:
+
+
+    rospack deps-indent my_package > foo
+  repo: 'https://api.github.com/repos/ros/rospack'
+  labels: []

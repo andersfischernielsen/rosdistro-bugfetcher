@@ -1,0 +1,10 @@
+- url: 'https://github.com/gbiggs/rtctree/pull/3'
+  title: omniORB.any is not attribute but package. Import first.
+  body: |
+    omniORB.any is not attribute but package. Import first.
+
+    Just added 
+    'import omniORB.any'
+    in utils.py
+  repo: 'https://api.github.com/repos/gbiggs/rtctree'
+  labels: []

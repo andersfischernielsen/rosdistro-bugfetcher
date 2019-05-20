@@ -1,0 +1,10 @@
+- url: 'https://github.com/AprilRobotics/apriltag/issues/15'
+  title: Homography NULL pointer under ARM architecture
+  body: "With @surirohit we have been working on [these](https://github.com/duckietown/apriltags3-py) Python bindings for your Apriltags3 library. We are building these for both x86 and arm architectures. We experience no issues with x86. However under arm (on a RPi), we get the following error when we try to access the homography of a detected April Tag:\r\n\r\n```\r\nTraceback (most recent call last):\r\n File \"apriltags3.py\", line 465, in <module>\r\n   tags = at_detector.detect(img, True, camera_params, parameters['sample_test']['tag_size'])\r\n File \"apriltags3.py\", line 360, in detect\r\n   homography =_matd_get_array(tag.H).copy()\r\n File \"apriltags3.py\", line 124, in _matd_get_array\r\n   mat_ptr.contents.data,\r\nValueError: NULL pointer access\r\nSegmentation fault\r\n```\r\nThe exact same code runs with no issue under Ubuntu on a standard Laptop PC with a 64bit Intel x86 processor.\r\n\r\nGiven that the issue is architecture-depended (x86 vs arm, 64bit vs 32bit) we suspect that this could potentially be an issue on your end that you might be interested in looking into."
+  repo: 'https://api.github.com/repos/AprilRobotics/apriltag'
+  labels: []
+- url: 'https://github.com/AprilRobotics/apriltag/pull/11'
+  title: CMake support
+  body: "This PR adds support for the CMake build system and pkg-config. This enables the library to be used in other CMake projects. I also added a `package.xml` with metadata about the library. It is commonly used by other build systems (e.g. catkin and colcon for ROS1 and ROS2) to track build dependencies.\r\n\r\nI used to maintain this in a separate git repository at https://github.com/christianrauch/apriltag2 before the AprilTags library moved to a versioning system. I would like to have this merged upstream to ease updates of the library and the use in other build systems."
+  repo: 'https://api.github.com/repos/AprilRobotics/apriltag'
+  labels: []

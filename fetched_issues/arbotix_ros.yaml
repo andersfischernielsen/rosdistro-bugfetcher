@@ -1,0 +1,186 @@
+- url: 'https://github.com/vanadiumlabs/arbotix_ros/issues/42'
+  title: >-
+    ModuleNotFoundError: No module named 'ax12'.  when i "roslaunch
+    mrobot_description arbotix_mrobot_with_kinect.launch "
+  body: "g@g:~/catkin_ws$ roslaunch mrobot_description arbotix_mrobot_with_kinect.launch ... logging to /home/g/.ros/log/0767860a-efe0-11e8-a5fc-2cfda1bc2526/roslaunch-g-10554.log\r\nChecking log directory for disk usage. This may take awhile.\r\nPress Ctrl-C to interrupt\r\nDone checking log file disk usage. Usage is <1GB.\r\n\r\nstarted roslaunch server http://g:40353/\r\n\r\nSUMMARY\r\n========\r\n\r\nPARAMETERS\r\n * /arbotix/controllers/base_controller/Kd: 12\r\n * /arbotix/controllers/base_controller/Ki: 0\r\n * /arbotix/controllers/base_controller/Ko: 50\r\n * /arbotix/controllers/base_controller/Kp: 12\r\n * /arbotix/controllers/base_controller/accel_limit: 1.0\r\n * /arbotix/controllers/base_controller/base_frame_id: base_footprint\r\n * /arbotix/controllers/base_controller/base_width: 0.26\r\n * /arbotix/controllers/base_controller/ticks_meter: 4100\r\n * /arbotix/controllers/base_controller/type: diff_controller\r\n * /arbotix/sim: True\r\n * /robot_description: <?xml version=\"1....\r\n * /robot_state_publisher/publish_frequency: 20.0\r\n * /rosdistro: kinetic\r\n * /rosversion: 1.12.14\r\n * /use_gui: False\r\n * /use_sim_time: False\r\n\r\nNODES\r\n  /\r\n    arbotix (arbotix_python/arbotix_driver)\r\n    joint_state_publisher (joint_state_publisher/joint_state_publisher)\r\n    robot_state_publisher (robot_state_publisher/robot_state_publisher)\r\n    rviz (rviz/rviz)\r\n\r\nauto-starting new master\r\nprocess[master]: started with pid [10567]\r\nROS_MASTER_URI=http://localhost:11311\r\n\r\nsetting /run_id to 0767860a-efe0-11e8-a5fc-2cfda1bc2526\r\nprocess[rosout-1]: started with pid [10580]\r\nstarted core service [/rosout]\r\nprocess[arbotix-2]: started with pid [10598]\r\nprocess[joint_state_publisher-3]: started with pid [10599]\r\nprocess[robot_state_publisher-4]: started with pid [10600]\r\nprocess[rviz-5]: started with pid [10601]\r\nTraceback (most recent call last):\r\n  File \"/home/g/catkin_ws/src/arbotix_ros/arbotix_python/bin/arbotix_driver\", line 36, in <module>\r\n    from arbotix_python.arbotix import ArbotiX, ArbotiXException\r\n  File \"/home/g/catkin_ws/src/arbotix_ros/arbotix_python/src/arbotix_python/arbotix.py\", line 34, in <module>\r\n    from ax12 import *\r\nModuleNotFoundError: No module named 'ax12'\r\n[arbotix-2] process has died [pid 10598, exit code 1, cmd /home/g/catkin_ws/src/arbotix_ros/arbotix_python/bin/arbotix_driver __name:=arbotix __log:=/home/g/.ros/log/0767860a-efe0-11e8-a5fc-2cfda1bc2526/arbotix-2.log].\r\nlog file: /home/g/.ros/log/0767860a-efe0-11e8-a5fc-2cfda1bc2526/arbotix-2*.log\r\n================================================================================REQUIRED process [rviz-5] has died!\r\nprocess has finished cleanly\r\nlog file: /home/g/.ros/log/0767860a-efe0-11e8-a5fc-2cfda1bc2526/rviz-5*.log\r\nInitiating shutdown!\r\n================================================================================\r\n[rviz-5] killing on exit\r\n[joint_state_publisher-3] killing on exit\r\n[robot_state_publisher-4] killing on exit\r\n[rosout-1] killing on exit\r\n[master] killing on exit\r\nshutting down processing monitor...\r\n... shutting down processing monitor complete\r\ndone\r\n"
+  repo: 'https://api.github.com/repos/vanadiumlabs/arbotix_ros'
+  labels: []
+- url: 'https://github.com/vanadiumlabs/arbotix_ros/issues/41'
+  title: Unable to install...
+  body: "Any idea why:\r\n\r\n```\r\n sudo apt-get install ros-indigo-arbotix-*\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nE: Unable to locate package ros-indigo-arbotix-*\r\nE: Couldn't find any package by glob 'ros-indigo-arbotix-*'\r\nE: Couldn't find any package by regex 'ros-indigo-arbotix-*'\r\npitosalas@ubuntu:~$ \r\n\r\n```\r\n( modified by adding -* because I had misread instructions. But still doesn't work..)"
+  repo: 'https://api.github.com/repos/vanadiumlabs/arbotix_ros'
+  labels: []
+- url: 'https://github.com/vanadiumlabs/arbotix_ros/issues/18'
+  title: arbotix_terminal only supports max of 18 servos
+  body: >
+    I am trying out a new MX-28T servo and the arbotix_terminal app does not
+    list its ID when issuing the 'ls' command, even when the servo is the only
+    one on the bus.  I am running the latest Debian version of the arbotix stack
+    under ROS Hydro and Ubuntu 12.04.
+  repo: 'https://api.github.com/repos/vanadiumlabs/arbotix_ros'
+  labels:
+    - bug
+- url: 'https://github.com/vanadiumlabs/arbotix_ros/issues/17'
+  title: Odd start/stop behavior when following Cartesian path
+  body: >
+    I am using the Arbotix trajectory action controller in fake mode with a
+    6-dof arm to test the compute_cartesian_path() Python function in MoveIt.  I
+    set two waypoints in addition to the start pose and end pose (which are the
+    same).  The Arbotix trajectory controller does a nice job of following the
+    straight line paths except at the beginning and end of the trajectory where
+    it causes the gripper to do a little "zig-zag".  If I run MoveIt in pure
+    demo mode without the ArbotiX controller, the trajectories do not display
+    this zig-zag.
+
+
+    Here is a video demonstrating the phenomenon. 
+
+
+    https://www.youtube.com/watch?v=ns6jrEreruU
+
+     My test script is included below.
+
+    ```
+
+    #!/usr/bin/env python
+
+
+    import rospy, sys
+
+    import moveit_commander
+
+    from moveit_commander import MoveGroupCommander
+
+    from geometry_msgs.msg import Pose
+
+    from copy import deepcopy
+
+
+    class MoveItDemo:
+        def __init__(self):
+            # Initialize the move_group API
+            moveit_commander.roscpp_initialize(sys.argv)
+
+            # Initialize the ROS node
+            rospy.init_node('moveit_demo', anonymous=True)
+
+            cartesian = rospy.get_param('~cartesian', True)
+
+            # Connect to the right_arm move group
+            right_arm = MoveGroupCommander('right_arm')
+
+            # Allow replanning to increase the odds of a solution
+            right_arm.allow_replanning(True)
+
+            # Set the right arm reference frame
+            right_arm.set_pose_reference_frame('base_footprint')
+
+            # Allow some leeway in position(meters) and orientation (radians)
+            right_arm.set_goal_position_tolerance(0.01)
+            right_arm.set_goal_orientation_tolerance(0.1)
+
+            # Get the name of the end-effector link
+            end_effector_link = right_arm.get_end_effector_link()
+
+            # Start in the "resting" configuration stored in the SRDF file
+            right_arm.set_named_target('resting')
+
+            # Plan and execute a trajectory to the goal configuration
+            right_arm.go()
+            rospy.sleep(2)
+
+            # Remember this pose so we can add it as a waypoint
+            resting_pose = right_arm.get_current_pose(end_effector_link).pose
+
+            # Set the end pose to be the same as the resting pose
+            end_pose = deepcopy(resting_pose)
+
+            # Initialize the waypoints list
+            waypoints = []
+
+            # Set the first waypoint to be the starting pose
+            wpose = deepcopy(resting_pose)
+
+            if cartesian:
+                # Append the pose to the waypoints list
+                waypoints.append(deepcopy(wpose))
+
+            # Set the next waypoint forward and up
+            wpose.position.x += 0.2
+            wpose.position.z += 0.2
+
+            if cartesian:
+                # Append the pose to the waypoints list
+                waypoints.append(deepcopy(wpose))
+            else:
+                right_arm.set_pose_target(wpose)
+                right_arm.go()
+                rospy.sleep(2)
+
+            # Set the next waypoint to the right
+            wpose.position.x -= 0.195701
+            wpose.position.y -= 0.18997
+            wpose.position.z += 0.02914
+
+            if cartesian:
+                # Append the pose to the waypoints list
+                waypoints.append(deepcopy(wpose))
+            else:
+                right_arm.set_pose_target(wpose)
+                right_arm.go()
+                rospy.sleep(2)
+
+            # Set the final pose to be the resting pose
+            wpose = deepcopy(end_pose)
+
+            if cartesian:
+                # Append the pose to the waypoints list
+                waypoints.append(deepcopy(wpose))
+            else:
+                right_arm.set_pose_target(wpose)
+                right_arm.go()
+                rospy.sleep(2)
+
+            fraction = 0.0
+            maxtries = 500
+            attempts = 0
+
+            right_arm.set_start_state_to_current_state()
+
+            # Plan the Carteisan path connecting the waypoints
+            while fraction < 1.0 and attempts < maxtries:
+                (plan, fraction) = right_arm.compute_cartesian_path (
+                                        waypoints,   # waypoints to follow
+                                        0.01,        # eef_step
+                                        0.0)        # jump_threshold            
+                attempts += 1
+                if attempts % 100 == 0:
+                    rospy.loginfo("Still trying after " + str(attempts) + " attempts...")
+
+            # Plan and execute a trajectory to the goal configuration
+            if fraction == 1.0:
+                rospy.loginfo("Path computed successfully.  Moving the arm.")  
+                right_arm.execute(plan)
+            else:
+                rospy.loginfo("Path planning failed with only " + str(fraction) + " success after " + str(maxtries) + " attempts.")  
+
+            # Shut down MoveIt cleanly
+            moveit_commander.roscpp_shutdown()
+
+            # Exit MoveIt
+            moveit_commander.os._exit(0)
+
+    if __name__ == "__main__":
+        try:
+            MoveItDemo()
+        except rospy.ROSInterruptException:
+            pass
+    ```
+  repo: 'https://api.github.com/repos/vanadiumlabs/arbotix_ros'
+  labels: []
+- url: 'https://github.com/vanadiumlabs/arbotix_ros/issues/2'
+  title: C++ Message Include Headers are Missing in Debs
+  body: ''
+  repo: 'https://api.github.com/repos/vanadiumlabs/arbotix_ros'
+  labels:
+    - bug

@@ -1,0 +1,187 @@
+- url: 'https://github.com/ros/gencpp/issues/37'
+  title: compiler warning for time arrays
+  body: "Consider the following message spec:\r\n```\r\ntime[] foo\r\n```\r\nThe C++ code generated for this message generates a warning which concerns me, as it indicates invalid code (the actual warning is much longer, cf. instructions below to reproduce):\r\n```\r\n/usr/lib64/ros/include/ros/serialization.h:451:13: warning: ‘void* memcpy(void*, const void*, size_t)’\r\nwriting to an object of non-trivially copyable type ‘__gnu_cxx::__alloc_traits<std::allocator<ros::Time>,\r\nros::Time>::value_type’ {aka ‘class ros::Time’}; use copy-assignment or copy-initialization instead [-Wclass-memaccess]\r\n       memcpy(&v.front(), stream.advance(data_len), data_len);\r\n```\r\nIt seems that some type trait is missing for such time arrays, such that the proper VectorSerializer is chosen.\r\n\r\nYou can find an example repository at https://github.com/timn/ros-timebug_msgs. I have tried this with ROS Kinetic. Once it is built in a workspace it prints the warning."
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels:
+    - bug
+- url: 'https://github.com/ros/gencpp/issues/36'
+  title: Expose mapping of constant names as strings in generated header
+  body: "For full introspection, Python is typically the better answer, but we have some cases where we'd like to be able to reference constant names for example in rosparam yaml, or transform variables into the appropriate constants for the purposes of emitting more helpful logs / diagnostics—\_from the context of a compiled roscpp binary.\r\n\r\nA couple of possible ways this might be implemented:\r\n\r\n- For integer constants only (since they're already dealt with separately anyway), a function is generated which returns a `std::map` of constant names to `int64_t` values, and any constants which can't be upcast to int64_t (eg, uint64_t) are out of luck.\r\n- Some fancy logic examines the integer constants within a given message and determines what single type can safely return all of them (still won't cover a message containing uint64 and int64 constants).\r\n- A function is generated which returns a std::map of constant names to `boost::any` values (we already depend on `boost::shared_ptr` and `boost::array` here, though depending on `boost::any` would be new).\r\n- A function is generated which returns a vector<string> of just the constant names, and a separate templated getConstantValue function (or suite of functions) is generated which return the value for a given constant name— making it the responsibility of the caller to specify the type they expect (under the hood this would likely be a cascaded-if implementation— not the most efficient, but the list of constants is typically short anyway, and in most uses this will run only at initialization, not runtime).\r\n\r\nRegardless of approach, none of this should have a binary-size cost since the unused function will just be optimized away. There will be some impact to compilation time (particularly if the `boost::any` approach is chosen), but I wouldn't expect it to be significant—\_if there's concern about this, I can do some measuring in order to put a number on it.\r\n\r\nWould a PR for this change be welcome? Preferences on approach to take?"
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/gencpp/pull/32'
+  title: Add plugin support for generated C++ message headers
+  body: "This pull requests adds plugin support to gencpp. It is motivated by [the plugin feature in Eigen](https://eigen.tuxfamily.org/dox/TopicCustomizing_Plugins.html) to extend the `MatrixBase` class, but uses a slightly different approach. Please consider it as a proof-of-concept, a request for comments and a starting point for discussions.\r\n\r\nIt is basically a combination of two patches:\r\n\r\n1. The possibility to provide user-defined message headers for all or a subset of messages and skip generation completely. Check https://github.com/orocos/kdl_msgs for an example use case, where we completely replace the generated struct with a C++11 template alias for a native KDL type.\r\n\r\n2. The possibility to provide a user-defined plugin header. Given that the message type is `foo_msgs/Bar`, a header placed at `include/foo_msgs/plugin/Bar.h` inside the package's source folder can define macros to\r\n   - add custom constructors, member functions or even data members to generated structs (`FOO_MSGS_MESSAGE_PLUGIN_CLASS_BODY`)\r\n   - override the default set of constructors (`FOO_MSGS_MESSAGE_BAR_PLUGIN_CONSTRUCTOR`)\r\n   - override the default serializer (`FOO_MSGS_MESSAGE_BAR_PLUGIN_SERIALIZER`)\r\n   - override the default printer (`FOO_MSGS_MESSAGE_BAR_PLUGIN_PRINTER`)\r\n   - or simply include other useful headers\r\n\r\nIn any case, if none of the two additional files exists, the generated message header should be exactly the same as without the patch.\r\n\r\nOf course as a developer you have to know what you are doing to not break the expected message API or compatibility with other languages. There clearly are some limitations and caveats. The approach is kind of complementary to what is called [C++ type adaptation](http://wiki.ros.org/roscpp/Overview/MessagesSerializationAndAdaptingTypes#Adapting_C.2B-.2B-_Types) in the roscpp tutorials, where another, existing type is adapted to behave like a ROS message for publishing and subscribing, without identifying them. But in some cases extending or customizing an existing message type is more convenient than to adapt another type, especially because those extensions will immediately apply to nested instances, too.\r\n\r\nJust to make my point - not necessarily as a serious suggestion - here are some examples that could be applied to messages similar to the ones in [geometry_msgs](http://wiki.ros.org/geometry_msgs):\r\n\r\n- add a `Pose` constructor that initializes it with a `position` and `orientation` (C++11 has [list initialization](http://en.cppreference.com/w/cpp/language/list_initialization) as an alternative)\r\n- override the default constructor of a `Quaternion` with one that initializes the scalar component to 1 if desired (unit quaternion), or only for the `Transform` message\r\n- provide some basic math operators for vector- and matrix-like message types\r\n- provide `operator[]` for vectors or matrices\r\n- provide simple helper methods like `setZero()`, `isZero()`, `isValid()`, ...\r\n- modify the textual representation of messages for the console, e.g. adding the norm or RPY output for orientation quaternions\r\n\r\nOr, in case of [sensor_msgs](http://wiki.ros.org/sensor_msgs), additional headers like [image_encodings.h](https://github.com/ros/common_msgs/blob/jade-devel/sensor_msgs/include/sensor_msgs/image_encodings.h) could be included by default from the plugin header file.\r\n\r\nWhat I consider as less appropriate is to add conversion functions to and from other types that would add extra dependencies. A separate header file with free functions, like they already exist in various packages today, is the better choice for that purpose.\r\n\r\nI assume a similar mechanism could be applied to other generators like [genpy](http://wiki.ros.org/genpy), too, for the sake of consistency."
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/gencpp/pull/19'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels: []
+- url: 'https://github.com/ros/gencpp/issues/7'
+  title: SIGBUS on ARM hf
+  body: >
+    The dreaded serialization bugs attack again. Ref
+    http://answers.ros.org/question/71107/pandaboard-alignment-trap-when-using-tf/
+
+
+    My platform is a linaro ubuntu precise 12.10 on an odroid xu. The other
+    person with the issue is on the Pandaboard. Note that I don't get this error
+    on my Pandaboard with 12.04 and Fuerte.
+
+
+    Backtrace:
+
+
+    ```
+
+    Program received signal SIGBUS, Bus error.
+
+    [Switching to Thread 0xb1aff420 (LWP 14419)]
+
+    0xb6f65294 in void ros::serialization::VectorSerializer >, std::allocator >
+    >, void>::readros::serialization::IStream(ros::serialization::IStream&,
+    std::vector >, std::allocator > > >&) () from /opt/ros/groovy/lib/libtf.so
+
+    (gdb) bt
+
+    #0 0xb6f65294 in void ros::serialization::VectorSerializer >, std::allocator
+    > >, void>::readros::serialization::IStream(ros::serialization::IStream&,
+    std::vector >, std::allocator > > >&) () from /opt/ros/groovy/lib/libtf.so
+
+    #1 0xb6f65592 in
+    ros::SubscriptionCallbackHelperTboost::shared_ptr<tf::tfMessage_<std::allocator<void
+    > const> const&,
+    void>::deserialize(ros::SubscriptionCallbackHelperDeserializeParams const&)
+    ()
+
+    from /opt/ros/groovy/lib/libtf.so
+
+    #2 0xb6f0035e in ros::MessageDeserializer::deserialize() () from
+    /opt/ros/groovy/lib/libroscpp.so
+
+    #3 0xb6efa376 in ros::SubscriptionQueue::call() () from
+    /opt/ros/groovy/lib/libroscpp.so
+
+    #4 0xb6ec4070 in ros::CallbackQueue::callOneCB(ros::CallbackQueue::TLS*) ()
+    from /opt/ros/groovy/lib/libroscpp.so
+
+    #5 0xb6ec500e in ros::CallbackQueue::callAvailable(ros::WallDuration) ()
+    from /opt/ros/groovy/lib/libroscpp.so
+
+    #6 0xb6f618f8 in tf::TransformListener::dedicatedListenerThread() () from
+    /opt/ros/groovy/lib/libtf.so
+
+    #7 0xb6f61654 in boost::detail::thread_data,
+    boost::_bi::list1boost::_bi::value<tf::TransformListener* > > >::run() ()
+    from /opt/ros/groovy/lib/libtf.so
+
+    #8 0xb6165602 in thread_proxy () from /usr/lib/libboost_thread.so.1.46.1
+
+    #9 0xb6c3ded2 in start_thread () from
+    /lib/arm-linux-gnueabihf/libpthread.so.0
+
+    #10 0xb62aaf18 in ?? () from /lib/arm-linux-gnueabihf/libc.so.6
+
+    #11 0xb62aaf18 in ?? () from /lib/arm-linux-gnueabihf/libc.so.6
+
+    Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+
+    ```
+
+
+    Originally filed by @icoderaven https://github.com/ros/geometry/issues/39
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels:
+    - bug
+- url: 'https://github.com/ros/gencpp/issues/6'
+  title: Error in C++ message auto generation in ROS groovy
+  body: >
+    If a comment description line in a .msg file (starting with #) ends in a a
+    special character such as ( ), extra newlines are added in the generated
+    header file which gives compiler errors when included. Example below:
+
+
+    ```
+
+    # ICD-XXXXX - Delta Position
+
+    # Primary Measurement: Change in position over a time interval (1D, 2D, or
+    3D)
+
+    # Standard Header
+
+    Header header 
+
+    #1, 2, or 3 elements based on dimension specified in metadata
+
+    float64[] delta_pos
+
+    # Delta position covariance matrix (row-major) in [units^2] of size nDim x
+    nDim.
+
+    # The matrix is linearized into a single array for storage.
+
+    float64[]  delta_pos_covariance
+
+    ```
+
+
+    generates the header with the following code (note the extra newlines):
+
+
+    ```
+
+    template<class ContainerAllocator>
+
+    struct Definition< ::MyClass::DeltaPosition_<ContainerAllocator> >
+
+    {
+      static const char* value()
+      {
+        return "# ICD-XXXXX - Delta Position
+    \n\
+
+    # Primary Measurement: Change in position over a time interval (1D, 2D, or
+    3D)
+
+    \n\
+
+
+    \n\
+
+    # Standard Header
+
+    \n\
+
+    Header header
+
+
+    ```
+  repo: 'https://api.github.com/repos/ros/gencpp'
+  labels:
+    - bug

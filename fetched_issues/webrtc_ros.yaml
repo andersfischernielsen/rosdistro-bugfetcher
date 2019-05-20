@@ -1,0 +1,18 @@
+- url: 'https://github.com/RobotWebTools/webrtc_ros/issues/38'
+  title: What is the recommended way to build the project?
+  body: "What is the recommended way of building this project?\r\n\r\nI've cloned the repository into a new catkin workspace.  Running catkin_make fails with the following error:\r\n\r\n`Base path: /home/matt/workspace/catkin_ws_webrtc\r\nSource space: /home/matt/workspace/catkin_ws_webrtc/src\r\nBuild space: /home/matt/workspace/catkin_ws_webrtc/build\r\nDevel space: /home/matt/workspace/catkin_ws_webrtc/devel\r\nInstall space: /home/matt/workspace/catkin_ws_webrtc/install\r\n####\r\n#### Running command: \"cmake /home/matt/workspace/catkin_ws_webrtc/src -DCATKIN_DEVEL_PREFIX=/home/matt/workspace/catkin_ws_webrtc/devel -DCMAKE_INSTALL_PREFIX=/home/matt/workspace/catkin_ws_webrtc/install -G Unix Makefiles\" in \"/home/matt/workspace/catkin_ws_webrtc/build\"\r\n####\r\n-- Eclipse version is set to 4.8 (). Adjust CMAKE_ECLIPSE_VERSION if this is wrong.\r\n-- Using CATKIN_DEVEL_PREFIX: /home/matt/workspace/catkin_ws_webrtc/devel\r\n-- Using CMAKE_PREFIX_PATH: /home/matt/workspace/catkin_ws/devel;/opt/ros/melodic\r\n-- This workspace overlays: /home/matt/workspace/catkin_ws/devel;/opt/ros/melodic\r\n-- Found PythonInterp: /usr/bin/python2 (found suitable version \"2.7.15\", minimum required is \"2\") \r\n-- Using PYTHON_EXECUTABLE: /usr/bin/python2\r\n-- Using Debian Python package layout\r\n-- Using empy: /usr/bin/empy\r\n-- Using CATKIN_ENABLE_TESTING: ON\r\n-- Call enable_testing()\r\n-- Using CATKIN_TEST_RESULTS_DIR: /home/matt/workspace/catkin_ws_webrtc/build/test_results\r\n-- Found gmock sources under '/usr/src/googletest': gmock will be built\r\n-- Found PythonInterp: /usr/bin/python2 (found version \"2.7.15\") \r\n-- Found gtest sources under '/usr/src/googletest': gtests will be built\r\n-- Using Python nosetests: /usr/bin/nosetests-2.7\r\n-- catkin 0.7.14\r\n-- BUILD_SHARED_LIBS is on\r\n-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n-- ~~  traversing 2 packages in topological order:\r\n-- ~~  - webrtc (plain cmake)\r\n-- ~~  - webrtc_ros\r\n-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\nCMake Error at /opt/ros/melodic/share/catkin/cmake/catkin_workspace.cmake:95 (message):\r\n  This workspace contains non-catkin packages in it, and catkin cannot build\r\n  a non-homogeneous workspace without isolation.  Try the\r\n  'catkin_make_isolated' command instead.\r\nCall Stack (most recent call first):\r\n  CMakeLists.txt:63 (catkin_workspace)\r\n\r\n\r\n-- Configuring incomplete, errors occurred!\r\nSee also \"/home/matt/workspace/catkin_ws_webrtc/build/CMakeFiles/CMakeOutput.log\".\r\nSee also \"/home/matt/workspace/catkin_ws_webrtc/build/CMakeFiles/CMakeError.log\".\r\nInvoking \"cmake\" failed\r\n\r\n`\r\nBuilding with catkin_make_isolated works but pulls in a lot of external dependencies."
+  repo: 'https://api.github.com/repos/RobotWebTools/webrtc_ros'
+  labels: []
+- url: 'https://github.com/RobotWebTools/webrtc_ros/issues/16'
+  title: Make sure all dependencies are installed
+  body: >
+    Right now I know that there are at least a few build dependencies that are
+    not installed by rosdep. These are:
+
+    - [x] git
+
+    - [x] subversion
+
+    - [x] yasm
+  repo: 'https://api.github.com/repos/RobotWebTools/webrtc_ros'
+  labels: []

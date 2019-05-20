@@ -1,0 +1,101 @@
+- url: 'https://github.com/ros-perception/image_transport_plugins/issues/24'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are now available in Melodic, so it
+    would be great to release it there.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []
+- url: 'https://github.com/ros-perception/image_transport_plugins/pull/17'
+  title: Added mechanism for decompression mode selection
+  body: >
+    Trying again to make sure the pull request is against indigo. 
+
+
+    This patch adds a parameter to the Jpeg subscriber to decide if I want to
+    subscribe to the gray-level version of an image, independently of its
+    original color. This would just require to expose the flag in cv::imdecode,
+    to let the use specify something different than CV_LOAD_IMAGE_UNCHANGED.
+
+
+    The rationale for that: I have a webcam publishing jpegs, which I publish
+    directly as a compressed topic. For data logging, they have to stay in
+    color, however for any on-board processing, I need gray. Currently, the
+    image are decompressed to BGR, which involves a conversion from YCbCr, and
+    then a conversion from BGR to gray. Given that Y is the gray value,
+    converting directly to gray from YCbCr would make more sense on my embedded
+    system.
+
+
+    https://github.com/ros-perception/image_transport_plugins/pull/16
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []
+- url: 'https://github.com/ros-perception/image_transport_plugins/pull/16'
+  title: Added mechanism for decompression mode selection
+  body: >
+    This patch adds a parameter to the Jpeg subscriber to decide if I want to
+    subscribe to the gray-level version of an image, independently of its
+    original color. This would just require to expose the flag in cv::imdecode,
+    to let the use specify something different than CV_LOAD_IMAGE_UNCHANGED.
+
+
+    The rationale for that: I have a webcam publishing jpegs, which I publish
+    directly as a compressed topic. For data logging, they have to stay in
+    color, however for any on-board processing, I need gray. Currently, the
+    image are decompressed to BGR, which involves a conversion from YCbCr, and
+    then a conversion from BGR to gray. Given that Y is the gray value,
+    converting directly to gray from YCbCr would make more sense on my embedded
+    system. 
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []
+- url: 'https://github.com/ros-perception/image_transport_plugins/pull/13'
+  title: Some cleanup in package.xml and CMakeLists.txt
+  body: |
+    - builds broke sporadically (I think because of the missing *_gencpp in
+      add_dependencies) with missing Packet.h file.
+      - I’m no catkin expert, but these changes make catkin_lint happy (no
+        more errors at least).
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []
+- url: 'https://github.com/ros-perception/image_transport_plugins/issues/8'
+  title: 'Jpeg subscriber: gray decompression only'
+  body: >
+    Hi, 
+
+
+    I'd like to add a parameter to the Jpeg subscriber to decide if I want to
+    subscribe to the gray-level version of an image, independently of its
+    original color. This would just require to expose the flag in cv::imdecode,
+    to let the use specify something different than CV_LOAD_IMAGE_UNCHANGED.
+
+
+    The rationale for that: I have a webcam publishing jpegs, which I publish
+    directly as a compressed topic. For data logging, they have to stay in
+    color, however for any on-board processing, I need gray. Currently, the
+    image are decompressed to BGR, which involves a conversion from YCbCr, and
+    then a conversion from BGR to gray. Given that Y is the gray value,
+    converting directly to gray from YCbCr would make more sense on my embedded
+    system. 
+
+    The OpenCV JpegDecoder seems able to deal with this case and call YCbCr2Gray
+    conversion if needed. 
+
+
+    The untested implementation, for fuerte (my embedded system runs fuerte), is
+    available at https://github.com/cedricpradalier/image_transport_plugins
+
+
+    Once tested on my platform, I can make a merge request if there is any
+    interest.
+
+
+    Thanks and regards
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []
+- url: 'https://github.com/ros-perception/image_transport_plugins/issues/3'
+  title: Why are there build_depends for the metapackage?
+  body: >
+    Is there a particular reason that there are build_depends for the
+    image_transport_plugins metapackage? I haven't seen any other metapackages
+    have ANY build depends at all...
+  repo: 'https://api.github.com/repos/ros-perception/image_transport_plugins'
+  labels: []

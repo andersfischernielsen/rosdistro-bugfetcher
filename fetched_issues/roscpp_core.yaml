@@ -1,0 +1,313 @@
+- url: 'https://github.com/ros/roscpp_core/pull/98'
+  title: Fix duration bug and add tests.
+  body: "Fix bug in `ros::Duration::fromNSec` that was introduced in https://github.com/ros/roscpp_core/pull/61, where conversions from nsec were not normalized properly, and could result in `Duration`s with a negative nsec component, which then failed to compare properly.\r\n\r\nSince the `operator`- also uses `fromNSec`, this also resulted in cases where the diff of two durations could result in an invalid duration.\r\n\r\nAdded tests which exposed this bug, and then re-added the normalization, which fixes it."
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/93'
+  title: 'Fix for Duration::fromSec() which had rounding issues'
+  body: "Fix Duration::fromSec() call to 1) handle the case where nanoseconds were rounding to another second and 2) handle negative durations properly.\r\n\r\nSee https://github.com/ros/roscpp_core/issues/92"
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/92'
+  title: Durations not printing out properly
+  body: "```\r\ndouble timer = 49.9999999999;\r\nstd::cout << timer<<\" \"<<ros::Duration(timer)<<\" \"<<ros::Duration(timer).toSec()<<\" \"<<ros::Duration(ros::Rate(1/timer))<<\" \"<<ros::Time(timer));\r\n```\r\n\r\nOutput:\r\n50 49.1000000000 50 50.000000000 50.000000000\r\n"
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/77'
+  title: duration conversion bug in OSX
+  body: "Doing a source-based installation I came across a failing test in rostime on OSX which looks similar to #48  / #50 but for the Duration class (TestCase: Duration.ToFromSec). However, it seems it only appears on  OSX the test passes on Ubuntu not 100% sure what the difference exactly is.\r\n\r\nThe following change prevents it:\r\n\r\nrostime/include/ros/impl/duration.h line 59\r\n\r\noriginal:\r\n  `nsec = (int32_t)((d - (double)sec)*1000000000);`\r\n\r\nmodified to:\r\n   `nsec = (int32_t)((d - (double)sec)*10000000000/10);`\r\n\r\n\r\nIdea: There seems to be problem in bitwise representation. By shifting the whole double by a factor of 10 it seems to be gone and the backwards division by 10 repairs for it.\r\n\r\nOSX:    10.11.6\r\nLLVM:   version 8.0.0 (clang-800.0.42.1) \r\nTarget: x86_64-apple-darwin15.6.0)\r\n"
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/75'
+  title: Request rebuild of cpp_common for melodic
+  body: "Since the last bionic package import yesterday, the `cpp_common` package cannot be installed because its' dependencies are not available anymore (libconsole-bridge is now 0.4 and not 0.2).\r\n\r\napt console output below:\r\n<details>\r\n\r\n```\r\nroot@532af06e867b:/# apt install ros-melodic-cpp-common\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nSome packages could not be installed. This may mean that you have\r\nrequested an impossible situation or if you are using the unstable\r\ndistribution that some required packages have not yet been created\r\nor been moved out of Incoming.\r\nThe following information may help to resolve the situation:\r\n\r\nThe following packages have unmet dependencies:\r\n ros-melodic-cpp-common : Depends: libconsole-bridge0.2v5 but it is not installable\r\nE: Unable to correct problems, you have held broken packages.\r\n```  "
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels: []
+- url: 'https://github.com/ros/roscpp_core/issues/65'
+  title: Assignment in `operator==`
+  body: "`message_event.h`  contains the following equals operator:\r\n\r\nhttps://github.com/ros/roscpp_core/blob/3b362ac2369158faaaec9a5734bdd08cf341a2d9/roscpp_traits/include/ros/message_event.h#L201-L205\r\n\r\nWhich assigns the `rhs.message_` to the `message_` member, instead of comparing them.\r\n"
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/59'
+  title: add logic to support steady time on macOS
+  body: "Without this fix I get this when compiling:\r\n\r\n```\r\nScanning dependencies of target rostime\r\n[ 25%] Building CXX object CMakeFiles/rostime.dir/src/duration.cpp.o\r\n[ 50%] Building CXX object CMakeFiles/rostime.dir/src/rate.cpp.o\r\n[ 75%] Building CXX object CMakeFiles/rostime.dir/src/time.cpp.o\r\n/tmp/test_ct/src/roscpp_core/rostime/src/time.cpp:178:19: error: use of undeclared identifier 'CLOCK_MONOTONIC'\r\n    clock_gettime(CLOCK_MONOTONIC, &start);\r\n                  ^\r\n1 error generated.\r\nmake[2]: *** [CMakeFiles/rostime.dir/src/time.cpp.o] Error 1\r\nmake[1]: *** [CMakeFiles/rostime.dir/all] Error 2\r\nmake: *** [all] Error 2\r\n```\r\n\r\nI think this is a regression from https://github.com/ros/roscpp_core/pull/57, but only for macOS (perhaps other BSD systems).\r\n\r\nThe `SYSTEM_CLOCK` when used with `host_get_clock_service` is the correct way to get a monotonic clock on macOS, despite \"system clock\" meaning something else in C++ and other lingo:\r\n\r\nhttps://stackoverflow.com/a/11681069/671658"
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/48'
+  title: >-
+    ros/time.h fromSec implementation suffers from floating point inaccuracy,
+    and stores invalid data
+  body: >
+    In some corner cases, floating point inaccuracy can lead to invalid data
+    where nsec is calculated to be outside [0;1e9-1].
+
+    To illustrate the problem think of the following 
+
+
+    ```
+
+    #include <cmath>
+
+    #include <boost/math/special_functions/round.hpp>
+
+    int main()
+
+    {
+            double someint = 1031.0; // some integer
+            double t = std::nextafter(someint, 0); // someint - epsilon
+            std::cout << next << std::endl;    // prints 1031.000000
+            // ros implementation of fromSec
+            uint32_t sec = (uint32_t)floor(t);
+            uint32_t nsec = (uint32_t)boost::math::round((t-sec) * 1e9);
+            std::cout << "sec"  << sec  << std::endl;   // prints 1030 (!)
+            std::cout << "nsec"<< nsec << std::endl;  // prints 1000000000 (!)
+    }
+
+    ```
+
+
+    (compile with c++11)
+
+    Correct behavior would be sec: 1031 nsec: 0, of course.
+
+
+    I guess the rounding behavior is desired in general, so a remaining fix
+    would be to catch this specific case. Alternatively, the order could be
+    changed to multiply with 1e9 -> round -> split into secs/nsec.
+
+    The latter solution requires an appropriately long integer data type for the
+    temporary.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/44'
+  title: fixed serializer bool on ARM
+  body: >
+    Fixes #42.
+
+
+    Without the fix message serialization still works since it just happens to
+    write three extra bytes which it shouldn't. The boolean value is correctly
+    represented in the byte stream. But with a known allocated storage it might
+    write over the expected limit.
+
+
+    The problem especially happens when using a serializer instance with a
+    custom buffer which doesn't have the three extra byte at the end as in the
+    reference ticket.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/42'
+  title: Fix Serializer<bool> on ARM
+  body: >
+    Here is a patch fixing an issue with bool serialization on ARM.
+
+
+    [bool-serialization.diff.txt](https://github.com/ros/roscpp_core/files/115474/bool-serialization.diff.txt)
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/40'
+  title: fix WallRate constructor
+  body: |
+    Fix #38.
+
+    The same problem / fix as for `Rate` some time ago (#26).
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/38'
+  title: WallRate and Rate have different constructors
+  body: >
+    Even though WallRate and Rate have the same function and should have the
+    same interface, their constructors work differently:
+
+
+    ```
+
+    Rate::Rate(const Duration& d)
+      : start_(Time::now())
+      , expected_cycle_time_(d.sec, d.nsec)
+      , actual_cycle_time_(0.0)
+    { }
+
+
+    WallRate::WallRate(const Duration& d)
+
+    : start_(WallTime::now())
+
+    , expected_cycle_time_(1.0 / d.toSec())
+
+    , actual_cycle_time_(0.0)
+
+    {}
+
+    ```
+
+
+    So if you exchange both classes, you have a different cycle time which is
+    really suprising. The wiki also says that they should have the same
+    interface:
+
+
+    http://wiki.ros.org/roscpp/Overview/Time
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/30'
+  title: Duration constructor from Rate
+  body: >
+    There is supposed to be constructor for ros::Duration taking a ros::Rate as
+    param:
+
+
+    ```
+
+    explicit Duration(const Rate&);
+
+    ```
+
+
+    I can't see any implementation though and using it gives a linker error.
+
+
+    ```
+
+    undefined reference to `ros::Duration::Duration(ros::Rate const&)
+
+    ```
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/26'
+  title: Bug Fix rate inverting duration
+  body: >
+    When constructing a Rate object with a duration as argument, it is the
+    expected period duration, not a frequency.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/25'
+  title: add missing boost dependency
+  body: |
+    Addresses #24.
+
+    @tfoote @wjwwood Please review.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels: []
+- url: 'https://github.com/ros/roscpp_core/issues/24'
+  title: Missing depend on boost
+  body: >
+    My most recent Fedora builds of `cpp_common` [1] are not installing the
+    boost development libraries as they did about 2 weeks ago. I don't see any
+    changes to `cpp_common` that would have triggered this, so it must have been
+    an upstream package that changed its deps or something like that.
+
+
+    I can't see any reason not to have `cpp_common` depend on boost, as it
+    references boost headers [2].
+
+
+    I can confirm this on an f20 system without `boost-devel` by running:
+
+
+    ``` bash
+
+    mkdir -p ~/boost_test_ws/src
+
+    cd ~/boost_test_ws
+
+    rosinstall_generator --deps --tar --rosdistro indigo cpp_common >
+    src/.rosinstall
+
+    wstool update -t src
+
+    rosdep install --from-path src --ignore-src
+
+    ```
+
+
+    ...and finding that boost-devel is not installed as it should be.
+
+
+    I have confirmed that adding `boost` as a run and build dependency fixes
+    things [3] [4], but I'm not sure what caused this to begin with, so I can
+    only suggest that as a possible fix.
+
+
+    Thanks,
+
+
+    --scott
+
+    [1]
+    http://csc.mcs.sdsmt.edu/jenkins/view/IbinF20x32/job/ros-indigo-cpp-common_binaryrpm_heisenbug_i386/10/console
+
+    [2]
+    http://github.com/ros/roscpp_core/blob/indigo-devel/cpp_common/include/ros/header.h#L41
+
+    [3]
+    http://github.com/smd-ros-rpm-release/roscpp_core-release/commit/e92922ec6b7c55aefa55e8f7c2c8a5cdae1535ca
+
+    [4]
+    http://csc.mcs.sdsmt.edu/jenkins/view/IbinF20x32/job/ros-indigo-cpp-common_binaryrpm_heisenbug_i386/11/console
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/issues/22'
+  title: MessageEvent constructors without connection information
+  body: >
+    The MessageEvent constructors not receiving connections header are "evil". I
+    tried to remove them in #21 before but could not get rid of all code which
+    uses it (therefore they have been reintroduced).
+
+
+    But in two cases that already backfired. Two code parts which worked before
+    behaved wrong (silently having empty connection header) which was difficult
+    to spot:
+
+    -
+    https://github.com/ros/ros_comm/commit/9b0600e52530761bf389828afe78e1d98c6a46c0#diff-6647d572e622dca2a759e1c20a83eb4eL210
+
+    -
+    https://github.com/ros/actionlib/commit/856fe223a5dda2cdbb4d970442794a9767bb535d
+
+
+    In both cases with the "evil" MessageEvent constructors present the code
+    compiles but does not work correctly due to the missing connection info.
+    When the two constructors are commented out the code fails to build. I
+    worked around that with the two commits referenced above.
+
+
+    But this should not be necessary. I think the templated functions for
+    subscribing to topics should deal with this problem and avoid the usage of
+    the "evil" constructors without requiring the commited hacks.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roscpp_core/pull/17'
+  title: Add a run_depend on console_bridge
+  body: >
+    Packages that build against cpp_common need console_bridge installed so that
+    they can link against it.
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels: []
+- url: 'https://github.com/ros/roscpp_core/pull/12'
+  title: >-
+    Promoting several core components which are communication library
+    independent to the core
+  body: >
+    This allows for the usage of these elements w/o a dependency on ros_comm. 
+    Related pull request coming in ros_comm.  
+
+
+    This also switches to use console_bridge instead of rosconsole. 
+  repo: 'https://api.github.com/repos/ros/roscpp_core'
+  labels: []

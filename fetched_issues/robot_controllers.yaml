@@ -1,0 +1,98 @@
+- url: 'https://github.com/fetchrobotics/robot_controllers/pull/40'
+  title: add init trajectory for future start time
+  body: "# Future motion trajectory support\r\n\r\n## Background\r\nthis PR supports `FollowJointTrajectoryGoal` with future start time.\r\nFor example, I want to send `FollowJointTrajectoryGoal` for 3 seconds ahead from now, to reserve future motion like below.\r\nWe can reserve future motion `FollowJointTrajectory` server by giving trajectory with future time.\r\n\r\n- `msg`\r\n```bash\r\n$ rostopic echo /arm_controller/follow_joint_trajectory/goal \r\nheader: \r\n  seq: 1\r\n  stamp: \r\n    secs: 139\r\n    nsecs:  30000000\r\n  frame_id: ''\r\ngoal_id: \r\n  stamp: \r\n    secs: 0\r\n    nsecs:         0\r\n  id: \"139030000000_/fetch_1556207748218709686_19549_/arm_controller/follow_joint_trajectory_1\"\r\ngoal: \r\n  trajectory: \r\n    header: \r\n      seq: 1\r\n      stamp: \r\n        secs: 142\r\n        nsecs:  30000000\r\n      frame_id: ''\r\n    joint_names: [shoulder_pan_joint, shoulder_lift_joint, upperarm_roll_joint, elbow_flex_joint, forearm_roll_joint,\r\n  wrist_flex_joint, wrist_roll_joint]\r\n    points: \r\n      - \r\n        positions: [1.3197694449880988, 1.3991785917859492, -0.19928290787532266, 1.7191481448291217, 0.00038196209399465886, 1.6598884208000166, -0.00035014670009214655]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 0\r\n          nsecs:         0\r\n      - \r\n        positions: [1.107530577097858, 1.1981623276989923, -0.15998741079181833, 1.6934575521432187, -0.04578636799192892, 1.5575675935764846, -0.17920807032302388]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 0\r\n          nsecs: 634640512\r\n      - \r\n        positions: [0.8952917092076174, 0.9971460636120364, -0.120691913708314, 1.6677669594573157, -0.0919546980778525, 1.4552467663529534, -0.3580659939459556]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 0\r\n          nsecs: 959281024\r\n      - \r\n        positions: [0.9123999186165688, 0.9151214273993706, -0.10540328738142896, 1.3492815707563999, -0.009772269783560009, 1.8071148701552806, -0.1383160317512896]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 1\r\n          nsecs: 720491392\r\n      - \r\n        positions: [0.9295081280255202, 0.8330967911867053, -0.09011466105454391, 1.030796182055485, 0.07241015851073251, 2.158982973957608, 0.08143393044337643]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 2\r\n          nsecs: 481701824\r\n      - \r\n        positions: [0.7436162034321185, 0.6666139034448078, -0.07225045783024109, 0.8244876532397174, 0.057833318553449975, 1.727184043800877, 0.06498808708117165]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 2\r\n          nsecs: 954060544\r\n      - \r\n        positions: [0.5577242788387169, 0.5001310157029106, -0.05438625460593835, 0.6181791244239503, 0.043256478596167464, 1.2953851136441452, 0.0485422437189669]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 3\r\n          nsecs: 426419296\r\n      - \r\n        positions: [0.37183235424531524, 0.3336481279610135, -0.036522051381635556, 0.4118705956081832, 0.028679638638884966, 0.8635861834874143, 0.032096400356762145]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 3\r\n          nsecs: 898778048\r\n      - \r\n        positions: [0.1859404296519137, 0.16716524021911616, -0.01865784815733279, 0.20556206679241595, 0.014102798681602441, 0.4317872533306826, 0.015650556994557405]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 4\r\n          nsecs: 371136800\r\n      - \r\n        positions: [4.850505851209156e-05, 0.0006823524772189555, -0.0007936449330300092, -0.0007464620233513415, -0.00047404127568006506, -1.1676826048642426e-05, -0.0007952863676473497]\r\n        velocities: []\r\n        accelerations: []\r\n        effort: []\r\n        time_from_start: \r\n          secs: 4\r\n          nsecs: 963495552\r\n  path_tolerance: []\r\n  goal_tolerance: []\r\n  goal_time_tolerance: \r\n    secs: 0\r\n    nsecs:         0\r\n---\r\n```\r\n\r\nThe most important point is `msg.trajectory.header.stamp` is 3 seconds ahead from `msg.header.stamp`.\r\n- `msg.header.stamp`\r\n```\r\nheader: \r\n  stamp: \r\n    secs: 139\r\n    nsecs:  30000000\r\n```\r\n\r\n- `msg.trajectory.header.stamp`\r\n```\r\ngoal: \r\n  trajectory: \r\n    header: \r\n      stamp: \r\n        secs: 142\r\n        nsecs:  30000000\r\n```\r\n\r\n## Problem\r\n\r\nWhen I send the `FollowJointTrajectoryGoal` as above, fetch robot stays in arm servo off  before motion.\r\nThat is because there is no arm effort command after `FollowJointTrajectoryGoal` is received and  before motion starts.\r\nIn Gazebo simulation, fetch arm is sinking into its body.\r\nI confirm that same problem happens with real robot, too.\r\n\r\n![fetch_future_motion_before](https://user-images.githubusercontent.com/9300063/56751375-e1221600-67c0-11e9-9f26-e414294f1172.gif)\r\n\r\n## This PR\r\n\r\nThis PR put current position as trajectory at the top of the trajectory when there is gap between motion start time and motion request receiving time.\r\nWith this PR, Fetch robot arm does not stay in arm survo off as below.\r\n![fetch_future_motion](https://user-images.githubusercontent.com/9300063/56750719-55f45080-67bf-11e9-8f67-09b522721d1c.gif)\r\n\r\n## Related issue\r\nhttps://github.com/jsk-ros-pkg/jsk_robot/pull/1070#issuecomment-486311568\r\n\r\ncc. @pazeshun\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels: []
+- url: 'https://github.com/fetchrobotics/robot_controllers/pull/36'
+  title: '[GCC][Warnings] SYSTEM includes and catch ref'
+  body: "This is an attempt to fix (silence) the buildbot failures from -Werror\r\n\r\n@rctoris I didn't see the build error which the build farm complains about locally- but this would ignore warnings from system headers which we depend on."
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels: []
+- url: 'https://github.com/fetchrobotics/robot_controllers/issues/27'
+  title: Eigen3 Warning on Kinetic
+  body: >
+    ```
+
+    Warnings   << robot_controllers_interface:cmake
+    /home/dave/ros/current/ws_moveit/logs/robot_controllers_interface/build.cmake.003.log                     
+
+    CMake Warning (dev) at CMakeLists.txt:45 (add_dependencies):
+      Policy CMP0046 is not set: Error on non-existent dependency in
+      add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+      Use the cmake_policy command to set the policy and suppress this warning.
+
+      The dependency target "robot_controllers_msgs_gencpp" of target
+      "robot_controllers_interface" does not exist.
+    This warning is for project developers.  Use -Wno-dev to suppress it.
+
+    ```
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels: []
+- url: 'https://github.com/fetchrobotics/robot_controllers/issues/21'
+  title: Member  variable updated after return statement
+  body: >
+    I was looking through robot controllers and was trying to understand the
+    code contained in the file pid.cpp. I found that the member variable
+    error_last_ was updated after a return statement:
+
+
+    https://github.com/fetchrobotics/robot_controllers/blob/indigo-devel/robot_controllers/src/pid.cpp#L161
+
+
+    This seemed like a problem to me unless there is a C++ trick that I don't
+    know about
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/robot_controllers/issues/16'
+  title: Add List Controllers service API to controller manager
+  body: >
+    ros-control allows you to make a service call to get the active
+    controllers.  
+
+
+    The name is: "/robot_name/controller_manager/list_controllers"
+
+    and the type is controller_manager_msgs::ListControllers 
+
+
+    It would be helpful for the ros-controllers controller manager to provide a
+    similar functionality.  
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/robot_controllers/issues/10'
+  title: '[Question] Controller stacking mechanics'
+  body: >
+    I've been looking into the architecture of the `robot_controllers` project,
+    and have had some trouble figuring out how controlling stacking works. I see
+    that:
+
+    1.
+    [`robot_controllers::Controller`](https://github.com/fetchrobotics/robot_controllers/blob/indigo-devel/robot_controllers_interface/include/robot_controllers_interface/controller.h#L47-L50)
+    allows controllers to have access to other controllers by querying the
+    [`robot_controllers::ControllerManager`](https://github.com/fetchrobotics/robot_controllers/blob/indigo-devel/robot_controllers_interface/include/robot_controllers_interface/controller_manager.h#L91)
+    for a handle that can be `dynamic_cast`'ed to a controller.
+
+    2. `robot_controllers::ControllerManager` is responsible for [updating all
+    controllers](https://github.com/fetchrobotics/robot_controllers/blob/indigo-devel/robot_controllers_interface/src/controller_manager.cpp#L184-L195).
+
+
+    but I'm not sure I understand the usage pattern, and have failed to find
+    examples.
+
+
+    I can see that a controller can use another controller's interface, but
+    there seems to be no mechanism to control the order in which controllers get
+    updated, other than the order in which they are
+    [loaded](https://github.com/fetchrobotics/robot_controllers/blob/indigo-devel/robot_controllers_interface/src/controller_manager.cpp#L345).
+    My understanding is that all controllers live in a "controller soup", with
+    no explicit topological dependencies between them to enforce that every
+    controller has the most recent input. In the "controller soup" scenario, a
+    controller stack of size `n` has a worst-case delay of `n` control cycles
+    until hardware state readings propagate to the last controller in the stack.
+
+
+    Am I interpreting this correctly?.
+  repo: 'https://api.github.com/repos/fetchrobotics/robot_controllers'
+  labels: []

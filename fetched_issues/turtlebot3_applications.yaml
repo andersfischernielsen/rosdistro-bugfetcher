@@ -1,0 +1,8 @@
+- url: 'https://github.com/ROBOTIS-GIT/turtlebot3_applications/issues/24'
+  title: >-
+    (Follower) How to prepare my own training data or where is add_data or
+    add_comment comes from?
+  body: "Hi team,\r\n    I used TB3-burger follower. I like to improve the follower classification. However, I dont know how to generate my own training data. thanks\r\n\r\n\r\n\r\nimport pickle\r\nimport rospy\r\nimport matplotlib.pyplot as plt\r\nimport numpy as np\r\nfrom sensor_msgs.msg import LaserScan\r\nfrom sklearn.ensemble import RandomForestClassifier\r\n\r\nif __name__ == '__main__':\r\n\r\n    laser_data = pickle.load( open( \"add_data\", \"rb\"))\r\n    comments = pickle.load( open( \"add_comment\", \"rb\" ))\r\n    labels = {'30_0':0, '30_l':1, '30_r':2, '45_0':3, '45_l':4, '45_r':5, '15_0':6, 'empty':7}"
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/turtlebot3_applications'
+  labels:
+    - question

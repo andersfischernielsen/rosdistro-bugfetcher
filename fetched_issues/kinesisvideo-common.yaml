@@ -1,0 +1,25 @@
+- url: 'https://github.com/aws-robotics/kinesisvideo-common/pull/15'
+  title: update kvs producer sdk to v1.7.8
+  body: "*Description of changes:*\r\n\r\nVersion 1.7.8 of the KVS Producer SDK has the fix for no longer depending on obtaining `log4cplus` from SourceForge.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-common/pull/10'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-common/pull/9'
+  title: use master branch for cloud extension dependencies
+  body: "*Description of changes:*\r\n\r\nProperly implementing the \"master\" Travis build pipeline, where dependencies should come from HEAD instead of release tags or released binaries.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license."
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-common/pull/2'
+  title: add missing dependency on boost
+  body: "From: http://build.ros.org/view/Kbin_uX64/job/Kbin_uX64__kinesis_manager__ubuntu_xenial_amd64__binary/3/console\r\n\r\n```\r\n00:00:48.260 [ 83%] Building CXX object CMakeFiles/kinesis_manager.dir/src/kinesis_stream_manager.cpp.o\r\n00:00:48.261 /usr/lib/ccache/x86_64-linux-gnu-g++   -DPLATFORM_LINUX -Dkinesis_manager_EXPORTS -isystem /opt/ros/kinetic/share/aws_common/cmake/../../../include -I/opt/ros/kinetic/include -I/tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/obj-x86_64-linux-gnu/external/include -I/tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/include  -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=2  -fPIC -std=c++14  -fPIC   -o CMakeFiles/kinesis_manager.dir/src/kinesis_stream_manager.cpp.o -c /tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/src/kinesis_stream_manager.cpp\r\n00:00:48.542 In file included from /tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/include/kinesis_manager/kinesis_stream_manager.h:26:0,\r\n00:00:48.542                  from /tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/src/kinesis_stream_manager.cpp:23:\r\n00:00:48.542 /tmp/binarydeb/ros-kinetic-kinesis-manager-1.0.0/include/kinesis_manager/stream_subscription_installer.h:19:30: fatal error: boost/function.hpp: No such file or directory\r\n00:00:48.542 compilation terminated.\r\n```\r\n\r\n\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-common/pull/1'
+  title: add buildtool depend on pkg-config
+  body: "\r\nResolves:\r\n15:41:49 CMake Error at /usr/share/cmake-3.5/Modules/FindPackageHandleStandardArgs.cmake:148 (message):\r\n15:41:49   Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE)\r\n\r\nfrom: http://build.ros.org/view/Ksrc_uX/job/Kbin_uX64__kinesis_manager__ubuntu_xenial_amd64__binary/1/console\r\n\r\n\r\nrosdep key `pkg-config` https://github.com/ros/rosdistro/blob/master/rosdep/base.yaml#L4205\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-common'
+  labels: []

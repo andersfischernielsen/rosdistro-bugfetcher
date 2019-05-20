@@ -1,0 +1,11 @@
+- url: 'https://github.com/gstavrinos/jointstick/issues/1'
+  title: >-
+    User wrongly gets prompted twice to select a controller category after joy
+    binding.
+  body: >-
+    Can't seem to find a way to bypass this. Feel free to make a comment or send
+    a PR.
+  repo: 'https://api.github.com/repos/gstavrinos/jointstick'
+  labels:
+    - TODO
+    - bug

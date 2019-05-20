@@ -1,0 +1,71 @@
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/pull/173'
+  title: Extend Recursive Newton-Euler for Inverse Dynamics of Trees
+  body: "Inverse Dynamics is supported in KDL for chains only. This pull request introduces the abstract solver `TreeIdSolver` to do inverse dynamics on a full tree. The concrete implementation `TreeIdSolver_RNE` is a trivial extension of the corresponding solver for chains. It uses `std::map`s rather than `std::vector`s to store kinematic/dynamic quantities for each segment.\r\n\r\nThe algorithm has been tested in two scenarios:\r\n\r\n- A tree featuring two \"independent\" chains, _ie_, both starting at the root of the tree. The efforts returned by the solver are compared with the ones returned by two solvers operating on each chain separately.\r\n- A tree with two leafs attached to a common segment, which is in turn attached to the root. The efforts are compared with the analytic model for validation.\r\n\r\nNote: the first commit is the one introducing the new features, the latter two are just cleaning an fixing some mistakes I introduced."
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/168'
+  title: PyKDL on Windows
+  body: "I've compiled both orocos_kdl and python_orocos_kdl on windows but cannot import PyKDL module into python saying \"No module named PyKDL\"\r\nI have tried VC++15 and VC++14 compilers and Python2.7 and make sure generated PyKDL.dll file is on the PYTHONPATH and PATH search directories.\r\nHas anybody succeeded in using PyKDL binding in windows?"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/158'
+  title: Compilation Error PyKDL Bindings
+  body: "PyKDL cannot be compiled with the newest SIP Version 4.19.11 and I had to switch back to SIP Version 4.19.8 to make it compile. \r\n\r\nIn addition, I could not compile the current master branch because of the catkin dependency, which should be in my opinion optional. I could compile commit e1ca7faf1efa816f2bc12b741d0fda307d60c760 but I get an import error in Python3 caused by an unknown symbol, i.e. undefined symbol: _ZNK3KDL20ChainIkSolverPos_LMA8strErrorEi.\r\n\r\n\r\nFor me commit a7a8d282a5a94948176f2c5af58fbd047d849030 works fine while compilation and importing in python 3."
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/157'
+  title: Memory leak on accessing PyKDL Frame vector in 16.04
+  body: "Running the following small snippet will cause significant memory usage quickly. (~1% growth per second consumption on my laptop)\r\n\r\nThis looks similar to #129 but I'm not sure if it's the same since the behavior is quite different. It is reproduced on 16.04 but on 14.04 it does not leak memory.\r\n\r\n```\r\n#!/usr/bin/env python                                                           \r\n\r\nimport PyKDL\r\n\r\nf = PyKDL.Frame(\r\n    PyKDL.Rotation.Quaternion(0, 1, 0, 0),\r\n    PyKDL.Vector(1, 0, 0))\r\n\r\nwhile(True):\r\n    res_x = f.p[0]\r\n```\r\n"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/138'
+  title: 'PyKDL: Missing Recursive newton euler inverse dynamics solver?'
+  body: "Hi,\r\n\r\nI'm trying to get gravity compensating joint efforts using the PyKDL API on ROS Kinetic.\r\n\r\nI was trying to use the recursive newton euler inverse dynamics solver after seeing [this post in the orocos forum](http://www.orocos.org/forum/orocos/orocos-users/puzzles-about-kdl); however, the KDL::ChainIdSolver_RNE does not appear to be exposed in the PyKDL API.\r\n\r\nAre there plans to expose the KDL::ChainIdSolver_RNE in the PyKDL API?\r\n\r\n**Edit:**\r\nIs (part) of the functionality I'm looking for available through the PyKDL.ChainDynParam class?\r\nSomething like this? Going to test it out more extensively...\r\n\r\n```\r\nimport PyKDL as kdl\r\n\r\n# Given: kdl_tree, base_link, end_link\r\n\r\nchain = kdl_tree.getChain(base_link, end_link)\r\n# Assuming: chain contains 3 rotational joints\r\n\r\ngrav_vector = kdl.Vector(-9.81, 0, 0)  # relative to kdl chain base link?\r\ndyn_kdl = kdl.ChainDynParam(chain, grav_vector)\r\ninit_positions = kdl.JntArray(3)\r\ninit_positions[0] = 0.0\r\ninit_positions[1] = 0.0\r\ninit_positions[2] = 0.0\r\n\r\ngrav_matrix = kdl.JntArray(3)\r\ndyn_kdl.JntToGravity(init_positions, grav_matrix)\r\n```"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/129'
+  title: >-
+    PyKDL with Ubuntu 16.04 does not access correct memory when creating or
+    copying frames. 
+  body: "When copying or creating a new KDL frame and directly accessing the vector or rotation matrix, the result is not correct. \r\nIt seems as if not the correct memory is accessed. When splitting the creation and the access in two lines it works as expected. \r\nSee code below (tested with: `Linux 4.13.0-32-generic #35~16.04.1-Ubuntu`)\r\n```python\r\n# coding: utf-8\r\nimport PyKDL as kdl\r\na = kdl.Frame(kdl.Rotation.RPY(1,2,3), kdl.Vector(1,2,3)).p\r\na\r\n# [6.91476e-310,6.91476e-310,6.91476e-310]\r\na = kdl.Frame(kdl.Rotation.RPY(1,2,3), kdl.Vector(1,2,3))\r\na.p\r\n# [           1,           2,           3]\r\nb = (kdl.Frame() * a).p\r\nb\r\n# [6.91476e-310,6.91476e-310,6.91476e-310]\r\nimport copy\r\ncopy.deepcopy(a).p\r\n# [6.91476e-310,6.91476e-310,6.91476e-310]\r\n```\r\nUnder 14.04 this code works as expected. "
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/120'
+  title: Const correctness for operator* of class Frame2
+  body: "The multiplication operator of class `Frame2` does not modify any member variables, so can be made const. ([link to code](https://github.com/orocos/orocos_kinematics_dynamics/blob/master/orocos_kdl/src/frames.hpp#L1121))\r\n\r\nBoth PRs listed below fix this issue in a different way by:\r\n- directly adding const (potentially not ABI compatible, depending on system and compiler specifics for the `inline` keyword): https://github.com/orocos/orocos_kinematics_dynamics/pull/118\r\n- deprecating non-const function and adding a const version: https://github.com/orocos/orocos_kinematics_dynamics/pull/119\r\n\r\nDoes anyone have a preference over one of both solutions?"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/pull/116'
+  title: >-
+    GetRot still seems to return NaNs for rotation matrices that contain a small
+    error (not 100% orthogonal)
+  body: "We came across that the new implementation of \"GetRot\" still returns NaN, if the rotatation matrix is slightly non orthogonal. While this is of course not a valid rotation matrix, a small margin of error should be allowed. \r\n\r\n```\r\nimport PyKDL as kdl\r\n\r\nf1 = kdl.Frame(kdl.Rotation(0.00923097,    0.969766,   -0.243866, 0.999943,  -0.0102479, -0.00290165, -0.00531284,   -0.243825,   -0.969805), kdl.Vector(0.112752,     1.26141,    0.250001))\r\n\r\nf2 = kdl.Frame(kdl.Rotation(0.00924127,    0.969765,   -0.243866, 0.999943,  -0.0102586,  -0.0029021, -0.00531613,   -0.243825,   -0.969805), kdl.Vector(0.112757,     1.26141,   -0.298506))\r\n\r\ndef orthogonalize(f):\r\n    R, P, Y = f.M.GetRPY()\r\n    return kdl.Frame(kdl.Rotation.RPY(R, P, Y), kdl.Vector(f.p.x(), f.p.y(), f.p.z()))\r\n\r\nprint kdl.diff(f1, f2)\r\nprint kdl.diff(orthogonalize(f1), orthogonalize(f2))\r\n```"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/pull/109'
+  title: 'Fix some singularities when using Rotation::GetRotAngle()'
+  body: "\r\nUsing:\r\n```python\r\nimport PyKDL as kdl\r\n\r\nr = kdl.Rotation.RPY(3.14179265359, 1.57099632679, 0.0002)\r\nprint r\r\nprint \"-\"*30\r\n\r\naxis_angle = r.GetRot()\r\na = axis_angle.Norm()\r\nv = axis_angle / a\r\n\r\nr2 = kdl.Rotation.Rot(v, a)\r\nprint r2\r\n```\r\nResults in two different rotations matrices. \r\n```\r\nr =[     -0.0002,  3.7932e-12,          -1;\r\n       -4e-08,          -1,  4.2068e-12;\r\n           -1,       4e-08,      0.0002]\r\nr2 = [     -0.0002,  2.5807e-08,           1;\r\n   2.5807e-08,          -1, 2.58121e-08;\r\n            1, 2.58121e-08,      0.0002]\r\n```\r\n\r\nsimilarly, `kdl.Rotation.RPY(-0.0002, 1.57059632679, 3.14139265359)`  Does not work. \r\n\r\nThe new implementation is taken from:\r\nhttp://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/index.htm\r\n"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/96'
+  title: >-
+    ImportError: dynamic module does not define module export function
+    (PyInit_PyKDL)
+  body: "Using python 3.5\r\nWhen I try to import PyKDL `python3 -c \"import PyKDL\"`, I got that error\r\n```\r\nImportError: dynamic module does not define module export function (PyInit_PyKDL)\r\n```"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/issues/95'
+  title: catkin dependency
+  body: I was wondering why this package is depending on catkin.
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/pull/92'
+  title: Remove metapackage
+  body: "Since the repo has only two packages, the metapackage seems overkill.  AFAIK no-one directly depends on the metapackage either.\r\n\r\nSigned-off-by: Ruben Smits <ruben@intermodalics.eu>"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []
+- url: 'https://github.com/orocos/orocos_kinematics_dynamics/pull/91'
+  title: Modern CMake Adjustements
+  body: "Hi all, \r\n\r\nFirst of all, thx for your amazing work! I just commit this minor change to your CMake. It's really good but I ran into two issues:\r\nThe cmake currently exports the target which means that when find_package(ing) for orocos, cmake looks directly in the build directory. Although it's really convinient to use, the interface is different than the installed interface eg. : in the build the file chain.hpp is in src/chain.hpp and in the install dir it's kdl/chain.hpp so that's really not easy. \r\n\r\nSecond issue, in the installed exported targets, the include where saved in a config file while they could just be added to the targets themselves, which removes the issue of using include_directories on the user-side. I just added a line INCLUDE DESTINATION include/kdl in the src/CMakeLists.txt\r\n\r\nIf you are concerned about the dependency with Eigen, know that it is possible to use the modern cmake on Eigen too and use it as target_link_library(orocos-kdl PUBLIC Eigen) which will create a cleaner dependency in the config file. \r\n\r\nAll the best, \r\nXB32Z"
+  repo: 'https://api.github.com/repos/orocos/orocos_kinematics_dynamics'
+  labels: []

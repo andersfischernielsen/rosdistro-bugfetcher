@@ -1,0 +1,5 @@
+- url: 'https://github.com/ros-perception/pcl_msgs/issues/7'
+  title: Lunar Release
+  body: "Hi @paulbovbel  and `pcl_msgs` maintainers!\r\n\r\nAs you may know the next ROS release Lunar Loggerhead is around the corner :tada:\r\nIs it possible to make a release of `pcl_msgs` into Lunar in the next few days? If you don't have time to make a new release please consider running bloom to release 2.0.0 into Lunar. This will allow maintainers of the [many packages depending on this](http://repositories.ros.org/status_page/blocked_releases_lunar.html?q=id%3D%22pcl_msgs%22&s=6&r=1) to release their own packages.\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/ros-perception/pcl_msgs'
+  labels: []

@@ -1,0 +1,26 @@
+- url: 'https://github.com/DLu/wu_ros_tools/issues/6'
+  title: Release easy_markers for melodic
+  body: 'I''d like to release `people`, which depends on it.'
+  repo: 'https://api.github.com/repos/DLu/wu_ros_tools'
+  labels: []
+- url: 'https://github.com/DLu/wu_ros_tools/pull/3'
+  title: Fix error importing InteractiveGenerator
+  body: >
+    `interactive_marker_server` used to do an `import *` from
+    `visualization_msgs.msg` but doesn't anymore, and doesn't explicitly import
+    `InteractiveMarkerControl`.
+
+
+    ```
+
+    >>> from easy_markers.interactive import InteractiveGenerator
+
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/home/lazewatd/Dropbox/dev/tfp_ws/src/wu_ros_tools/easy_markers/src/easy_markers/interactive.py", line 9, in <module>
+        'rotate_x': [1,1,0,0, InteractiveMarkerControl.ROTATE_AXIS],
+    NameError: name 'InteractiveMarkerControl' is not defined
+
+    ```
+  repo: 'https://api.github.com/repos/DLu/wu_ros_tools'
+  labels: []

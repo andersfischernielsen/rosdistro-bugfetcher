@@ -1,0 +1,5 @@
+- url: 'https://github.com/OTL/cv_camera/issues/6'
+  title: CMake find_package does not specify OpenCV version
+  body: "cv_camera depends on OpenCV2, however the find_package-call in the CMakeLists.txt will first discover OpenCV3 if both are installed. To circumvent this, the call should be changed to:\r\n```\r\nfind_package(OpenCV 2 REQUIRED)\r\n```\r\n(see http://wiki.ros.org/vision_opencv)"
+  repo: 'https://api.github.com/repos/OTL/cv_camera'
+  labels: []

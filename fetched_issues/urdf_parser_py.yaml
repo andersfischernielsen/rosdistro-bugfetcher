@@ -1,0 +1,32 @@
+- url: 'https://github.com/ros/urdf_parser_py/issues/42'
+  title: Setting visual in a link bug
+  body: "I found two possible bugs. Opened one issue because I think they are related.\r\n\r\n1. Latest commit broke setting `Visual` via `Link` constructor.\r\n2. `<visual>` tag are missing in a resulting xml if I created robot from scratch like this:\r\n\r\n```\r\nPython 2.7.15rc1 (default, Nov 12 2018, 14:31:15) \r\n[GCC 7.3.0] on linux2\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> import roslib; roslib.load_manifest('urdfdom_py')\r\n>>> from urdf_parser_py.urdf import *\r\n>>> robot = Robot(\"my_robot\")\r\n>>> v = Visual(origin=Pose(xyz=[0.0, 0.0, 0.0], rpy=[0.0, 0.0, 0.0]), geometry=Mesh(filename='package://my.stl'), material=Material(name=\"\"))\r\n>>> l = Link(name='my_link', visual=v)\r\n>>> print(l)\r\ncollisions: []\r\ninertial: None\r\nname: my_link\r\norigin: None\r\nvisuals: []\r\n>>> # BUG1: visual are empty because setter must be called in a constructor\r\n... l.visual = v # try again manual way\r\n>>> print(l)\r\ncollisions: []\r\ninertial: None\r\nname: my_link\r\norigin: None\r\nvisuals:\r\n- geometry: {filename: 'package://my.stl', scale: None}\r\n  material: {color: None, name: '', texture: None}\r\n  origin:\r\n    rpy: [0.0, 0.0, 0.0]\r\n    xyz: [0.0, 0.0, 0.0]\r\n>>> robot.add_link(l) \r\n>>> print(robot.to_xml_string())\r\n<?xml version=\"1.0\"?>\r\n<robot name=\"my_robot\">\r\n  <link name=\"my_link\"/>\r\n</robot>\r\n\r\n>>> # BUG2: <visual> are missing\r\n```"
+  repo: 'https://api.github.com/repos/ros/urdf_parser_py'
+  labels:
+    - bug
+- url: 'https://github.com/ros/urdf_parser_py/pull/40'
+  title: '[WIP] Remove lxml dependency, use the built in xml etree'
+  body: >-
+    Example extension of #32; may or may not supersede, depending on discussion
+    there.
+  repo: 'https://api.github.com/repos/ros/urdf_parser_py'
+  labels: []
+- url: 'https://github.com/ros/urdf_parser_py/pull/32'
+  title: Remove the usage of lxml
+  body: We should use the build-in xml parser for fewer dependencies.
+  repo: 'https://api.github.com/repos/ros/urdf_parser_py'
+  labels: []
+- url: 'https://github.com/ros/urdf_parser_py/issues/23'
+  title: 'Build failing in xenial, yakkety and stretch'
+  body: "Looks like a couple builds have started failing\r\n\r\n* http://build.ros.org/job/Lbin_ds_dS64__urdfdom_py__debian_stretch_amd64__binary/2/display/redirect\r\n* http://build.ros.org/job/Lbin_uY64__urdfdom_py__ubuntu_yakkety_amd64__binary/2/display/redirect\r\n* http://build.ros.org/job/Lbin_uX64__urdfdom_py__ubuntu_xenial_amd64__binary/2/display/redirect\r\n\r\nIn stretch I see a linker error when CMake checks for the existence of pthread_create\r\n\r\n```\r\nRun Build Command:\"/usr/bin/make\" \"cmTC_f2232/fast\"\r\nmake[2]: Entering directory '/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/CMakeFiles/CMakeTmp'\r\n/usr/bin/make -f CMakeFiles/cmTC_f2232.dir/build.make CMakeFiles/cmTC_f2232.dir/build\r\nmake[3]: Entering directory '/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/CMakeFiles/CMakeTmp'\r\nBuilding C object CMakeFiles/cmTC_f2232.dir/CheckFunctionExists.c.o\r\n/usr/bin/cc    -g -O2 -fdebug-prefix-map=/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_f2232.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.7/Modules/CheckFunctionExists.c\r\nLinking C executable cmTC_f2232\r\n/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f2232.dir/link.txt --verbose=1\r\n/usr/bin/cc  -g -O2 -fdebug-prefix-map=/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_f2232.dir/CheckFunctionExists.c.o  -o cmTC_f2232 -rdynamic -lpthreads\r\n/usr/bin/ld: cannot find -lpthreads\r\ncollect2: error: ld returned 1 exit status\r\nCMakeFiles/cmTC_f2232.dir/build.make:97: recipe for target 'cmTC_f2232' failed\r\nmake[3]: *** [cmTC_f2232] Error 1\r\nmake[3]: Leaving directory '/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/CMakeFiles/CMakeTmp'\r\nMakefile:126: recipe for target 'cmTC_f2232/fast' failed\r\nmake[2]: *** [cmTC_f2232/fast] Error 2\r\nmake[2]: Leaving directory '/tmp/binarydeb/rodh_auto_configure: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_SYSCONFDIR=/etc -DCMAKE_INSTALL_LOCALSTATEDIR=/var -DCATKIN_BUILD_BINARY_PACKAGE=1 -DCMAKE_INSTALL_PREFIX=/opt/ros/lunar -DCMAKE_PREFIX_PATH=/opt/ros/lunar returned exit code 1\r\ns-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/CMakeFiles/CMakeTmp\r\n```\r\n\r\nIn yakkety and xenial there's a failure to import a catkin python module\r\n\r\n```\r\n08:56:32 -- Found gtest sources under '/usr/src/gtest': gtests will be built\r\n08:56:32 -- Using Python nosetests: /usr/bin/nosetests-2.7\r\n08:56:32 -- catkin 0.7.7\r\n08:56:32 Traceback (most recent call last):\r\n08:56:32   File \"/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/catkin_generated/generate_cached_setup.py\", line 20, in <module>\r\n08:56:32     from catkin.environment_cache import generate_environment_script\r\n08:56:32 ImportError: No module named catkin.environment_cache\r\n08:56:32 CMake Error at /opt/ros/lunar/share/catkin/cmake/safe_execute_process.cmake:11 (message):\r\n08:56:32   execute_process(/usr/bin/python\r\n08:56:32   \"/tmp/binarydeb/ros-lunar-urdfdom-py-0.3.3/obj-x86_64-linux-gnu/catkin_generated/generate_cached_setup.py\")\r\n08:56:32   returned error code 1\r\n08:56:32 Call Stack (most recent call first):\r\n08:56:32   /opt/ros/lunar/share/catkin/cmake/all.cmake:186 (safe_execute_process)\r\n08:56:32   /opt/ros/lunar/share/catkin/cmake/catkinConfig.cmake:20 (include)\r\n08:56:32   CMakeLists.txt:10 (find_package)\r\n```"
+  repo: 'https://api.github.com/repos/ros/urdf_parser_py'
+  labels: []
+- url: 'https://github.com/ros/urdf_parser_py/pull/15'
+  title: Make unit test run with `catkin_make run_tests`
+  body: >-
+    I notice the unit tests wasn't running when using `catkin_make run_tests`. I
+    changed how the test was added to use the catkin cmake macros. I also added
+    python-mock as a test dependency because the official ubuntu/trusty docker
+    image does not have that installed by default.
+  repo: 'https://api.github.com/repos/ros/urdf_parser_py'
+  labels: []

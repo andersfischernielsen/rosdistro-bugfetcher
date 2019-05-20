@@ -1,0 +1,12 @@
+- url: 'https://github.com/ros-visualization/rqt_rviz/issues/7'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are available in Melodic, so it
+    would be great to get it released there.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_rviz'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_rviz/issues/5'
+  title: move back to single master branch
+  body: "This is to remember to move from the lunar specific branch to a single branch for all distros once https://github.com/ros-infrastructure/ros_bootstrap_dependencies/issues/5 is resolved.\r\nSee https://github.com/ros-visualization/rqt_rviz/issues/3#issuecomment-298699707 for context"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_rviz'
+  labels: []

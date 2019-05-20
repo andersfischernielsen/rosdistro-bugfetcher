@@ -1,0 +1,381 @@
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/76'
+  title: Refactor all nodes into entrypoint scripts
+  body: "Move all of the actual code for each node into its own module in a new \"nodes\" package within libnmea_navsat_driver. Make each script only 2 lines: import and call main().\r\n\r\nThis will reduce the difference between ROS 1 and ROS 2 code, because ROS 2 uses Python entry points to install executables.\r\n\r\nAddresses #75"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/74'
+  title: Fix nmea_topic_serial_reader name
+  body: "- Fix #72 (`no module named scripts.nmea_topic_serial_driver`)\r\n- Fix exception handling in nmea_topic_serial_reader  (`'rclpy' has no attribute 'ROSInterruptException'`)\r\n\r\nI've updated the exception handling to match the serial driver node. It's catch-all handling, which isn't ideal, but it's an improvement over trying to catch an exception that doesn't exist."
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/73'
+  title: 'Clean up launch file and make it runnable with ros2 launch (#70)'
+  body: "- Rename the config file to refer to the node it configures and put it into a `config/` directory.\r\n- Make `setup.py` install the launch and config files.\r\n- Rename the launch file with the `.launch.py` suffix used by OSRF\r\npackages.\r\n- Refactor the launch file so that it works with `ros2 launch`.\r\n\r\nI'd appreciate a review from @klintan, the original author of this launch file, to ensure I haven't broken any functionality they need."
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/72'
+  title: 'In ROS2, nmea_topic_serial_reader.py is misnamed nmea_topic_serial_driver'
+  body: "This causes an error when trying to run the task:\r\n```\r\nTraceback (most recent call last):\r\n  File \"install/nmea_navsat_driver/lib/nmea_navsat_driver/nmea_topic_serial_driver\", line 11, in <module>\r\n    load_entry_point('libnmea-navsat-driver==0.5.1', 'console_scripts', 'nmea_topic_serial_driver')()\r\n  File \"/usr/lib/python3/dist-packages/pkg_resources/__init__.py\", line 480, in load_entry_point\r\n    return get_distribution(dist).load_entry_point(group, name)\r\n  File \"/usr/lib/python3/dist-packages/pkg_resources/__init__.py\", line 2693, in load_entry_point\r\n    return ep.load()\r\n  File \"/usr/lib/python3/dist-packages/pkg_resources/__init__.py\", line 2324, in load\r\n    return self.resolve()\r\n  File \"/usr/lib/python3/dist-packages/pkg_resources/__init__.py\", line 2330, in resolve\r\n    module = __import__(self.module_name, fromlist=['__name__'], level=0)\r\nModuleNotFoundError: No module named 'scripts.nmea_topic_serial_driver'\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - Fix in Review
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/71'
+  title: 'In ROS2, nmea_topic_driver Fails to Subscribe'
+  body: "```\r\nTraceback (most recent call last):\r\n  File \"install/nmea_navsat_driver/lib/nmea_navsat_driver/nmea_topic_driver\", line 11, in <module>\r\n    load_entry_point('libnmea-navsat-driver==0.5.1', 'console_scripts', 'nmea_topic_driver')()\r\n  File \"/workspace/install/nmea_navsat_driver/lib/python3.6/site-packages/scripts/nmea_topic_driver.py\", line 60, in main\r\n    Sentence, 'nmea_sentence', nmea_sentence_callback, driver)\r\nTypeError: create_subscription() takes 4 positional arguments but 5 were given\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/70'
+  title: ros2 launch Can't Find nmea_serial_driver_launch.py
+  body: "```\r\n$  ros2 launch nmea_navsat_driver nmea_serial_driver_launch.py\r\nfile 'nmea_serial_driver_launch.py' was not found in the share directory of package 'nmea_navsat_driver' which is at '/workspace/install/nmea_navsat_driver/share/nmea_navsat_driver'\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - Fix in Review
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/66'
+  title: Fix Dependencies in Ros2
+  body: "Fix for #65. To test:\r\n\r\n```bash\r\ndocker run -it osrf/ros:crystal-desktop \r\napt update && apt install -y python3-colcon-common-extensions\r\n(cd /usr/bin && ln -s pip3 pip)\r\nrosdep init\r\nrosdep update\r\nmkdir -p workspace/src\r\ncd workspace/src\r\ngit clone https://github.com/evenator/nmea_navsat_driver.git -b ros2-fix-dependencies\r\ngit clone https://github.com/ros-drivers/nmea_msgs.git -b ros2\r\ncd ..\r\nrosdep install -i --from-paths src --rosdistro crystal\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - ROS2
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/65'
+  title: Fix Package Dependencies in ROS2
+  body: "When attempting to install dependencies from scratch in a clean `crystal-desktop` docker image, I run into some problems. To reproduce:\r\n\r\n```bash\r\ndocker run -it osrf/ros:crystal-desktop \r\napt update && apt install -y python3-colcon-common-extensions\r\n(cd /usr/bin && ln -s pip3 pip)\r\nrosdep init\r\nrosdep update\r\nmkdir -p workspace/src\r\ncd workspace/src\r\ngit clone https://github.com/ros-drivers/nmea_navsat_driver.git -b ros2\r\ngit clone https://github.com/ros-drivers/nmea_msgs.git -b ros2\r\ncd ..\r\nrosdep install -i --from-paths src --rosdistro crystal\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - ROS2
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/62'
+  title: Fix missing runtime dependency
+  body: "When building the package and running the driver with minimal dependencies installed, the following Python error appears because the dependency on `tf` is not declared in `package.xml`:\r\n```\r\nTraceback (most recent call last):\r\n  File \"/home/ed/code/nmea_navsat_driver_ws/install/lib/nmea_navsat_driver/nmea_serial_driver\", line 39, in <module>\r\n    import libnmea_navsat_driver.driver\r\n  File \"/home/ed/code/nmea_navsat_driver_ws/install/lib/python2.7/dist-packages/libnmea_navsat_driver/driver.py\", line 39, in <module>\r\n    from tf.transformations import quaternion_from_euler\r\nImportError: No module named tf.transformations\r\n```"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/59'
+  title: Removed roslint as build depend.
+  body: 'Re-added here: https://github.com/ros-drivers/nmea_navsat_driver/pull/25.'
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/52'
+  title: Adding code to handle serial exception to allow node to exit cleanly
+  body: 'Addresses #47 and #51 '
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/50'
+  title: 'IOError: [Errno 110] Connection timed out'
+  body: "Hi,\r\n\r\nI'm getting the following issue while running the nmea_serial_driver on Kinetic:\r\n\r\n```\r\nprocess[nmea_serial_driver-2]: started with pid [16393]\r\nTraceback (most recent call last):\r\n  File \"/home/ucmrobotics/ros_rapid_usda/src/nmea_navsat_driver/scripts/nmea_serial_driver\", line 49, in <module>\r\n    GPS = serial.Serial(port=serial_port, baudrate=serial_baud, timeout=20)\r\n  File \"/home/ucmrobotics/.local/lib/python2.7/site-packages/serial/serialutil.py\", line 240, in __init__\r\n    self.open()\r\n  File \"/home/ucmrobotics/.local/lib/python2.7/site-packages/serial/serialposix.py\", line 286, in open\r\n    self._update_dtr_state()\r\n  File \"/home/ucmrobotics/.local/lib/python2.7/site-packages/serial/serialposix.py\", line 634, in _update_dtr_state\r\n    fcntl.ioctl(self.fd, TIOCMBIS, TIOCM_DTR_str)\r\nIOError: [Errno 110] Connection timed out\r\n[nmea_serial_driver-2] process has died [pid 16393, exit code 1, cmd /home/ucmrobotics/ros_rapid_usda/src/nmea_navsat_driver/scripts/nmea_serial_driver fix:=fix __name:=nmea_serial_driver __log:=/home/ucmrobotics/.ros/log/501f3746-889b-11e8-b1b5-035c19e54ecc/nmea_serial_driver-2.log].\r\nlog file: /home/ucmrobotics/.ros/log/501f3746-889b-11e8-b1b5-035c19e54ecc/nmea_serial_driver-2*.log\r\n```\r\nbut if I run on it on Indigo, it works. Does anybody know what is happening?\r\n\r\nBest,"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - Under Investigation
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/40'
+  title: Slash is deprecated in tf2. Hence compulsion removed.
+  body: >-
+    " /gps " frame ID gives warnings when used with latest tf. Hence code of
+    driver was modified to update this in jade-devel.
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+    - duplicate
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/36'
+  title: 'Removed MSL compensation as per ros-drivers/nmea_navsat_driver#29'
+  body: 'Fix for #29 '
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/33'
+  title: Removed automatic prefixing of forward slash to frame_id.
+  body: "Removed the automatic prefixing of forward slash, but to be consistent with the current default behavior,\r\nthe default frame_id has been set to `/gps` with the prepended forward slash."
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/29'
+  title: Altitude vs Ellipsoid Height
+  body: "It seems to me the nmea_navsat_driver incorrectly calculates makes a correction for the `altitude` portion of the NavSatFix message. Specifically, here's the code from \"diver.py\"\r\n\r\n```\r\n# Altitude is above ellipsoid, so adjust for mean-sea-level\r\n        altitude = data['altitude'] + data['mean_sea_level']\r\n        current_fix.altitude = altitude\r\n```\r\n\r\nThe NavSatFix message definition is the following:\r\n```\r\n# Altitude [m]. Positive is above the WGS 84 ellipsoid\r\n# (quiet NaN if no altitude is available).\r\nfloat64 altitude\r\n```\r\n\r\nThe GGA sentence \"ellipsoidal height\" produces exactly that, height relative to the WGS 84 ellipsoid, positive up. The choice of \"altitude\" here to describe this quantity is probably mis-leading, but in any case, based on the NavSatFix definition, one should report  the ellipsoidal height field with no correction, imo. \r\n\r\n[I will admit, for many applications, altitude above mean sea level, as it is calculated here, is probably more intuitive. But for anyone doing any kind of precision navigation, it could be very misleading.]\r\n"
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/pull/28'
+  title: 'Cleanup of CMakeLists, package.xml.'
+  body: >-
+    By going to package format 2, we can make roslint a test depend rather than
+    build depend.
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/24'
+  title: frame_id pre-appended by a forward slash
+  body: >
+    I have been observing that the nmea_serial_driver node pre-appends a
+    forwardslash onto whatever frame_id is specified, even the default of "gps"
+    becomes "/gps". This causes errors in nodes that try to use this transform.
+    I am specifically using robot_lacalization's gps_transform_node which cannot
+    support frame_id's starting with a forwardslash.
+
+
+    Edit:
+
+
+    According to the[ tf2/Migration Wiki:
+
+    ](http://wiki.ros.org/tf2/Migration)
+
+
+    > Removal of support for tf_prefix
+
+    > One feature which has never really worked was the tf_prefix parameter.
+    tf_prefix was an attempt to parallel the namespacing capability of ROS but
+    for tf frame_ids. However, without core support built in the tf_prefix
+    languished and required a significant amount of work for all developers to
+    implement it correctly. Only a small fraction of packages implemented
+    tf_prefix correctly and for tf_prefix to work correctly it requires all
+    packages interacting with the data to be fully implemented. Thus tf_prefix
+    was only useful for very limited use cases.
+
+    > 
+
+    > tf2 does not support tf_prefix. To avoid confusion tf2 asserts that all
+    frame_ids do not start with /. To make this work tf::resolve will still work
+    to join a tf_prefix and a frame_id, but it will no longer support escaping a
+    frame_id which starts with '/'. tf2 will treat all frame_ids as string
+    literals. All pass throughs from tf to tf2 will strip the leading slash.
+
+    > 
+
+    > To support multiple homogeneous tf trees. As multiple master techniques
+    develop for ROS it is expected that there will be tools developed which will
+    expose subsets of tf data onto foreign masters.
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/17'
+  title: Driver computes covariance incorrectly
+  body: >
+    In the review: 2010-05-31 GPS Proposal_API_Review of the NavSatFix message,
+    the discussion appeared to initially treat HDOP as a measurement
+    uncertainty, but late in the discussion, Chad noted, "I found a source here
+    that claims you can use DOP to multiply the expected optimal measurement
+    accuracy of your GPS:
+
+    http://www.pobonline.com/Articles/Column/f785817cac0f6010VgnVCM100000f932a8c0____ 
+
+    "As an example, let’s say the measurement accuracy is 1 meter. If DOP is 1,
+    then the
+
+    positioning accuracy is 1 meter. What happens when the DOP is 5?
+
+    The best positioning accuracy is 5 meters." So it looks like we can take the
+    optimal case
+
+    (DGPS, WAAS, Omnistar, etc) covariance matrix and multiply that by DOP^2. So
+    this could still be done by the driver." 
+
+
+    This matches what I've divined from reading. The implementation of the
+    driver currently sets covariance to HDOP^2, but should multiply that by the
+    measurement variance. HDOP is apparently supposed to be greater than 1.0,
+    and the current (faulty) implementation has apparently worked well enough,
+    possibly because the square of an HDOP of 1.0 - 2.0 is 1.0 - 4.0, which is
+    in the ballpark of what aided GPS variance should be.
+
+
+    This doesn't work for RTK GPS, where the error is a few cm.
+
+
+    Determining the measurement error was left by the NavSatFix message
+    architects as a detail for the driver. It has been asserted that NMEA
+    doesn't standardize how GPS receivers should publish measurement error.
+    Reportedly, each vendor uses proprietary ways of reporting error. However,
+    there is a GPGST message that at least Trimble publishes. The Skytraq
+    receiver will also publish it, so I think we should support it and use its
+    data to compute covariance. The message definition is shown below.
+
+    ## Position error statistics
+
+
+    An example of the GST message string is:
+
+
+    $GPGST,172814.0,0.006,0.023,0.020,273.6,0.023,0.020,0.031*6A
+
+
+    The Talker ID ($--) will vary depending on the satellite system used for the
+    position solution:
+
+
+    ```
+
+    $GP - GPS only
+
+    $GL - GLONASS only
+
+    $GN - Combined
+
+    ```
+
+
+    GST message fields
+
+    Field   Meaning
+
+    0   Message ID $GPGST
+
+    1   UTC of position fix
+
+    2   RMS value of the pseudorange residuals; includes carrier phase residuals
+    during periods of RTK (float) and RTK (fixed) processing
+
+    3   Error ellipse semi-major axis 1 sigma error, in meters
+
+    4   Error ellipse semi-minor axis 1 sigma error, in meters
+
+    5   Error ellipse orientation, degrees from true north
+
+    6   Latitude 1 sigma error, in meters
+
+    7   Longitude 1 sigma error, in meters
+
+    8   Height 1 sigma error, in meters
+
+    9   The checksum data, always begins with *
+
+
+    I propose that covariance should be calculated using a heirarchy of inputs
+    as follows:
+
+    - If a message known to express the accuracy of a fix (e.g. GST, or some
+    vendor-specific message) is found, the horizontal 1-sigma std deviation
+    provided should be used as the estimated error. This policy allows for
+    receiver-specific driver code to collect the estimated error in any way
+    appropriate if GST isn't provided.
+
+    - If a fix accuracy message is not found, error std. deviation should have a
+    default value based on the fix quality in the GGA message:
+       1            Fix quality: 0 = invalid
+      -                               1 = GPS fix (SPS)
+      -                               2 = DGPS fix
+      -                               3 = PPS fix
+      -                4 = Real Time Kinematic
+      -                5 = Float RTK
+      -                               6 = estimated (dead reckoning) (2.3 feature)
+      -                7 = Manual input mode
+      -                8 = Simulation mode
+        In both cases, std deviation should be multiplied by HDOP, the result squared, and placed on the covariance diagonal, unless the driver has better knowledge.
+    ## Details of proposal
+
+
+    If GST is provided, error should be taken as the greater of lattitude or
+    longitude 1-sigma error
+
+    If GST is NOT provided, the fix quality should be mapped to 1-sigma error as
+    follows:
+
+    0: 10^6 (This is arbitrary - the fix is invalid so Nan could be another
+    option)
+
+    1: 4m. This is based on http://www.gps.gov/systems/gps/performance/accuracy/
+    wherein 2-sigma (95%) is stated as 7.5m, so 1-sigma should be half that (4m)
+
+    2: 10cm based on https://en.wikipedia.org/wiki/Differential_GPS
+
+    3: 3m based on half the 95% error of 5.9m stated here:
+    http://www.navipedia.net/index.php/GPS_Performances
+
+    4: 2cm. I couldn't find a reference for 1-sigma for RTK so this is a
+    proposal
+
+    5: 4m. A receiver shouldn't offer worse accuracy than SPS while it's trying
+    to transition to RTK Fix mode - if it does (and I think the Swiftnav unit
+    does) - I think it's broken.
+
+    6: ?? This is not estimatable. Perhaps Nan?
+
+    7: ?? This is not estimatable. Perhaps Nan?
+
+    8: 0m Perhaps a simulation should exhibit perfect accuracy
+
+
+    The proposals above do not reflect actual accuracy (except where provided by
+    the receiver) - actual accuracy can be affected by the environment. They
+    attempt to be a "best guess".
+
+
+    Will Nan in covariance blow-up the navigation stack? If so, perhaps a huge
+    covariance is better.
+
+
+    I'm not super-experienced in this domain, and welcome better ideas. Thanks
+    for your help.
+
+
+    Paul
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/14'
+  title: Mapping GGA Quality to NavSatStatus can be misleading
+  body: >
+    The quality values used to but generally no-longer reflect position solution
+    source but rather solution quality. Mapping quality to NavSatStatus.status
+    seems to be misleading and removes meaningful information.
+
+
+    For example, mapping 4 and 5 to GBAS is problematic because:
+
+    - 4 is almost exclusively fixed-integer RTK (1-2cm)
+
+    - 5 is commonly float RTK  (10-100cm as it converges to fixed)
+
+    - 5 is also commonly satellite-based corrections like OmniStar, TerraStar
+    (10-20cm)
+
+
+    Therefore use of NavSatStatus.status can significantly mislead when we have
+    a quality solution. For example, I couldn't rely on this value to know when
+    to capture a measurement as a GPS datum for a world to local transform (do I
+    have 1cm, or 100cm accuracy?)
+
+
+    Is there a possible resolution that uses existing messages? Do we need a new
+    message?  This might warrant a greater discussion on the importance and
+    strategy of preserving and communicating quality data in greater detail.
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/nmea_navsat_driver/issues/5'
+  title: Empty fields spam rosout with warnings
+  body: >
+    I think I reported this previously, but I can't find the old ticket to wake
+    it up. In any case, here's an [example
+    bag](https://dl.dropboxusercontent.com/u/784159/nmea_problem.bag) with some
+    data from a ublox receiver that has no sky view.
+
+
+    ESR's [gpsd docs](http://gpsd.berlios.de/NMEA.txt) offer the following: 
+
+
+    > According to UNMEA, the NMEA standard requires that a field (such as
+
+    > altitude, latitude, or longitude) must be left empty when the GPS has
+
+    > no valid data for it.  However, many receivers violate this.  It's
+
+    > common, for example, to see latitude/longitude/altitude figures filled
+
+    > with zeros when the GPS has no valid data.
+
+
+    Unfortunately, the link for the citation is broken, but it's a start. Seems
+    nmea_navsat_driver shouldn't try to cast empty strings to numbers, or the
+    try-block should be at the field level rather than external to add_sentence.
+  repo: 'https://api.github.com/repos/ros-drivers/nmea_navsat_driver'
+  labels:
+    - bug

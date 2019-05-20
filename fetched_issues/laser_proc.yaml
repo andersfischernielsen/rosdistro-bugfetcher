@@ -1,0 +1,16 @@
+- url: 'https://github.com/ros-perception/laser_proc/pull/1'
+  title: Add missing dependency on pluginlib
+  body: >
+    Nodelet does not pass along pluginlib implicitly, because pluginlib is not
+    used in any exposed headers.  This is correct behavior on nodelet's behalf.
+
+
+    This library directly imports pluginlib:
+
+
+    https://github.com/ros-perception/laser_proc/blob/groovy-devel/src/LaserProcNodelet.cpp#L59
+
+
+    And therefore this package should depend on pluginlib explicitly.
+  repo: 'https://api.github.com/repos/ros-perception/laser_proc'
+  labels: []

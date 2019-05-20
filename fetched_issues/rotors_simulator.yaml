@@ -1,0 +1,62 @@
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/534'
+  title: Create dependencies.rosinstall
+  body: "- Changed build from cloning dependencies in a command line parameter of jenkins config to a .rosinstall file\r\n"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/521'
+  title: 'rotors_gazebo/package.xml: alphabetize and add missing run depends'
+  body: 'Adds a missing run_depend on `joy` (#501) and `xacro` (part of #500).'
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/513'
+  title: Add eigen dependency.
+  body: "Fixes\r\n```\r\n/tmp/catkin_workspace_overlay/src/rotors_gazebo/src/hovering_example.cpp:24:22:\r\nfatal error: Eigen/Core: No such file or directory\r\n```\r\n\r\nBefore it was getting Eigen indirectly from mav_comm but https://github.com/ros/rosdistro/pull/18907 broke it (should be fixed!!)."
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/issues/510'
+  title: >-
+    Publishing waypoints using Python code, adding lidar sensor and the frame_id
+    issue
+  body: "Thanks for your package.\r\n\r\nI am trying to publish waypoints in python using the following code:\r\n\r\n```\r\n    from trajectory_msgs.msg import MultiDOFJointTrajectory\r\n    from geometry_msgs.msg import Vector3\r\n    import mav_msgs.msg as mav_msgs\r\n\r\n    Firefly_Command_Publisher = rospy.Publisher('/firefly/command/trajectory', MultiDOFJointTrajectory, queue_size=10)\r\n\r\n    trajectory_msg=MultiDOFJointTrajectory()\r\n    trajectory_msg.header.stamp=rospy.Time.now()\r\n\r\n    desired_position = Vector3()\r\n    desired_position.x = 1.0\r\n    desired_position.y = 1.0\r\n    desired_position.z = 1.0\r\n    desired_yaw = 45\r\n\r\n    mav_msgs.msgMultiDofJointTrajectoryFromPositionYaw(desired_position, desired_yaw,trajectory_msg)\r\n    Firefly_Command_Publisher.publish(trajectory_msg)\r\n```\r\n\r\nbut I get the following error:\r\n\r\n```\r\n    mav_msgs.msgMultiDofJointTrajectoryFromPositionYaw(desired_position, desired_yaw,trajectory_msg)\r\nAttributeError: 'module' object has no attribute 'msgMultiDofJointTrajectoryFromPositionYaw'\r\n```\r\n\r\nI don't know how to add `msgMultiDofJointTrajectoryFromPositionYaw`, I used `import mav_msgs.msg as mav_msgs` and `from conversions import msgMultiDofJointTrajectoryFromPositionYaw` but no luck, I appreciate your guide on this. Further, if you know any other way that I can use a controller to control your drone from python using commands such as move forward and turn left or right please tell me.\r\n\r\nBeside that, in Gazebo 2.0 I am trying to add a lidar sensor using the following code:\r\n\r\n```\r\n <!-- Hokuyo Lidar Range Sensor -->\r\n    <xacro:macro name=\"hokuyo_utm30lx\" params=\"*origin update_rate ray_count min_angle max_angle\">\r\n      <link name=\"firefly/laser_lidar_link12\">\r\n\t<inertial>\r\n\t  <mass value=\"0.001\" />\r\n\t  <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\r\n\t  <inertia ixx=\"0.0001\" ixy=\"0\" ixz=\"0\" iyy=\"0.0001\" iyz=\"0\" izz=\"0.0001\" />\r\n\t</inertial>\r\n\t<visual>\r\n          <geometry>\r\n            <mesh filename=\"package://turtlebot_description/meshes/sensors/hokuyo_utm30lx/hokuyo_utm_30lx.dae\"/>\r\n          </geometry>\r\n\t</visual>\r\n\t<collision>\r\n\t  <origin xyz=\"0 0 -0.0115\" rpy=\"0 0 0\" />\r\n          <geometry>\r\n            <box size=\"0.058 0.058 0.087\" />\r\n            <!--<mesh filename=\"package://hector_sensors_description/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.stl\"/>-->\r\n          </geometry>\r\n\t</collision>\r\n      </link>\r\n      <joint name=\"laser_lidar_joint\" type=\"fixed\">\r\n        <origin xyz=\"0.0 0.0 0.12\" rpy=\"3.14159 0.0 0.0\" />\r\n\t<parent link=\"firefly/base_link\"/>\r\n\t<child link=\"firefly/laser_lidar_link12\"/>\r\n      </joint>\r\n      <gazebo reference=\"firefly/laser_lidar_link12\">\r\n        <sensor type=\"ray\" name=\"firefly_laser_lidar\">\r\n            <pose>0 0 0 0 0 0</pose>\r\n            <visualize>false</visualize>\r\n            <update_rate>40</update_rate>\r\n\t    <ray>\r\n\t\t  <scan>\r\n\t\t    <horizontal>\r\n\t\t      <samples>720</samples>\r\n\t\t      <resolution>1</resolution>\r\n\t\t      <min_angle>-2.350796</min_angle>\r\n\t\t      <max_angle>2.350796</max_angle>\r\n\t\t    </horizontal>\r\n\t\t  </scan>\r\n\t\t  <range>\r\n\t\t    <min>0.10</min>\r\n\t\t    <max>20.0</max>\r\n\t\t    <resolution>0.01</resolution>\r\n\t\t  </range>\r\n\t\t  <noise>\r\n\t\t    <type>Gaussian</type>\r\n\t\t    <mean>0.0</mean>\r\n\t\t    <stddev>0.01</stddev>\r\n\t\t  </noise>\r\n\t    </ray>\r\n\t    <plugin name=\"gazebo_ros_lidar_controller\" filename=\"libgazebo_ros_laser.so\">\r\n\t\t  <topicName>/scan</topicName>\r\n\t\t  <frameName>firefly/laser_lidar_link12</frameName>\r\n\t\t  <!-- <interface:laser name=\"gazebo_ros_${laser_suffix}_iface\" /> -->\r\n            </plugin>\r\n        </sensor>\r\n      </gazebo>\r\n    </xacro:macro>\r\n```\r\n\r\nbut the output of `rostopic echo /scan/header` is:\r\n\r\n```\r\nseq: 721\r\nstamp: \r\n  secs: 6850\r\n  nsecs: 560000000\r\nframe_id: firefly/firefly/laser_lidar_link12\r\n---\r\nseq: 722\r\nstamp: \r\n  secs: 6850\r\n  nsecs: 590000000\r\nframe_id: firefly/firefly/laser_lidar_link12\r\n```\r\n\r\nmy problem is that the frame id is changed from what I have defined using xacro macro - I expected it to be /firefly/laser_lidar_link12, and as a result, I cannot use it correctly in some SLAM packages - as I explained it in this link https://github.com/introlab/rtabmap_ros/issues/266, is there any way to solve this issue?\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/506'
+  title: Install libmav_msgs.so
+  body: "All of the gazebo plugin targets depend on `libmav_msgs.so`. This PR makes sure that library gets installed so the gazebo plugins work from the install space.\r\n\r\nWithout this PR running `roslaunch rotors_gazebo three_multicopters_hovering_example.launch` with the install space sourced results in:\r\n\r\n```\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_multirotor_base_plugin.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_motor_model.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_motor_model.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_motor_model.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_motor_model.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_controller_interface.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_imu_plugin.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_imu_plugin.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_odometry_plugin.so: libmav_msgs.so: cannot open shared object file: No such file or directory\r\n[Err] [Plugin.hh:180] Failed to load plugin librotors_gazebo_odometry_plugin.so: libmav_msgs.so: cannot open shared object \r\nfile: No such file or directory\r\n```"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/issues/501'
+  title: rotors_gazebo missing runtime dependency on joy
+  body: "`rotors_gazebo` has a launch file using `joy_node`, so it should declare a runtime dependency in it's package xml.\r\n\r\nhttps://github.com/ethz-asl/rotors_simulator/blob/9299985db68cf5894661ec6413a24effef424180/rotors_gazebo/launch/mav_with_joy.launch#L25\r\n\r\nThis enables someone who builds from source to do `rosdep install --from-paths rotors_simulator --ignore-src` and get the `joy` package installed if they don't already have it."
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/issues/500'
+  title: Duplicate xacro.py in rotors_gazebo
+  body: "`rotors_gazebo` has a copy of `xacro.py` https://github.com/ethz-asl/rotors_simulator/blob/master/rotors_gazebo/scripts/xacro.py\r\n\r\nThe launch scripts use the released version of xacro\r\nhttps://github.com/ethz-asl/rotors_simulator/blob/9299985db68cf5894661ec6413a24effef424180/rotors_gazebo/launch/spawn_mav.launch#L19\r\n\r\nRecommend removing the copy of xacro.py, and instead adding `<run_depend>xacro</run_depend>` to the `package.xml` in  `rotors_gazebo` \r\n\r\nEdit: Clicked submit too early, description updated now"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/493'
+  title: Added dependancy installation instructions
+  body: 'Fixes #492'
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/464'
+  title: Set odometry rate back to 1/1 of real-time rate.
+  body: "Should resolve https://github.com/ethz-asl/rotors_simulator/issues/463\r\nThis was my fault, as @aeudes pointed out the real-time rate depends on the world and all of ours have 100 set as the rate, and we were trying to debug issues with a world with presumably a rate of 1000 set."
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/issues/463'
+  title: 'Quadrotor is dropping after some time '
+  body: "Hi, \r\nI reinstalled rotors_simulator with ubuntu 16.04 and ROS kinetic.  I implemented Lee's velocity controller using a python code and was trying to use this simulator when I observed that the quadrotor falls off after some time. Interestingly some time back (on a ubuntu 14.04 machine) my implementation of position and attitude controller were working fine. I kept debugging my code for errors but now notice similar behavior (quad goes to hover point but then drops after some time) with the default controller of this package. \r\n\r\nI can see the publishing rate of odometry sensor is 10 Hz but if I remember correctly it was 100hz before. I get few warning related to FindEigen.cmake is deprecated. And I cant install hil-plugin. Is there a problem with the installation or dependencies or controller+gazebo physics? I noticed same issue on 3 machines and cant figure out the reason. \r\n\r\nI would really appreciate any help regarding this. \r\n"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/455'
+  title: made mavlink default distro independent
+  body: Makes things a bit easier when compiling on kinetic or lunar
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []
+- url: 'https://github.com/ethz-asl/rotors_simulator/pull/448'
+  title: Update readme
+  body: "1. Added ros-kinetic-control-toolbox to list of installs, since there is a build dependency here\r\n2. Changed wget path to https://raw.githubusercontent.com/ethz-asl/rotors_simulator/master/rotors_hil.rosinstall -- previous link downloaded a formatted version that did not work with rosinstall, this link connects to the raw file\r\n3. Added note to install python future if there are errors related to \"missing package future\" in the build"
+  repo: 'https://api.github.com/repos/ethz-asl/rotors_simulator'
+  labels: []

@@ -1,0 +1,295 @@
+- url: 'https://github.com/ros/roslisp/issues/40'
+  title: Warning in doc jobs
+  body: "In the latest doc jobs (e.g. http://build.ros.org/job/Ldoc__ros_comm__ubuntu_xenial_amd64/32 and http://build.ros.org/view/Ldoc/job/Ldoc__roslisp_common__ubuntu_xenial_amd64/3/) the following warning has started to show up:\r\n\r\n> WARNING:\r\n> Couldn't re-execute SBCL with proper personality flags (/proc isn't mounted? setuid?)\r\n\r\nThe best description I was able to find was https://github.com/dimitri/pgloader/wiki/Running-in-Docker-(SBCL-warning)\r\n\r\nSince this package is pulling in the dependency on SBCL can you please come up with a patch how this warning can be avoided since it makes the doc job of multiple packages unstable."
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels: []
+- url: 'https://github.com/ros/roslisp/pull/35'
+  title: Support for symbols in msg-type of make-message
+  body: >
+    Currently, the `msg-type` argument of `make-message` has to be a string of
+    format `"package/message_type"`:
+
+
+    ``` lisp
+
+    CL-USER> (roslisp:make-message "geometry_msgs/Twist"
+                                   (:x :linear) 1
+                                   (:z :angular) 2)
+    [GEOMETRY_MSGS-MSG:TWIST
+       LINEAR:
+         (GEOMETRY_MSGS-MSG:VECTOR3 (:X . 1) (:Y . 0.0) (:Z . 0.0))
+       ANGULAR:
+         (GEOMETRY_MSGS-MSG:VECTOR3 (:X . 0.0) (:Y . 0.0) (:Z . 2))]
+    ```
+
+
+    I suggest also supporting class name as message types, similar to how it is
+    done with services:
+
+
+    ``` lisp
+
+    CL-USER> (roslisp:call-service "/spawn" 'turtlesim-srv:spawn
+                                   :x 5 :y 5 :theta 1.0)
+    CL-USER> (roslisp:make-request "moveit_msgs/getpositionfk")
+
+    CL-USER> (roslisp:make-request 'moveit_msgs-srv:getpositionfk)
+
+    ```
+
+    1. Using strings here instead of actual message classnames is not very
+    convenient, because if one forgets to add a dependency on the message
+    package the failure will only come up at runtime.
+
+    2. Another advantage of using symbols is that it has autocompletion
+
+    3. One can also jump straight to the message definition if it's a valid
+    classname
+
+
+    This PR will then allow:
+
+
+    ``` lisp
+
+    CL-USER> (roslisp:make-message 'geometry_msgs-msg:twist
+                                   (:x :linear) 1
+                                   (:z :angular) 2)
+    ```
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels: []
+- url: 'https://github.com/ros/roslisp/issues/30'
+  title: Problem with installation on Mac OS El Capitan
+  body: >
+    I am installing ROS Indigo distro on Mac OS El Capitan using instructions
+    given
+    [here](http://answers.ros.org/question/224956/no-definition-of-procps-for-os-osx/).
+    But when I run:
+
+    `rosdep install --from-paths src --ignore-src --rosdistro indigo -y`
+
+    I get the following error:
+
+
+    > ERROR: the following packages/stacks could not have their rosdep keys
+    resolved
+
+    > to system dependencies:
+
+    > roslisp: Missing resource geneus
+
+
+    Is there any way to resolve this?
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels: []
+- url: 'https://github.com/ros/roslisp/issues/22'
+  title: 'ros-time gives different timestamp than rosccp''s ros::Time::now'
+  body: >
+    I ran into an inconsistency of timestamps on our robot: I get a timestamped
+    message from a roscpp-node. Upon receipt, I call `(roslisp:ros-time)`. I
+    print both stamps, and the roslisp timestamp is older than the one from
+    roscpp. This seems like a bug to me.
+
+
+    I checked that both my roslisp-node and my roscpp-node run on the same
+    computer and that `use_sim_time` is set to false on the ROS parameter
+    server. This relates to roslisp version 1.9.17 on ROS Hydro, Ubuntu Precise.
+
+
+    I looked into how roslisp implements its time mechanism. I am doubtful
+    whether the two global variables `*time-base*` and `*internal-time-base*`
+    used for calculating the stamp refer to the same moment in time. If they do
+    not, than the timestamp could be wrong by as much as +-1s. 
+
+    https://github.com/ros/roslisp/blob/master/src/time.lisp#L46
+
+
+    Are there alternatives in SBCL to `(get-internal-real-time)` which give us a
+    real-time with respective to a globally known reference time? Or should we
+    consider wrapping the c-functions for accessing the sys-time?
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roslisp/issues/21'
+  title: Topic remapping not working
+  body: >
+    I started a standalone roslisp-script using roslaunch. Topic remapping
+    specified in the launch-file was correctly registered (at least a printout
+    showed up when the node was started, and `*remapped-names*` is no longer
+    empty). However, the node still subscribes to the unmapped topic.
+
+
+    I'll try to come back with a minimal example, soon.
+
+
+    P.S.: I used roslisp version 1.9.17
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roslisp/pull/18'
+  title: 'fix for ros/roslisp#17'
+  body: >
+    Bug-fix: Calling 'split-string' either from package 'asdf' or 'uiop',
+    depending on asdf-version.
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels: []
+- url: 'https://github.com/ros/roslisp/issues/12'
+  title: Subscription and publication to same topic from one node crashes.
+  body: >
+    I'm trying to both listen and publish to the same topic from one node. No
+    matter in which order I try, I get a broken connection error. Below are the
+    two distilled use cases.
+
+
+    USE-CASE 1:
+
+
+    ``` lisp
+
+    (progn
+      (start-ros-node "my-node")
+      (subscribe "/our_topic" "std_msgs/Empty" (lambda (msg) msg))
+      (advertise "/our_topic" "std_msgs/Empty"))
+    ```
+
+
+    This immediately fails with:
+
+    Couldn't write to #<FD-STREAM
+                        for "socket 127.0.0.1:44917, peer: 127.0.0.1:40980"
+                        {1005F039C3}>:
+      Broken pipe
+       [Condition of type SB-INT:SIMPLE-STREAM-ERROR]
+
+    USE-CASE 2:
+
+
+    ``` lisp
+
+    (progn
+      (start-ros-node "my-node")
+      (advertise "/our_topic" "std_msgs/Empty")           
+      (subscribe "/our_topic" "std_msgs/Empty" (lambda (msg) msg)))
+    ```
+
+
+    This initially returns but propagates an error after few seconds:
+
+    Couldn't write to #<FD-STREAM
+                        for "socket 127.0.0.1:55104, peer: 127.0.0.1:40010"
+                        {100674E493}>:
+      Broken pipe
+       [Condition of type SB-INT:SIMPLE-STREAM-ERROR]
+
+    P.S.: I also wrote the same sample programs both with roscpp and rospy,
+    there it works. However, --in contrast to roslisp-- both roscpp and rospy
+    then send and receive the data over the same socket of localhost.
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roslisp/issues/7'
+  title: rosilisp serialisation may not warn
+  body: >
+    Migrated from https://code.ros.org/trac/ros/ticket/3548
+
+    Reported by:    kruset  Owned by:   bhaskara
+
+    Priority:   minor 
+
+    Last modified ago: May 2011
+
+
+    ---
+
+
+    To reproduce, call a service expecting PoseStamped? with a Pose. E.g. Create
+    a ROS cpp service with this signature
+
+
+    geometry_msgs/PoseStamped pose ---
+
+
+    Then call it from REPL like this: (roslisp:call-service
+
+
+    ```
+
+    "message_test" 'beginner_tutorials-srv:MessageTest :pose (make-instance
+    'geometry_msgs-msg:pose))
+
+    ```
+
+
+    Error messages on server and client do not indicate the user send Pose
+    instead of PoseStamped?. Suggest checking type during roslisp serialization
+    independent of sbcl compiler settings
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/roslisp/issues/5'
+  title: roslisp nodes dont appear in rxloggerlevel
+  body: >
+    Migrated from https://code.ros.org/trac/ros/ticket/3561
+
+    Reported by:    kruset  Owned by:   bhaskara
+
+    Priority:   major 
+
+    Last modified ago: Nov 2011
+
+
+    ---
+
+
+    create roslisp node, start node, run rxloggerlevel. Node should appear, but
+    does not. Not sure whether this is a bug or a missing feature. 
+
+
+    ---
+
+
+    Conversation
+
+
+    Changed 18 months ago by bhaskara
+
+
+    ```
+
+    type changed from defect to enhancement
+
+    ```
+
+
+    This is a missing feature. Roslisp has a similar topic hierarchy to roscpp
+    and a service interface for changing levels at runtime, and so I imagine it
+    would be not too hard to add the specific interface that rxloggerlevel
+    expects, but I haven't looked into this.
+
+
+    Changed 14 months ago by kruset
+
+
+    I created a patch for rospy doing that in #3749
+    (https://code.ros.org/trac/ros/ticket/3749). It is rather easy to do, just
+    create 2 services returning a list of loggers and setting the level of one.
+    The only problem is that the messages are currently defined in roscpp, so
+    that would introduce a dependency to roscpp for the messages. Do you see any
+    problem with that?
+
+
+    Changed 14 months ago by bhaskara
+
+
+    ```
+
+    cc kwc, straszheim added
+
+    ```
+
+
+    We should probably move the relevant ros messages into std_msgs and
+    std_srvs, if that api is going to apply to multiple client libraries.
+  repo: 'https://api.github.com/repos/ros/roslisp'
+  labels:
+    - enhancement

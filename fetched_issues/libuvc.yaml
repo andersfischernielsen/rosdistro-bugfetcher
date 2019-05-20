@@ -1,0 +1,34 @@
+- url: 'https://github.com/ktossell/libuvc/issues/109'
+  title: 'Issue with finding JPEG library when compiling. '
+  body: "I am trying to compile libuvc with JPEG support for GetThermal. When I run cmake I get this \r\n\r\n```\r\nCMake Warning at CMakeLists.txt:58 (message):\r\n  JPEG not found.  libuvc will not support JPEG decoding.\r\n\r\n\r\n-- Configuring done\r\n-- Generating done\r\n-- Build files have been written to: /home/ziad/Documents/src/ETV/WIND/GetThermal/libuvc/build\r\n```\r\n\r\nI am running Ubuntu 18.04 and I tried installing every libjpeg development package there is. Including. \r\nlibjpeg-dev\r\nlibjpeg9-dev\r\nlibjpeg8-dev\r\nlibjpeg-turbo8-dev\r\nlibjpeg62-dev\r\n\r\nIs there some other jpeg library or a different version I need? would be nice to have a list of dependencies that's easy to reach somewhere. "
+  repo: 'https://api.github.com/repos/ktossell/libuvc'
+  labels: []
+- url: 'https://github.com/ktossell/libuvc/issues/93'
+  title: Get invaild mode error when using uvc_get_stream_ctrl_format_size
+  body: "I have a uvc camera and try to do some image processing work on its stream. I am working under ubuntu 16.04. All works fine if I use opencv to open the device. Since I'd like to open the device through the vid and pid, I try to use libuvc to get the video stream.\r\nSo I tried the test.c in libuvc and get the following output:\r\n\r\nDevice opened\r\n[device.c:871/uvc_claim_if] claiming interface 0\r\n[device.c:880] end uvc_claim_if (0)\r\n[device.c:326/uvc_open] libusb_submit_transfer() = 0\r\n[device.c:343] end uvc_open (0)\r\n[device.c:481] begin uvc_get_device_descriptor\r\n[device.c:523] end uvc_get_device_descriptor (0)\r\nDEVICE CONFIGURATION (1234:0101/[none]) ---\r\n[device.c:535] begin uvc_free_device_descriptor\r\n[device.c:548] end uvc_free_device_descriptor\r\nStatus: idle\r\nVideoControl:\r\n\tbcdUVC: 0x0100\r\nVideoStreaming(1):\r\n\tbEndpointAddress: 0\r\n\tFormats:\r\nEND DEVICE CONFIGURATION\r\nbmHint: 0000\r\nbFormatIndex: 0\r\nbFrameIndex: 0\r\ndwFrameInterval: 0\r\nwKeyFrameRate: 0\r\nwPFrameRate: 0\r\nwCompQuality: 0\r\nwCompWindowSize: 0\r\nwDelay: 4720\r\ndwMaxVideoFrameSize: 0\r\ndwMaxPayloadTransferSize: 4198000\r\nbInterfaceNumber: 253\r\nget_mode: Invalid mode (-51)\r\n\r\nIn test.c I only change the vid and pid in uvc_find_device and the width and height of the frame and fps in uvc_get_stream_ctrl_format_size. My device support 1280*960@15fps and 1280*720@10fps. I have tried both resolutions and get the same invaild mode error.\r\n\r\nAm I missing something important?\r\n\r\n"
+  repo: 'https://api.github.com/repos/ktossell/libuvc'
+  labels: []
+- url: 'https://github.com/ktossell/libuvc/pull/79'
+  title: Update device.c
+  body: >-
+    reduce salience of the alert which end user perceives as more important than
+    it actually is.
+  repo: 'https://api.github.com/repos/ktossell/libuvc'
+  labels: []
+- url: 'https://github.com/ktossell/libuvc/issues/75'
+  title: compile errors
+  body: "i now get compile errors on mac osx\r\n\r\n    $ make && make install\r\n    Scanning dependencies of target uvc\r\n    [ 10%] Building C object CMakeFiles/uvc.dir/src/ctrl.c.o\r\n    [ 20%] Building C object CMakeFiles/uvc.dir/src/ctrl-gen.c.o\r\n    [ 30%] Building C object CMakeFiles/uvc.dir/src/device.c.o\r\n    [ 40%] Building C object CMakeFiles/uvc.dir/src/diag.c.o\r\n    [ 50%] Building C object CMakeFiles/uvc.dir/src/frame.c.o\r\n    [ 60%] Building C object CMakeFiles/uvc.dir/src/init.c.o\r\n    [ 70%] Building C object CMakeFiles/uvc.dir/src/stream.c.o\r\n    [ 80%] Building C object CMakeFiles/uvc.dir/src/misc.c.o\r\n    [ 90%] Building C object CMakeFiles/uvc.dir/src/frame-mjpeg.c.o\r\n    make[2]: *** No rule to make target `/usr/local/lib/libjpeg.dylib', needed by `libuvc.dylib'.  Stop.\r\n    make[1]: *** [CMakeFiles/uvc.dir/all] Error 2\r\n    make: *** [all] Error 2\r\n\r\nany suggestions. i have /usr/local/lib/libjpeg.dylib which is an alias pointing to  -> ../Cellar/jpeg/8d/lib/libjpeg.dylib . tx a bunch\r\n\r\n"
+  repo: 'https://api.github.com/repos/ktossell/libuvc'
+  labels: []
+- url: 'https://github.com/ktossell/libuvc/issues/28'
+  title: Building with jpeg support
+  body: >
+    I am building and extending _libuvc_ros_ which depends on _libuvc_. I can
+    get _libuvc_ to compile and install, when configuring with cmake it even
+    says it is "Building libuvc with JPEG support.". However when I want to use
+    the libraries function _uvc_mjpeg2rgb_ it complains it is not defined. This
+    makes sense since in the header LIBUVC_HAS_JPEG is not defined. How can this
+    be fixed so that LIBUVC_HAS_JPEG is defined and the function _uvc_mjpeg2rgb_
+    can be called?
+  repo: 'https://api.github.com/repos/ktossell/libuvc'
+  labels: []

@@ -1,0 +1,5 @@
+- url: 'https://github.com/OctoMap/octomap_msgs/issues/9'
+  title: Release into ROS Melodic
+  body: "This package is [depended by some MoveIt! packages](http://repositories.ros.org/status_page/blocked_releases_melodic.html?q=id%3D%22octomap_msgs%22&s=6&r=1).\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/OctoMap/octomap_msgs'
+  labels: []

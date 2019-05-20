@@ -1,0 +1,127 @@
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/91'
+  title: fetch robot is dark in gazebo simulation playground
+  body: "**Describe the bug**\r\nFetch robot is dark in the gazebo simulated playground.\r\n\r\n**To Reproduce**\r\nROS Melodic, Ubuntu 18.04, Gazebo9\r\n```\r\nroslaunch fetch_gazebo playground.launch\r\n```\r\n\r\n**Expected behavior**\r\nrobot should not be dark\r\n\r\n**Screenshots**\r\n![Screenshot from 2019-05-09 19-40-55](https://user-images.githubusercontent.com/15113241/57498070-5ce38e80-72a8-11e9-8b42-a7a21940647f.png)\r\n\r\n\r\n**catkin workspace (please complete the following information):**\r\n - fetch_gazebo version: Gazebo 9\r\n - Ubuntu version: 18.04\r\n - ROS version: Melodic\r\n - current catkin workspace information `wstool info`\r\n\r\n**Additional context**\r\nNone\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/90'
+  title: '[Fetchit!] [BUG] Rotated gears "stand up" over time'
+  body: "@RDaneelOlivav When I rotate or spawn in a gear on its side it will start to stand up as seen in the pictures below.\r\nBeing able to rotate a gear in simulation would be really useful for testing because in the competition some of the gears will be in this orientation.\r\n\r\n**To Reproduce**\r\nChange the roll, pitch, or yaw of any gear's pose to be 1.2.\r\nChange the z of the gear to be above the schunk table (0.83)\r\n\r\nGear after rotation is applied:\r\n![Screenshot from 2019-05-07 11-46-48](https://user-images.githubusercontent.com/15792263/57314258-4dedb800-70bf-11e9-9eb5-b698d6506592.png)\r\n\r\nGear a few seconds after rotation is applied:\r\n![Screenshot from 2019-05-07 11-46-56](https://user-images.githubusercontent.com/15792263/57314269-5219d580-70bf-11e9-810b-7911d4018fb1.png)\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/86'
+  title: >-
+    [FetchIt!] [BUG] RobotStatePublisher for Schunk machine breaks robot's /odom
+    transform
+  body: "**Description:**\r\nYou have defined the Schunk machine as a second robot with its own `robot_state_publisher`.  However, this is not configured correctly and it breaks the TF tree for the Fetch robot's `/base_link` to `/odom` transform.\r\n\r\nI'm not sure why this was working previously, but it should not have been.\r\n\r\n**Steps to reproduce:**\r\nLaunch the simulation environment:  \r\n```\r\n$ roslaunch fetchit_challenge main_arena_montreal2019_highlights.launch\r\n```\r\nCheck this TF transform:\r\n```\r\n$ rosrun tf tf_echo /base_link /odom\r\n```\r\nYou should see:  \r\n```\r\nAt time 0.0\r\n- Translation: [0.000, 0.000, 0.000]\r\n- Rotation: in Quaternion [0.000, 0.000, 0.000, 1.000]\r\n            in RPY (radian) [0.000, -0.000, 0.000]\r\n            in RPY (degree) [0.000, -0.000, 0.000]\r\n```\r\nwhere the timestamp is stuck at zero.  \r\nAlso, if you generate the diagram of TF frames, you can see that the Schunk machine is connected directly to the robot's `/base_link`, which is incorrect.\r\n\r\nThen, remove the `robot_state_publisher` in `shunk_machine_control.launch` and repeat.  \r\nYou should see the correct output:  \r\n```\r\nAt time 9.537\r\n- Translation: [0.000, 0.000, 0.000]\r\n- Rotation: in Quaternion [0.000, 0.000, 0.000, 1.000]\r\n            in RPY (radian) [0.000, -0.000, 0.000]\r\n            in RPY (degree) [0.000, -0.000, 0.000]\r\n```\r\nwhere the timestamp is changing.\r\n\r\n**Screenshot:**\r\nThis shows the TF tree with bad connection:  \r\n![](https://i.imgur.com/2sipH2v.png)\r\n\r\n**Expected behavior:**\r\nEach robot can have a `/base_link` but the TF frames need to be namespaced, like:  \r\n```\r\n/fetch_robot1/base_link/\r\n/schunk_machine/base_link/\r\n```\r\nand then the two robots are connected in the TF tree via the `/map` frame.\r\n\r\nSee the example in the first image on this page:  \r\nhttps://answers.ros.org/question/258948/why-tf-trees-for-multi-robot-system-not-showing/\r\n\r\nOr you could try a hard-coded approach and write a simple node that publishes a static TF with the Schunk's location.\r\n\r\n**System configuration:**\r\n - fetch_gazebo version: Latest master branch\r\n - Ubuntu version: 18.04\r\n - ROS version: Melodic\r\n\r\n\r\n.\r\n\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - FetchIt!
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/83'
+  title: '[FetchIt!] [BUG] Gazebo world missing romanoff utility caddy'
+  body: "**Description:**\r\nThe kits (Romanoff utility caddy) are missing from some of the Gazebo worlds in the `fetchit_challenge` package.  I think the model URL is wrong and it's trying to download from the internet.\r\n\r\n**Steps to reproduce:**\r\nLaunch any one of these 4 launch files. They all have the same problem:  \r\n```\r\nroslaunch fetchit_challenge fetchit_challenge_arena_montreal2019_highlights.launch\r\nroslaunch fetchit_challenge fetchit_challenge_arena_montreal2019.launch\r\nroslaunch fetchit_challenge main_arena_montreal2019_highlights.launch\r\nroslaunch fetchit_challenge main_arena_montreal2019.launch\r\n```\r\nIn the terminal you see this error message:   \r\n```\r\n[Err] [ModelDatabase.cc:414] Unable to download model[model://romanoff_small_utility_caddy]\r\n```\r\n\r\nIt is not a bug on my computer because when I use other launch files like `fetchit_challenge_test` the model loads correctly.\r\n\r\n.\r\n\r\nHere is the full output:   \r\n```\r\n[ INFO] [1556064604.854347292]: Finished loading Gazebo ROS API Plugin.\r\n[ INFO] [1556064604.855203264]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...\r\n[Msg] Waiting for master.\r\n[Msg] Connected to gazebo master @ http://127.0.0.1:11345\r\n[Msg] Publicized address: 192.168.0.6\r\n[ INFO] [1556064604.898350072]: Finished loading Gazebo ROS API Plugin.\r\n[ INFO] [1556064604.899131424]: waitForService: Service [/gazebo_gui/set_physics_properties] has not been advertised, waiting...\r\n[Msg] Waiting for master.\r\n[Msg] Connected to gazebo master @ http://127.0.0.1:11345\r\n[Msg] Publicized address: 192.168.0.6\r\n[Wrn] [ModelDatabase.cc:340] Getting models from[http://gazebosim.org/models/]. This may take a few seconds.\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [REST.cc:205] Error in REST request\r\n\r\nlibcurl: (51) SSL: no alternative certificate subject name matches target host name 'api.ignitionfuel.org'\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Err] [Node.cc:105] No namespace found\r\n[Wrn] [Event.cc:61] Warning: Deleting a connection right after creation. Make sure to save the ConnectionPtr from a Connect call\r\n[Err] [ModelDatabase.cc:414] Unable to download model[model://romanoff_small_utility_caddy]\r\n[Err] [SystemPaths.cc:412] File or path does not exist[\"\"]\r\nError Code: 11 Msg: Unable to find uri[model://romanoff_small_utility_caddy]\r\n[ INFO] [1556064624.105415954, 0.022000000]: waitForService: Service [/gazebo/set_physics_properties] is now available.\r\n[ INFO] [1556064624.123060014, 0.039000000]: Physics dynamic reconfigure ready.\r\n\r\n```\r\n\r\n\r\n**Screenshot:**\r\nHere is a screenshot from \"main arena montreal 2019\", on the left you can see empty table.\r\n\r\n![](https://i.imgur.com/Y5GYII7.png)\r\n\r\n**catkin workspace:**\r\n - fetch_gazebo version: Current master branch\r\n - Ubuntu version: 18.04\r\n - ROS version: Melodic\r\n\r\n\r\n.\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/82'
+  title: '[FetchIt!] SCHUNK machine model shoudn''t have the cylinder inserted'
+  body: "@moriarty Our team just know that we need to insert the gear inside the whole of the SCHUNK machine. In simulation, there is a half yellow half black cylinder inserted and should be removed.\r\n\r\n@RDaneelOlivav  We tried to use Blender to remove the cylindar from `shunk_machine_lathe_centered.dae` but the main.launch file won't launch probably because the pose also needs to be updated?\r\n\r\nIn sim:\r\n![schunk station (sim)](https://user-images.githubusercontent.com/3271612/56609755-e2deb480-65db-11e9-9dbb-2b1c22c71646.png)\r\n\r\nIn the arena:\r\n![schunk station](https://user-images.githubusercontent.com/3271612/56609757-e5410e80-65db-11e9-8037-33af952629bc.png)\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - FetchIt!
+    - bug
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/77'
+  title: How to get Fetch and Gazebo9 installed and tested?
+  body: "Hi Fetch Support,\r\n\r\nWe have an Ubuntu 18.04 machine with Ros Melodic and Gazebo9 installed:\r\n\r\n```\r\nadiganapathi@hermes1-ubuntu18:~/catkin_ws$ gazebo --version\r\nGazebo multi-robot simulator, version 9.0.0\r\nCopyright (C) 2012 Open Source Robotics Foundation.\r\nReleased under the Apache 2 License.\r\nhttp://gazebosim.org\r\n\r\n\r\nGazebo multi-robot simulator, version 9.0.0\r\nCopyright (C) 2012 Open Source Robotics Foundation.\r\nReleased under the Apache 2 License.\r\nhttp://gazebosim.org\r\n\r\n\r\nadiganapathi@hermes1-ubuntu18:~/catkin_ws$ \r\n```\r\n\r\nWe are trying to get the Fetch robot started in the Gazebo simulator. We have read the other issues here and are aware that there are several problems with the simulator, but we would like to even get the simulator *started* so that we can observe these problems. The question is, how to install?\r\n\r\nIn our Ubuntu 14.04 machines with Fetch installed, running the Fetch on the Gazebo is easy because it just involves installing a package [as shown in your README](http://docs.fetchrobotics.com/gazebo.html).\r\n\r\nHowever, such a package does not appear to be available for Ubuntu 18.04,[ as suggested by this question on Ros Answers](https://answers.ros.org/question/305685/can-robot-models-for-simulations-be-used-in-all-ros-versions/). That question was answered on October 2018, so perhaps there has been an update since then? But we cannot do a sudo apt-get installed. This is what we see after doing a `sudo apt-get update` beforehand:\r\n\r\n```\r\n$ sudo apt-get install ros-melodic-fetch-gazebo-demo\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nE: Unable to locate package ros-melodic-fetch-gazebo-demo\r\n```\r\n\r\nNext, we figured we would try a \"manual\" installation. To our knowledge, this is done by cloning this repository into `catkin_ws/src` and then doing `catkin_make` to build. Here is our output:\r\n\r\n```\r\nadiganapathi@hermes1-ubuntu18:~$ mkdir -p ~/catkin_ws/src\r\nadiganapathi@hermes1-ubuntu18:~$ cd catkin_ws/src/\r\nadiganapathi@hermes1-ubuntu18:~/catkin_ws/src$ git clone https://github.com/fetchrobotics/fetch_gazebo.git\r\nCloning into 'fetch_gazebo'...\r\nremote: Enumerating objects: 34, done.\r\nremote: Counting objects: 100% (34/34), done.\r\nremote: Compressing objects: 100% (19/19), done.\r\nremote: Total 1167 (delta 14), reused 33 (delta 14), pack-reused 1133\r\nReceiving objects: 100% (1167/1167), 16.86 MiB | 31.00 MiB/s, done.\r\nResolving deltas: 100% (606/606), done.\r\nadiganapathi@hermes1-ubuntu18:~/catkin_ws/src$ cd ..\r\n```\r\n\r\nAnd then running `catkin_make` results in the following [output in the following pastebin](https://pastebin.com/GVv9scKT).\r\n\r\nIt suggests to install some \"robot_controllers\" package, but we are not sure what that refers to, or if installing this is on the right track towards getting the Fetch displayed in the Gazebo.\r\n\r\nHopefully this issue shows what we are trying to do --- just getting the Fetch displayed in our Gazebo. Are these the right steps to follow? If not, where may we find the steps?\r\n\r\nWe're happy to provide any more information about our setup if necessary.\r\n\r\nThanks for your time!"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/75'
+  title: '[FetchIt!] Dockerfile & Docker Example'
+  body: "I was asked to share a Dockerfile with the example of catkin overlays. Sorry, I did have a small typo in the version which I sent around via email, the `sed` command had an extra `.`. \r\n\r\nHere is how the robots for FetchIt! will be setup with three catkin layers:\r\n\r\n1. /opt/ros/melodic <- bottom layer, only root user can install packages here\r\n2. $HOME/ros/stable/install <- middle layer, contains packages which are not in `ros-melodic-desktop-full` but which you depend on, but which you don't actively develop on.\r\n3. $HOME/ros/active/src <- your active catkin source space\r\n    $HOME/ros/active/devel <- your active catkin devel space\r\n\r\n\r\n```Dockerfile\r\nFROM osrf/ros:melodic-desktop-full-bionic\r\n\r\nRUN DEBIAN_FRONTEND=noninteractive apt-get update \\\r\n && apt-get install -y -q --no-install-recommends \\\r\n    python-catkin-tools \\\r\n    python-rosinstall-generator \\\r\n && . /opt/ros/melodic/setup.sh \\\r\n && rosinstall_generator fetchit_challenge --deps --deps-only --exclude RPP > stable.rosinstall \\\r\n && rosinstall_generator fetchit_challenge --upstream > active.rosinstall \\\r\n && mkdir -p $HOME/ros/stable $HOME/ros/active \\\r\n && wstool init $HOME/ros/stable/src stable.rosinstall \\\r\n && wstool init $HOME/ros/active/src active.rosinstall \\\r\n && cd $HOME/ros/stable \\\r\n    && catkin config --init \\\r\n    && catkin config --install --extend /opt/ros/melodic \\\r\n    && catkin build \\\r\n && cd $HOME/ros/active \\\r\n    && catkin config --init \\\r\n    && catkin config --extend $HOME/ros/stable/install \\\r\n    && catkin build \\\r\n && sed -i 's/\\/opt\\/ros\\/\\$ROS_DISTRO/\\$HOME\\/ros\\/active\\/devel/' ./ros_entrypoint.sh\r\n\r\nENTRYPOINT [\"/ros_entrypoint.sh\"]\r\nCMD [\"bash\"]\r\n```\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - FetchIt!
+    - enhancement
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/pull/68'
+  title: Cleanup dependencies
+  body: "This package is currently failing on the build farm for all debian\r\nStretch binary builds (amd64 and arm64)\r\n\r\nWhen it tries to install the dependencies there are many\r\nGazebo7/Gazebo9, and sdformat4/sdformat6 conflicts.\r\n\r\nhttp://build.ros.org/job/Mbin_ds_dS64__fetchit_challenge__debian_stretch_amd64__binary/\r\n\r\nPossibly related to ros/rosdistro#19843"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/pull/58'
+  title: '[fetchit] catkin depends and installation'
+  body: "The config, launch, models, scripts, urdf and world files were not installed. Fixes #57 \r\n\r\neffort_controllers was not a dependency but used for the SCHUNK machine"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/57'
+  title: fetchit_challenge files are not installed
+  body: "I've just tested with `catkin_make_isolated --install` and found the **fetchit_challenge** package wasn't setup to install any of the files, and the package.xml is missing a dependency.\r\n\r\nI was testing #51 before running bloom.\r\n\r\nI've opened #56 to deal with some other issues."
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/22'
+  title: Using gazebo7 with the Fetch's gazebo?
+  body: "Hi @mikeferguson  et al,\r\n\r\nDo you know if there is a way to install Fetch's gazebo stuff with gazebo 7? I have the usual Fetch setup with ROS Indigo and Ubuntu 14.04, but I was asking because I'm trying to use some code that's shared among different robots, and for the test worlds that we're using, we need gazebo 7 (since the \"SDF\" files have to be version 1.6, not 1.4 that I'm getting with gazebo2 now).\r\n\r\nI was just inquiring because if I do a  `sudo apt-get install ros-indigo-fetch-gazebo-demo` or `sudo apt-get install ros-indigo-fetch-gazebo`, these commands require gazebo2 as a dependency, BUT I noticed this repository has a gazebo7 branch. Is it possible to use that version of the fetch simulator, somehow?"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/15'
+  title: Release for -Kinetic- (missed) -> Melodic
+  body: "Dependent repositories still to be released into Jade:\r\n- [x] grasping_msgs\r\n- [x] sparse_bundle_adjustment\r\n- [x] open_karto\r\n- [x] slam_karto\r\n- [x] robot_controllers\r\n- [x] robot_calibration (upstream blocker: https://github.com/mikeferguson/robot_calibration/issues/29)\r\n- [x] fetch_ros (fetch_description, fetch_navigation, fetch_moveit_config)\r\n  - depends on https://github.com/fetchrobotics/fetch_ros/pull/52 being merged\r\n- [x] simple_grasping\r\n- [x] moveit_python (~~upstream blocker: https://github.com/mikeferguson/moveit_python/issues/8~~)\r\n- [x] moveit\r\n\r\nFixes to fetch_gazebo (gazebo7 branch)\r\n- [x] update package.xml depends for gazebo 7\r\n- [ ] find missing depend for making laser be lasery\r\n\r\nPossible improvements:\r\n- [ ] use new friction models to improve simulation\r\n"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - enhancement
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/pull/11'
+  title: change the fetch_gazebo_demo dependency to fetch_moveit_config_pro
+  body: ''
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/issues/6'
+  title: Release for Jade
+  body: >
+    We do not plan to support robots on Jade, however users may desire simulated
+    robots on Jade (especially to get Gazebo 5).
+
+
+    Dependent repositories still to be released into Jade:
+
+    - [x] robot_controllers [(Pull
+    Request)](https://github.com/ros/rosdistro/pull/9013)
+
+    - [x] robot_calibration (so we can release fetch_ros repo) [(Pull
+    Request)](https://github.com/ros/rosdistro/pull/9053)
+
+    - [x] warehouse_ros (so we can release moveit_ros)
+
+    - [x] moveit_ros (maybe other packages in moveit)
+
+    - [x] moveit_planners (https://github.com/ros/rosdistro/pull/9073)
+
+    - [x] fetch_ros (fetch_description, fetch_navigation, fetch_moveit_config)
+
+
+    Fixes to fetch_gazebo:
+
+    - [x] update package.xml depends for gazebo 5
+
+    - [ ] one section of bellows and the estop are showing as white?
+
+
+    Possible improvements:
+
+    - [ ] use new friction models to improve simulation
+
+
+    Currently there is a jade-devel branch, but we may want to rename that
+    "gazebo5" and then rename master to "gazebo2" as the gazebo version is
+    actually the driving factor rather than the ROS version (for instance, you
+    can use gazebo5 with indigo if you build fetch_gazebo and gazebo_ros from
+    source as well)
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels:
+    - enhancement
+    - software
+- url: 'https://github.com/fetchrobotics/fetch_gazebo/pull/4'
+  title: add costmap_2d to run_depends
+  body: null
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_gazebo'
+  labels: []

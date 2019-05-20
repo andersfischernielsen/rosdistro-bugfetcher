@@ -1,0 +1,63 @@
+- url: 'https://github.com/ros-visualization/rqt_dep/issues/10'
+  title: Add option to only show packages of the current workspace
+  body: Often I only want to see the dependencies towards custom/local packages.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_dep'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_dep/issues/9'
+  title: Show non ROS package
+  body: "AFAIUC currently `rqt_dep` only shows ROS package (or `catkin` package to be more precise?). It'd be nice if it shows non ROS packages in addition.\r\n\r\nI assume traversing packages is done by `rospkg` functionality, which uses information in package.xml where non-catkin package dependencies can be listed up. Since rospkg can return non-catkin? package names by e.g. `RosPack.get_rosdeps`, we should be able to add this functionality.\r\n\r\nNote I don't think rospkg can find the dependency of non-catkin packages.\r\n\r\nThis doesn't have to be done in ROS ecosystem (although so far I haven't found other tools that visualize dependency tree well), but because implementation might not be that hard, I think it's worthwhile feature.\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_dep'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_dep/issues/3'
+  title: Crash in rqt_dep
+  body: "I ran the program from the console; and it crashed, after I randomly selected a few checkboxes without having anything inside the package name field. This is the error message:\r\n\r\n```\r\nfelix@Felix-Laptop:~$ rqt_dep\r\nRosPackageGraphDotcodeGenerator.add_package_descendants_recursively(catkin_pip), parent: pyros_utils: ResourceNotFound: catkin_pip\r\nROS path [0]=/opt/ros/kinetic/share/ros\r\nROS path [1]=/home/felix/sailing/bord-pc/src\r\nROS path [2]=/opt/ros/kinetic/share\r\nRosPackageGraphDotcodeGenerator.add_package_descendants_recursively(catkin_pip), parent: pyros_utils: ResourceNotFound: catkin_pip\r\nROS path [0]=/opt/ros/kinetic/share/ros\r\nROS path [1]=/home/felix/sailing/bord-pc/src\r\nROS path [2]=/opt/ros/kinetic/share\r\nRosPackageGraphDotcodeGenerator.add_package_descendants_recursively(catkin_pip), parent: pyros_utils: ResourceNotFound: catkin_pip\r\nROS path [0]=/opt/ros/kinetic/share/ros\r\nROS path [1]=/home/felix/sailing/bord-pc/src\r\nROS path [2]=/opt/ros/kinetic/share\r\nRosPackageGraphDotcodeGenerator.add_package_descendants_recursively(catkin_pip), parent: pyros_utils: ResourceNotFound: catkin_pip\r\nROS path [0]=/opt/ros/kinetic/share/ros\r\nROS path [1]=/home/felix/sailing/bord-pc/src\r\nROS path [2]=/opt/ros/kinetic/share\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_dep/ros_pack_graph.py\", line 276, in _update_thread_run\r\n    self._update_graph(self._generate_dotcode())\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_dep/ros_pack_graph.py\", line 311, in _generate_dotcode\r\n    hide_dry=self._options['package_types'] == 2)                                                                                                                                            \r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_dep/dotcode_pack.py\", line 150, in generate_dotcode                                                                                 \r\n    self.add_package_descendants_recursively(name)                                                                                                                                           \r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_dep/dotcode_pack.py\", line 408, in add_package_descendants_recursively                                                              \r\n    parent=package_name)                                                                                                                                                                     \r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_dep/dotcode_pack.py\", line 390, in add_package_descendants_recursively                                                              \r\n    rosdeps = self.rospack.get_rosdeps(package_name, implicit=implicit)                                                                                                                      \r\n  File \"/home/felix/.local/lib/python2.7/site-packages/rospkg/rospack.py\", line 347, in get_rosdeps                                                                                          \r\n    m = self.get_manifest(package)                                                                                                                                                           \r\n  File \"/home/felix/.local/lib/python2.7/site-packages/rospkg/rospack.py\", line 167, in get_manifest                                                                                         \r\n    return self._load_manifest(name)                                                                                                                                                         \r\n  File \"/home/felix/.local/lib/python2.7/site-packages/rospkg/rospack.py\", line 211, in _load_manifest                                                                                       \r\n    retval = self._manifests[name] = parse_manifest_file(self.get_path(name), self._manifest_name, rospack=self)                                                                             \r\n  File \"/home/felix/.local/lib/python2.7/site-packages/rospkg/rospack.py\", line 203, in get_path                                                                                             \r\n    raise ResourceNotFound(name, ros_paths=self._ros_paths)                                                                                                                                  \r\nrospkg.common.ResourceNotFound: catkin_pip                                                                                                                                                   \r\nROS path [0]=/opt/ros/kinetic/share/ros                                                                                                                                                      \r\nROS path [1]=/home/felix/sailing/bord-pc/src                                                                                                                                                 \r\nROS path [2]=/opt/ros/kinetic/share                                                                                                                                                          \r\nQObject::~QObject: Timers cannot be stopped from another thread\r\n```                                                                                                          "
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_dep'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_dep/issues/2'
+  title: display package info from different distro?
+  body: >-
+    _From @scpeters on March 8, 2016 0:46_
+
+
+    We are approaching releasing season for ROS K, and a common question is
+    which packages are blocking the release of other packages. The `rqt_dep`
+    tool is great for visualizing package dependencies. It would be great if we
+    could use this tool to visualize which packages have been released into a
+    new ROS distro, to identify the blockages.
+
+
+    In discussing this in the past, a known complicating factor is that
+    dependencies may change from one ROS distro to the next, so this can be an
+    ill-posed problem in some cases.
+
+
+    Most of the time, though, the dependencies don't change from one distro to
+    the next. As a first step, I would load `rqt_dep` with the most recently
+    released ROS distro (jade at the moment) and would like to select another
+    distro from a drop-down combo-box and then colorize the graph.
+
+
+    Any hints are welcome.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#356_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_dep'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-visualization/rqt_dep/issues/1'
+  title: Add a way to filter by test/build/run/depend
+  body: >-
+    _From @vrabaud on August 6, 2014 9:50_
+
+
+    Probably 3 tick boxes around. Any better design ? I could have a look at it,
+    I am sure it is trivial to add.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#265_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_dep'
+  labels:
+    - enhancement

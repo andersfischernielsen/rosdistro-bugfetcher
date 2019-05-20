@@ -1,0 +1,11 @@
+- url: 'https://github.com/bosch-ros-pkg/photo/issues/10'
+  title: Current release broken
+  body: "The current release is broken due to missing dependencies.\r\n\r\n```\r\nCMake Error at CMakeLists.txt:12 (find_package):\r\n  By not providing \"FindOpenCV.cmake\" in CMAKE_MODULE_PATH this project has\r\n  asked CMake to find a package configuration file provided by \"OpenCV\", but\r\n  CMake did not find one.\r\n\r\n  Could not find a package configuration file provided by \"OpenCV\" with any\r\n  of the following names:\r\n\r\n    OpenCVConfig.cmake\r\n    opencv-config.cmake\r\n\r\n  Add the installation prefix of \"OpenCV\" to CMAKE_PREFIX_PATH or set\r\n  \"OpenCV_DIR\" to a directory containing one of the above files.  If \"OpenCV\"\r\n  provides a separate development package or SDK, be sure it has been\r\n  installed.\r\n```"
+  repo: 'https://api.github.com/repos/bosch-ros-pkg/photo'
+  labels:
+    - bug
+- url: 'https://github.com/bosch-ros-pkg/photo/pull/3'
+  title: Added another dependency and removed superfluous comments.
+  body: ''
+  repo: 'https://api.github.com/repos/bosch-ros-pkg/photo'
+  labels: []

@@ -1,0 +1,7 @@
+- url: 'https://github.com/ros-visualization/rqt_robot_dashboard/issues/2'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are available in Melodic, so it
+    would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_dashboard'
+  labels: []

@@ -1,0 +1,201 @@
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/122'
+  title: 'yocs_waypoint_provider: also install libraries'
+  body: "To provide a package where all needed content is installed, also the two libraries waypoint_provider_lib and way_provider_yaml_parser_lib that are required by the waypoint_provider executable must be installed.\r\n\r\nI became aware of this issue when creating bitbake recipes for the yocs_waypoint_provider package in the OpenEmbedded layer for ROS [1]. The bitbake tool chain reported the following warnings for the yocs_waypoint_provider 0.6.4, shipped in the indigo distribution:\r\n\r\n```\r\nWARNING: yocs-waypoint-provider-0.6.4-r0 do_package_qa: QA Issue: /opt/ros/indigo/lib/yocs_waypoint_provider/waypoint_provider contained in package yocs-waypoint-provider requires libwaypoint_provider_lib.so, but no providers found in RDEPENDS_yocs-waypoint-provider? [file-rdeps]\r\nWARNING: yocs-waypoint-provider-0.6.4-r0 do_package_qa: QA Issue: /opt/ros/indigo/lib/yocs_waypoint_provider/waypoint_provider contained in package yocs-waypoint-provider requires libwaypoint_provider_yaml_parser_lib.so, but no providers found in RDEPENDS_yocs-waypoint-provider? [file-rdeps]\r\n```\r\n\r\nThese two warnings pointed out that the two libraries in yocs_waypoint_provider were not installed.\r\n\r\n[1] https://github.com/bmwcarit/meta-ros"
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/121'
+  title: Fix deprecated compile warning
+  body: "Partly fix for [this](https://bitbucket.org/yujinrobot/gopher_navigation/issues/132/compile-warnings)\r\n\r\n[See also this.](https://github.com/yujinrobot/yujin_ocs/blob/9a1a0b6ba6c3a0f54fe03df794f26e1bcef3be37/yocs_math_toolkit/include/yocs_math_toolkit/common.hpp#L82)"
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/120'
+  title: 'Pose controller dynamic reconfig [WIP]'
+  body: "Added dynamic reconfigure to pose controller, this pull request depends on [yocs_msgs](https://github.com/yujinrobot/yocs_msgs/pull/9) pull request. \r\n\r\n**Test Procedure:**\r\n\r\n- Checkout this pr\r\n- checkout yocs pr\r\n- build\r\n- launch apps from desktop\r\n- check dynamic reconfigure for pose controller autodocking."
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/117'
+  title: '[joyop] bugfix the reconfigure client'
+  body: >
+    Problems fixed here:
+
+    - No way to rename the dyn reconf client namespace
+
+    - Exceptions were using `self.client` instead of
+    `dynamic_reconfigure.client`.
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/112'
+  title: Replace 진짜 arbitrary thresholds with dynamic thresholds
+  body: >
+    The current arbitrary thresholds (especially for the angular velocity) can
+    leads to the smoother ignoring the feedback most of the time.
+
+
+    This leads to some odd behaviour on our side, so I adjusted the thresholds
+    for the feedback kicking in to be dynamically depending on the acceleration
+    limits and current velocity.
+
+
+    If odometry is used as feedback and the delay is quite big, it kicks in
+    quite often and feels a bit sluggish, but should be ok (the warn message can
+    be disabled with a parameter).
+
+
+    Needs some testing on other platforms (turtlebot?)
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/102'
+  title: 'remove ecl dependency, use boost.'
+  body: |
+    use boost thread, remove ecl thread dependency.
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/84'
+  title: '[yocs_joyop] magic relay script broken'
+  body: >
+    1.) remap from joy to teleop/joy missing; now required due to
+    3db2a8d7ae180211cf025c19166083d7a145f0d0
+
+
+    2.) stamping problem
+
+
+    ```
+
+    [ERROR] [WallTime: 1439012945.662703] bad callback: <bound method
+    MagicButtonRelay.joy_callback of <__main__.MagicButtonRelay object at
+    0x7f6f4383b5d0>>
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 711, in _invoke_callback
+        cb(msg)
+      File "/opt/yujin/indigo/lib/yocs_joyop/magic_button_relay.py", line 96, in joy_callback
+        relay.update(msg.buttons[relay.button_id], msg.header.stamp)
+      File "/opt/yujin/indigo/lib/yocs_joyop/magic_button_relay.py", line 66, in update
+        msg.header.stamp = timestamp
+    AttributeError: 'member_descriptor' object has no attribute 'stamp'
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/82'
+  title: Add dependency regarding yocs message
+  body: >
+    The following error is occurred in compile process.
+
+
+    ```
+
+    /home/yujin/ros/waiterbot/src/yujin_ocs/yocs_joyop/src/joyop.cpp:11:35:
+    fatal error: yocs_msgs/MagicButton.h: No such file or directory
+     #include <yocs_msgs/MagicButton.h>
+                                       ^
+    compilation terminated.
+
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+    - wontfix
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/76'
+  title: '[yocs_diff_drive_controller] check package dependencies'
+  body: |
+    List might be outdated, e.g. sensor_msgs, yocs_math_toolkit
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/68'
+  title: release packages in indigo.ignored
+  body: >
+    The
+    [packages](https://github.com/yujinrobot-release/yujin_ocs-release/blob/master/indigo.ignored)
+    are intentionally not released yet. 
+
+    - yocs_localization_manager is still under development.
+
+    - yocs_navigator need to get merged with yocs_waypoints_navi.
+
+
+    Then these packages will also be released.
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/64'
+  title: drop move base launcher in yocs_navigator
+  body: >
+    To properly support [yocs_navigator/navigator.launch
+
+    ](https://github.com/yujinrobot/yujin_ocs/blob/indigo-devel/yocs_navigator/launch/navigator.launch)
+    we would need to add `move_base` and `turtlebot` dependencies, which would
+    blow up this light-weight package.
+
+
+    if this launcher is used, then I suggest to move it to where it is used
+    (what it is used with), e.g. turtlebot.
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - enhancement
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/63'
+  title: Dependency wrong
+  body: >
+    As being notified for a long time by the build farm:
+    http://jenkins.ros.org/view/IbinT64/job/ros-indigo-yocs-ar-marker-tracking_binarydeb_trusty_amd64/
+
+
+    Using `yaml_cpp`:
+    https://github.com/yujinrobot/yujin_ocs/blob/21e1ccaadef496eddf9c11b518513e944570e278/yocs_ar_marker_tracking/CMakeLists.txt#L22
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/59'
+  title: Yocs_joyop dependency error
+  body: >
+    ```
+
+    Scanning dependencies of target yocs_keyop
+
+    /home/yujin/ros/waiterbot/src/yujin_ocs/yocs_joyop/src/joyop.cpp:6:30: fatal
+    error: ecl/exceptions.hpp: No such file or directory
+     #include <ecl/exceptions.hpp>
+                                  ^
+    compilation terminated.
+
+    ```
+
+
+    I am not sure what dependency is missing exactly
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/56'
+  title: adding yaml-cpp dependency for yocs_ar_marker_tracking
+  body: ''
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/pull/50'
+  title: Add depend on yaml-cpp for yocs_ar_marker_tracking
+  body: >
+    `yaml-cpp` is clearly referenced in the `CMakeLists.txt`, so it should be a
+    dependency in the `package.xml`.
+
+
+    Example of build failure due to this bug:
+    http://csc.mcs.sdsmt.edu/jenkins/job/ros-indigo-yocs-ar-marker-tracking_binaryrpm_heisenbug_x86_64/3/console
+
+
+    Thanks,
+
+
+    --scott
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels: []
+- url: 'https://github.com/yujinrobot/yujin_ocs/issues/40'
+  title: remove unnecessary dependency from yocs_navigator
+  body: |
+    `simple_annotation_msgs` is not need.
+  repo: 'https://api.github.com/repos/yujinrobot/yujin_ocs'
+  labels:
+    - bug

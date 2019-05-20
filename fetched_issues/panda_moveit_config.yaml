@@ -1,0 +1,10 @@
+- url: 'https://github.com/ros-planning/panda_moveit_config/issues/6'
+  title: Discrepancy with Fanka Emika's panda_moveit_config
+  body: "I'm struggling with the panda moveit configuration. In the simulation, I use the latest version from panda_moveit_config since it solves the problems with the gripper I encountered some time ago (see https://github.com/ros-planning/moveit/issues/948#issuecomment-397569356 for details). So, simulations run fine: simple motion, picking up objects and placing just works.\r\n\r\nHowever, when it comes to the real robot, I run into some problems. First, according to https://frankaemika.github.io/docs/ros_introduction.html and https://github.com/frankaemika/franka_ros running `roslaunch panda_moveit_config panda_moveit.launch` should load the MoveIt configuration for the Panda. But, in the ros_planning version there is no panda_moveit.launch file. Is this intended? Is move_group.launch a replacement although it does not load the `position_joint_trajectory_controller` as Emika's panda_moveit.launch file does?\r\n\r\nOr is the configuration provided by the ros-planning/panda_moveit_config solely intended for simulation? (a clue to this is that package.xml does not list franka_description as runtime dependency) \r\n\r\nNevertheless, there are further differences (see this [gist](https://gist.github.com/christgau/7b4ddde69d6d7d845ba7b177d421806d)). For example, the planning groups are different. Franka Emika provides panda_arm_hand while ros_planning does not. I'm confused which version one should use for development. My assumption is that if code runs fine in simulation it should also do with a real robot. But that's unfortunately not the case. "
+  repo: 'https://api.github.com/repos/ros-planning/panda_moveit_config'
+  labels: []
+- url: 'https://github.com/ros-planning/panda_moveit_config/pull/1'
+  title: Remove chomp dependency as its not released as debian yet
+  body: 'https://github.com/ros-planning/moveit/issues/702'
+  repo: 'https://api.github.com/repos/ros-planning/panda_moveit_config'
+  labels: []

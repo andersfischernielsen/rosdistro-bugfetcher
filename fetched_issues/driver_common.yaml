@@ -1,0 +1,45 @@
+- url: 'https://github.com/ros-drivers/driver_common/issues/8'
+  title: release driver_common for Jade
+  body: |
+    It's a dependency for the wge100 driver, and several other things as well.
+
+    I just released diagnostics, so this should be safe to release.
+  repo: 'https://api.github.com/repos/ros-drivers/driver_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/driver_common/pull/6'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    These packages don't have any binaries in them, so they can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros-drivers/driver_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/driver_common/pull/2'
+  title: Removed duplicated dependancies
+  body: |
+    test_depend tags should only not duplicate run/build depends tags.
+  repo: 'https://api.github.com/repos/ros-drivers/driver_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/driver_common/pull/1'
+  title: Removed duplicated dependancies
+  body: "test_depend tags should only include additional\_dependencies\_required\_for testing.\_\n"
+  repo: 'https://api.github.com/repos/ros-drivers/driver_common'
+  labels: []

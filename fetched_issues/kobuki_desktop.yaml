@@ -1,0 +1,271 @@
+- url: 'https://github.com/yujinrobot/kobuki_desktop/pull/52'
+  title: Pyrrc5 rosdep dependencies
+  body: pyqt4-dev-tools -> pyqt5-dev-tools
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/51'
+  title: '/bin/sh: 1: pyrcc5: not found'
+  body: "When i catkin_make my workspace,the error happened in the end:\r\n/bin/sh: 1: pyrcc5: not found\r\nmake[2]: *** [kobuki_desktop/kobuki_qtestsuite/CMakeFiles/kobuki_qtestsuite] 错误 127\r\nmake[1]: *** [kobuki_desktop/kobuki_qtestsuite/CMakeFiles/kobuki_qtestsuite.dir/all] 错误 2\r\nmake: *** [all] 错误 2\r\nInvoking \"make -j1 -l1\" failed\r\nCan you help me solve it?Thank you."
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/50'
+  title: kobuki_gazebo not compiling after gazebo_ros_pkgs cleanup
+  body: "There was a dependency cleanup in gazebo_ros_pkgs https://github.com/ros/rosdistro/pull/14563\r\n\r\nThere's a known issue in catkin\r\nhttps://github.com/ros/catkin/issues/856\r\n\r\nhttp://build.ros.org/view/Kbin_uX64/job/Kbin_uX64__kobuki_gazebo_plugins__ubuntu_xenial_amd64__binary/47/console"
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/38'
+  title: Multi-Gazebo Kobukis not updating orientations
+  body: |
+    KGP - Kobuki Gazebo Plugin
+    - Start two gazebo kobukis (segbot + kobuki is ok)
+    - Send commands to cmd_vel of one kobuki
+    - KGP catches these and moves around properly in gazebo world
+    - **KGP does not post rotations to the odom topic (translations are there)**
+    - **KGP does not publish rotation information on base_footprint-odom tf.**
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/33'
+  title: '[kobuki_qtestsuite] rqt_plot api changes'
+  body: >
+    rqt_plot API has been changed by this commit.
+
+
+    https://github.com/ros-visualization/rqt_common_plugins/commit/f7a485e0bea3f942c19f354512284ec146491fe4
+
+
+    kobuki_qtestsuite is crashing with this error
+
+
+    ```
+
+    PluginManager._load_plugin() could not load plugin "kobuki_qtestsuite/Kobuki
+    Test Suite":
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/plugin_handler.py", line 98, in load
+        self._load()
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 54, in _load
+        self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_gui_py/ros_py_plugin_provider.py", line 60, in load
+        return super(RosPyPluginProvider, self).load(plugin_id, plugin_context)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 94, in load
+        return class_ref(plugin_context)
+      File "/home/jihoonl/research/ros/kobuki/src/kobuki_desktop/kobuki_qtestsuite/src/kobuki_qtestsuite/testsuite.py", line 43, in __init__
+        self._widget.setupUi()
+      File "/home/jihoonl/research/ros/kobuki/src/kobuki_desktop/kobuki_qtestsuite/src/kobuki_qtestsuite/testsuite_widget.py", line 43, in setupUi
+        self._ui.battery_profile_frame.setupUi(self._ui.configuration_dock.cmd_vel_topic_name())
+      File "/home/jihoonl/research/ros/kobuki/src/kobuki_desktop/kobuki_qtestsuite/src/kobuki_qtestsuite/battery_profile_frame.py", line 51, in setupUi
+        self._plot_widget.switch_data_plot_widget(FullSizeDataPlot(self._plot_widget))
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_plot/plot_widget.py", line 150, in switch_data_plot_widget
+        self.data_plot.autoscroll(self.autoscroll_checkbox.isChecked())
+    AttributeError: 'FullSizeDataPlot' object has no attribute 'autoscroll'
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/25'
+  title: 'boost::shared_*_cast are deprecated, removed in boost 1.53'
+  body: >
+    Details here:
+    https://github.com/yujinrobot-release/kobuki_desktop-release/issues/1
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/22'
+  title: Fix ABI/API breakages coming with Gazebo 2.0
+  body: |
+    Same as here: https://github.com/turtlebot/turtlebot_create_desktop/issues/7
+
+    Fix it!
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/21'
+  title: Playground does not load correctly on initial try
+  body: >
+    When first loading a world file with models from the online model database,
+    Gazebo can't find those resources (e.g. dae files).
+
+
+    However, once one adds the unknown objects from the online database manually
+    to the world, the next loading of that world file works. I guess, that is
+    because a local copy of the model exists now.
+
+
+    Maybe we have the wrong resource links in our world files?
+
+
+    E.g. the cinder block from the playground.world
+
+
+    ```
+
+    <model name='cinder_block'>
+           [...]
+            <visual name='visual'>
+              <geometry>
+                <mesh>
+                  <uri>model://cinder_block/meshes/cinder_block.dae</uri>
+                </mesh>
+              </geometry>
+            </visual>
+            [...]
+    </model>
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/19'
+  title: Bumpers not working any more
+  body: |
+    Somehow the bumpers stopped working. Fix it!
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/15'
+  title: 'kobuki_dashboard: add coloured battery statuses'
+  body: >
+    Currently they are always grey, although
+    https://github.com/ros-visualization/rqt_robot_plugins/tree/hydro-devel/rqt_robot_dashboard/images
+    holds coloured icons.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/13'
+  title: fix SDF deprecated warnings in the gazebo_ros_kobuki plugin
+  body: >
+    For example:
+
+
+    ```
+
+    /opt/kobuki_workspace/catkin_ws/src/turtlebot_create_desktop/create_gazebo_plugins/src/gazebo_ros_create.cpp:
+    In member function ‘virtual void
+    gazebo::GazeboRosCreate::Load(gazebo::physics::ModelPtr, sdf::ElementPtr)’:
+
+    /opt/kobuki_workspace/catkin_ws/src/turtlebot_create_desktop/create_gazebo_plugins/src/gazebo_ros_create.cpp:54:80:
+    warning: ‘std::string sdf::Element::GetValueString(const string&)’ is
+    deprecated (declared at /usr/include/sdformat-1.4/sdf/SDFImpl.hh:226)
+    [-Wdeprecated-declarations]
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/11'
+  title: kobuki_gazebo has turtlebot dependency
+  body: |
+    @bit-pirate 
+
+    ```
+      <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+        <rosparam command="load" file="$(find turtlebot_bringup)/param/kobuki/diagnostics.yaml" />
+      </node>
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/10'
+  title: rqt_plot failed due to kobuki_qtestsuite?
+  body: >
+    ```
+
+    $ rosrun rqt_plot rqt_plot 
+
+    rqt_plot.plot: importing PyQtGraphDataPlot
+
+    rqt_plot.plot: import of PyQtGraphDataPlot failed
+
+    rqt_plot.plot: importing MatDataPlot
+
+    rqt_plot.plot: importing QwtDataPlot
+
+    WARNING: Package name "swig-wx" does not follow the naming conventions. It
+    should start with a lower case letter and only contain lower case letters,
+    digits and underscores.
+
+    WARNING: Package name "swig-wx" does not follow the naming conventions. It
+    should start with a lower case letter and only contain lower case letters,
+    digits and underscores.
+
+    Traceback (most recent call last):
+      File "/opt/ros/groovy/lib/rqt_plot/rqt_plot", line 10, in <module>
+        sys.exit(main.main(standalone=plugin, plugin_argument_provider=Plot.add_arguments))
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/rqt_gui/main.py", line 57, in main
+        return super(Main, self).main(argv, standalone=standalone, plugin_argument_provider=plugin_argument_provider)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/main.py", line 468, in main
+        plugins = plugin_manager.find_plugins_by_name(plugin)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/plugin_manager.py", line 118, in find_plugins_by_name
+        for plugin_id, plugin_full_name in self.get_plugins().items():
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/plugin_manager.py", line 124, in get_plugins
+        self.discover()
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/plugin_manager.py", line 108, in discover
+        self._plugin_menu.add_plugin(plugin_descriptor)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/plugin_menu.py", line 79, in add_plugin
+        self._enrich_action(action, action_attributes, base_path)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/qt_gui/plugin_menu.py", line 130, in _enrich_action
+        raise UserWarning('icon "%s" not found' % str(path))
+    UserWarning: icon
+    "../src/kobuki_qtestsuite/resources/images/kobuki_icon.png" not found
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/9'
+  title: Qtestsuite hydro fixes
+  body: >
+    - Add some documentation to the
+    [wiki](http://ros.org/wiki/kobuki_qtestsuite)
+
+    - Fix some bugs in plotting due to changes in rqt:
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/rqt_plot/plot_widget.py", line 168, in update_plot
+        self.data_plot.redraw()
+      File "/opt/turtlebot/kobuki_desktop/kobuki_qtestsuite/plugins/../src/kobuki_qtestsuite/full_size_data_plot.py", line 54, in redraw
+        data_x, data_y, plot = curve
+    ValueError: too many values to unpack
+
+    ```
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/7'
+  title: Dashboard battery update time
+  body: |
+    Currently it's buggy - set to the battery percantage!
+
+    But is this even used by the graphical display?
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - bug
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/3'
+  title: sort stack dependencies and roll a deb
+  body: ''
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki_desktop/issues/1'
+  title: kobuki specific gazebo plugin
+  body: >
+    Currently its a copy of create.
+
+
+    Remove the dependency for the create from manifest and stack.xml's once
+    done.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki_desktop'
+  labels:
+    - enhancement

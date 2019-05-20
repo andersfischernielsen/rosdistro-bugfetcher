@@ -1,0 +1,146 @@
+- url: 'https://github.com/allenh1/p2os/pull/62'
+  title: Two fixes for Melodic.
+  body: "In p2os_driver, the p2os_msgs_gencpp doesn't exist (and, as\r\nfar as I can tell, never existed).  It worked up until recently\r\nbecause older versions of CMake would complain but not fail,\r\nwhile more recent cmake versions actually fail.  Just remove\r\nthe dependency.\r\n\r\nThe second fix is a cosmetic issue, where CMake would spew a\r\nbunch of warnings on the command line.  Increase the version\r\nto 3.9.5 to match other CMakeLists.txt and to get rid of the\r\nwarnings.\r\n\r\n@allenh1 This should fix the current problems on the ROS buildfarm [here](http://build.ros.org/view/Mbin_uB64/job/Mbin_uB64__p2os_driver__ubuntu_bionic_amd64__binary/6/consoleFull)."
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/pull/61'
+  title: Reduce CMake version to 2.8
+  body: "Reduces the CMake version to version 2.8 for indigo. @tfoote thanks for letting me know!\r\n\r\n\r\nconnects to #60 "
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/allenh1/p2os/pull/55'
+  title: 'WIP: Fix Sonar Publishing'
+  body: >
+    Currently, this just prints the sonar array and converts them to doubles. It
+    also converted the sonars to be stored as a `std::unique_ptr<double[]>`
+    internally.
+
+
+    <!-- Reviewable:start -->
+
+    ---
+
+    This change is [<img src="https://reviewable.io/review_button.svg"
+    height="34" align="absmiddle"
+    alt="Reviewable"/>](https://reviewable.io/reviews/allenh1/p2os/55)
+
+    <!-- Reviewable:end -->
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/allenh1/p2os/issues/49'
+  title: '[question] use of collada_urdf.cpp and dependency on tinyxml'
+  body: >-
+    I was just wondering what is the use of
+    [collada_urdf.cpp](https://github.com/allenh1/p2os/blob/master/p2os_urdf/models/collada_urdf.cpp)
+    in this repository. I came across this by tracking down packages downstream
+    of pluginlib that use tinyxml symbols without depending on it.
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/issues/39'
+  title: p2os_urdf  build failure due to undeclared linking dependency
+  body: >
+    p2os_urdf is failing to build now due to missing symbols at link time. It
+    appears to have become a problem due to robot_state_publisher switching to
+    use tf2 from tf and not longer exporting link flags needed for this package.
+    https://github.com/ros/rosdistro/pull/9700
+
+
+    Failed build:
+    http://54.183.26.131:8080/view/Jbin_uU64/job/Jbin_uU64__p2os_urdf__ubuntu_utopic_amd64__binary/9/console
+
+
+    ```
+
+    00:06:04.972 CMakeFiles/p2os_publisher.dir/src/publisher.cc.o: In function
+    `main':
+
+    00:06:04.972 /tmp/binarydeb/ros-jade-p2os-urdf-2.0.2/src/publisher.cc:48:
+    undefined reference to `tf::TransformBroadcaster::TransformBroadcaster()'
+
+    00:06:04.973 collect2: error: ld returned 1 exit status
+
+    ```
+
+
+    I think it just takes adding `tf` to as a `CATKIN_DEPENDS`
+    [here](https://github.com/allenh1/p2os/blob/master/p2os_urdf/CMakeLists.txt#L7)
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels:
+    - bug
+- url: 'https://github.com/allenh1/p2os/issues/30'
+  title: message_runtime and message_generation dependency only on msg package.
+  body: >
+    I have noticed that all p2os packages are depending on message_generation
+    and message_runtime package. These two packages would only need on
+    `p2os_msgs` packakge.
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/issues/25'
+  title: p2os_launch cleanup
+  body: >
+    The p2os_launch package contains many launchfiles with huge dependencies
+    that are not mentioned in the package.xml file as run_depends.
+
+
+    The purpose of this package must be clarified. It should contain only p2os
+    specific functionality, clearly stated and well documented.
+
+
+    The diagnostic analysers should be restructured, now all diagnostic messages
+    are sent to sensors \ sensors \ p2os (which is redundant and not useful).
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/issues/24'
+  title: p2os_driver p2os-joystick-teleop.xml
+  body: >
+    There is a launch file in p2os_driver that has nothing to do with the
+    package or its' dependencies.
+
+    It should be removed from p2os_driver and if launch files are to be
+    provided, they should contain code that is relevant to p2os_driver
+    functionality and configuration parameters.
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/issues/22'
+  title: Conform to ROS CppStyleGuide
+  body: >
+    Currently, p2os_driver lacks in some very important aspects.
+
+    1. Code does not conform to the coding standards as per
+    http://wiki.ros.org/CppStyleGuide
+
+    2. Uses ROS topics for functionality that should be provided with ROS
+    services (enable/disable motors etc)
+
+    3. Uses very few diagnostic messages / publishes battery stats twice (in
+    diagnostic AND in a separate topic)
+
+    4. Has no documentation (e.g. doxygen)
+
+    5. Has minor memory leaks (in p2osnode line 38 p is never deleted)
+
+
+    We should really focus on making the code more maintainable by conforming to
+    ROS standards and using the correct message types where necessary (sonar
+    data should be published using a sensor_msgs/PointCloud message).
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []
+- url: 'https://github.com/allenh1/p2os/issues/21'
+  title: Separate p2os_driver and p2os_msgs
+  body: >
+    It is common to separate the messages in a separate package to avoid
+    unnecessary dependencies.
+
+
+    For example, the dashboard (which runs on a separate PC) needs the messages
+    to communicate with the robot, however it does not need the driver.
+
+
+    I think that we should also separate the messages in a package named
+    p2os_msgs that p2os_driver should build_depend upon.
+  repo: 'https://api.github.com/repos/allenh1/p2os'
+  labels: []

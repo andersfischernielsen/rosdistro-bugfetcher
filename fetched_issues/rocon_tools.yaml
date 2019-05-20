@@ -1,0 +1,481 @@
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/126'
+  title: 'Wifi down, rosgraph exception in connections'
+  body: >
+    ```
+
+    [ INFO] [1459241906.689244246]: Bond broken, exiting
+
+    Traceback (most recent call last):
+      File "/opt/yujin/amd64/indigo-devel/lib/rocon_python_comms/connection_cache.py", line 23, in <module>
+        conn_cache.spin()
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rocon_python_comms/connections.py", line 482, in spin
+        new_conns, lost_conns = self.conn_cache.update()
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rocon_python_comms/connections.py", line 365, in update
+        c.generate_type_info_msg()
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rocon_python_comms/connections.py", line 177, in generate_type_info_msg
+        self.type_msg = rosservice.get_service_type(self.name)
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rosservice/__init__.py", line 147, in get_service_type
+        return get_service_headers(service_name, service_uri).get('type', None)
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rosservice/__init__.py", line 124, in get_service_headers
+        return rosgraph.network.read_ros_handshake_header(s, StringIO(), 2048)
+      File "/opt/yujin/amd64/indigo-devel/lib/python2.7/dist-packages/rosgraph/network.py", line 365, in read_ros_handshake_header
+        raise ROSHandshakeException("connection from sender terminated before handshake header received. %s bytes were received. Please check sender for additional details."%b.tell())
+    rosgraph.network.ROSHandshakeException: connection from sender terminated
+    before handshake header received. 0 bytes were received. Please check sender
+    for additional details.
+
+    [gopher/sensor_3d_short_range/downsampler-53] process has finished cleanly
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/110'
+  title: Rocon tests failing in the ros framework
+  body: >
+    Not the tests themselves, but something in the `rocon_test` infrastructure
+    is failing on indigo.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - tests
+    - wontfix
+- url: 'https://github.com/robotics-in-concert/rocon_tools/pull/108'
+  title: Python comms introspection & no more special case bindings
+  body: >
+    - Convenience Subscriber, Publisher, Services, Service Proxy classes now
+    provide an introspection topic.
+
+    - Interactions removed the special case bindings, dynamics can serve these
+    well enough
+
+    - Fixed the test failure in rocon_interactions
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - enhancement
+    - interactions
+    - python
+- url: 'https://github.com/robotics-in-concert/rocon_tools/pull/105'
+  title: Master info launch fixes and rocon interactions overhaul
+  body: |
+    - Master info launch file was still legacy, now updated
+    - Rocon interactions pairing and conditional pairing now working properly
+    - Removed all find_xxx calls from rocon interactions
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - interactions
+    - master info
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/102'
+  title: More rapp watcher problems
+  body: >
+    Crash in runtime:
+
+
+    ```
+      File "/opt/groot/rocon_ws/src/rocon_tools/rocon_interactions/src/rocon_interactions/rapp_watcher.py", line 248, in run
+        list_rapps_service_names = rocon_python_comms.find_service('rocon_app_manager_msgs/GetRappList', timeout=rospy.rostime.Duration(60.0), unique=False)
+      File "/opt/groot/rocon_ws/src/rocon_tools/rocon_python_comms/src/rocon_python_comms/services.py", line 112, in find_service
+        next_service_type = get_service_headers(service_name, service_uri).get('type', None)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rosservice/__init__.py", line 124, in get_service_headers
+        return rosgraph.network.read_ros_handshake_header(s, StringIO(), 2048)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rosgraph/network.py", line 365, in read_ros_handshake_header
+        raise ROSHandshakeException("connection from sender terminated before handshake header received. %s bytes were received. Please check sender for additional details."%b.tell())
+    ROSHandshakeException: connection from sender terminated before handshake
+    header received. 0 bytes were received. Please check sender for additional
+    details.
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - interactions
+    - wontfix
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/99'
+  title: Interactions rapp watcher does not close down gracefully
+  body: >
+    ```
+
+    Exception in thread Thread-4:
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+        self.run()
+      File "/opt/gopher_concert/src/rocon_tools/rocon_interactions/src/rocon_interactions/rapp_watcher.py", line 244, in run
+        list_rapps_service_names = rocon_python_comms.find_service('rocon_app_manager_msgs/GetRappList', timeout=rospy.rostime.Duration(60.0), unique=False)
+      File "/opt/gopher_concert/src/rocon_tools/rocon_python_comms/src/rocon_python_comms/services.py", line 111, in find_service
+        next_service_type = get_service_headers(service_name, service_uri).get('type', None)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rosservice/__init__.py", line 124, in get_service_headers
+        return rosgraph.network.read_ros_handshake_header(s, StringIO(), 2048)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rosgraph/network.py", line 365, in read_ros_handshake_header
+        raise ROSHandshakeException("connection from sender terminated before handshake header received. %s bytes were received. Please check sender for additional details."%b.tell())
+    ROSHandshakeException: connection from sender terminated before handshake
+    header received. 0 bytes were received. Please check sender for additional
+    details.
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/98'
+  title: '[rocon_python_utils] migrate out image_converter'
+  body: |
+    to keep the dependencies clean from vision libraries.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/96'
+  title: fix opencv dependency
+  body: >
+    as follow up of
+    https://github.com/robotics-in-concert/rocon_tools/commit/ec82b9a3abc30e30001a911e85fc617a9880a0bf#commitcomment-11786691
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/94'
+  title: Update InteractionsUpdate  message
+  body: >
+    `InteractionsUpdate` message is not updated in
+    https://github.com/robotics-in-concert/rocon_tools/pull/92
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/home/dwlee/work/rocon_ws/src/rocon_tools/rocon_interactions/scripts/interactions_manager.py", line 20, in <module>
+        interactions_manager = rocon_interactions.InteractionsManager()
+      File "/home/dwlee/work/rocon_ws/src/rocon_tools/rocon_interactions/src/rocon_interactions/manager.py", line 72, in __init__
+        self._publishers = self._setup_publishers()  # important to come early, so we can publish is_pairing below
+      File "/home/dwlee/work/rocon_ws/src/rocon_tools/rocon_interactions/src/rocon_interactions/manager.py", line 199, in _setup_publishers
+        interaction_msgs.InteractionsUpdate,
+    AttributeError: 'module' object has no attribute 'InteractionsUpdate'
+
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/93'
+  title: 'standalone Web remocon, similar to android remocon app '
+  body: >
+    Can we have some webapp like android_remocon_app / rocon_remocon, which can
+    give user access to all available interactions? current way of launching a
+    browser from rocon_remocon makes it platform dependent, means you always
+    need some rocon_remocon or android remocon like app to launch these
+    interactions which generates the unpredictable URL like following
+
+
+    http://192.168.1.102:8080/trial%20.html?interaction_data=%7B%22remappings%22%3A+%7B%22%2Fchatter%22%3A+%22%2Fbabbler%22%7D%2C+%22display_name%22%3A+%22vallabh%22%2C+%22parameters%22%3A+%7B%22rosbridge_address%22%3A+%22192.168.1.102%22%2C+%22rosbridge_port%22%3A+9090%7D%7D 
+
+
+    I think, we can make it more user friendly if we could have an webapp as a
+    remocon, where user can select rosbridge address and then select different
+    webapps according to the interactions. 
+
+
+    I found this web app which i think exactly does the same role as above. If
+    it does, then I was not able to use it.  
+    http://webapp.robotconcert.org/rocon_web_remocon/
+
+    I had started web interactions demo on 11311 and then manually opened this
+    app in browser, but it gives error when I put master URI as
+    ws://localhost:11311
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_tools/pull/84'
+  title: Don't fail on wifi-if check for different systems
+  body: >
+    In wifi part of detection of network interfaces: Check if /proc/net/wireless
+    exists before trying to read it, instead of failing on OS's / systems that
+    don't have wifi and/or don't use that file.
+
+
+    ---
+
+
+    `$ roslaunch rocon_gateway gateway.launch` was previously throwing an error
+    for me when I tried to setup a minimal system and launch on my machine.
+
+
+    It is a Gentoo (3.14.14-gentoo) 64-bit system, running ROS Indigo, without
+    any wireless network interfaces, but with two wired interfaces (one
+    connected to the internet) -- (it's actually a Baxter Robot).  I don't
+    really know what aspect of the system spec means it doesn't have the
+    `/proc/net/wireless` file, but it doesn't.  So the launch would throw the
+    following error:
+
+
+    ```
+
+    rlinsalata@p26 ~/ws/rocon $ roslaunch rocon_gateway gateway.launch
+    gateway_firewall:=false gateway_network_interface:=net0
+
+    ... logging to
+    /home/rlinsalata/.ros/log/aa923378-dd7b-11e4-ab41-90b11ca35e8f/roslaunch-p26-6019.log
+
+    Checking log directory for disk usage. This may take awhile.
+
+    Press Ctrl-C to interrupt
+
+    Done checking log file disk usage. Usage is <1GB.
+
+
+    started roslaunch server http://p26:51192/
+
+
+    SUMMARY
+
+    ========
+
+
+    PARAMETERS
+     * /gateway/default_blacklist: [{'node': 'None',...
+     * /gateway/disable_uuids: False
+     * /gateway/firewall: False
+     * /gateway/hub_whitelist: []
+     * /gateway/name: gateway
+     * /gateway/network_interface: net0
+     * /gateway/watch_loop_period: 5
+     * /rosdistro: indigo
+     * /rosversion: 1.11.8
+
+    NODES
+      /zeroconf/
+        zeroconf (zeroconf_avahi/zeroconf)
+      /
+        gateway (rocon_gateway/gateway.py)
+
+    ROS_MASTER_URI=http://localhost:11311
+
+
+    core service [/rosout] found
+
+    process[zeroconf/zeroconf-1]: started with pid [6071]
+
+    process[gateway-2]: started with pid [6092]
+
+    [INFO] [WallTime: 1428615211.620333] Gateway : generated unique hash name
+    [gateway2612f03968b0446d8a5c521b42b6aeb3]
+
+    [WARN] [WallTime: 1428615211.622570] Gateway : no valid ip found for this
+    host, just setting 'localhost'
+
+    Traceback (most recent call last):
+      File "/home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/scripts/gateway.py", line 21, in <module>
+        gateway = GatewayNode()
+      File "/home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway_node.py", line 55, in __init__
+        self._gateway = gateway.Gateway(self._hub_manager, self._param, self._unique_name, self._publish_gateway_info)
+      File "/home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway.py", line 74, in __init__
+        self.network_interface_manager = NetworkInterfaceManager(self._param['network_interface'])
+      File "/home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/network_interface_manager.py", line 36, in __init__
+        self.detect_network_interface(interface_name)
+      File "/home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/network_interface_manager.py", line 50, in detect_network_interface
+        for interface in pythonwifi.getWNICnames():
+      File "/home/rlinsalata/ws/rocon/src/rocon_tools/rocon_python_wifi/src/rocon_python_wifi/iwlibs.py", line 77, in getWNICnames
+        fp = open('/proc/net/wireless', 'r')
+    IOError: [Errno 2] No such file or directory: '/proc/net/wireless'
+
+    [gateway-2] process has died [pid 6092, exit code 1, cmd
+    /home/rlinsalata/ws/rocon/src/rocon_multimaster/rocon_gateway/scripts/gateway.py
+    __name:=gateway
+    __log:=/home/rlinsalata/.ros/log/aa923378-dd7b-11e4-ab41-90b11ca35e8f/gateway-2.log].
+
+    log file:
+    /home/rlinsalata/.ros/log/aa923378-dd7b-11e4-ab41-90b11ca35e8f/gateway-2*.log
+
+    ^C[zeroconf/zeroconf-1] killing on exit
+
+    shutting down processing monitor...
+
+    ... shutting down processing monitor complete
+
+    done
+
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/74'
+  title: Crashing 'set' call
+  body: >
+    ```
+
+    [INFO] [WallTime: 1421980723.387061] Rapp Manager : successfully flipped
+    ['start_rapp', 'stop_rapp']
+
+    [INFO] [WallTime: 1421980723.387968] Rapp Manager : accepting invitation to
+    be remote controlled [xavierdd0a64147de8484e99a79ccd7b30aaca]
+
+    [INFO] [WallTime: 1421980723.663202] Gateway : sending flip request
+    [xavierdd0a64147de8484e99a79ccd7b30aaca][service][/chopina42e89e2e170419080cb3b8b8336c2dd/stop_rapp][/app_manager]
+
+    [INFO] [WallTime: 1421980723.699154] Gateway : sending flip request
+    [xavierdd0a64147de8484e99a79ccd7b30aaca][service][/chopina42e89e2e170419080cb3b8b8336c2dd/start_rapp][/app_manager]
+
+    [INFO] [WallTime: 1421983085.568877] Gateway : lost connection with hub,
+    attempting to disconnect...
+
+    Traceback (most recent call last):
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/scripts/gateway.py", line 22, in <module>
+        gateway.spin()
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway_node.py", line 78, in spin
+        self._gateway.spin()
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway.py", line 78, in spin
+        self.watcher_thread.start()
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/watcher_thread.py", line 74, in start
+        self._gateway.update_network_information()
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway.py", line 388, in update_network_information
+        self.hub_manager.publish_network_statistics(statistics)
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/hub_manager.py", line 286, in publish_network_statistics
+        hub.publish_network_statistics(statistics)
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway_hub.py", line 204, in publish_network_statistics
+        self.update_named_gateway_latency_stats(self._unique_gateway_name, latency)
+      File "/home/yujin/ros/vendingmachine/src/rocon_multimaster/rocon_gateway/src/rocon_gateway/gateway_hub.py", line 249, in update_named_gateway_latency_stats
+        self._redis_server.set(mdev_latency_key, latency_stats[3])
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/client.py", line 610, in set
+        return self.execute_command('SET', name, value)
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/client.py", line 346, in execute_command
+        return self.parse_response(connection, command_name, **options)
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/client.py", line 356, in parse_response
+        response = connection.read_response()
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/connection.py", line 305, in read_response
+        response = self._parser.read_response()
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/connection.py", line 102, in read_response
+        response = self.read()
+      File "/home/yujin/ros/vendingmachine/src/rocon_tools/rocon_python_redis/src/rocon_python_redis/connection.py", line 87, in read
+        return self._fp.readline()[:-2]
+    AttributeError: 'NoneType' object has no attribute 'readline'
+
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - redis
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/68'
+  title: Delay of find_service function when running remote pc
+  body: >
+    When I try to connecting concert by qt remocon in remote pc, the role
+    chooser is slowly spawning (about 10s ). So, I follow up this problem and
+    found that `find_service` function is sometimes blockingwhen it executes
+    `service_uri = master.lookupService(service_name)` and `next_service_type =
+    get_service_headers(service_name, service_uri).get('type', None)` in
+    retmote. How we solve this problem? 
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/pull/55'
+  title: Bugfix service_name variable duplicate usage
+  body: >
+    This resolves #54. It also addresses
+    https://github.com/robotics-in-concert/rocon_qt_gui/issues/92
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/54'
+  title: '[rocon_python_comm] find_service returns wrong service list if unique=False'
+  body: >
+    [service_name](https://github.com/robotics-in-concert/rocon_tools/blob/indigo/rocon_python_comms/src/rocon_python_comms/services.py#L75)
+    parameters were used for two purpose, as interator while searching available
+    services and as return variable when unique=True.
+
+
+    It caused problem when it searches for non unique service.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/53'
+  title: Subprocess popen error
+  body: |
+    ```
+    ^CTraceback (most recent call last):
+      File "/home/jihoonl/research/ros/rocon/devel/bin/rocon_launch", line 5, in <module>
+        exec(fh.read())
+      File "<string>", line 18, in <module>
+      File "/home/jihoonl/research/ros/rocon/src/rocon_tools/rocon_launch/src/rocon_launch/launch.py", line 152, in main
+        signal.pause()
+      File "/home/jihoonl/research/ros/rocon/src/rocon_tools/rocon_launch/src/rocon_launch/launch.py", line 114, in signal_handler
+        self.terminal.shutdown_roslaunch_windows(self.processes, self.hold)
+      File "/home/jihoonl/research/ros/rocon/src/rocon_tools/rocon_launch/src/rocon_launch/terminals.py", line 73, in shutdown_roslaunch_windows
+        roslaunch_pids.extend(utils.get_roslaunch_pids(process.pid))
+      File "/home/jihoonl/research/ros/rocon/src/rocon_tools/rocon_launch/src/rocon_launch/utils.py", line 98, in get_roslaunch_pids
+        ps_command = subprocess.Popen("ps -o pid -o comm --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    TypeError: %d format: a number is required, not NoneType
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+    - launch
+    - wontfix
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/44'
+  title: doc builds failing due to rocon_uri's rules.yaml
+  body: >
+    http://jenkins.ros.org/job/doc-indigo-rocon_tools/12/console
+
+
+    Issue here is that the build farm is python installing via the `setup.py`,
+    but not doing the cmake install step. So the resulting module will fail to
+    bring across the `rules.yaml`. This would ordinarily be ok, but when
+    importing `uri.py` it has to load `rules.yaml` to set a class variable.
+
+
+    Probably the best solution is to move `rules.yaml` to be a data object of
+    the python setup.py install. That ensures all python module relevant
+    material is treated the same way. 
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/43'
+  title: Fix broken tests
+  body: >
+    The devel job has been failing for a while now:
+    http://jenkins.ros.org/job/devel-indigo-rocon_tools/ARCH_PARAM=amd64,UBUNTU_PARAM=trusty,label=devel/
+
+
+    This is due to failing imports
+    (http://jenkins.ros.org/job/devel-indigo-rocon_tools/ARCH_PARAM=amd64,UBUNTU_PARAM=trusty,label=devel/70/console),
+    namely `rocon_app_manager_msgs` and `interactions`:
+
+
+    ```
+
+    ImportError: No module named rocon_app_manager_msgs.msg
+
+    ```
+
+
+    ```
+
+    ImportError: cannot import name interactions
+
+    ```
+
+
+    Both packages are released. So, I'm not sure why this error occurs.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/42'
+  title: rosservice_find bombs when any topic has a socket io error
+  body: >
+    Our `find_service` call fails abominably whenever any service starts having
+    communication errors with the master. Even if this service is not what we're
+    trying to find. See the source code
+    [here](http://docs.ros.org/indigo/api/rosservice/html/rosservice-pysrc.html#rosservice_find)
+    for rosservice_find. Exceptions are getting thrown by get_service_type.
+
+
+    Let's go direct to the master and just ignore this error if it comes up in
+    parsing.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_tools/issues/41'
+  title: rocon_python_wifi has invalid maintainer and is failing to build
+  body: >
+    http://jenkins.ros.org/view/IbinS32/job/ros-indigo-rocon-python-wifi_binarydeb_saucy_i386/7/console
+
+
+    And without the valid email address it's not notifying anyone useful. 
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_tools'
+  labels:
+    - bug

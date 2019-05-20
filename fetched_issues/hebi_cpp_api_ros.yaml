@@ -1,0 +1,5 @@
+- url: 'https://github.com/HebiRobotics/hebi_cpp_api_ros/pull/3'
+  title: Fix Eigen dependency
+  body: Add explicit commands to resolve the Eigen dependency with rosdep.
+  repo: 'https://api.github.com/repos/HebiRobotics/hebi_cpp_api_ros'
+  labels: []

@@ -1,0 +1,54 @@
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/81'
+  title: >-
+    Synchronization setting allows for negative numbers but driver code does
+    not?
+  body: "The Xsens IMU allows one to offset the synchronization setting with a negative offset (doc [here](https://github.com/ethz-asl/ethzasl_xsens_driver/blob/master/nodes/mtdevice.py#L1279)):\r\n\r\n```\r\nSynchronization settings:\r\n    The format follows the xsens protocol documentation. All fields are required\r\n    and separated by commas.\r\n    Note: The entire synchronization buffer is wiped every time a new one\r\n          is set, so it is necessary to specify the settings of multiple\r\n          lines at once.\r\n...\r\n\r\n        Offset:\r\n            Offset from event to pulse generation.\r\n            100 microseconds unit, range [-30000...+30000]\r\n```\r\n\r\nThe `struct.pack()` format code in `data = b''.join(struct.pack('!BBBBHHHH', *sync_setting)` of:\r\n```\r\ndef SetSyncSettings(self, sync_settings):\r\n        \"\"\"Set the synchronisation settings (mark IV)\"\"\"\r\n        self._ensure_config_state()\r\n        data = b''.join(struct.pack('!BBBBHHHH', *sync_setting)\r\n                        for sync_setting in sync_settings)\r\n        self.write_ack(MID.SetSyncSettings, data)\r\n```\r\nin [Line 342 of `mtdevice.py`](https://github.com/ethz-asl/ethzasl_xsens_driver/blob/master/nodes/mtdevice.py#L342). Should the last element not be `h` and not `H` to allow for a negative number? (format code doc [here](https://docs.python.org/2/library/struct.html#format-characters))"
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/80'
+  title: Issue in --deprecated-skip-factor
+  body: "It seems that the minimum freq these IMUs can deliver is 100Hz.  For many applications this unnecessarily overloads the system.  In our case we are using a 32 bit processor and the 100Hz IMU message calculation, publishing and rosbagging consumes over 90% of a core.  \r\nIt would be a nice feature if the node would allow specifying a frequency (say 20 Hz) or a filtering factor (say every 5th message) and average messages (low pass filter) before publishing at a lower rate."
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/67'
+  title: Error with mtdevice.py -i since firmware upgrade to 1.8.2
+  body: "Since we upgraded the firmware on our devices to version 1.8.2 we observe errors with the `mtdevice.py -i` script. Apparantly the response received is longer than expected, and thus it fails to parse given the pattern.\r\n\r\nHere is the output for example:\r\n\r\n\t$ rosrun xsens_driver mtdevice.py -i\r\n\tDevice: /dev/ttyUSB0 at 115200 Bd:\r\n\t  device ID:  0x077003D4\r\n\t  product code: 'MTi-G-700-2A5G4'\r\n\t  firmware revision: (1, 8, 2)\r\n\t  baudrate: 2\r\n\t  error mode:  message unsupported by your device.\r\n\t  option flags:  0x00000010\r\n\t  location ID:  0x0000\r\n\t  transmit delay:  message unsupported by your device.\r\n\t  synchronization settings:  [(0x09, 0x01, 0x01, 0x00, 0x0000, 0x0000, 0x0000, 0x00FA)]\r\n\t  general configuration: {   'Master device ID': 124781524,\r\n\t    'date': '\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00',\r\n\t    'device ID': 124781524,\r\n\t    'length': 0,\r\n\t    'number of devices': 1,\r\n\t    'output-mode': 0,\r\n\t    'output-settings': 1,\r\n\t    'period': 1152,\r\n\t    'skipfactor': 0,\r\n\t    'time': '\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'}\r\n\t  output configuration (mark IV devices):  [(0x1020, 65535), (0x1060, 65535), (0x2013, 400), (0x4023, 400), (0x8023, 400), (0x5043, 400), (0xD013, 400)]\r\n\t  string output type: 0\r\n\t  period: 1152\r\n\t  alignment rotation sensor: \r\n\tTraceback (most recent call last):\r\n\t  File \"/opt/ros/kinetic/lib/xsens_driver/mtdevice.py\", line 1704, in <module>\r\n\t    main()\r\n\t  File \"/opt/ros/kinetic/lib/xsens_driver/mtdevice.py\", line 1430, in main\r\n\t    inspect(mt, device, baudrate)\r\n\t  File \"/opt/ros/kinetic/lib/xsens_driver/mtdevice.py\", line 1530, in inspect\r\n\t    parameter=0)\r\n\t  File \"/opt/ros/kinetic/lib/xsens_driver/mtdevice.py\", line 1508, in try_message\r\n\t    pprint.pprint(f(*args, **kwargs), indent=4)\r\n\t  File \"/opt/ros/kinetic/lib/xsens_driver/mtdevice.py\", line 424, in GetAlignmentRotation\r\n\t    q0, q1, q2, q3 = struct.unpack('!ffff', data)\r\n\tstruct.error: unpack requires a string argument of length 16\r\n\r\nThe actual data received is this: `bytearray(b'\\x00?\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00')` (length: 17).\r\n\r\nWhen I slice off a byte at the front or at the back of the buffer, the script continues without any other obvious errors raised. The device produces data seemingly normal (as long as you don't configure it to produce fixed-point GPS coordinates, I recall). We observed occasional crashes recently, for which we didn't find the cause so far.\r\n\r\nNow I wonder, did we break the device (with the firmware update?) or is the driver incompatible? Can anyone confirm the problem or help resolve the issue?"
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/pull/54'
+  title: add missing package dependency on python-serial
+  body: This commit enables to solve python package dependency with rosdep install.
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels: []
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/51'
+  title: No orientation for MTw2 devices
+  body: "First of all, I want to thank you for this repository. I tried the code from xsens for MTw devices and nothing works! But this code seems to work somehow, although there is something different for MTw2 devices.\r\nRunning inspect I got:\r\n```\r\n./mtdevice.py -i\r\n\r\nDevice: /dev/ttyUSB0 at 115200 Bd:\r\n  device ID:  0x00B4126B\r\n  product code: 'MTW2-3A7G6'\r\n  firmware revision: (4, 0, 2)\r\n  baudrate: 2\r\n  error mode:  MTException: Timeout: waiting for message\r\n```\r\n\r\n\r\nIf I run the node, on the /imu/data there is not orientation data, while the other fields contain nans or close to zero values. This is an output of ./mtdevice -e:\r\n\r\n`{'Calib': {'magZ': nan, 'magY': 6.310593491255738e-40, 'magX': nan, 'frame': 'ENU', 'accY': nan, 'accX': nan, 'accZ': 1.4695075078549061e-38, 'gyrZ': nan, 'gyrX': nan, 'gyrY': 1.4158719683537952e-41}}'`\r\n\r\nCan you help me with this type of device?"
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+    - enhancement
+    - need more info
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/40'
+  title: ROS Xsens driver error with MTi-G-700
+  body: "Hi Dear,\r\n\r\nI have a problem with ROS Xsens dirver.\r\n\r\nAs shown in the attached files, When I  parsed the GPSSOL data from MTi-G-700, the data length is 52 byte which is not corresponding to the data length in MT Low-Level Communication Protocol Documentation. So I add the 'xxx' in the parsing code. Then I obtained the ECEF position. \r\nHowever the other data such as ECEF velocity, position accuracy, etc. \r\nI hope you to help me to get the whole data from GPSSOL message.\r\n\r\nadditionally, I want to know the mean of 'x' in the function \"struct.unpack()\r\n\r\nThanks for your help.\r\n\r\n![ros error1](https://cloud.githubusercontent.com/assets/26959388/24787990/2dd6b7f8-1ba6-11e7-9f7e-979fa798fded.png)\r\n![ros error2](https://cloud.githubusercontent.com/assets/26959388/24787991/2dd93d7a-1ba6-11e7-8a7b-2277720f1cb8.png)\r\n"
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+    - need more info
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/issues/32'
+  title: Support for MTw2 devices
+  body: "In my current project, I have to use a Raspberry Pi 3 (RPi) with the Raspbian OS (version: jessie). Also some Xsens MTw2 sensors (up to 6) have to be connected to the RPi and the goal will be to record all sensor data to a SD card.\r\nAt first I tried to use predefined software from Xsens, such as the MT Manager, the Xsens Device API and accompanying example code. But, it turned out that it is not possible to use this on the RPi, because of the ARM architecture (but the sensors have full Linux support according to the Xsens homepage!).\r\nThat's why I started to use ROS with some Node xsens_mti_ros_node-master, which is supposed to work. The node provided by Xsens does not work with the MTw2 sensors, though!\r\nThen I was happy to find the original author/maintainer of the ROS Node.\r\n\r\nStarting the node and calling the config of the MTw2 sensor as follows, seems to work - more or less - with the MTw2 sensor, but the inspection stops there and we don't get the full configuration:\r\n$ roslaunch src/ethzasl_xsens_driver-master/launch/xsens_driver.launch\r\nand then:\r\n$ ./mtdevice.py -b 0 -v -i\r\nThe output from the MTi compared to the MTw suggests that something is wrong (see attatchment).\r\n[MTi MTw.docx](https://github.com/ethz-asl/ethzasl_xsens_driver/files/722881/MTi.MTw.docx)\r\n\r\nUpdate: Changing the .launch file to:\r\n[xsens_driver_2.zip](https://github.com/ethz-asl/ethzasl_xsens_driver/files/722899/xsens_driver_2.zip)\r\nworks with 2 MTw2 sensors.\r\n\r\nGreat work with the driver/wrapper. Many thanks!"
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels:
+    - bug
+    - enhancement
+    - need more info
+- url: 'https://github.com/ethz-asl/ethzasl_xsens_driver/pull/27'
+  title: No gps common
+  body: |
+    Remove gps_common dependency (not present in Jade or Kinetic).
+  repo: 'https://api.github.com/repos/ethz-asl/ethzasl_xsens_driver'
+  labels: []

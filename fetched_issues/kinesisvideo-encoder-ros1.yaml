@@ -1,0 +1,20 @@
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros1/pull/14'
+  title: Add gtest and gmock as test dependencies
+  body: "By submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros1/pull/7'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros1/pull/6'
+  title: use master branch for cloud extension dependencies
+  body: "*Description of changes:*\r\n\r\nProperly implementing the \"master\" Travis build pipeline, where dependencies should come from HEAD instead of release tags or released binaries.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros1/pull/5'
+  title: Restrict aws robotics dependencies
+  body: "*Description of changes:*\r\nSets the aws-robotics depends less than 2.0.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-ros1'
+  labels: []

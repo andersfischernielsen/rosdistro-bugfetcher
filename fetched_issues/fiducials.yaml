@@ -1,0 +1,25 @@
+- url: 'https://github.com/UbiquityRobotics/fiducials/issues/172'
+  title: Wrong pose estimation for Raspberry Pi + camera module v2.0
+  body: "I'm currently working on a project which involves a small robot controlled by a Raspberry Pi which has to know it's position to perform a task. For that, I want to use aruco markers + the official camera module. I followed the instructions at https://github.com/UbiquityRobotics/raspicam_node/blob/kinetic/README.md to install the raspicam package and respectively http://wiki.ros.org/fiducials to install the fiducials package on the Pi. The markers were created using the command `rosrun aruco_detect create_markers.py 100 112 fiducials.pdf`.\r\n\r\nMy setup consists of the Pi only running the raspicam node and my laptop which runs roscore and the aruco detect node. I configured the ros master uri accordingly. Now I am using the following commands to get everything started:\r\nOn my laptop:\r\n`roscore`\r\n`roslaunch aruco_detect aruco_detect.launch camera:=/raspicam_node`\r\n\r\nOn the Pi:\r\n`roslaunch raspicam_node camerav2_1280x960.launch`\r\n\r\nThe detection seems to work fine regarding the rectangle in the image as you can see here on the right side:\r\n![VirtualBox_Ubuntu 16 04 LTS_17_05_2019_11_02_31](https://user-images.githubusercontent.com/36760115/57917268-a168be80-7894-11e9-8ad8-8cdbcf56ae2d.png)\r\n\r\nUnfortunately the translation coordinates are not correct. For example (see red rectangle in the image) the real z distance between the camera is more than twice as long as stated by the z coordinate. The other coordinates give some wrong values as well. As a result, I can't use the coordinates given by the aruco node to say anything about the camera position relative to a marker. Later on I also want to use the slam node, but first I should get this working, I guess...\r\n\r\nDo I miss something important or may interpret these values wrong? Or might it be possible that the camera calibration file does not match the current camera module? Might this issue be related to #101?  Any hint or input is highly appreciated! Thanks :)\r\n"
+  repo: 'https://api.github.com/repos/UbiquityRobotics/fiducials'
+  labels: []
+- url: 'https://github.com/UbiquityRobotics/fiducials/pull/171'
+  title: 'Compatibility with Melodic, remove opencv3 dependency'
+  body: "opencv3 is no longer a package in melodic, so we use cv_bridge\r\nto get the correct opencv transitively\r\n\r\nhttp://wiki.ros.org/opencv3#package.xml\r\n\r\nThis allows #155 to be resolved. "
+  repo: 'https://api.github.com/repos/UbiquityRobotics/fiducials'
+  labels: []
+- url: 'https://github.com/UbiquityRobotics/fiducials/issues/161'
+  title: CairoSVG only with Python 3
+  body: "When using the command to create markers:\r\nrosrun aruco_detect create_markers.py 100 112 fiducials.pdf\r\n\r\ni get: ImportError: No module named cairosvg\r\n\r\nTrying to install it results in another error:\r\nCairoSVG does not support Python 2.x anymore. Please use Python 3 or install an older version of CairoSVG.\r\n\r\nI already used marker creation some month ago, so I gues thats a new problem.\r\n\r\nEven switching to older versions just causes new Errors, so maybe this dependency can be switched to something else?"
+  repo: 'https://api.github.com/repos/UbiquityRobotics/fiducials'
+  labels: []
+- url: 'https://github.com/UbiquityRobotics/fiducials/issues/139'
+  title: Make sure cariosvg is available
+  body: "```\r\n$ rosrun aruco_detect create_markers.py \r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/share/aruco_detect/create_markers.py\", line 8, in <module>\r\n    import cairosvg\r\nImportError: No module named cairosvg\r\n```\r\nThis could be addressed by calling `checkCmd` or with package dependencies."
+  repo: 'https://api.github.com/repos/UbiquityRobotics/fiducials'
+  labels: []
+- url: 'https://github.com/UbiquityRobotics/fiducials/issues/76'
+  title: 'Build Error in fiducial_pose, Fiducial.h is missing'
+  body: "I get the following error, when I compile the package with catkin_make:\r\n\r\nfatal error: fiducial_msgs/Fiducial.h: No such file or directory\r\n\r\nThis can be fixed by inserting\r\n\r\nadd_dependencies(rpp_pose ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})\r\n\r\nin fiducial_pose/CMakeList.txt\r\n\r\nI am on Ubuntu 16.04, Opencv 3.2.0, ROS Kinetic\r\n"
+  repo: 'https://api.github.com/repos/UbiquityRobotics/fiducials'
+  labels: []

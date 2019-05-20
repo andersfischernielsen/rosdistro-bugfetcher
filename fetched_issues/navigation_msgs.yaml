@@ -1,0 +1,17 @@
+- url: 'https://github.com/ros-planning/navigation_msgs/pull/7'
+  title: add missing build_type
+  body: 'Fixes #6.'
+  repo: 'https://api.github.com/repos/ros-planning/navigation_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/ros-planning/navigation_msgs/issues/6'
+  title: ROS 2 build fails with (old) ament_tools
+  body: "The `package.xml` of `map_msgs` and `move_base_msgs` is lacking a build tool export\r\n\r\nThis means that `ament_tools` cannot build the package due to missing build type. \r\nColcon seems to handle this correctly, so maybe this is not a problem moving forward."
+  repo: 'https://api.github.com/repos/ros-planning/navigation_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/ros-planning/navigation_msgs/pull/4'
+  title: Ros2 port of map_msgs
+  body: "DO NOT MERGE, this is just for reference, the `ros2` branch should remain separate for now.\r\n\r\nHi guys, I went ahead and ported `map_msgs` and put it on this `ros2` branch because we need it in the map display for rviz in ROS 2. I hope you guys don't mind that I put it on a branch rather than a fork.\r\n\r\nThis does a few things:\r\n\r\n- `map_msgs`\r\n  - adds myself as a maintainer, so that you guys don't have to support the ROS 2 branch alone\r\n  - update the version to 2.0.0 (to avoid overlap with ROS 1 version for now)\r\n  - update dependencies in package.xml to be ROS 2 style\r\n  - update cmake code to use ament and do message generation in ROS 2\r\n  - touchup the messages to remove trailing whitespace and use `std_msgs/Header` instead of `Header` (required in ROS 2)\r\n- `move_base_msgs`\r\n  - disable with `AMENT_IGNORE` file (like `CATKIN_IGNORE`) for now since actions are still being ported\r\n\r\nIf you guys could close this pull request as an indication that this is all ok, that would be great. At that point I'd open a new issue to track that `move_base_msgs` needs porting when actions are done in ROS 2.\r\n\r\nAlso, this repository may be able to have one branch for both ROS 1 and ROS 2 in the future, but that depends on some on going work to smooth migration. So I'll have to come back and touch things again when that's possible.\r\n\r\nI also built this on top of https://github.com/ros-planning/navigation_msgs/pull/3 in the hope that gets merged at some point.\r\n\r\nPlease let me know if you guys have any issues with this or questions for me.\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/ros-planning/navigation_msgs'
+  labels: []

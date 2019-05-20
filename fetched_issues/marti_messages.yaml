@@ -1,0 +1,67 @@
+- url: 'https://github.com/swri-robotics/marti_messages/pull/52'
+  title: Add route messages
+  body: >
+    Add `RoutePosition` message and include all four new messages in the build
+    files:
+
+    - `marti_common_msgs/KeyValue`
+
+    - `marti_nav_msgs/Route`
+
+    - `marti_nav_msgs/RoutePoint`
+
+    - `marti_nav_msgs/RoutePosition`
+
+
+    Because `marti_nav_msgs` needed more dependencies, I also refactored the
+    `CMakeLists.txt` to reduce the redundancy and potential for error.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/pull/51'
+  title: Create Route and RoutePoint messages
+  body: |
+    Route and RoutePoint are very general messages to define a sequence of
+    achievable poses for a vehicle along with arbitrary metadata about the
+    route and the point itself.
+
+    Requires also creating the dependent KeyValue message.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/pull/22'
+  title: remove dependencies on build_tools
+  body: |
+    remove dependencies on build_tools. issue #18
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/pull/21'
+  title: remove dependencies on build_tools
+  body: |
+    remove dependencies on build_tools. issue #18
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/pull/20'
+  title: remove dependencies on build_tools
+  body: |
+    remove dependencies on build_tools. issue #18
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/pull/19'
+  title: remove dependencies on build_tools
+  body: |
+    remove dependencies on build_tools.  issue #18
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/issues/18'
+  title: Remove build_tools dependency for catkin branches
+  body: >
+    Remove build_tools dependency for catkin branches. Use a more catkin based
+    approach if functionality is desired in the future.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels: []
+- url: 'https://github.com/swri-robotics/marti_messages/issues/13'
+  title: Use format 2 package definition
+  body: |
+    use format 2 package definition to simplify dependency declarations.
+  repo: 'https://api.github.com/repos/swri-robotics/marti_messages'
+  labels:
+    - lint

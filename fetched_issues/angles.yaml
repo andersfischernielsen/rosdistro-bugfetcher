@@ -1,0 +1,104 @@
+- url: 'https://github.com/ros/angles/pull/14'
+  title: Adding export lines to CMakeLists.txt
+  body: "This is needed for dependent packages to pick up the include\r\ndirectory."
+  repo: 'https://api.github.com/repos/ros/angles'
+  labels: []
+- url: 'https://github.com/ros/angles/issues/10'
+  title: Cannot import angles on Ubuntu Xenial
+  body: >
+    Having issue using the python angles in a node of mine. After digging around
+    I can't find the python source in the deb.
+
+
+    ```
+
+    $ dpkg-deb -c
+    ros-kinetic-angles_1.9.10-0xenial-20160318-145244-0700_amd64.deb 
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/ros/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/ros/kinetic/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/ros/kinetic/include/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53
+    ./opt/ros/kinetic/include/angles/
+
+    -rw-r--r-- root/root      9868 2016-03-18 16:00
+    ./opt/ros/kinetic/include/angles/angles.h
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/ros/kinetic/lib/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53
+    ./opt/ros/kinetic/lib/pkgconfig/
+
+    -rw-r--r-- root/root       165 2016-03-18 16:53
+    ./opt/ros/kinetic/lib/pkgconfig/angles.pc
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./opt/ros/kinetic/share/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53
+    ./opt/ros/kinetic/share/angles/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53
+    ./opt/ros/kinetic/share/angles/cmake/
+
+    -rw-r--r-- root/root      7274 2016-03-18 16:53
+    ./opt/ros/kinetic/share/angles/cmake/anglesConfig.cmake
+
+    -rw-r--r-- root/root       427 2016-03-18 16:53
+    ./opt/ros/kinetic/share/angles/cmake/anglesConfig-version.cmake
+
+    -rw-r--r-- root/root       983 2016-03-18 16:00
+    ./opt/ros/kinetic/share/angles/package.xml
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./usr/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./usr/share/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53 ./usr/share/doc/
+
+    drwxr-xr-x root/root         0 2016-03-18 16:53
+    ./usr/share/doc/ros-kinetic-angles/
+
+    -rw-r--r-- root/root       778 2016-03-18 16:52
+    ./usr/share/doc/ros-kinetic-angles/changelog.Debian.gz
+
+    ```
+
+
+    After downloading it from GH and running a local pip install I was able to
+    import. Any reason why the `ros-kinetic-angles` doesn't include the python
+    bindings?
+  repo: 'https://api.github.com/repos/ros/angles'
+  labels: []
+- url: 'https://github.com/ros/angles/pull/4'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/angles'
+  labels: []

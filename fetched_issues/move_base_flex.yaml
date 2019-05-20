@@ -1,0 +1,79 @@
+- url: 'https://github.com/magazino/move_base_flex/issues/109'
+  title: 'Publish zero velocity when reached to goal. '
+  body: >-
+    Publish zero velocity when reached to goal. If the plugin is not publishing
+    zero velocity to `cmd_vel` the robot will go one with the last command. This
+    bug is in particular caused when setting the `mbf_tolerance_check` to true
+    since the plugin will not publish zero velocity in most of the cases. 
+    Related to #32 and #70. 
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/issues/79'
+  title: move_base action crashes with continuous replanning and prune_plan is true
+  body: 'Probably fixed together with #70'
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/pull/78'
+  title: 'Concurrency for planners, controllers and recovery behaviors '
+  body: "Hi all,\r\n\r\nso I almost finished the concurrency feature #36  I needed to restructure the code a lot! I wasn't able to do it in smaller pull requests, because the things in the architecture are connected interdependently. The code now is in a much better structure and much more overseeable and clear.\r\n\r\nI will explain the pull request in detail soon. I would appreciate if some could test the feature and list the things which are missing, there might be some things. A list of TODOs would be nice."
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels: []
+- url: 'https://github.com/magazino/move_base_flex/issues/72'
+  title: move_base_flex is not actually a metapackage
+  body: "This is more a question than an actionable item, but I was just wondering why the description of `move_base_flex` claims it to be a metapackage, while it isn't actually one.\r\n\r\nThe name *metapackage* has an 'official' definition and defined semantics ([REP-149](https://github.com/ros-infrastructure/rep/blob/d9d296225e86b490e922e3f253385c6f00c184bf/rep-0149.rst#metapackage)), and `move_base_flex` doesn't seem to adhere to that.\r\n\r\nIs `move_base_flex` actually more a convenience package that users can `find_package(..)` to get the entire set of MBF dependencies / often used pkgs, instead of having to list all dependencies separately?\r\n"
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - question
+- url: 'https://github.com/magazino/move_base_flex/pull/68'
+  title: 'Issue #66: ensure prototypes match between abstract and costmap classes'
+  body: >-
+    As reported in #66 by @SHTseng, now they don't, so we are calling the
+    abstract methods (so we don't lock/unlock costmaps)
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/issues/59'
+  title: Handle INTERNAL_ERROR case
+  body: >-
+    When catching an unknown error, the state is set to INTERNAL_ERROR. But this
+    state is note processed appropriate. 
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/pull/43'
+  title: Mbf abstract nav
+  body: "This pull request cleans up the mbf_abstract_nav project by doing following:\r\n1. Adds missing dependencies to the CMakeList and package\r\n2. Adds missing includes to the heades and ordering them in a uniform way starting from std > boost > ROS > MBF"
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels: []
+- url: 'https://github.com/magazino/move_base_flex/pull/42'
+  title: Mbf abstract core cleanup
+  body: "This branch cleans up the existing mbf_abstract_core project.\r\nIt removes the unused TF dependecy and also add the missing doxygen documentation line for AbstractRecovery"
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels: []
+- url: 'https://github.com/magazino/move_base_flex/issues/40'
+  title: Clean up and sort parameter namespaces
+  body: "This should not be:\r\n\r\n> /move_base_flex/TrajectoryPlannerROS/holonomic_robot\r\n> /move_base_flex/controller/holonomic_robot\r\n> /move_base_flex/holonomic_robot\r\n"
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/magazino/move_base_flex/issues/29'
+  title: Rotate recovery behavior sometimes run forever
+  body: "when used in the move_base action\r\n \r\nAnd sometimes doesn't run at all... not sure if related with continuous replanning"
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/issues/28'
+  title: Robot oscillating detected while running rotate recovery
+  body: ''
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug
+- url: 'https://github.com/magazino/move_base_flex/issues/27'
+  title: Recovery behaviors not applied when oscillation is detected
+  body: ''
+  repo: 'https://api.github.com/repos/magazino/move_base_flex'
+  labels:
+    - bug

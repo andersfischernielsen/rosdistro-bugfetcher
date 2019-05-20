@@ -1,0 +1,322 @@
+- url: 'https://github.com/ros-drivers/openni_camera/pull/70'
+  title: >-
+    Remove a test_depend on pkg that are not guaranteed to be available in newer
+    distro.
+  body: "This addresses an issue https://github.com/ros-drivers/openni_camera/issues/68#issuecomment-420883390\r\n\r\nThis includes #69 to make sure CI passes for ROS Melodic.\r\n\r\nWill merge once CI passes."
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/66'
+  title: ROS Lunar release disabled (since 1.11.0)
+  body: "https://github.com/ros-drivers/openni_camera/pull/58 injected a test dependency on `turtlebot_description` that's not (yet) available on ROS Lunar. This prevents a newer version of this package suite from being released.\r\n\r\nSince there's no guarantee for turtlebot pkgs to be released on Lunar onward, this dependency (even test_depend) needs to be removed."
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/65'
+  title: Consolidate rgbd repositories into a single repo
+  body: "<a href=\"https://github.com/130s\"><img src=\"https://avatars0.githubusercontent.com/u/1840401?v=4\" align=\"left\" width=\"96\" height=\"96\" hspace=\"10\"></img></a> **Issue by [130s](https://github.com/130s)**\n_Monday Apr 24, 2017 at 19:51 GMT_\n_Originally opened as https://github.com/ros-drivers/openni_launch/issues/30_\n\n----\n\nThe following repositories contain a single package. I suggest to create a new repo where we move all of these 3 packages to, in order to reduce the maintenance effort.\r\n\r\n1. openni_launch\r\n1. rgbd_launch\r\n1. openni_camera\r\n\r\n**Background**\r\nDespite the inactive development, the release tasks for these packages still takes certain amount of work. For Lunar this time, I took charge of it and for total it took almost an hour,  mainly because these packages are inter-depended and I had to make release one by one and wait for the binary to become ready, in order for `bloom` to be able to resolve the necessary dependency.\r\n\r\n**Suggested solution**\r\nCreate a new repo and move all of these 3 packages there.\r\nSuggestion for the repo name appreciated. Here I temporarily use *`openni_meta`*.\r\n\r\nNew repo and the contents (being updated over time taking suggestions in):\r\n\r\n```\r\nros-drivers/openni_meta\r\n|- freenect_camera\r\n|- freenect_launch\r\n|- openni_camera\r\n|- openni_launch\r\n|- openni_meta\r\n|- rgbd_launch\r\n```\r\n\r\n`openni_meta` is a meta package that run_depends on these 3 packages.\n"
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-drivers/openni_camera/issues/59'
+  title: moving launch files for processing nodelets to a driver independent package
+  body: >+
+    <a href="https://github.com/piyushk"><img
+    src="https://avatars3.githubusercontent.com/u/1686279?v=4" align="left"
+    width="96" height="96" hspace="10"></img></a> **Issue by
+    [piyushk](https://github.com/piyushk)**
+
+    _Tuesday Jul 30, 2013 at 16:36 GMT_
+
+    _Originally opened as https://github.com/ros-drivers/openni_launch/issues/5_
+
+
+    ----
+
+
+    @jonbinney @bit-pirate
+
+
+    I have moved launch files to a separate rgbd_launch package. You can use
+    [this](http://farnsworth.csres.utexas.edu/share/rgbd_launch_test.rosinstall)
+    rosinstall file to test the new organization. 
+
+
+    If things look alright to you, I will first release rgbd_launch, and then
+    submit a pull request for openni_launch and freenect_launch once rgbd_launch
+    makes it to shadow-fixed.
+
+
+    Additionally, there are a number of examples in freenect_launch that you can
+    test out. See the documentation for reference:
+    http://ros.org/wiki/freenect_launch
+
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/pull/58'
+  title: Add openni_description package.
+  body: "Realizing the suggestion in [this discourse thread](https://discourse.ros.org/t/common-location-for-sensor-urdf-files/1758). Kinect's model file is copied from [turtlebot_description](https://github.com/turtlebot/turtlebot/tree/kinetic/turtlebot_description/) and removed Turtlebot-specific portion.\r\n\r\nIn a trial to show what's changed from Turtlebot version, I separate commits as much as possible.\r\n\r\n<s>This PR depends on #57</s> -> Rebased.\r\n  "
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/pull/48'
+  title: Fix LOG4CXX dependency problem
+  body: |
+    just like other branch did.
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/45'
+  title: Release into ROS Kinectic
+  body: >
+    As of today bloom failed. I don't know what to do to proceed from here.
+    [Google
+    search](https://www.google.com/search?client=ubuntu&channel=fs&q=fedora+24++libusbx-devel+&ie=utf-8&oe=utf-8)
+    doesn't clearly tell me whether the library in question (`libusbx-devel` or
+    similar on version Fedora 24) is already available. It's [missing from
+    rosdep
+    key](https://github.com/ros/rosdistro/blob/a06e8229776041fe9250f36596ad48907e8abb10/rosdep/base.yaml#L2518-L2524).
+
+
+    ```
+
+    $ bloom-release --rosdistro kinetic --track kinetic openni_camera
+
+    :
+
+    libusb-1.0-dev is depended on by these packages: ['openni_camera']
+
+    <== Failed
+
+    Could not resolve rosdep key 'libusb-1.0-dev' for distro '24':
+
+    No definition of [libusb-1.0-dev] for OS version [24]
+        rosdep key : libusb-1.0-dev
+        OS name    : fedora
+        OS version : 24
+        Data: arch:
+    - libusbx
+
+    debian:
+
+    - libusb-1.0-0-dev
+
+    fedora:
+      '21':
+      - libusbx-devel
+      '22':
+      - libusbx-devel
+      beefy:
+      - libusb1-devel
+      heisenbug:
+      - libusbx-devel
+      "schr\xF6dinger\u2019s":
+      - libusbx-devel
+      spherical:
+      - libusbx-devel
+    gentoo:
+
+    - =dev-libs/libusb-1.0*
+
+    macports:
+
+    - libusb
+
+    opensuse:
+
+    - libusb-1_0-devel
+
+    ubuntu:
+
+    - libusb-1.0-0-dev
+
+
+    Failed to resolve libusb-1.0-dev on fedora:24 with: Error running generator:
+    Failed to resolve rosdep key 'libusb-1.0-dev', aborting.
+
+    libusb-1.0-dev is depended on by these packages: ['openni_camera']
+
+    <== Failed
+
+    Some of the dependencies for packages in this repository could not be
+    resolved by rosdep.
+
+    You can try to address the issues which appear above and try again if you
+    wish.
+
+    ```
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/42'
+  title: Push 1.9.4 into ROS indigo/jade
+  body: >
+    Hi,
+
+
+    could you please push 1.9.4 into ROS indigo and jade? It only fixes the
+    dependency issue and should be save to push.
+
+
+    Thanks!
+
+
+    Jochen
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/pull/26'
+  title: >-
+    Remove unneeded dependency (libopenni-sensor-primesense-dev is an internal
+    plugin).
+  body: null
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/21'
+  title: Missing explicit dependency and include on log4cxx
+  body: >
+    In the latest version of rosconsole the strict dependency on log4cxx has
+    been removed. Now `openni_camera`
+    (http://jenkins.ros.org/view/HbinP32/job/ros-hydro-openni-camera_binarydeb_precise_i386/27/console)
+    fails to build since it relied on the transitive dependency.
+
+
+    Please make the dependency on log4cxx explicit and import the necessary
+    header file. 
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/openni_camera/issues/19'
+  title: Cannot install openni_camera from apt-get
+  body: |
+    After a clean install of ROS Groovy/Hydro, I cannot install openni_camera. 
+    Here's the output I get:
+
+    <pre>georgebrindeiro@r2d2:~$ sudo apt-get install ros-hydro-openni-camera
+    Reading package lists... Done
+    Building dependency tree       
+    Reading state information... Done
+    Some packages could not be installed. This may mean that you have
+    requested an impossible situation or if you are using the unstable
+    distribution that some required packages have not yet been created
+    or been moved out of Incoming.
+    The following information may help to resolve the situation:
+
+    The following packages have unmet dependencies:
+     ros-hydro-openni-camera : Depends: libopenni0 but it is not going to be installed
+                               Depends: libopenni-dev but it is not going to be installed
+                               Depends: libopenni-sensor-primesense-dev but it is not going to be installed
+    E: Unable to correct problems, you have held broken packages.</pre>
+
+
+    I can't install libopenni\* either, because it conflicts with openni-dev. 
+    Removing openni-dev leads to ROS Hydro to be uninstalled.
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/13'
+  title: Bug in registration - NaN in PointCloud
+  body: >
+    On some PCs the registration show a bug.
+
+
+    If you enable it, your PointCloud will only have NaN, and some reports that
+    the depth image gets all gray(no real image).
+
+
+    Ros answers have allot of this issues, and a possible solution is to install
+    the OpenNi + Nite binaries
+    (http://answers.ros.org/question/53706/registered-depth-image-is-black/#53832)
+    and
+    (http://answers.ros.org/question/54951/kinect-depth-registration-not-working-on-fuerte-and-groovy/),
+    but that don't work all the time. 
+
+
+    That is my problem, i installed the ros-fuerte-openni-camera and
+    ros-fuerte-openni-launch, and if i enable the depth_registration all i get
+    is NaN's. Running the samples from OpenNi binaries everything works fine!
+
+
+    Also i say this is hardware dependent, because on diferent machines with the
+    same software (linux version+ ros version) it presents diferent results on
+    some it works and others don't (but the OpenNi binaries allways work)
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/pull/8'
+  title: fixing late dynamic_reconfigure initialization
+  body: >
+    nodelet/driver.cpp:
+
+
+    important globals such as the image width and height are initialized within
+    the config callback triggered by dynamic_reconfigure. During initialization
+    of dynamic_reconfigure, this callback is executed in order to provide the
+    default configuration. 
+
+
+    Interestingly, the initialization of dynamic_reconfigure takes place within
+    a separate thread (and not within the constructor). If a subscriber already
+    connects during start-up to the image_raw publisher, the initialization
+    thread might not be ready yet and width&height defined within the
+    dynamic_reconfigure callback is undefined (leading to a crash of the nodelet
+    manager).  
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels: []
+- url: 'https://github.com/ros-drivers/openni_camera/issues/5'
+  title: openni_camera nodelet crashes when switching to QVGA 30Hz
+  body: >
+    I've the following problem with my kinect and the openni_camera driver:
+
+    If I launch the openni_camera nodelet with roslaunch openni_launch
+    openni.launch and afterwards change the image_mode and depth_mode via
+    dynamic_reconfigure to QVGA_30Hz and then subscribe to camera/rgb/image_mono
+    or camera/rgb/image_color the nodelet crashes with the following error:
+
+
+    **\* glibc detected **\*
+    /opt/ros/electric/stacks/nodelet_core/nodelet/bin/nodelet: malloc():    
+    memory corruption: 0x0000000000bb85f0 ***
+
+    ======= Backtrace: =========
+
+    /lib/x86_64-linux-gnu/libc.so.6(+0x79d7a)[0x7fdaeff65d7a]
+
+    /lib/x86_64-linux-gnu/libc.so.6(__libc_malloc+0x6e)[0x7fdaeff6831e]
+
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6(_Znwm+0x1d)[0x7fdaf09f2e0d]
+
+    /opt/ros/electric/stacks/openni_kinect/depth_image_proc/lib/libdepth_image_proc.so(_ZN5boost11make_sharedIN11sensor_msgs11CameraInfo_ISaIvEEEEENS_10shared_ptrIT_EEv+0x4f)[0x7fdae3d8dcff]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_nodelet.so(_ZNK13openni_camera13DriverNodelet20getDefaultCameraInfoEiid+0x1b)[0x7fdac6bb1c1b]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_nodelet.so(_ZNK13openni_camera13DriverNodelet16getRgbCameraInfoEN3ros4TimeE+0x618)[0x7fdac6bb4f98]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_nodelet.so(_ZNK13openni_camera13DriverNodelet15publishRgbImageERKN14openni_wrapper5ImageEN3ros4TimeE+0xe9)[0x7fdac6bb52c9]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_nodelet.so(_ZN13openni_camera13DriverNodelet5rgbCbEN5boost10shared_ptrIN14openni_wrapper5ImageEEEPv+0xc7)[0x7fdac6bb5537]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_nodelet.so(_ZN5boost6detail8function26void_function_obj_invoker1INS_3_bi6bind_tIvNS_4_mfi3mf2IvN13openni_camera13DriverNodeletENS_10shared_ptrIN14openni_wrapper5ImageEEEPvEENS3_5list3INS_17reference_wrapperIS8_EENS_3argILi1EEENS3_5valueISD_EEEEEEvSC_E6invokeERNS1_15function_bufferESC_+0x67)[0x7fdac6bbd4e7]
+
+    /opt/ros/electric/stacks/openni_kinect/openni_camera/lib/libopenni_driver.so(_ZN14openni_wrapper12OpenNIDevice23ImageDataThreadFunctionEv+0x359)   
+    [0x7fdac62ad6e9]
+
+    /usr/lib/libboost_thread.so.1.42.0(thread_proxy+0x5e)[0x7fdaf230e16e]
+
+    /lib/x86_64-linux-gnu/libpthread.so.0(+0x6d8c)[0x7fdaf0286d8c]
+
+    /lib/x86_64-linux-gnu/libc.so.6(clone+0x6d)[0x7fdaeffd204d]
+
+
+    this happens on 32bit and 64bit Ubuntu Natty. the installed openni libraries
+    are:
+
+    dpkg -l | grep openni
+
+    ii  openni-dev                                
+    1.3.2.1-4+natty1                           OpenNI Framework - libraries
+
+    ii  ros-electric-openni-kinect                
+    0.3.2-s1323594564~natty                    The ROS OpenNI project
+
+    according to 
+    http://answers.ros.org/question/3364/openni_camera-nodelet-crashes-when-using-qvga-30hz
+    this problem could be confirmed by another person
+
+    (sorry for opening question and ticket, but I think this is the better place
+    to discuss the issue)
+  repo: 'https://api.github.com/repos/ros-drivers/openni_camera'
+  labels:
+    - bug

@@ -1,0 +1,5 @@
+- url: 'https://github.com/PR2/app_manager/pull/11'
+  title: add run_depend of app_manager in README.md
+  body: "@k-okada \r\n\r\nI heard run_depend of app_manager is also needed to use app_manager by @knorth55."
+  repo: 'https://api.github.com/repos/PR2/app_manager'
+  labels: []

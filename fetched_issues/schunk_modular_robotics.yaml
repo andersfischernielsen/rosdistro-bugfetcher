@@ -1,0 +1,50 @@
+- url: 'https://github.com/ipa320/schunk_modular_robotics/issues/209'
+  title: Gazebo dependency of schunk_description?
+  body: "Hi,\r\nIs the exec_depend on Gazebo for schunk_description required? It's a pretty heavy dependency when installing a robot model - I assume people attempting to simulate the robot and including the URDF for simulation will have the Gazebo dependency on that package. I.e., can we remove the dependency from the description package?\r\n\r\nThanks,\r\nWolfgang"
+  repo: 'https://api.github.com/repos/ipa320/schunk_modular_robotics'
+  labels: []
+- url: 'https://github.com/ipa320/schunk_modular_robotics/pull/193'
+  title: Publish temperatures for monitoring overheating
+  body: "Publish all temperature readings as `TemperatureArray` on topic `temperature`. The names of the temperature sensors are currently hard coded in `temperature_names_` since there is no way to retrieve them from the API.\r\n\r\nThis PR depends on PR https://github.com/ipa320/schunk_modular_robotics/pull/192 and already includes its changes. I am happy to rebase this PR on `indigo_dev` if it should be merged first."
+  repo: 'https://api.github.com/repos/ipa320/schunk_modular_robotics'
+  labels: []
+- url: 'https://github.com/ipa320/schunk_modular_robotics/issues/175'
+  title: 'unknown macro name: xacro:default_inertial'
+  body: >
+    Hi,
+       I am trying to make urdf file out of lwa.urdf.xacro ... When I am running the xacro.py command with following script I am getting the error. Can you please clarify whats wrong with it .
+
+    """ This is the code I am using for generating URDF file out of
+    lwa.urdf.xacro"
+
+    <?xml version="1.0" ?>
+
+    <robot name="my_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+      <!-- we 'import' the macro definition from that file -->
+      <xacro:include filename="$(find schunk_description)/urdf/lwa/lwa.urdf.xacro"/>
+
+      <!-- this could be anything, but you need a 'parent' link -->
+      <link name="world" />
+
+      <!-- here we 'call' the macro and supply it with the required arguments -->
+      <xacro:schunk_lwa parent="world" name="my_lwa">
+        <origin rpy="0 0 0" xyz="0 0 0" />
+      /xacro:schunk_lwa
+    </robot>
+
+    I am using Ros Jade with ubuntu 14.04.5
+  repo: 'https://api.github.com/repos/ipa320/schunk_modular_robotics'
+  labels: []
+- url: 'https://github.com/ipa320/schunk_modular_robotics/pull/157'
+  title: fix missing add_dependencies
+  body: |
+    I guess/hope these were the last findings of this kind....
+  repo: 'https://api.github.com/repos/ipa320/schunk_modular_robotics'
+  labels: []
+- url: 'https://github.com/ipa320/schunk_modular_robotics/pull/144'
+  title: review dependencies
+  body: |
+    sorting, cleaning up and review (used roscompile)
+  repo: 'https://api.github.com/repos/ipa320/schunk_modular_robotics'
+  labels: []

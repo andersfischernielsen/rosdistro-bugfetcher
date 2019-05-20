@@ -1,0 +1,10 @@
+- url: 'https://github.com/ros-drivers/phidgets_drivers/pull/15'
+  title: Add Phidgets high-speed encoder ROS node
+  body: "This PR is based on previous code by Geoff Viola (@geoffviola), which has been extended to:\r\n* Publish one topic per encoder channel.\r\n* On-the-fly determination of number of encoder channels.\r\n* Two topic message types:\r\n  * (a) Tick count + instantaneous speed.\r\n  * (b) decimated, smooth velocity.\r\n* Publication at a programmable rate, independent of arrival of encoder ticks.\r\n\r\n![screenshot_](https://user-images.githubusercontent.com/5497818/29118199-441b51b0-7d01-11e7-819e-dfd2fe91fba5.jpg)\r\n\r\nI would also suggest removing all branch names and working from now on on `master` (which will imply changing rosdistro as well, of course), since packages for all recent ROS distros can be built from exactly the same sources. This PR is against kinetic just because it's the default branch, but it should be shared with lunar, etc."
+  repo: 'https://api.github.com/repos/ros-drivers/phidgets_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/phidgets_drivers/issues/9'
+  title: imu_madgwick_filter should be added as a runtime dependency
+  body: "The imu_madgwick_filter nodelet is loaded in the [phidgets_imu/launch/imu.launch](https://github.com/ros-drivers/phidgets_drivers/blob/indigo/phidgets_imu/launch/imu.launch) launcher,\r\nhowever it is not listed as a runtime dependency in package.xml ."
+  repo: 'https://api.github.com/repos/ros-drivers/phidgets_drivers'
+  labels: []

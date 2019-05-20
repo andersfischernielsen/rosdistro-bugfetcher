@@ -1,0 +1,58 @@
+- url: 'https://github.com/ros-planning/srdfdom/pull/32'
+  title: '[Future TODO] Switch from TinyXML to TinyXML2'
+  body: "The library TinyXML is considered to be unmaintained and\r\nsince all future development is focused on TinyXML2 this\r\npatch updates srdfdom to use TinyXML2.\r\n\r\ndepends on https://github.com/ros/urdfdom/pull/99"
+  repo: 'https://api.github.com/repos/ros-planning/srdfdom'
+  labels: []
+- url: 'https://github.com/ros-planning/srdfdom/issues/16'
+  title: Do we want srdfdom to be standalone (no-ROS) package?
+  body: >
+    Looking at
+    [package.xml](https://github.com/ros-planning/srdfdom/blob/a1dd5324cf15117fd6818f4c3e9d6b3ea2f7f7a0/package.xml),
+    it looks like `srdfdom` is not and has not been depending on ROS, but
+    searching the code lets me spot [a
+    line](https://github.com/ros-planning/srdfdom/blob/503a8948162c7958ad2719c9e3bba19877ef0115/src/srdfdom/srdf.py#L220)
+    in a method that depends on `rospy`, and the method is used by
+    `scripts/display_srdf`.
+
+
+    I can't think of much benefit wrt to the effort of making it standlone,
+    since `srdf` is primarily used only in MoveIt! (correct if wrong) and
+    MoveIt! is ROS-based.
+  repo: 'https://api.github.com/repos/ros-planning/srdfdom'
+  labels:
+    - enhancement
+    - question
+- url: 'https://github.com/ros-planning/srdfdom/issues/8'
+  title: SRDF Python parser
+  body: >
+    Dear developers, 
+
+
+    I needed a SRDF python parser, to loop over the groups and joints and such
+    (this is useful to generate new moveit config files from existing ones)
+
+    I could not find an existing SRDF python parser, so the fastest and easiest
+    solution was to derive from urdf_parser_py and and depend on its
+    xml_reflection lib. 
+
+    The parser can be found there https://github.com/ubi-agni/srdf_parser_py 
+
+    It also integrates a full srdf parsing test
+
+
+    Would it make sense to create a srdfdom_py similar to urdfdom_py integrating
+    such a parser ?
+  repo: 'https://api.github.com/repos/ros-planning/srdfdom'
+  labels: []
+- url: 'https://github.com/ros-planning/srdfdom/issues/7'
+  title: release indigo 0.2.7
+  body: >
+    I've created an indigo-devel branch with the correct dependencies on
+    console_bridge and urdfdom_headers for Saucy and Trusty. RE:
+    https://github.com/ros/rosdistro/issues/4633
+
+
+    This needs to be released into indigo. 
+  repo: 'https://api.github.com/repos/ros-planning/srdfdom'
+  labels:
+    - bug

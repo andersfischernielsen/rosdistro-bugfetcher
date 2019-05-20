@@ -1,0 +1,116 @@
+- url: 'https://github.com/ros/rosconsole/pull/28'
+  title: add missing declaration of deregister_appender in impl namespace
+  body: 'Follow up of #23.'
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rosconsole/pull/26'
+  title: dll import/export visibility macro update
+  body: "further updates to support DLL import/export on Windows =)\r\n- add missing `ROSCONSOLE_BACKEND_DECL` (from previous visibility change) for `console_backend.h`\r\n- move `console_impl` functions shared by `log4cxx`, `glog`, `print` into one single header `console_impl.h` (and remove the function declarations from `rosconsole.cpp`)\r\n\r\nas mentioned in the comments, the `ROSCONSOLE_CONSOLE_IMPL_DECL` macro is added to manage visibility for functions in the impl components in one centralized position. For the implementations (`src/rosconsole/impl/rosconsole_xxx.cpp`), `ROSCONSOLE_CONSOLE_IMPL_EXPORTS` needs to be defined in the .cpp file before including `console_impl.h` since these files are compiled to generate their own runtime binaries (dlls). Another way of achieving the same result would be to use independent visibility control macros for each implementation; however, that means more duplicated code and makes it harder to manage.\r\n\r\nAnother reason to use a centralized header is so that it'd be easier to notice when the declaration and definition have a mismatch (at compile time); otherwise, such mismatch would cause error at runtime, making it harder to spot."
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels: []
+- url: 'https://github.com/ros/rosconsole/pull/21'
+  title: Don't overlay variable in logging macro
+  body: >-
+    This was missed in 4f7572ce and got problematic now with the type change
+
+    in 7d2aa00e. Discovered in robot-state-publisher on Debian CI:
+
+
+    https://ci.debian.net/data/autopkgtest/unstable/amd64/r/ros-robot-state-publisher/1297332/log.gz
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rosconsole/issues/18'
+  title: 'Bug: First few messages not shown when in simulation'
+  body: "I noticed a bug that the first few messages are not shown when throttling messages and running in simulation mode (i.e. Gazebo).\r\n\r\nProblem is here:\r\nhttps://github.com/ros/rosconsole/blob/melodic-devel/include/ros/console.h#L446\r\n\r\nIt will never show the time is less than `last_hit + period` , which can happen when in simulation and time starts at 0"
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rosconsole/issues/16'
+  title: Logging to journald?
+  body: "We are currently looking into rosconsole to find a way to directly write to the system journal using  [sd_journal_send](https://manpages.debian.org/testing/libsystemd-dev/sd_journal_send.3.en.html). One could of course simply use the builtin feature of [log4cxx](https://github.com/apache/logging-log4cxx/blob/master/src/main/include/log4cxx/net/syslogappender.h) to log to syslog and use the compatibility layer of systemd for syslog, but this comes with one big limitation: Syslog uses the program_invocation_short_name to identify the sender, which is not the perfect way to identify a program in a ROS context, especially when one has two instances of the same binary with different node names.\r\n\r\nThe big benefit of systemd's journal is that one can set the SYSLOG_IDENTIFIER. The obvious idea is to set this value to the node name which makes it really convenient to read the journal and I have code ready that does exactly this. Sadly this can't be done given the current dependency structure since the node name is only available in ros/this_node.h in roscpp which is a downstream package.\r\n\r\n```\r\n...\r\n\r\nvoid SystemJournalAppender::append(const log4cxx::spi::LoggingEventPtr& event,\r\n                                   log4cxx::helpers::Pool&)\r\n{\r\n  const log4cxx::spi::LocationInfo& location_info = event->getLocationInformation();\r\n  ::sd_journal_send(\r\n    \"MESSAGE=%s\", event->getMessage().c_str(),\r\n    \"PRIORITY=%i\", event->getLevel()->getSyslogEquivalent(),\r\n    \"CODE_FILE=%s\", location_info.getFileName(),\r\n    \"CODE_LINE=%i\", location_info.getLineNumber(),\r\n    \"CODE_FUNC=%s\", location_info.getMethodName().c_str(),\r\n    \"SYSLOG_IDENTIFIER=%s\", ros::this_node::getName().c_str(),\r\n    NULL);\r\n}\r\n```\r\n\r\nI'm opening this ticket to ask for advice on how to continue here. I've two suggestions:\r\n\r\n1. Add the node name as an argument to [ROSCONSOLE_AUTOINIT](https://github.com/ros/rosconsole/blob/melodic-devel/include/ros/console.h#L322) and [ros::console::initialize](https://github.com/ros/rosconsole/blob/melodic-devel/include/ros/console.h#L146). This internally sets a global variable which can be used in the log appender.\r\n2. Use pluginlib to load additional plugins during runtime, just before the log4cxx configuration is parsed [log4cxx::PropertyConfigurator::configure(config_file)](https://github.com/ros/rosconsole/blob/melodic-devel/src/rosconsole/impl/rosconsole_log4cxx.cpp#L150). This requires some additional work to make pluginlib use console_bridge instead of rosconsole (https://github.com/ros/pluginlib/issues/81). The advantage would be that it allows others to implement their own custom log appenders.\r\n\r\nI personally prefer solution 2 but this would of course be a significant change."
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels: []
+- url: 'https://github.com/ros/rosconsole/pull/15'
+  title: Fix double index increment in rosconsole_glog
+  body: The double index increment looks like a typo. Clang found this one.
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels:
+    - bug
+- url: 'https://github.com/ros/rosconsole/issues/1'
+  title: 'rosconsole: Reduce duplicate log messages in rosconsole'
+  body: >-
+    _From @ablasdel on January 8, 2013 22:39_
+
+
+    When things go wrong on a running robot (both real and in simulation) many
+    components output warning/error messages repeatedly to the console until
+    killed. This is especially problematic for components that run at high
+    rates, such as move_base, because they can overwhelm the terminal to the
+    point that you have to wait a while before a ctrl-c has an effect
+    (especially true on slow laptops and flaky wifi!).
+
+
+    This patch is a first stab at reducing the number of repeat messages. It
+    works by allowing the initial output of a message and then counting the
+    number of times the message is repeated. It will then output the number of
+    repeats and the message once a second or when a different message is logged.
+    File logging is not currently affected, though I'm thinking about applying
+    this there too.
+
+
+    migration of trac ticket 4055:
+      https://code.ros.org/trac/ros/ticket/4055
+
+    change history (for attachements see first comment):
+
+    Changed 3 months ago by kbogert
+
+
+    attachment ros_console_limit_repeats.patch   added
+
+    Changed 3 months ago by dthomas 
+
+
+    Your patch adds throttling for once specific appender. There are two
+    drawbacks with that approach: - throttling should potentially affect all
+    appenders - some log messages should not be throttled if the source decides
+    that this is better
+
+
+    Therefore ROS provides specific logging macros with the suffix _THROTTLE (
+    http://www.ros.org/wiki/roscpp/Overview/Logging). It enables the source of
+    the log message to specify a specific max rate for publishing that message.
+    Is there a reason why that already existing method is not sufficient?
+
+
+    Changed 3 months ago by kbogert 
+
+
+    The THROTTLE macros would work if all sources used it, they do not and
+    shouldn't necessarily. The problem specifically is with flooding the console
+    with too many messages to read and/or slowing down the terminal to the point
+    that it's impossible to interact with. I would consider adding throttling to
+    the other appenders if they also have a negative effect on some portion of
+    the system due to repeat messages. However, in the case of file logs, for
+    instance, it's likely that you want all messages with accurate timestamps
+    for debugging after the fact.
+
+
+    To use the THROTTLE macro the source would have to know that no one wants to
+    hear a message as often as it is being generated. Here we're making a
+    practical concession that no one can read "missed desired rate" messages as
+    they fly by at 30hz, printing all of them will likely cause you to miss more
+    important messages, and you still want to receive other messages from the
+    problem component of the same logging level (so filtering them at with
+    log4cxx is not an option). This patch allows you to know that the repeat
+    message is happening and at what rate without flooding your console to do
+    so.
+
+
+
+    _Copied from original issue: ros/ros_comm#68_
+  repo: 'https://api.github.com/repos/ros/rosconsole'
+  labels:
+    - enhancement

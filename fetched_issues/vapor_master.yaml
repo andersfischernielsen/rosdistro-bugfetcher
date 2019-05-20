@@ -1,0 +1,28 @@
+- url: 'https://github.com/roshub/vapor_master/issues/25'
+  title: >-
+    [Bug] Loading params from yaml via roslaunch and <rosparam> not consistent
+    with roscore
+  body: "Hi folks,\r\n\r\nlooks like I have found another bug. I have a YAML file that looks like this:\r\n\r\n    joints: \r\n      - (JointA, 0)\r\n      - (JointB, 1)\r\n      - (JointC, 16)\r\n\r\n...basically. \r\n\r\nWhen I load this YAML file in a launch file by means of `<rosparam command=\"load\" file=\"...` and fetch the parameters afterwards with `rosparam get joints` I get the following returned from `roscore`: \r\n\r\n    ['(JointA, 0)', '(JointB, 1)', '(JointC, 16)']\r\n\r\n... which obviously is a list.\r\n\r\nBut when I try to do that with `vapor_master` I get the following:\r\n\r\n    {'0': '(JointA, 0)', '1': '(JointB, 1)', '2': '(JointC, 16)'}\r\n\r\n... which undoubtedly is a dictionary. \r\n\r\nIn order to use `vapor_master` as a true drop-in replacement, these things must be consistent. "
+  repo: 'https://api.github.com/repos/roshub/vapor_master'
+  labels:
+    - bug
+- url: 'https://github.com/roshub/vapor_master/issues/21'
+  title: Possible to use it with Kinetic Kame? - rosparam not working
+  body: "Hi, is it possible to run vapor-master with ROS Kinetic Kame? Or are there known incompatibilities regarding the used protocols?\r\n\r\nThanks"
+  repo: 'https://api.github.com/repos/roshub/vapor_master'
+  labels:
+    - bug
+- url: 'https://github.com/roshub/vapor_master/pull/13'
+  title: trying to suppress catkin warnings relating to nodejs depends
+  body: ''
+  repo: 'https://api.github.com/repos/roshub/vapor_master'
+  labels: []
+- url: 'https://github.com/roshub/vapor_master/issues/2'
+  title: duplicate node names should not be allowed
+  body: >-
+    roscore calls `shutdown` on the first node when duplicate node names are
+    detected. roscore first shutdown first node then replaces records with
+    second node's annoucements
+  repo: 'https://api.github.com/repos/roshub/vapor_master'
+  labels:
+    - bug

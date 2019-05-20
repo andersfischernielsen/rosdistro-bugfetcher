@@ -1,0 +1,176 @@
+- url: 'https://github.com/yujinrobot/kobuki/issues/384'
+  title: Dependency on rocon - really necessary?
+  body: "I found that ros package ```kobuki_capabilities``` depends on 2 rocon packages(```rocon_apps``` and ```rocon_app_manager```). When installing it along with turtlebot stack (via apt-get on ubuntu), rocon installs A LOT of other stuff that seems to not be needed by a basic turtlebot (for example, a REDIS server which autostarts on boot, wasting precious memory and CPU). \r\n\r\nIt this dependency on rocon really necessary?"
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/pull/381'
+  title: Add nav_msgs dependency for Kinetic
+  body: "Building from source fails indicating a missing `nav_msgs/Odometry.h`. This patch adds the required dependency to `CMakeLists.txt` in order to pull in the file correctly. \r\n\r\nIf someone could review if this is indeed a necessary change that would be great. I can't seem to find any commits elsewhere that would cause this issue so perhaps it is something on my end... "
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels:
+    - defect
+    - software
+- url: 'https://github.com/yujinrobot/kobuki/issues/349'
+  title: >-
+    kobuki_testsuite failing to build due to invalid dependency kobiki_apps via
+    kobuki_node
+  body: >
+    It was recently moved to be kobuki_rapps
+
+
+    Invalid line:
+    https://github.com/yujinrobot/kobuki/blob/indigo/kobuki_node/package.xml#L64
+
+
+    Renaming:
+    https://github.com/yujinrobot/kobuki/commit/e2c9657964d8a671fafe88c2a51e46713ead8e3b
+
+
+    A check for similar issues would be a good idea. 
+
+
+    Failing job:
+    http://jenkins.ros.org/view/IbinS64/job/ros-indigo-kobuki-testsuite_binarydeb_saucy_amd64/4/console
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/issues/348'
+  title: >-
+    Compilation Error: yocs_msgs/NavigateToActionResult.h: No Such File or
+    Directory
+  body: >
+    I have a compilation error when building the kobuki package:
+
+
+    [ 86%] Building CXX object
+    kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_ros.dir/src/auto_docking_ros.cpp.o
+
+    [ 87%] Generating C++ code from yocs_msgs/NavigateToActionFeedback.msg
+
+    [ 87%] Generating C++ code from yocs_msgs/Waypoint.msg
+
+    [ 87%] Built target yocs_waypoints_navi_node
+
+    [ 88%] Generating C++ code from yocs_msgs/NavigateToResult.msg
+
+    Scanning dependencies of target gazebo_ros_kobuki
+
+    [ 88%] Building CXX object
+    kobuki_desktop/kobuki_gazebo_plugins/CMakeFiles/gazebo_ros_kobuki.dir/src/gazebo_ros_kobuki.cpp.o
+
+    [ 88%] Generating C++ code from yocs_msgs/WallList.msg
+
+    In file included from
+    /home/bpow/turtlebot/kobuki/src/yujin_ocs/yocs_navigator/include/yocs_navigator/semantic_navigator.hpp:11:0,
+                     from /home/bpow/turtlebot/kobuki/src/yujin_ocs/yocs_navigator/src/yocs_navigator/semantic_navigator.cpp:6:
+    /home/bpow/turtlebot/kobuki/devel/include/yocs_msgs/NavigateToAction.h:52:46:
+    fatal error: yocs_msgs/NavigateToActionResult.h: No such file or directory
+     #include <yocs_msgs/NavigateToActionResult.h>
+
+    Any ideas?
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/issues/339'
+  title: '[kobuki_node] robot_with_tf.launch referencing wrong file'
+  body: >
+    It should not depend on turtlebot_bringup
+
+
+    https://github.com/yujinrobot/kobuki/blob/indigo/kobuki_node/launch/robot_with_tf.launch#L18
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/issues/332'
+  title: '"no events" pointcloud in kobuki_bumper2pc.cpp causes dropped events'
+  body: >
+    Using the pointcloud from kobuki_bumper2pc in my voxel layer today, I found
+    that sometimes, no obstacle was being added to my global costmap.  Looking
+    more closely into the point cloud that was being generated, I saw this:
+
+    [ INFO] [1406601457.191044109]: got a point cloud
+
+    [ INFO] [1406601457.191304917]: point 0 is 34.202 93.969 0.040
+
+    [ INFO] [1406601457.191356060]: point 1 is 0.400 0.000 0.040
+
+    [ INFO] [1406601457.191409016]: point 2 is 34.202 -93.969 0.040
+
+    [ INFO] [1406601457.212849109]: got a point cloud
+
+    [ INFO] [1406601457.213030352]: point 0 is 34.202 93.969 0.040
+
+    [ INFO] [1406601457.213066667]: point 1 is 34.202 0.000 0.040
+
+    [ INFO] [1406601457.213091182]: point 2 is 34.202 -93.969 0.040
+
+    and thought the point cloud must surely be broken, because why would there
+    be three points full of nonsense and only most of the time the one point I
+    needed?
+
+
+    Now that I've stared at kobuki_bumper2pc.cpp, I finally understand that that
+    is the intended behavior.  Which should _really_ be explained somewhere! 
+    But also, more importantly, if you have not set your bump observation
+    source's observation_persistence param to a nonzero number (thus keeping
+    more than just the one latest message in your observation buffer), you can
+    lose the event entirely in your costmap, because _only the "no events"_
+    message gets kept while the others are dropped.  
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/issues/331'
+  title: kobuki_node and kobuki_capabilities circular dependency
+  body: >
+    #330 detected circular dependency between `kobuki_node` and
+    `kobuki_capabilities`
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels:
+    - software
+- url: 'https://github.com/yujinrobot/kobuki/issues/330'
+  title: Indigo doc job is failing
+  body: >
+    http://jenkins.ros.org/view/Idoc/job/doc-indigo-kobuki/4/console seems to
+    fail due to circular dependencies.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/pull/325'
+  title: 'kobuki_node: adds shutdown flag to nodelet (fixes #324)'
+  body: >
+    We use this in all our Kobuki controller nodelets, but somehow we missed it
+    for our first and most important one.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels: []
+- url: 'https://github.com/yujinrobot/kobuki/issues/321'
+  title: >-
+    [hydro-devel] kobuki.rosinstall refers to incorrect groovy distribution (in
+    the manual notes)
+  body: >
+    I was using the kobuki.rosinstall files under the hydro-devel branch and the
+    manual notes in the header of that file (for dependencies) refer to the
+    groovy dist.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels:
+    - firmware
+- url: 'https://github.com/yujinrobot/kobuki/issues/315'
+  title: Move visualisation-related code to kobuki_desktop
+  body: >
+    Daniel just noticed, we still have visualisation launchers for tests in
+    `kobuki_node` (see PR #313). Those launchers however bring in the heavy rviz
+    dependency. Move those launchers out into a separate package in the
+    kobuki_desktop repo (just as we did for TB).
+
+
+    Don't forget to remove the rviz dependency for kobuki_node:
+    https://github.com/yujinrobot/kobuki/blob/hydro/kobuki_node/package.xml#L77
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels:
+    - enhancement
+    - firmware
+- url: 'https://github.com/yujinrobot/kobuki/issues/305'
+  title: 'Kobuki node dependency, kobuki_ftdi'
+  body: >
+    It's not a compile dependency, nor a runtime dependency. But it's turning
+    out to be a pain in the ass setup dependency. Everyone installs
+    ros-hydro-turtlebot, which then causes a problem for people setting up the
+    udev rule.
+  repo: 'https://api.github.com/repos/yujinrobot/kobuki'
+  labels:
+    - enhancement
+    - firmware

@@ -1,0 +1,72 @@
+- url: 'https://github.com/vrpn/vrpn/issues/215'
+  title: Exception safety and null pointer dereferencing
+  body: "This will cause a segfault if the constructor fails and silently swallows the exception (leaving `d_5dt_button` set to `NULL`):\r\n\r\nhttps://github.com/vrpn/vrpn/blob/c05f12b17d3a5e93ca007074587beace606610ec/vrpn_5DT16.C#L349\r\n\r\nSimilarly for\r\n\r\nhttps://github.com/vrpn/vrpn/blob/c05f12b17d3a5e93ca007074587beace606610ec/vrpn_Analog_USDigital_A2.C#L187\r\n\r\nwhen `_devAddr` is set to `NULL` in the constructor upon out-of-memory.\r\n\r\nI haven't examined all the other files yet, but I wouldn't be surprised to find a number of similar issues there.\r\n\r\nA better approach might be to allow the device constructors to throw exceptions. Then, wrap [the huge if...else if... block](https://github.com/vrpn/vrpn/blob/master/server_src/vrpn_Generic_server_object.C#L5263) within the `vrpn_Generic_Server_Object()` constructor, in a try...catch.  This way, if a driver fails to be constructed (i.e., throws an exception), the `vrpn_Generic_Server_Object()` constructor can catch and log the exception, then continue trying to instantiate the next driver.  All the try..catch blocks in the driver constructors can be removed and we'll just let the `vrpn_Generic_Server_Object()` constructor handle them.\r\n\r\nNote that I haven't walked through all the code yet, and it's been a while since I've read through the server code, so I may be making an embarrassingly obvious error in logic.\r\n"
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels:
+    - High Priority
+    - bug
+- url: 'https://github.com/vrpn/vrpn/issues/194'
+  title: Release candidate has crash bug with incorrect hostname on Linux
+  body: "Testing commit 08a68a495ac70bc01f6bb453668d91a2431b5dd4\r\n==>\tFailure when connecting to shield0@localhsot  (mis-spelled) -- crash on Linux\r\n\r\nvrpn_connect_udp_port: error finding host by name (localhsot).\r\nvrpn_Connection_IP: Can't set up socket to lob UDP packets!\r\nvrpn_connect_udp_port: error finding host by name (localhsot).\r\nvrpn_Connection_IP: Can't set up socket to lob UDP packets!\r\nvrpn_connect_udp_port: error finding host by name (localhsot).\r\nvrpn_Connection_IP: Can't set up socket to lob UDP packets!\r\nvrpn_connect_udp_port: error finding host by name (localhsot).\r\nvrpn_Connection_IP: Can't set up socket to lob UDP packets!\r\nvrpn_connect_udp_port: error finding host by name (localhsot).\r\nvrpn_Connection_IP: Can't set up socket to lob UDP packets!\r\nOpened contour0@localhsot as: Tracker Button Analog Dial Text.\r\nPress ^C to exit.\r\n*** buffer overflow detected ***: ./vrpn_print_devices terminated"
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels:
+    - bug
+- url: 'https://github.com/vrpn/vrpn/issues/140'
+  title: Using vrpn in Unity
+  body: >
+    Hey there Folks!
+
+
+    As the title says I want to receive data from hardware via the VRPN protocol
+    in Unity (C#).
+
+    I can't use the VRPN.NET project, because the vrpnnet.dll is build for .NET
+    4.0, whereas Unity uses 3.5.
+
+
+    Building the VRPN project with Visual Studio 2013 yields a DLL file, which I
+    can't even open in the dependency walker.
+
+
+    At this point I am pretty much stuck right now. I can nether write my own
+    wrapper, nor can I use [DLLimport] in C# if I can't even look inside the
+    build DLL file.
+
+
+    I appreciate every kind of help. Thank you for your Time!
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels: []
+- url: 'https://github.com/vrpn/vrpn/issues/138'
+  title: Xkeys controller no longer works on Windows 8.1 after recent HIDAPI update
+  body: >
+    This is for a 68-key device that worked using the holder version of the
+    HIDAPI before the update.
+
+
+    The server reports:
+
+
+    vrpn_HidInterface::reconnect(): Could not open device
+    \?\hid#vid_05f3&pid_045a&mi_02#7&39688f45&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels:
+    - bug
+- url: 'https://github.com/vrpn/vrpn/issues/137'
+  title: Why does the OSVR HDK velocity get multiplied by 0.5?
+  body: >
+    Lines 205-207 in vrpn_Tracker_OSVRHackerDevKit.C scale the angular velocity
+    estimates by vrpn_HDK_DT, as expected, but then scale also by 0.5.  The
+    comments don't say why it is using what seems to be half the actual velocity
+    value.  There are no other 0.5 constants used in the code.
+
+
+    Either this is a bug or the comments should be adjusted to say why this is
+    being divided by 2.
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels:
+    - bug
+- url: 'https://github.com/vrpn/vrpn/issues/134'
+  title: ' Could not open device when closing a server then opening a new one'
+  body: "Using VRPN commit 807ec7a on openSUSE Leap 42.1, I am working on an application which will run multiple medical simulations. Each simulation is independant and will be run in any order. Those simulations all needs specific devices for user interaction, therefore need a VRPN server. I do not wish to integrate the server handling in the main application and pass it to each simulation because :\r\n1. I want to keep the simulation Logic in simulation classes and only deal with interfacing in the main application\r\n2. We could potentially run the simulations separatly from the main application.\r\n\r\nI first created a server and added a device :\r\n\r\n```c++\r\nthis->connection = vrpn_create_server_connection();\r\nthis->vrpnAnalogDevice = std::make_shared<vrpn_3DConnexion_Navigator>(deviceName, this->connection);\r\n```\r\n\r\nI then call the `mainloop()` for those in a while loop followed by the references removal and deletion of the server connection : \r\n\r\n```c++\r\nwhile(!this->terminateExecution)\r\n{\r\n    this->vrpnAnalogDevice->mainloop();\r\n    this->connection->mainloop();\r\n    std::this_thread::sleep_for(this->pollDelay);\r\n}\r\nstd::cout<<\"VRPNDeviceServer: removing connection references\"<<std::endl;\r\nthis->connection->removeReference();\r\nstd::cout<<\"VRPNDeviceServer: closing server\"<<std::endl;\r\ndelete(this->connection);\r\n```\r\n\r\nWhen running my application and launching the simulation the first time, I see `VRPNDeviceClient: opening device0@localhost` once, then everything works and my client callbacks are called. Once I terminate the simulation, the following output shows : \r\n\r\n```c++\r\n> VRPNDeviceServer: removing connection references\r\n> VRPNDeviceServer: closing server\r\n> vrpn_Connection::~vrpn_Connection: Connection was deleted while 1 references still remain.\r\n> VRPNDeviceClient: closing device0@localhost\r\n```\r\n\r\nFirst surprise is that even though I called `removeReference()` there is still 1 reference remaining on the connection deletion.\r\n\r\nAfter this, I start the simulation again. Here is my output : \r\n\r\n```c++\r\n> vrpn_HidInterface::reconnect(): Could not open device 0004:0005:00\r\n> VRPNDeviceClient: opening device0@localhost\r\n> VRPNDeviceClient: opening device0@localhost\r\n```\r\n\r\nLaunching a new simulation reruns all the code above. I do not understand why I get an error in `reconnect()` while I killed the previous connection, and why `openDevice()` is called twice.\r\n"
+  repo: 'https://api.github.com/repos/vrpn/vrpn'
+  labels: []

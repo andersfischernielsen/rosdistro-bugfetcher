@@ -1,0 +1,26 @@
+- url: 'https://github.com/stonier/zeroconf_msgs/pull/1'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/stonier/zeroconf_msgs'
+  labels: []

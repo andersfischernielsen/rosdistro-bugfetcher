@@ -1,0 +1,204 @@
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2422'
+  title: Force overwrite during rosbag decompress
+  body: "Please merge this after https://github.com/jsk-ros-pkg/jsk_common/pull/1621\r\n\r\nFix #2420 \r\n\r\nWhen a bzip2 compressed and gzip compressed rosbag file (i.e. `rosbag compress`-ed and `tar zcf`-ed archive) is downloaded by `install_xxxx_data.py`, decompressed bag file is overwritten by compressed bag file while tar decompressing (See #2420 ).\r\nThis PR will fix that issue.\r\n\r\nNote: process of `install_xxxx_data.py` is below.\r\n1. download from google drive\r\n2. tar decompress if needed\r\n3. rosbag decompress if needed\r\n\r\n__Commit summary__\r\n- Remove unnecessary `compressed_bags=[xxxx]` because they are not actually `rosbag compressed`-ed.\r\n- Overwrite once `rosbag decompress`-ed bag file during next `rosbag decompress` in order to force decompress it."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - PR/WaitForUpstreamRelease
+    - bug
+    - pkg/jsk_pcl_ros
+    - pkg/jsk_perception
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2419'
+  title: Undeclared launch file dependencies in jsk_pcl_ros
+  body: "I'm currently doing some research on static analysis of ROS packages at the IT University of Copenhagen, more specifically dependency checking of `.launch` files in ROS packages.\r\n\r\nThere seems to be a few `$(find <dependency>)`s in some of the `.launch` files that aren't declared in the `package.xml` of `jsk_pcl_ros`. \r\n\r\nThe possible undeclared dependencies are: \r\n\r\n- `multilayer_object_tracking` in\r\n`jsk_recognition/jsk_pcl_ros/launch/target_adaptive_tracking.launch`\r\n\r\n- `jsk_footstep_controller` in \r\n`jsk_recognition/jsk_pcl_ros/launch/pr2_tilt_laser_multi_plane_segmentation.launch`\r\n`jsk_recognition/jsk_pcl_ros/launch/organized_multi_plane_segmentation.launch`\r\n\r\n- `jsk_tilt_laser` in \r\n`jsk_recognition/jsk_pcl_ros/launch/laserscan_registration.launch`\r\n\r\n- `rosbridge_server` in \r\n`jsk_recognition/jsk_pcl_ros/launch/tower_detect/tower_web.launch`\r\n\r\n\r\nI'm unsure whether these are real bugs, but AFAIK `roslaunch` would fail when trying to launch any of these. "
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2417'
+  title: Add qtbase5-dev as a package.xml dependency for jsk_recognition_utils.
+  body: "Needed since CMakeLists.txt tries to depend on it.\r\n\r\nThis should fix the build errors seen on the Melodic buildfarm: http://build.ros.org/view/Mbin_ubhf_uBhf/job/Mbin_ubhf_uBhf__jsk_recognition_utils__ubuntu_bionic_armhf__binary/28/consoleFull"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2414'
+  title: fixes scope bug on point_pose_extraction
+  body: "This PR fixes some bugs on `point_pose_extraction` node.\r\nSince the `ObjectDetection_agg` topic here was just an alias of `ObjectDetection` and it was not aggregated, I created an aggregator. (see https://github.com/jsk-ros-pkg/jsk_common_msgs/pull/24 )"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_perception
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2404'
+  title: fix typo in jsk_pcl_ros/CMakeLists.txt
+  body: '@YutoUchimi can you review this?'
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2403'
+  title: fix doc build errors
+  body: "before\r\n```bash\r\n$ make html\r\nsphinx-build -b html -d _build/doctrees   . _build/html\r\nRunning Sphinx v1.8.4\r\nloading translations [en]... 完了\r\n/usr/local/lib/python2.7/dist-packages/requests/__init__.py:83: RequestsDependencyWarning: Old version of cryptography ([1, 2, 3]) may cause slowdown.\r\n  warnings.warn(warning, RequestsDependencyWarning)\r\n保存された環境データを読み込み中...完了\r\nbuilding [mo]: targets for 0 po files that are out of date\r\nbuilding [html]: targets for 22 source files that are out of date\r\nupdating environment: [config changed] 262 added, 7 changed, 0 removed\r\n/usr/local/lib/python2.7/dist-packages/recommonmark/parser.py:65: UserWarning: Container node skipped: type=document                                                                                        \r\n  warn(\"Container node skipped: type={0}\".format(mdnode.t))\r\nreading sources... [100%] tutorials/publish_static_image_topic                                                                                                                                              \r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/install_softkinetic_camera.rst:42: WARNING: Literal block expected; none found.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/install_softkinetic_camera.rst:48: WARNING: Literal block expected; none found.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/index.rst:175: WARNING: Duplicate substitution definition name: \"18c4e2d6\".\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/index.rst:200: WARNING: Duplicate substitution definition name: \"656450d8\".\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/index.rst:250: WARNING: Duplicate substitution definition name: \"1e18c39d\".\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/heightmap_converter.md:: WARNING: image file not readable: jsk_pcl_ros/nodes/images/heightmap_converter.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/organized_edge_detector.rst:50: WARNING: Bullet list ends without a blank line; unexpected unindent.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/spherical_point_cloud_simulator.md:: WARNING: image file not readable: jsk_pcl_ros/nodes/images/spherical_pointcloud_simulator.h\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/index.rst:10: WARNING: toctree glob pattern u'./*' didn't match any documents\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/colorize_height2_d_mapping.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/colorize_height_2d_mapping.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/mask_image_to_depth_considered_mask_image.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/mask_image_to_depth_considered_mask_image.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/planar_point_cloud_simulator.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/planar_pointcloud_simulator.h\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/plane_concatenator.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/plane_concatenator.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/point_indices_to_mask_image.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/point_indices_to_mask_image.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/pointcloud_to_stl.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/pointcloud_to_stl.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/polygon_array_likelihood_filter.rst:2: WARNING: Title underline too short.\r\n\r\nPolygonArrayLikelihoodFilter\r\n=====================\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/polygon_points_sampler.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/polygon_points_sampler.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros_utils/nodes/pose_with_covariance_stamped_to_gaussian_point_cloud.md:: WARNING: image file not readable: jsk_pcl_ros_utils/nodes/images/pose_with_covariance_stamped_to_gaussian_pointcloud.gif\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/alexnet_object_recognition.rst:14: WARNING: malformed hyperlink target.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/alexnet_object_recognition.rst:10: WARNING: Unknown target name: \"chainer\".\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/bounding_object_mask_image.rst:8: WARNING: image file not readable: jsk_perception/nodes/./images/bounding_object_mask_image.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/concave_hull_mask_image.rst:2: WARNING: Title underline too short.\r\n\r\nConcaveHullMaskImage\r\n===================\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/grabcut.md:: WARNING: image file not readable: jsk_perception/nodes/image/grabCut.png\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/people_pose_estimation_2d.rst:18: WARNING: Literal block expected; none found.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/solidity_rag_merge.rst:9: WARNING: Explicit markup ends without a blank line; unexpected unindent.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/vgg16_object_recognition.rst:14: WARNING: malformed hyperlink target.\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_perception/nodes/vgg16_object_recognition.rst:10: WARNING: Unknown target name: \"chainer\".\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_recognition_utils/index.rst:10: WARNING: toctree glob pattern u'./*' didn't match any documents\r\nlooking for now-outdated files... none found\r\npickling environment... 完了\r\nchecking consistency... 完了\r\npreparing documents... 完了\r\nwriting output... [100%] tutorials/publish_static_image_topic                                                                                                                                               \r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/capture_stereo_synchronizer.md:50: WARNING: None:any の参照ターゲットが見つかりません: launch/capture_multisense_training_data.launch\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/cluster_point_indices_decomposer.md:32: WARNING: None:any の参照ターゲットが見つかりません: ../jsk_perception/nodes/colorize_labels\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/fuse_rgb_images.md:5: WARNING: None:any の参照ターゲットが見つかりません: fuse_depth_images.html\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/jsk_pcl_ros/nodes/pointcloud_screenpoint.md:21: WARNING: None:any の参照ターゲットが見つかりません: ../../../jsk_pcl_ros/sample/pointcloud_screenpoint_sample.launch\r\n/home/shingo/ros/kinetic/src/jsk-ros-pkg/jsk_recognition/doc/overview.md:38: WARNING: None:any の参照ターゲットが見つかりません: _images/mask_image.png\r\ngenerating indices... genindex\r\nwriting additional pages... search\r\ncopying images... [100%] jsk_pcl_ros/nodes/images/organized_edge_detector.png                                                                                                                               \r\ncopying downloadable files... [100%] tutorials/code/tutorial_image_publisher.launch                                                                                                                         \r\ncopying static files... done\r\ncopying extra files... 完了\r\ndumping search index in English (code: en) ... 完了\r\ndumping object inventory... 完了\r\nbuild 成功, 33 warnings.\r\n\r\nThe HTML pages are in _build/html.\r\n\r\nBuild finished. The HTML pages are in _build/html.\r\n```\r\n\r\nafter\r\n```bash\r\n$ make html\r\nsphinx-build -b html -d _build/doctrees   . _build/html\r\nRunning Sphinx v1.8.4\r\nloading translations [en]... 完了\r\n/usr/local/lib/python2.7/dist-packages/requests/__init__.py:83: RequestsDependencyWarning: Old version of cryptography ([1, 2, 3]) may cause slowdown.\r\n  warnings.warn(warning, RequestsDependencyWarning)\r\n保存された環境データを読み込み中...完了\r\nbuilding [mo]: targets for 0 po files that are out of date\r\nbuilding [html]: targets for 22 source files that are out of date\r\nupdating environment: [config changed] 262 added, 7 changed, 0 removed\r\n/usr/local/lib/python2.7/dist-packages/recommonmark/parser.py:65: UserWarning: Container node skipped: type=document                                                                                        \r\n  warn(\"Container node skipped: type={0}\".format(mdnode.t))\r\nreading sources... [100%] tutorials/publish_static_image_topic                                                                                                                                              \r\nlooking for now-outdated files... none found\r\npickling environment... 完了\r\nchecking consistency... 完了\r\npreparing documents... 完了\r\nwriting output... [100%] tutorials/publish_static_image_topic                                                                                                                                               \r\ngenerating indices... genindex\r\nwriting additional pages... search\r\ncopying images... [100%] jsk_pcl_ros/nodes/images/organized_edge_detector.png                                                                                                                               \r\ncopying downloadable files... [100%] tutorials/code/tutorial_color_filtering.launch                                                                                                                         \r\ncopying static files... done\r\ncopying extra files... 完了\r\ndumping search index in English (code: en) ... 完了\r\ndumping object inventory... 完了\r\nビルド 成功.\r\n\r\nThe HTML pages are in _build/html.\r\n\r\nBuild finished. The HTML pages are in _build/html.\r\n```"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - document
+    - pkg/jsk_pcl_ros
+    - pkg/jsk_pcl_ros_utils
+    - pkg/jsk_perception
+    - pkg/jsk_recognition_utils
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2400'
+  title: Re-enable color_histogram.test
+  body: "Fixed https://github.com/jsk-ros-pkg/jsk_recognition/issues/2221\r\n\r\njsk_perception/color_histogram.test had failed because of \r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/indigo/share/image_view2/test/publish_mouse_event.py\", line 6, in <module>\r\n    from scipy.misc import lena\r\nImportError: cannot import name lena\r\n```\r\n\r\nBut this has already been fixed in https://github.com/jsk-ros-pkg/jsk_common/commit/4ba08198f774f1695f71afe90f6b603d230c7075\r\n\r\nSo I re-enabled the test in this PR."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - pkg/jsk_perception
+    - test
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2396'
+  title: imagesift not building in Kinetic release on ARM
+  body: "The imagesift package is not building on armhf or arm64\r\n\r\nhttp://build.ros.org/view/Kbin_uxhf_uXhf/job/Kbin_uxhf_uXhf__imagesift__ubuntu_xenial_armhf__binary/\r\nhttp://build.ros.org/view/Kbin_uxv8_uXv8/job/Kbin_uxv8_uXv8__imagesift__ubuntu_xenial_arm64__binary/\r\n\r\nI identified this because jsk_perception depends on this and jsk_pcl_ros recently added a dependency onto jsk_perception and has regressed on the ARM platforms due to the new dependency on a package that's not building.\r\n\r\nSince this has been failing to build since it was first introduced, I will likely consider blacklisting it on the buildfarm to avoid continuously retrying. If I do I will link to this ticket as a tracker as to whether the blacklist can be removed if this is resolved."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2394'
+  title: Revert "kinfu.h depends on jsk_rviz_plugins"
+  body: "Reverts jsk-ros-pkg/jsk_recognition#2310\r\n\r\nJsk_recognition should not depends on jsk_visualization, because jsk_visualization depends on jsk_recognition and this brings curcular dependency\r\nhttps://github.com/jsk-ros-pkg/jsk_visualization/pull/644"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2393'
+  title: '[doc] [jsk_pcl_ros_utils] [jsk_pcl_ros] Add documentation'
+  body: "Closes #1631 \r\n\r\nThis PR fixes code minimally and adds sample, test and documentation for below nodes.\r\n\r\n__jsk_pcl_ros__\r\n- [x] jsk_pcl/InteractiveCuboidLikelihood\r\n- [x] jsk_pcl/FindObjectOnPlane\r\n- [x] jsk_pcl/BilateralFilter\r\n- [x] jsk_pcl/JointStateStaticFilter\r\n- [x] jsk_pcl/MultiPlaneSACSegmentation\r\n- [x] jsk_pcl/EdgebasedCubeFinder\r\n- [x] jsk_pcl/HandleEstimator\r\n- [x] jsk_pcl/EnvironmentPlaneModeling\r\n- [x] jsk_pcl/SelectedClusterPublisher \r\n- [x] jsk_pcl/VoxelGridDownsampleManager\r\n- [x] jsk_pcl/VoxelGridDownsampleDecoder\r\n- [x] jsk_pcl/ColorizeRandomForest\r\n- [x] jsk_pcl/ColorizeMapRandomForest\r\n- ~jsk_pcl/PointCloudMoveitFilter~ (This is not a node but a MoveIt plugin.)\r\n\r\n__jsk_pcl_ros_utils__\r\n- [x] jsk_pcl_utils/TransformPointcloudInBoundingBox\r\n- [x] jsk_pcl_utils/NormalConcatenater\r\n- [x] jsk_pcl_utils/PolygonAppender\r\n- [x] jsk_pcl_utils/StaticPolygonArrayPublisher\r\n- [x] jsk_pcl_utils/PlaneRejector\r\n- [x] jsk_pcl_utils/PlaneReasoner"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - document
+    - pkg/jsk_pcl_ros
+    - pkg/jsk_pcl_ros_utils
+    - sample
+    - test
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2390'
+  title: '[resized_image_transport] install resized_image_transport'
+  body: "Fix #2387 \r\ncc. @k-okada "
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/resized_image_transport
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2386'
+  title: Move jsk_recognition_msgs and jsk_recognition_utils to a separate repository
+  body: "These two packages have all their dependencies already in Melodic, but because they're part of the `jsk_recognition` repository, they're preventing other packages from being released into Melodic.\r\n\r\nI propose two new repositories (named jsk_recognition_msgs and jsk_recognition_utils) that will only contain these two packages."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - other
+    - pkg/jsk_recognition_msgs
+    - pkg/jsk_recognition_utils
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2385'
+  title: '[doc] [jsk_perception] Add documentation'
+  body: "The purpose of this PR is not to add new features but to fix codes minimally and to add sample, test and documentation.\r\n\r\n- SparseImageEncoder\r\n- SparseImageDecoder\r\n- BackgroundSubstraction\r\n- bof_histogram_extractor.py\r\n- random_forest_server.py\r\n- fisheye_ray.py\r\n- matchtemplate.py\r\n\r\nThis PR closes #1648 , closes https://github.com/jsk-ros-pkg/jsk_roseus/issues/503\r\n"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - document
+    - pkg/jsk_perception
+    - sample
+    - test
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2381'
+  title: >-
+    set PCL_ENABLE_SSE:BOOL=FALSE in travis_before_script_pcl1.8.bash for
+    kinetic build
+  body: 'Related to https://github.com/jsk-ros-pkg/jsk_recognition/issues/2380'
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - document
+    - test
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2380'
+  title: attention_clipper does not work properly on Kinetic + PCL1.8.0
+  body: "This is caused by `CropBox` in `pcl`.\r\n\r\nOn master branch\r\n`roslaunch jsk_pcl_ros sample_attention_clipper.launch`\r\n\r\n## Kinetic + PCL1.8.0 + Default configure\r\nPCL build command\r\n```bash\r\nmkdir build\r\ncd build\r\ncmake -DCMAKE_BUILD_TYPE=Release ..\r\nmake -j $(nproc)\r\nsudo make install\r\n```\r\n\r\n![attention_clipper_kinetic](https://user-images.githubusercontent.com/9300063/50385695-d2e1c180-071c-11e9-82b7-ee69c0c8751e.png)\r\n\r\n```bash\r\nrostopic echo /attention_clipper/output/point_indices\r\nheader: \r\n  seq: 1220\r\n  stamp: \r\n    secs: 1486279001\r\n    nsecs:  53697817\r\n  frame_id: \"right_hand_camera_rgb_optical_frame\"\r\nindices: []\r\n---\r\nheader: \r\n  seq: 1221\r\n  stamp: \r\n    secs: 1486279001\r\n    nsecs:  87385647\r\n  frame_id: \"right_hand_camera_rgb_optical_frame\"\r\nindices: []\r\n---\r\nheader: \r\n  seq: 1222\r\n  stamp: \r\n    secs: 1486279001\r\n    nsecs: 121011011\r\n  frame_id: \"right_hand_camera_rgb_optical_frame\"\r\nindices: []\r\n---\r\n```\r\n## Kinetic + PCL1.8.0 + `-DPCL_ENABLE_SSE:BOOL=FALSE`:\r\n\r\nPCL build command:\r\n```bash\r\nmkdir build\r\ncd build\r\ncmake -DCMAKE_BUILD_TYPE=Release -DPCL_ENABLE_SSE:BOOL=FALSE ..\r\nmake -j $(nproc)\r\nsudo make install\r\n```\r\n\r\n![attention_clipper_kinetic_sse](https://user-images.githubusercontent.com/9300063/50391530-b039c200-0789-11e9-817e-7b751fc15119.png)\r\n\r\n## Indigo + PCL1.8.0:\r\n![attention_clipper_indigo](https://user-images.githubusercontent.com/9300063/50385676-84342780-071c-11e9-89a0-5144cbc812c5.png)\r\n\r\n## Kinetic + PCL 1.7.2\r\n![attention_clipper_kinetic_1 7](https://user-images.githubusercontent.com/9300063/50390043-2f70cb00-0775-11e9-8a38-381b340b2126.png)\r\n\r\n\r\nProbably?\r\nhttps://github.com/PointCloudLibrary/pcl/issues/1623\r\nhttps://github.com/PointCloudLibrary/pcl/pull/1917\r\n"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2378'
+  title: There's typo in openni2_remote.launch and some other files.
+  body: "`quater` should be `quarter` in those files below.\r\nhttps://github.com/jsk-ros-pkg/jsk_recognition/search?utf8=%E2%9C%93&q=quater&type=\r\nAlthough, it looks like difficult to fix these typos by simply replacing with correct one since many other files seem to be depending on these files."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2375'
+  title: '[jsk_perception] Support fcn8s_atonce model in fcn_object_segmentation.py'
+  body: "Network weight of FCN8s and FCN8sAtOnce are the same shape, but some parameters are different and should be distinguished.\r\nThe accuracy becomes very low if you use wrong model.\r\n\r\n- correct\r\n![fcn8s_atonce_correct](https://user-images.githubusercontent.com/22876283/49564245-37073600-f966-11e8-9d64-b0154b7ee46d.png)\r\n\r\n- wrong\r\n![fcn8s_atonce_wrong](https://user-images.githubusercontent.com/22876283/49564248-38d0f980-f966-11e8-9cff-89a0ff634931.png)\r\n\r\n"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_perception
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2369'
+  title: >-
+    Fix cluster point indices decomposer to make bounding box from cloud
+    including nan
+  body: "Fixes #2373\r\nIncludes #2373 "
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2368'
+  title: DepthImageCreator does not publish organized pointcloud
+  body: "I tried to use DepthImageCreator. Although [the external document](https://jsk-recognition.readthedocs.io/en/latest/jsk_pcl_ros/nodes/depth_image_creator.html) says DepthImageCreator publishes `~output_cloud` as organized pointcloud, it publishes not organized but unorganized pointcloud.\r\nIs this right node behavior? The other topics are successfully published.\r\n\r\nI also tried to make organized pointcloud from `~output` and `~output_image` published by DepthImageCreator using [point_cloud_xyzrgb](http://wiki.ros.org/depth_image_proc). However, it does not work (not publish any topics).\r\n\r\nI do not know whether these bugs are from my faults or not. \r\n\r\n- Environment: `ubuntu 16.04 ros-kinetic`\r\n- all related packages got from apt"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2359'
+  title: Missing dependencies for Kinetic
+  body: >-
+    This commit
+    (https://github.com/jsk-ros-pkg/jsk_recognition/commit/63538fda553e58a48ec39936afe4c04a8cf70504)
+    readded `ml_classifiers`, which is not available in Kinetic, so
+    `jsk_pcl_ros` 1.2.6 can't be released into Kinetic (or later)
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - other
+    - pkg/jsk_pcl_ros
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2358'
+  title: ROS Melodic release?
+  body: "Over at the https://github.com/CPFL/Autoware project, we'd like to migrate to Melodic, but unfortunately some of our dependencies haven't been released into Melodic.\r\n\r\nIs there anything I can help with to release the `jsk_recognition_msgs`, `jsk_rviz_plugins` and `jsk_topic_tools` packages into Melodic? Thanks."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - other
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2348'
+  title: '[jsk_perception/people_pose_estimation2d.py] Question about executing sample'
+  body: "I'd like to use `people_pose_estimation2d.py`, but I'm a super beginner and need someone's help :)\r\n\r\nI followed this documentation: https://jsk-recognition.readthedocs.io/en/latest/jsk_perception/nodes/people_pose_estimation_2d.html\r\nWhen I ran `roslaunch jsk_perception sample_people_pose_estimation_2d.launch GPU:=0`,\r\nI was said to install chainer.\r\nIs it ok to just follow these instructions?, or is there any recommendations?: http://docs.chainer.org/en/stable/install.html\r\n\r\nMy environment is ubuntu 14.04, ROS indigo.\r\nMy PC seems to have a GPU.\r\n```\r\nkanae@kanae-ThinkPad-T440p:~$ lspci | grep -i nvidia\r\n02:00.0 VGA compatible controller: NVIDIA Corporation GK208M [GeForce GT 730M] (rev a1)\r\n```\r\n`jsk_recognition` (deb) version:\r\n```\r\nkanae@kanae-ThinkPad-T440p:~$ sudo apt-cache policy ros-indigo-jsk-recognition\r\nros-indigo-jsk-recognition:\r\n  Installed: 1.2.4-0trusty-20181006-130827-0800\r\n  Candidate: 1.2.4-0trusty-20181006-130827-0800\r\n  Version table:\r\n *** 1.2.4-0trusty-20181006-130827-0800 0\r\n        500 http://packages.ros.org/ros/ubuntu/ trusty/main amd64 Packages\r\n        100 /var/lib/dpkg/status\r\n```\r\n\r\nWhole log is here:\r\n```\r\nkanae@kanae-ThinkPad-T440p:~$ roslaunch jsk_perception sample_people_pose_estimation_2d.launch GPU:=0\r\n... logging to /home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/roslaunch-kanae-ThinkPad-T440p-17893.log\r\nChecking log directory for disk usage. This may take awhile.\r\nPress Ctrl-C to interrupt\r\nDone checking log file disk usage. Usage is <1GB.\r\n\r\nstarted roslaunch server http://133.11.216.132:33102/\r\n\r\nSUMMARY\r\n========\r\n\r\nPARAMETERS\r\n * /camera/camera_nodelet_manager/num_worker_threads: 4\r\n * /camera/depth_rectify_depth/interpolation: 0\r\n * /camera/depth_registered_rectify_depth/interpolation: 0\r\n * /people_mask_publisher/limb_part: RHand\r\n * /people_mask_publisher/person_indices: 0\r\n * /people_mask_publisher/queue_size: 50\r\n * /people_pose_estimation_2d/gpu: 0\r\n * /people_pose_estimation_2d/model_file: /opt/ros/indigo/s...\r\n * /people_pose_estimation_2d/scales: [0.38]\r\n * /people_pose_estimation_2d/stride: 8\r\n * /people_pose_estimation_2d/with_depth: True\r\n * /rosdistro: indigo\r\n * /rosversion: 1.11.21\r\n * /use_sim_time: True\r\n\r\nNODES\r\n  /camera/rgb/\r\n    republish (image_transport/republish)\r\n  /camera/depth_registered/\r\n    republish (image_transport/republish)\r\n  /\r\n    camera_base_link (tf/static_transform_publisher)\r\n    camera_base_link1 (tf/static_transform_publisher)\r\n    camera_base_link2 (tf/static_transform_publisher)\r\n    camera_base_link3 (tf/static_transform_publisher)\r\n    people_mask_publisher (jsk_perception/people_mask_publisher.py)\r\n    people_pose_estimation_2d (jsk_perception/people_pose_estimation_2d.py)\r\n    people_poses_to_poses (jsk_recognition_msgs/people_pose_array_to_pose_array.py)\r\n    rosbag_play (rosbag/play)\r\n    rviz (rviz/rviz)\r\n  /camera/\r\n    camera_nodelet_manager (nodelet/nodelet)\r\n    depth_metric (nodelet/nodelet)\r\n    depth_metric_rect (nodelet/nodelet)\r\n    depth_points (nodelet/nodelet)\r\n    depth_rectify_depth (nodelet/nodelet)\r\n    depth_registered_hw_metric_rect (nodelet/nodelet)\r\n    depth_registered_metric (nodelet/nodelet)\r\n    depth_registered_rectify_depth (nodelet/nodelet)\r\n    points_xyzrgb_hw_registered (nodelet/nodelet)\r\n    rgb_rectify_color (nodelet/nodelet)\r\n\r\nROS_MASTER_URI=http://localhost:11311\r\n\r\ncore service [/rosout] found\r\nprocess[rosbag_play-1]: started with pid [17911]\r\nprocess[camera/rgb/republish-2]: started with pid [17912]\r\nprocess[camera/depth_registered/republish-3]: started with pid [17918]\r\nprocess[camera/camera_nodelet_manager-4]: started with pid [17931]\r\n[FATAL] [1540276076.356191611]: Error opening file: /opt/ros/indigo/share/jsk_perception/sample/data/2017-06-20-12-00-00_people_images_in_lab.bag\r\nprocess[camera/rgb_rectify_color-5]: started with pid [17948]\r\nprocess[camera/depth_rectify_depth-6]: started with pid [17955]\r\nprocess[camera/depth_metric_rect-7]: started with pid [17965]\r\nprocess[camera/depth_metric-8]: started with pid [17979]\r\nprocess[camera/depth_points-9]: started with pid [17997]\r\nprocess[camera/depth_registered_rectify_depth-10]: started with pid [18014]\r\nprocess[camera/points_xyzrgb_hw_registered-11]: started with pid [18032]\r\nprocess[camera/depth_registered_hw_metric_rect-12]: started with pid [18041]\r\nprocess[camera/depth_registered_metric-13]: started with pid [18056]\r\nprocess[camera_base_link-14]: started with pid [18068]\r\nprocess[camera_base_link1-15]: started with pid [18085]\r\nprocess[camera_base_link2-16]: started with pid [18104]\r\nprocess[camera_base_link3-17]: started with pid [18119]\r\nprocess[people_pose_estimation_2d-18]: started with pid [18145]\r\nprocess[people_mask_publisher-19]: started with pid [18170]\r\nERROR: cannot launch node of type [jsk_recognition_msgs/people_pose_array_to_pose_array.py]: can't locate node [people_pose_array_to_pose_array.py] in package [jsk_recognition_msgs]\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/indigo/lib/jsk_perception/people_pose_estimation_2d.py\", line 9, in <module>\r\n    import chainer\r\nImportError: No module named chainer\r\nprocess[rviz-21]: started with pid [18183]\r\n[people_pose_estimation_2d-18] process has died [pid 18145, exit code 1, cmd /opt/ros/indigo/lib/jsk_perception/people_pose_estimation_2d.py ~input:=/camera/rgb/image_rect_color ~input/info:=/camera/rgb/camera_info ~input/depth:=/camera/depth_registered/hw_registered/image_rect_raw __name:=people_pose_estimation_2d __log:=/home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/people_pose_estimation_2d-18.log].\r\nlog file: /home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/people_pose_estimation_2d-18*.log\r\n[ INFO] [1540276076.524468453]: Initializing nodelet with 4 worker threads.\r\n[rosbag_play-1] process has died [pid 17911, exit code 1, cmd /opt/ros/indigo/lib/rosbag/play /opt/ros/indigo/share/jsk_perception/sample/data/2017-06-20-12-00-00_people_images_in_lab.bag --clock --loop __name:=rosbag_play __log:=/home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/rosbag_play-1.log].\r\nlog file: /home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/rosbag_play-1*.log\r\n[rviz-21] process has finished cleanly\r\nlog file: /home/kanae/.ros/log/be984734-d68a-11e8-97ff-28d244f02e4c/rviz-21*.log\r\n^C[people_mask_publisher-19] killing on exit\r\n[camera_base_link3-17] killing on exit\r\n[camera_base_link2-16] killing on exit\r\n[camera_base_link1-15] killing on exit\r\n[camera_base_link-14] killing on exit\r\n[camera/depth_registered_metric-13] killing on exit\r\n[camera/depth_registered_hw_metric_rect-12] killing on exit\r\n[camera/depth_registered_rectify_depth-10] killing on exit\r\n[camera/points_xyzrgb_hw_registered-11] killing on exit\r\n[camera/depth_points-9] killing on exit\r\n[camera/depth_metric-8] killing on exit\r\n[camera/depth_metric_rect-7] killing on exit\r\n[camera/depth_rectify_depth-6] killing on exit\r\n[camera/rgb_rectify_color-5] killing on exit\r\n[camera/camera_nodelet_manager-4] killing on exit\r\n[camera/depth_registered/republish-3] killing on exit\r\n[camera/rgb/republish-2] killing on exit\r\nshutting down processing monitor...\r\n... shutting down processing monitor complete\r\ndone\r\n```"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - pkg/jsk_perception
+    - question
+    - sample
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2345'
+  title: Fix install destination
+  body: "When I installed `jsk_recognition` via `apt`(i.e. rosdep install) and ran `source /opt/ros/${ROS_DISTRO}/setup.bash`, some sample launch files could not find in `/opt/ros/${ROS_DISTRO}/share`.\r\n\r\nThis PR will fix this problem.\r\n\r\nAfter this PR, install ...\r\n- programs in `scripts/` into ${CATKIN_PACKAGE_BIN_DESTINATION}\r\n- `sample` and `test` dir into ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\n\r\ncf.\r\nhttp://wiki.ros.org/catkin/CMakeLists.txt\r\nhttp://www.ros.org/reps/rep-0122.html"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/imagesift
+    - pkg/jsk_pcl_ros
+    - pkg/jsk_pcl_ros_utils
+    - pkg/jsk_perception
+    - pkg/jsk_recognition_msgs
+    - pkg/jsk_recognition_utils
+    - pkg/resized_image_transport
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/pull/2341'
+  title: >-
+    [WIP] [jsk_pcl_ros_utils/package.xml] Add dependencies for
+    compressed_image/depth_image_transport to run sample launch files
+  body: ''
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels: []
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2339'
+  title: Test failure of pointcloud_to_pcd.test
+  body: "In current kinetic travis test, pointcloud_to_pcd.test failes.\r\n\r\nIt seems that ros :: topic :: waitForMessage is not able to receive topic.\r\n"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros_utils
+    - test
+- url: 'https://github.com/jsk-ros-pkg/jsk_recognition/issues/2331'
+  title: Test failure of test_color_histogram_filter result on Travis
+  body: "Current test ```ROS_DISTRO=kinetic``` seems failed \r\n\r\nhttps://travis-ci.org/jsk-ros-pkg/jsk_recognition/builds/427276724?utm_source=github_status&utm_medium=notification\r\nhttps://travis-ci.org/jsk-ros-pkg/jsk_recognition/builds/428309664?utm_source=github_status&utm_medium=notification\r\n\r\n```\r\nFinished <<< jsk_pcl_ros                            [ 5 minutes and 22.5 seconds ]\r\n\r\n[build] Summary: All 8 packages succeeded!\r\n\r\n[build] Ignored: None.\r\n\r\n[build] Warnings: 3 packages succeeded with warnings.\r\n\r\n[build] Abandoned: No packages were abandoned.\r\n\r\n[build] Failed: No packages failed.\r\n\r\n[build] Runtime: 21 minutes and 31.8 seconds total.\r\n\r\n+ catkin_test_results --verbose --all build\r\n\r\nFull test results for 'jsk_pcl_ros/test_results/jsk_pcl_ros/rosunit-test_color_histogram_filter.xml'\r\n\r\n-------------------------------------------------\r\n\r\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n\r\n<testsuite errors=\"0\" failures=\"1\" name=\"unittest.suite.TestSuite\" tests=\"1\" time=\"5.022\"><testcase classname=\"__main__.HzTest\" name=\"test_hz\" time=\"5.0221\"><failure type=\"AssertionError\">no messages before timeout\r\n\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 329, in run\r\n\r\n    testMethod()\r\n\r\n  File \"/opt/ros/kinetic/share/rostest/nodes/hztest\", line 117, in test_hz\r\n\r\n    self._test_hz(hz, hzerror, topic, test_duration, wait_time)\r\n\r\n  File \"/opt/ros/kinetic/share/rostest/nodes/hztest\", line 152, in _test_hz\r\n\r\n    self.assert_(self.message_received, \"no messages before timeout\")\r\n\r\n  File \"/usr/lib/python2.7/unittest/case.py\", line 422, in assertTrue\r\n\r\n    raise self.failureException(msg)\r\n\r\n</failure></testcase><system-out>&lt;![CDATA[\r\n\r\nHz: 15.0\r\n\r\nHz Error: 14.0\r\n\r\nTopic: color_histogram_filter/output\r\n\r\nTest Duration: 5.0\r\n\r\nWaiting for messages\r\n\r\n\r\n\r\n]]&gt;</system-out><system-err>&lt;![CDATA[\r\n\r\n\r\n\r\n]]&gt;</system-err></testsuite>\r\n\r\n```"
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_recognition'
+  labels:
+    - bug
+    - pkg/jsk_pcl_ros
+    - test

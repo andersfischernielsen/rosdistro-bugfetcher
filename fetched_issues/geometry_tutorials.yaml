@@ -1,0 +1,7 @@
+- url: 'https://github.com/ros/geometry_tutorials/issues/28'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this are available in Melodic, so
+    it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros/geometry_tutorials'
+  labels: []

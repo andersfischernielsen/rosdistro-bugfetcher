@@ -1,0 +1,53 @@
+- url: 'https://github.com/ros/executive_smach/pull/62'
+  title: missing module name in smach_ros/__init__.py import statements
+  body: "Caused errors with Python3 on ArchLinux\r\n```\r\nTraceback (most recent call last):\r\n  ...\r\n    from smach_ros import MonitorState, IntrospectionServer\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/smach_ros/__init__.py\", line 52, in <module>\r\n    from util import set_preempt_handler\r\nModuleNotFoundError: No module named 'util'\r\n```"
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/issues/57'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this are available in Melodic, so
+    it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/pull/56'
+  title: Typo set_shutdown_cb() --> set_shutdown_check()
+  body: "$ __python2 -m flake8 . --count --select=E9,F821,F822,F823 --show-source --statistics__\r\n```\r\n./smach/src/smach/util.py:6:1: F822 undefined name 'set_shutdown_cb' in __all__\r\n__all__ = ['is_shutdown','set_shutdown_cb',\\\r\n^\r\n1     F822 undefined name 'set_shutdown_cb' in __all__\r\n```\r\n\r\n* In `__all__` the function __set_shutdown_check()__ was mistakenly typed as __set_shutdown_cb()__.\r\n* Remove unused import\r\n* Make changes to avoid [Mutable Default Arguments](http://docs.python-guide.org/en/latest/writing/gotchas/#mutable-default-arguments)\r\n* Misc PEP8 cleanup\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/issues/53'
+  title: Concurrence race conditions on request_preempt
+  body: "I believe there are race condition problems with smach containers in general, here demonstrated for Concurrence state.\r\n\r\nScenario:\r\n\r\n 1. A preempt request is called on the concurrence state right when the children have completed, but the concurrence state itself is still executing.\r\n 2. The concurrence state will then (sometimes) claim that the preempt was serviced, though none of its children serviced the preempt. This means that the preempt request is sort of lost.  \r\n\r\nBelow a script that demonstrates the problem, it does not require any ROS code running. The script just creates this state machine.\r\n\r\n> * Sequence(top)\r\n>   * Concurrence(Cc)\r\n>      * Delay1(0.3 seconds) (for demonstration purposes: the only child of Concurrence)\r\n>   * Delay2(0.5 seconds)\r\n\r\nWhen the script is preempted after approx. 0.3 seconds, I would expect either Delay1 or Delay2 to return 'preempted'.\r\n\r\nTest script:\r\n\r\n    #!/usr/bin/env python\r\n    \r\n    from time import sleep\r\n    from smach import State, Concurrence, Sequence\r\n    from threading import Timer\r\n    \r\n    \r\n    class DelayState(State):\r\n        \"\"\"Delay state for testing purposes\"\"\"\r\n    \r\n        def __init__(self, delay):\r\n            State.__init__(self, outcomes=['succeeded', 'preempted'])\r\n            self.delay = delay\r\n    \r\n        def execute(self, userdata):\r\n            # A better delay state should be able to preempt during its sleep state\r\n            sleep(self.delay)\r\n            if self.preempt_requested():\r\n                self.service_preempt()\r\n                return 'preempted'\r\n            return 'succeeded'\r\n    \r\n    \r\n    def test_concurrence_preempt():\r\n        \"\"\"test demonstrating race condition\r\n    \r\n        Creates a state machine:\r\n    \r\n        - Sequence(top)\r\n          - Concurrence(Cc)\r\n            - Delay1(0.3 seconds) (for demonstration purposes: the only child of Concurrence)\r\n          - Delay2(0.5 seconds)\r\n    \r\n        When preempting the state machine after ~0.3 seconds, the machine\r\n        is expected to return 'preempted'\r\n        \"\"\"\r\n    \r\n        def outcome_cb(outcome_map):\r\n            if 'preempted' in outcome_map.values():\r\n                return 'preempted'\r\n            return 'succeeded'\r\n    \r\n        cc = Concurrence(\r\n            outcomes=['succeeded', 'preempted'],\r\n            default_outcome='succeeded',\r\n            outcome_cb=outcome_cb)\r\n        with cc:\r\n            Concurrence.add('Delay1', DelayState(delay=0.3))\r\n    \r\n        top = Sequence(outcomes=['succeeded', 'preempted'],\r\n                       connector_outcome='succeeded')\r\n    \r\n        with top:\r\n            Sequence.add('Cc', cc)\r\n            Sequence.add('Delay2', DelayState(delay=0.5))\r\n    \r\n        # Execute state machine and try cancel after various milliseconds of delay\r\n        for msDelay in range(290, 330, 2):\r\n            print ('Cancel after delay {}'.format(msDelay))\r\n            t = Timer(msDelay/1000.0, top.request_preempt)\r\n            t.start()\r\n            if top.execute() != 'preempted':\r\n                print ('===== TEST FAILED, delay: %sms =====', msDelay)\r\n                return\r\n    \r\n        print ('===== TEST OK =====')\r\n    \r\n    \r\n    test_concurrence_preempt()\r\n\r\n\r\nThe above scenario is one of several cases, where a preempt request is kind of lost. I believe similar problems exist for Sequence container as well.\r\n\r\nI will happily work on a pull request, but since this is a quite generic problem for Smach as I see it, it might require some discussion on the right approach. \r\n\r\nMy setup:\r\n - Ubuntu 16.04, \r\n - ROS kinetic\r\n - ros-kinetic-smach 2.0.1-0xenial-20170608-133042-0800"
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/issues/47'
+  title: 'is_running() works incorrectly, if execution fails with an exception'
+  body: "If state machine's state fails with an exception, _is_running flag is not lowered, although the state machine obviously is not running.\r\n\r\nExample code:\r\n\r\n```python\r\nfrom smach import StateMachine, State\r\n\r\nclass FailingState(State):\r\n    def execute(self, ud):\r\n        0/0  # exception\r\n\r\ns = StateMachine(outcomes=[])\r\nwith s:\r\n    StateMachine.add('foo', FailingState())\r\n\r\ntry:\r\n    s.execute()\r\nexcept:\r\n    pass\r\n\r\nprint 'running', s.is_running()\r\n```\r\n\r\nOutput:\r\n\r\n```\r\n<...>\r\nZeroDivisionError: integer division or modulo by zero\r\n<...>\r\nrunning True\r\n```\r\n\r\nIsn't is an issue?"
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/pull/20'
+  title: Missing package.xml and other catkin-generated files in binary packages
+  body: >
+    The packages smach and smach_ros do not install a package.xml file in ROS
+    hydro and therefore cannot be found by dependent packages. catkin requires a
+    call to the catkin_package() macro (or catkin_metapackage) in each package's
+    CMakeLists.txt (see http://www.ros.org/wiki/catkin/CMakeLists.txt for
+    reference). catkin_package() installs the package.xml and some other files
+    to `${CMAKE_INSTALL_PREFIX}/share/PACKAGE_NAME`.
+
+
+    This bug also affects installed catkin-builds in groovy, but the released
+    version seems to use the rosbuild variant only.
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/pull/16'
+  title: adding buildtool depend in metapackage. adding cmakelist
+  body: |
+    since new catkin becomes really picky..
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []
+- url: 'https://github.com/ros/executive_smach/pull/12'
+  title: (meta)package.xml should not depend on catkin
+  body: "Doing so makes this page go crazy:\_http://ros.org/wiki/catkin\n"
+  repo: 'https://api.github.com/repos/ros/executive_smach'
+  labels: []

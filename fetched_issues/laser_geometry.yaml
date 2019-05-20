@@ -1,0 +1,92 @@
+- url: 'https://github.com/ros-perception/laser_geometry/pull/42'
+  title: add DLL import/export macro
+  body: >-
+    add DLL import/export macro, following instructions in [ROS
+    wiki](http://wiki.ros.org/win_ros/Contributing/Dll%20Exports)
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/39'
+  title: Add dependency on tf2 for downstream packages
+  body: >-
+    This probably should have been added in #11. I have no idea how this is
+    working on Ubuntu, but it breaks for me when building `costmap_2d`, which
+    fails to find tf/tf2 includes when including
+    `laser_geometry/laser_geometry.h`.
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/38'
+  title: Update and fix package.xml Eigen dependency
+  body: null
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/37'
+  title: Export Eigen dependency
+  body: null
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/36'
+  title: '[ros2] fix eigen dependency name'
+  body: "the Eigen3 key doesn't exist in rosdep.\r\nThis PR replaces it with `eigen`: https://github.com/ros/rosdistro/blob/3993a03516bc466e5942c0f726b10dac3def60ca/rosdep/base.yaml#L614"
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/28'
+  title: Polish ros2 branch
+  body: "Make the branch work on Windows (with VS '15 and '17), macOS and Linux.\r\n\r\n- Remove PoinCloud support: for now only supports PointCloud2. \r\n- Remove Boost dependencies\r\n- Make tests work (when possible: the other tests need tf2)\r\n- Introduce and fix ament linters present in most ROS2 packages (cpplint, uncrustify, cmake_lint, cppcheck)\r\n- Fix all Windows warnings on OSRF Jenkins warning level\r\n- Build as static library for now\r\n"
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/21'
+  title: Indigo devel
+  body: |
+    remove eigen dependency and tidy up cmakefiles redundant code
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/20'
+  title: Update CMakeLists.txt
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/19'
+  title: Update package.xml
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/18'
+  title: Update laser_geometry.cpp
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/pull/17'
+  title: Update laser_geometry.h
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/issues/15'
+  title: I think it's better to remove the Eigen's dependency.
+  body: ''
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/issues/12'
+  title: Release into ROS Jade
+  body: >
+    Please release this package into ROS Jade as it is a blocking dependency of
+    the navigation stack.
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_geometry/issues/3'
+  title: Failing include for downstream
+  body: >
+    http://jenkins.ros.org/view/HbinP32/job/ros-hydro-laser-assembler_binarydeb_precise_i386/32/console
+
+
+    In file included from
+    /tmp/buildd/ros-hydro-laser-assembler-1.7.1-0precise-20130916-0620/src/laser_scan_assembler.cpp:36:0:
+
+    /opt/ros/hydro/include/laser_geometry/laser_geometry.h:46:22: fatal error:
+    Eigen/Core: No such file or directory
+  repo: 'https://api.github.com/repos/ros-perception/laser_geometry'
+  labels:
+    - bug

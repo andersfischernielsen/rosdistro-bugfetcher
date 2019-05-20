@@ -1,0 +1,36 @@
+- url: 'https://github.com/xqms/rosmon/pull/75'
+  title: Fix Rosmon build order
+  body: >-
+    In the current master, it looks like if you build the whole package from
+    scratch using `catkin_make` there is no guarantee that `rosmon_msgs` would
+    be built first before `rqt_rosmon` or `rosmon_core`, resulting in dependency
+    errors down the line. I added a couple lines in the `CMakeLists.txt` to
+    ensure that there are proper dependencies for the build targets in both
+    packages to `rosmon_msgs`
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []
+- url: 'https://github.com/xqms/rosmon/pull/72'
+  title: Separate messages + GUI packages
+  body: "See #70 for rationale.\r\n\r\nNew package layout:\r\n* `rosmon_msgs` for message definitions\r\n* `rosmon_gui` for the GUI, depending on `rosmon_msgs`\r\n* `rosmon` for `rosmon` itself, depending on `rosmon_msgs`\r\n\r\nPeople using the rqt GUI will need to install the additional `rosmon_gui` package, but I think this is justifiable - it's mostly humans using the GUI, and they will notice if it is not available anymore.\r\n\r\nThe alternative of having a `rosmon_core` package with the `rosmon` node is a) much more work (all of the unit tests etc refer to the rosmon package) and can b) easily break existing setups which expect `rosmon` in package `rosmon`.\r\n\r\n**TODO**:\r\n\r\n- [x] Think again about the split into a metapackage and a `rosmon-core` package containing the node. In this case, we would need some proxy nodes inside the otherwise empty `rosmon` package to keep legacy codebases working.\r\n- [x] Do other renames (`rqt_rosmon`)\r\n- [ ] Test this carefully in several of our \"production\" setups, also at least once with built Debian packages - it is easy to mess something up here."
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []
+- url: 'https://github.com/xqms/rosmon/issues/70'
+  title: Create a separate package for the rqt plugin
+  body: "As mentioned in #51 it would be nice a have a separate binary package for the rqt plugin.\r\nThis would allow to reduce the dependencies of `rosmon` when used in a robot without GUI.\r\n\r\nSuch a separation exists in other ROS packages like [grid_map](https://github.com/ANYbotics/grid_map).\r\n\r\nI know that this a breaking change, users will lose the plugin when updating, but it may be possible to keep `ros-*-rosmon` name for the metapackage that install both the `rosmon` utility and the rqt plugin."
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []
+- url: 'https://github.com/xqms/rosmon/pull/63'
+  title: remove internal fmt copy and depend on rosfmt instead
+  body: "This helps to avoid clashes with a system fmt installation (or rosfmt itself, for that matter).\r\n\r\nMaybe needs to wait until rosfmt is published in kinetic and melodic."
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []
+- url: 'https://github.com/xqms/rosmon/pull/27'
+  title: roslaunch/XML spec unit tests
+  body: "So far, we only have an integration-level test launch file in `test/`. This PR adds unit tests on the XML parsing level (`launch` namespace in rosmon). The tests were written following the [roslaunch/XML][1] wiki page and should cover all tags/attributes mentioned there.\r\n\r\nThis introduces a test dependency on [catch_ros][2].\r\n\r\nAlso fixes a number of minor problems uncovered by the unit tests:\r\n\r\n * handle `<param type=\"yaml\">`\r\n * report `<param command=\"...\">` failures properly\r\n * accept `True` and `False` as booleans (not mentioned in spec, but roslaunch does it)\r\n * report python exceptions correctly\r\n * add support for `<node cwd=\"...\">`\r\n * add support for `<node clear_params=\"...\">`\r\n * fix int type deduction for `$(eval ...)`\r\n * add error on dangerous `<include clear_params=\"true\">`\r\n\r\n[1]: https://wiki.ros.org/roslaunch/XML\r\n[2]: https://github.com/AIS-Bonn/catch_ros.git"
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []
+- url: 'https://github.com/xqms/rosmon/pull/10'
+  title: Substitution args
+  body: "Handle $(find ...), $(dirname), $(eval ...) correctly.\r\n\r\nThis introduces a dependency on `libpython-dev`, which is not in rosdistro yet..."
+  repo: 'https://api.github.com/repos/xqms/rosmon'
+  labels: []

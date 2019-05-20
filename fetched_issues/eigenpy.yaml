@@ -1,0 +1,77 @@
+- url: 'https://github.com/stack-of-tasks/eigenpy/pull/57'
+  title: Set the main lib name according to PEP 3149
+  body: "Hi,\r\n\r\nThis PR implements https://github.com/jrl-umi3218/jrl-cmakemodules/pull/177 for the main library, sot that we will generate:\r\n- `lib/libeigenpy.so` (linked to boost-python 2) and `lib/python2.7/site-packages/eigenpy.so` for python 2\r\n- `lib/libeigenpy.cpython-37m-x86_64-linux-gnu.so` (linked to boost-python 3) and `lib/python3.7/site-packages/eigenpy.so` for python 3 (this obviously depends on the actually used python version / architecture / etc).\r\n\r\nThis should fix the issue raised in #55, ie. allows us to install the python 2 and python 3 libraries side by side in the same prefix.\r\n\r\nBut to achieve this goal, we should also handle how the other files (includes and .pc) are installed. I will provide a solution later."
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/55'
+  title: Remove dependency of libboost-python from libeigenpy.sp
+  body: "This issue is about supporting python2 and python3 installation of eigenpy.\r\n\r\nWhen compiling and installing `eigenpy`, there are two libraries installed (assuming `prefix=/opt/openrobots` here):\r\n\r\n- /opt/openrobots/libs/libeigenpy.so\r\n- /opt/openrobots/lib/python3.5/site-packages/eigenpy.so\r\n\r\nNote that the first one has a dependency on the libboost_python lib, in my example\r\n\r\n``` bash\r\n$ ldd libeigenpy.so \r\n\tlinux-vdso.so.1 =>  (0x00007fffecf99000)\r\n\tlibboost_python-py35.so.1.58.0 => /usr/lib/x86_64-linux-gnu/libboost_python-py35.so.1.58.0 (0x00007f3e4e3c4000)\r\n\tlibstdc++.so.6 => /usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f3e4e042000)\r\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f3e4dd39000)\r\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f3e4db23000)\r\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f3e4d759000)\r\n\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f3e4d53c000)\r\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f3e4e8ca000)\r\n```\r\n\r\n(note the second line).\r\n\r\nThis dependency on `libboost_python` from `libeigenpy.so` creates troubles when trying to install eigenpy for python2 and python3 at the same time in the same folder.\r\n\r\nAs a workaround, I started to use a `/opt/openrobots` and `/opt/openrobots_py35` folder to separate the two installations of `eigenpy`. However I am wondering if there is a more proper way to resolve this issue and wanted to report this in case someone else comes along the same issue."
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/41'
+  title: Return np.array over np.matrix for better performance
+  body: "Right now eigenpy returns an `np.matrix`. When returning a `np.array`, I manage to get roughly 10x speedup on a simple benchmark. Also, I managed to improve the performance of computing the overall controller.\r\n\r\nTherefore, how do you folks feel about returning np.array instead of np.matrix for performance reasons from eigenpy?\r\n\r\nHere is the basic benchmark I did:\r\n\r\n```\r\nimport time\r\nimport timeit\r\n\r\noMf = robot.data.oMf\r\nobj = oMf[0]\r\na = (0., 0., 0.)\r\n%timeit np.array(a)\r\n%timeit np.matrix(a)\r\n%timeit obj.translation\r\n%timeit oMf[0].translation\r\n\r\n### Returning np.matrix from eigenpy\r\n#\r\n# 872 ns ± 17.4 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)\r\n# 8.5 µs ± 46.9 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)\r\n# 5.04 µs ± 24.7 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)\r\n# 5.65 µs ± 45.7 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)\r\n#\r\n# ==> Sim + Control: 0.4053959846496582\r\n\r\n### Returning np.array from eigenpy\r\n\r\n# 793 ns ± 4.81 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)\r\n# 8.35 µs ± 155 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)\r\n# 353 ns ± 19.4 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)\r\n# 629 ns ± 9.26 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)\r\n#\r\n# ==> Sim + Control: 0.2630190849304199\r\n```"
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/35'
+  title: Python 3 segfaults on exit interpreter
+  body: "Hi,\r\n\r\nAs shown by #34, we have random segfaults on python3:\r\nhttps://gepgitlab.laas.fr/gsaurel/eigenpy/-/jobs/2812\r\n\r\nHere is a minimal working exemple triggering this segfault:\r\n\r\n```py\r\nimport matrix\r\nimport numpy as np\r\n\r\nm = np.reshape(range(64), (8, 8))\r\na = matrix.reflex(m, False)\r\nprint('end of script')\r\n```\r\n\r\nAnd here is what gdb finds:\r\n\r\n```\r\n(gdb) run python/test_mwe_segfault.py\r\nStarting program: /usr/bin/python3 python/test_mwe_segfault.py\r\n[Thread debugging using libthread_db enabled]\r\nUsing host libthread_db library \"/lib/x86_64-linux-gnu/libthread_db.so.1\".\r\n[New Thread 0x7ffff2f16700 (LWP 25047)]\r\n[New Thread 0x7ffff0715700 (LWP 25048)]\r\n[New Thread 0x7fffeff14700 (LWP 25049)]\r\n[New Thread 0x7fffeb713700 (LWP 25050)]\r\n[New Thread 0x7fffe8f12700 (LWP 25051)]\r\n[New Thread 0x7fffe6711700 (LWP 25052)]\r\n[New Thread 0x7fffe5f10700 (LWP 25053)]\r\nend of script\r\n\r\nThread 1 \"python3\" received signal SIGSEGV, Segmentation fault.\r\n0x00000000005a0ee8 in dict_dealloc.lto_priv.164 (mp=0x7ffff6955e48) at ../Objects/dictobject.c:1595\r\n1595\t../Objects/dictobject.c: Aucun fichier ou dossier de ce type.\r\n(gdb) bt\r\n#0  0x00000000005a0ee8 in dict_dealloc.lto_priv.164 (mp=0x7ffff6955e48) at ../Objects/dictobject.c:1595\r\n#1  0x0000000000597903 in module_dealloc.lto_priv () at ../Objects/moduleobject.c:638\r\n#2  0x00007ffff64e3d57 in eigenpy::PyMatrixType::~PyMatrixType() ()\r\n   from /local/users/gsaurel/stack-of-tasks/eigenpy/libeigenpy.so\r\n#3  0x00007ffff7829ff8 in __run_exit_handlers (status=0, listp=0x7ffff7bb45f8 <__exit_funcs>, \r\n    run_list_atexit=run_list_atexit@entry=true) at exit.c:82\r\n#4  0x00007ffff782a045 in __GI_exit (status=<optimized out>) at exit.c:104\r\n#5  0x00007ffff7810837 in __libc_start_main (main=0x4cfdd0 <main>, argc=2, argv=0x7fffffffd7a8, init=<optimized out>, \r\n    fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffd798) at ../csu/libc-start.c:325\r\n#6  0x00000000005d6049 in _start ()\r\n```"
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/24'
+  title: Problem writing C++ binding using eigenpy
+  body: "(Not sure filling this here is the correct place - feel free to tell me if there is a mailing list etc that is more suitable.)\r\n\r\nWriting a small C++ <--> Python binding, I defined a `hello` function and use `eigenpy` as follows:\r\n```C++\r\n#include <eigenpy/eigenpy.hpp>\r\n#include <boost/python.hpp>\r\n\r\n#include <iostream>\r\n\r\nvoid hello(const Eigen::VectorXd & state)\r\n{\r\n   std::cout << \"state[0]=\" << state[0] << std::endl;\r\n}\r\n\r\nnamespace bp = boost::python;\r\n\r\nBOOST_PYTHON_MODULE(pin_hopper_simulator)\r\n{\r\n    using namespace boost::python;\r\n    eigenpy::enableEigenPy();\r\n\r\n    bp::def(\"hello\", hello,\r\n        bp::args(\"state\"),\r\n        \"Simple greeting\"\r\n      );\r\n}\r\n```\r\n\r\nThis compiles fine. However, when running the following python code\r\n\r\n```python\r\nimport toy_hopper_compare.pin_hopper_simulator\r\nimport numpy as np\r\n\r\ntoy_hopper_compare.pin_hopper_simulator.hello(np.matrix([1, 2, 3]))\r\n```\r\n\r\nI get the error\r\n\r\n```bash\r\njviereck@rams:toy_hopper_compare$ python test_binding.py\r\n[[1 2 3]]\r\nThe internal type as no Eigen equivalent.\r\nTraceback (most recent call last):\r\n  File \"test_binding.py\", line 10, in <module>\r\n    toy_hopper_compare.pin_hopper_simulator.hello(a)\r\nBoost.Python.ArgumentError: Python argument types in\r\n    toy_hopper_compare.pin_hopper_simulator.hello(matrix)\r\ndid not match C++ signature:\r\n    hello(Eigen::Matrix<double, -1, 1, 0, -1, 1> state)\r\n```\r\n\r\nAny idea?"
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/20'
+  title: Eigen alignment issues
+  body: "Depending on the compilation options, Eigen may use two different methods to allocate or deallocate dynamic matrices. \r\nIf libeigenpy and other Python libraries are compiled with two different set of options may lead to malloc segmentation fault.\r\nThis is for instance what happened in issue #19.\r\nI proposed a fix to Eigen library (see https://bitbucket.org/eigen/eigen/pull-requests/354/fix-aligment-issue-with/diff for more details).\r\nIn the meantime, I suggest to inline enableEigenPy and to remove it from libeigenpy."
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/19'
+  title: Compatibility with Pinocchio on MacOS 13
+  body: "I bound a C++ function `foo` with `Eigen::Matrix` arguments using EigenPy. I built a `lib` which contains `foo`. Then I import `lib` in Python and `foo` worked fine. \r\n\r\nHowever, there is a problem when I insert `import pinocchio as se3` before calling `foo` in Python: Python will crash when the execution of `foo` **terminates**, with the following error:\r\n\r\n> Python(34796,0x7fff9fcc5340) malloc: *** error for object 0x7fc61b61d020: pointer being freed was not allocated\r\n> *** set a breakpoint in malloc_error_break to debug\r\n> Abort trap: 6\r\n\r\nI also observe that the problem occurs only when the input of `foo` contains a `Eigen::Matrix` object. The weird thing to me is the execution does not stop until the function call terminates.  \r\nAlso note that the error occurs when pinocchio is imported, even if the inside of `foo` does not call any pinocchio module.\r\n\r\nYou could check out this by binding a toy function (for example the `reflex` function in issue #18 ) and import Pinocchio in Python. Many thanks for your help!\r\n"
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels: []
+- url: 'https://github.com/stack-of-tasks/eigenpy/pull/12'
+  title: Fix bug in multiple dynamic link of the lib
+  body: >
+    During dynamic linkage procedure, the order of inclusion of shared libs is
+    not consistent with the use of a global register for Python matrices. This
+    PR solves the problem by introducing a singleton for the register.
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug
+- url: 'https://github.com/stack-of-tasks/eigenpy/pull/9'
+  title: Fix issue in .pc file
+  body: |
+    The .pc file now contains the dependencies regarding to boost.
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug
+- url: 'https://github.com/stack-of-tasks/eigenpy/pull/5'
+  title: '[Bug fix] Remove the pragma line leading to error with gcc 4.8'
+  body: |
+    Fix bug concerning the pragma pedantic. Should compile with gcc 4.8.
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug
+- url: 'https://github.com/stack-of-tasks/eigenpy/pull/4'
+  title: 'Fix bug under Mac OS X '
+  body: >
+    The symbols were not well exposed for unknown reasons - need to make the
+    library static
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/stack-of-tasks/eigenpy/issues/3'
+  title: Problem mac compatibility
+  body: >
+    It seems that the symbols of libeigenpy are not well imported when there are
+    exported in SHARED library: boost::python symbols are not well exported. A
+    solution to fix the bug consists in making libeigenpy STATIC. 
+  repo: 'https://api.github.com/repos/stack-of-tasks/eigenpy'
+  labels:
+    - bug

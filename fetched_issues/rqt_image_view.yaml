@@ -1,0 +1,31 @@
+- url: 'https://github.com/ros-visualization/rqt_image_view/pull/15'
+  title: add build dependency on qt5-dev
+  body: >-
+    Required build dependency to fix the builds on
+    [Artful](http://build.ros.org/job/Mbin_uA64__rqt_image_view__ubuntu_artful_amd64__binary/1/)
+    and
+    [Bionic](http://build.ros.org/job/Mbin_uB64__rqt_image_view__ubuntu_bionic_amd64__binary/1/).
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_image_view'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_image_view/issues/14'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are available in Melodic, so it
+    would be great to get this released there.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_image_view'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_image_view/pull/6'
+  title: Adding an optional crosshair.
+  body: >-
+    The crosshair state (on/off) is saved. This was important for us because
+    we're doing some delicate manipulation.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_image_view'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_image_view/issues/3'
+  title: >-
+    rqt_image_view: image shrinks when resolution changes, or has wrong aspect
+    if '1' is enabled
+  body: "_From @lucasw on February 28, 2017 19:55_\n\nWhen the '1' button is disabled, the first image received will fill the available widget space properly, and a following image with a different resolution may work properly (I think depending on if the vertical resolution fills the widget or not), but a third image will be the same width or height as the previous image, and therefore be far smaller than available space, and each following image which changes resolution will also choose the wrong width or height to match which continues to shrink the image.\r\n\r\nThis continues until some minimal size has been reached, after that the aspect ratio no longer changes, the image is updated in the aspect ratio of that minimal size.\r\n\r\n```\r\n#!/usr/bin/env python\r\n\r\nimport cv2\r\nimport numpy as np\r\nimport rospy\r\n\r\nfrom sensor_msgs.msg import Image\r\n\r\n\r\nclass AlternateImage:\r\n    def __init__(self):\r\n        self.pub = rospy.Publisher(\"image\", Image, queue_size=4)\r\n\r\n        self.height = 1024\r\n        self.width = 768\r\n        self.channels = 3\r\n\r\n        image1 = np.zeros((self.height, self.width, self.channels), np.uint8)\r\n        msg1 = Image()\r\n        msg1.encoding = \"bgr8\"\r\n        msg1.height = self.height\r\n        msg1.width = self.width\r\n        msg1.step = self.width * self.channels\r\n        msg1.data = image1.tostring()\r\n\r\n        image2 = np.ones((self.width, self.height, self.channels), np.uint8) * 255\r\n        msg2 = Image()\r\n        msg2.encoding = \"bgr8\"\r\n        msg2.height = self.width\r\n        msg2.width = self.height\r\n        msg2.step = self.height * self.channels\r\n        msg2.data = image2.tostring()\r\n\r\n        while not rospy.is_shutdown():\r\n            msg1.header.stamp = rospy.Time.now()\r\n            self.pub.publish(msg1)\r\n            rospy.sleep(1.0)\r\n            msg2.header.stamp = rospy.Time.now()\r\n            self.pub.publish(msg2)\r\n            rospy.sleep(1.0)\r\n\r\nif __name__ == '__main__':\r\n    rospy.init_node(\"alternate_image\")\r\n    alternate_image = AlternateImage()\r\n\r\n```\r\n\r\nResizing the rqt window causes the image to be properly sized.\r\n\r\nIf the '1' button is enabled, then the first image received will define the aspect ratio, then following images will conform to that aspect ratio wrongly, but the images continue to fill the widget.\r\n\r\nI tried this with the latest master branch code, looks to behave the same as the Jade release version.\n\n_Copied from original issue: ros-visualization/rqt_common_plugins#437_"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_image_view'
+  labels: []

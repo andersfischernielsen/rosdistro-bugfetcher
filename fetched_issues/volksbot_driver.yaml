@@ -1,0 +1,13 @@
+- url: 'https://github.com/uos/volksbot_driver/pull/9'
+  title: 'CMakeLists: remove CATKIN_DEPENDS parameter'
+  body: >
+    Since we don't install any headers, we don't have to use the CATKIN_DEPENDS
+
+    parameter.
+
+
+    Also see:
+
+    http://answers.ros.org/question/58498/what-is-the-purpose-of-catkin_depends/#58593
+  repo: 'https://api.github.com/repos/uos/volksbot_driver'
+  labels: []

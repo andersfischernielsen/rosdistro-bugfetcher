@@ -1,0 +1,15 @@
+- url: 'https://github.com/at-wat/mcl_3dl_msgs/pull/5'
+  title: Fix package dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/at-wat/mcl_3dl_msgs'
+  labels: []
+- url: 'https://github.com/at-wat/mcl_3dl_msgs/pull/3'
+  title: Fix runtime dependency
+  body: ''
+  repo: 'https://api.github.com/repos/at-wat/mcl_3dl_msgs'
+  labels: []
+- url: 'https://github.com/at-wat/mcl_3dl_msgs/pull/2'
+  title: Fix package dependency
+  body: ''
+  repo: 'https://api.github.com/repos/at-wat/mcl_3dl_msgs'
+  labels: []

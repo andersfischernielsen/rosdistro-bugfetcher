@@ -1,0 +1,15 @@
+- url: 'https://github.com/ros-drivers/usb_cam/pull/106'
+  title: Port usb_cam to ROS2
+  body: "This PR ports the USB cam node to ROS2. Some changes are shared with https://github.com/lucasw/usb_cam/tree/bouncy, but trying to stay close to the original implementation; closes #103.\r\n\r\nThis targets Bouncy, which is lacking some features that had to be removed:\r\n\r\n* Image transport; has been implemented for Crystal: ros2/ros2#529\r\n* Camera info manager; AFAIK porting hasn't started yet\r\n\r\nSome open points/uncertainties:\r\n* The new launch file uses ROS2's `showimage` node, however this has a bug when the image format is in RGB8, I have created a PR for that here: ros2/demos#288\r\n* I put this PR against the `develop` branch, perhaps a new `ros2` branch should be started?\r\n* Logging in `usb_cam.cpp` is less nice, because I'm not sure yet how to nicely use ROS2's new logging system, while keeping `usb_cam.cpp` clean and independent of ROS.\r\n* CI has to be updated to build with colcon for ROS2"
+  repo: 'https://api.github.com/repos/ros-drivers/usb_cam'
+  labels: []
+- url: 'https://github.com/ros-drivers/usb_cam/issues/101'
+  title: ' usb_cam cannot  be install '
+  body: "g@g-System-Product-Name:~$ sudo apt-get install ros-kinetic-usb-cam\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nSome packages could not be installed. This may mean that you have\r\nrequested an impossible situation or if you are using the unstable\r\ndistribution that some required packages have not yet been created\r\nor been moved out of Incoming.\r\nThe following information may help to resolve the situation:\r\n\r\nThe following packages have unmet dependencies:\r\n ros-kinetic-usb-cam : Depends: v4l-utils but it is not installable\r\nE: Unable to correct problems, you have held broken packages."
+  repo: 'https://api.github.com/repos/ros-drivers/usb_cam'
+  labels: []
+- url: 'https://github.com/ros-drivers/usb_cam/issues/93'
+  title: HW MJPEG decode possible?
+  body: "Since the MJPEG decoding seems to be handled by FFMPEG in `usb_cam` and since FFMPEG is supporting HW (GPU) decoding of video streams (depending on the platform), would that be possible to leverage on the GPU for decoding MJPEG frames? That could be a solution to reduce CPU usage (currently 50% for an HD MJPEG camera).\r\nFor info, on ubuntu 16.04 with an intel Skylake CPU/iGPU, I had to install FFMPEG 3 with the following package to make HW transcoding work (tested with vp8 transcoding on the CLI):\r\n\r\n```\r\nsudo add-apt-repository -y ppa:jonathonf/ffmpeg-4\r\nsudo add-apt-repository -y ppa:ubuntu-x-swat/updates\r\nsudo apt-get update\r\nsudo apt-get install -y ffmpeg\r\nsudo apt-get install -y libvdpau-va-gl1\r\nsudo apt-get install -y libvpx-dev libva-dev dh-autoreconf libavcodec-dev\r\nsudo sh -c \"echo 'export VDPAU_DRIVER=va_gl' >> /etc/profile\"\r\n```\r\n\r\nI think I am going to give it a try one of these days, but if anybody has suggestions, please let me know."
+  repo: 'https://api.github.com/repos/ros-drivers/usb_cam'
+  labels: []

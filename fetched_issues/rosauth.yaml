@@ -1,0 +1,74 @@
+- url: 'https://github.com/GT-RAIL/rosauth/issues/12'
+  title: Release rosauth for Lunar
+  body: >-
+    Could you release rosauth for Lunar? I've tested that it works and that that
+    debian packages built. I'm trying to release the rospilot package for Lunar,
+    which depends on this. Thanks!
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []
+- url: 'https://github.com/GT-RAIL/rosauth/pull/8'
+  title: Added gencpp-dependency for test target
+  body: >
+    This commit fixes a 'missing rosauth.h' error during compilation of the test
+    for me. If this is not the appropriate solution, I'd be happy to learn what
+    the real problem is.
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []
+- url: 'https://github.com/GT-RAIL/rosauth/issues/7'
+  title: Missing build-dependency
+  body: >
+    I ran into some issues compiling the rosauth package. The include file
+    "rosauth.h" is missing during compilation, which can be fixed by restarting
+    catkin_make 3 - 4 times in a row.  
+
+    Adding explicit dependencies on gencpp for the test target fixes this issue
+    for me.
+
+    Please see #8 for further details
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []
+- url: 'https://github.com/GT-RAIL/rosauth/pull/6'
+  title: add missing catkin dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []
+- url: 'https://github.com/GT-RAIL/rosauth/pull/5'
+  title: missing libssl-dev during build
+  body: >
+    I'm opening this issue here because it is where I discovered it, but it
+    requires a little bit of input from one of the core developers. I believe an
+    update to the wiki is in order to clarify this in the future.
+
+
+    The test at
+    (https://github.com/WPI-RAIL/rosauth/blob/develop/CMakeLists.txt#L62) uses a
+    header file from `libssl-dev`, and this is not listed in the `package.xml`.
+    Since this file is only compiled for testing, should it be listed as a
+    `build_depend` or a `test_depend`?
+
+
+    If it indeed should be listed as a `test_depend`, I believe an update to
+    https://github.com/ros-infrastructure/bloom is in order, as it currently
+    does not add `test_depend`s to the build requirements for packages.
+
+
+    This is not currently blocking builds on the ubuntu buildfarm because
+    `libssl-dev` is being installed for some (other) reason. On Fedora, I've
+    found that this is not necessarily true, and that we need to list it
+    somewhere here. The question is where...
+
+
+    Looking for input from @tfoote, @wjwwood and/or @dirk-thomas on whether the
+    build-time test dependency should be a `build_depend` or a `test_depend`.
+    Please update the wiki to reflect this.
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []
+- url: 'https://github.com/GT-RAIL/rosauth/issues/2'
+  title: releasing in hydro
+  body: |
+    To resolve run dependency of rosbridge in hydro
+  repo: 'https://api.github.com/repos/GT-RAIL/rosauth'
+  labels: []

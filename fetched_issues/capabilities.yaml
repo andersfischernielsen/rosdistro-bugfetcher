@@ -1,0 +1,738 @@
+- url: 'https://github.com/osrf/capabilities/pull/76'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/75'
+  title: 'Discussion: How to prevent erroneous free''ing of capabilities'
+  body: >
+    This is copied from
+    https://github.com/osrf/capabilities/pull/70#issuecomment-47108222:
+
+
+    ---
+
+
+    Ideally, the client should not get into the situation where it asks to
+    stop/free an already stopped/freed cap.
+
+
+    In the current case the rapp rocon_apps/robot_teleop depends on both the
+    RGBDSensor and the DifferentialMobileBase cap. However, down the dependency
+    tree of the RGBDSensor cap there is also the dependency on the
+    DifferentialMobileBase cap. Stopping the DifferentialMobileBase cap would
+    now also stop all caps depending on it. And here there might be an error.
+
+
+    The app manager does not stop, but free the capabilities. So when the rapp
+    is stopped, it first frees the DifferentialMobileBase cap.
+
+
+    [INFO] [WallTime: 1403701919.301008] Rapp Manager : stopped rapp
+    [rocon_apps/teleop]'.
+
+    [INFO] [WallTime: 1403701919.301422] Rapp Manager : Stopping required
+    capabilities.
+
+    [INFO] [WallTime: 1403701919.306375] Request to free usage of capability
+    'std_capabilities/DifferentialMobileBase' (bond id
+    'eb8e9780-fc63-11e3-a9ca-f46d04929542')
+
+    And the cap server responds:
+
+
+    [INFO] [WallTime: 1403701919.306902] Capability
+    'std_capabilities/DifferentialMobileBase' being stopped because it has zero
+    references
+
+    However, at this point the RGBDSensor cap should still have an indirect
+    dependency on it.
+
+
+    [INFO] [WallTime: 1403701919.307257] Capability
+    'turtlebot_capabilities/robot_state_publisher' being stopped because its
+    dependency 'std_capabilities/DifferentialMobileBase' is being stopped.
+
+    [INFO] [WallTime: 1403701919.307622] Capability
+    'turtlebot_capabilities/turtlebot2_bringup' being stopped because its
+    dependency 'std_capabilities/RobotStatePublisher' is being stopped.
+
+    [INFO] [WallTime: 1403701919.307938] Capability
+    'turtlebot_capabilities/rgbd_sensor' being stopped because its dependency
+    'turtlebot_capabilities/TurtleBotBringup' is being stopped.
+
+    [INFO] [WallTime: 1403701921.447684] Capability Provider
+    'turtlebot_capabilities/rgbd_sensor' for Capability
+    'std_capabilities/RGBDSensor' has terminated.
+
+    [INFO] [WallTime: 1403701922.014306] Capability Provider
+    'turtlebot_capabilities/turtlebot2_bringup' for Capability
+    'turtlebot_capabilities/TurtleBotBringup' has terminated.
+
+    [INFO] [WallTime: 1403701922.014992] Stopping the
+    'turtlebot_capabilities/diagnostics' provider of the
+    'std_capabilities/Diagnostics' interface, because it has no dependents left.
+
+    [INFO] [WallTime: 1403701922.015352] Rapp Manager : Stopped required
+    capability 'std_capabilities/DifferentialMobileBase'.
+
+    [INFO] [WallTime: 1403701922.019269] Request to free usage of capability
+    'std_capabilities/RGBDSensor' (bond id
+    'eb8e9780-fc63-11e3-a9ca-f46d04929542')
+
+    [WARN] [WallTime: 1403701922.019799] RuntimeError: Cannot free Capability
+    'std_capabilities/RGBDSensor', because it is not running
+
+    [INFO] [WallTime: 1403701922.020218] Rapp Manager : Stopped required
+    capability 'std_capabilities/RGBDSensor'.
+
+    [INFO] [WallTime: 1403701922.020605] Rapp Manager : All required
+    capabilities have been stopped.
+
+    Do you have a test case covering this situation?
+
+
+    With this in mind it might be better to revert this exception to an error.
+    Currently can't think of a situation, where freeing a capability would throw
+    this exception and it would be expected ... then again its already late over
+    here. :-)
+
+
+    ---
+
+
+    I decided to go ahead and merge #70 and open this issue for further
+    discussion on the follow up topic described above.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/70'
+  title: Fix stop capability exceptions
+  body: >
+    This should address #68.
+
+
+    @bit-pirate can you test this branch and see if it addresses the issue for
+    you?
+
+
+    I tried out your scenario and the PID problems have gone away.
+
+
+    I can give a postmortem of sorts. So the problem was that I was calling the
+    internal stop on capabilities which had already been stopped because I
+    didn't consider the fact that stopping one of a capability's dependents
+    (reverse dependency) could also stop other dependents in the list. Therefore
+    I would call stop on the first dependent and then when that was done call it
+    on the second dependent, but the second dependent had already been stopped
+    by the first. So the fix was just to add a check inside the loop to make
+    sure the capability I am about to stop is already stopped. Since calling
+    stop on the capability which had already been stopped raised an error it
+    prevented the rest of the dependents from being shutdown, resulting in the
+    inconsistent state.
+
+
+    I believe this pull request addresses that issue, however, I was still
+    getting this in my testing:
+
+
+    ```
+
+    [INFO] [WallTime: 1400897287.546466] Request to free usage of capability
+    'std_capabilities/RGBDSensor' (bond id
+    '26891f9e-e2e8-11e3-801f-902b34db3493')
+
+    [ERROR] [WallTime: 1400897287.546847] RuntimeError: No Capability
+    'std_capabilities/RGBDSensor' in use
+
+    [ERROR] [WallTime: 1400897287.547099] Rapp Manager : Failed to stop
+    capabilities. Errors: ["Error occurred while stopping capability
+    'std_capabilities/RGBDSensor': Exception raised while stopping cap
+    'std_capabilities/RGBDSensor': service [/capability_server/free_capability]
+    responded with an error: error processing request: No Capability
+    'std_capabilities/RGBDSensor' in use"]
+
+    ```
+
+
+    I believe what is happening here is that the app manager is calling free on
+    `std_capabilities/DifferentialMobileBase` and that is causing
+    `std_capabilities/RGBDSensor` to implicitly shutdown:
+
+
+    ```
+
+    [INFO] [WallTime: 1400897268.640145] Request to free usage of capability
+    'std_capabilities/DifferentialMobileBase' (bond id
+    '26891f9e-e2e8-11e3-801f-902b34db3493')
+
+    [INFO] [WallTime: 1400897268.640661] Capability
+    'std_capabilities/DifferentialMobileBase' being stopped because it has zero
+    references
+
+    [INFO] [WallTime: 1400897268.641024] Capability
+    'turtlebot_capabilities/robot_state_publisher' is being stopped because it's
+    dependency 'std_capabilities/DifferentialMobileBase' has been stopped.
+
+    [INFO] [WallTime: 1400897268.641341] Capability
+    'turtlebot_capabilities/turtlebot2_bringup' is being stopped because it's
+    dependency 'std_capabilities/RobotStatePublisher' has been stopped.
+
+    [INFO] [WallTime: 1400897268.641646] Capability
+    'turtlebot_capabilities/rgbd_sensor' is being stopped because it's
+    dependency 'turtlebot_capabilities/TurtleBotBringup' has been stopped.
+
+    ```
+
+
+    Then later the app manager is calling free on the
+    `std_capabilities/RGBDSensor` capability which was already stopped,
+    resulting in this:
+
+
+    ```
+
+    [INFO] [WallTime: 1400897287.546466] Request to free usage of capability
+    'std_capabilities/RGBDSensor' (bond id
+    '26891f9e-e2e8-11e3-801f-902b34db3493')
+
+    [ERROR] [WallTime: 1400897287.546847] RuntimeError: No Capability
+    'std_capabilities/RGBDSensor' in use
+
+    [ERROR] [WallTime: 1400897287.547099] Rapp Manager : Failed to stop
+    capabilities. Errors: ["Error occurred while stopping capability
+    'std_capabilities/RGBDSensor': Exception raised while stopping cap
+    'std_capabilities/RGBDSensor': service [/capability_server/free_capability]
+    responded with an error: error processing request: No Capability
+    'std_capabilities/RGBDSensor' in use"]
+
+    ```
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/68'
+  title: Stopping multiple capabilities can cause errors
+  body: >
+    Currently testing the `rocon_apps/teleop` rapp with capability support and
+    noticed a strange error when shutting down the rapp and its dependent
+    capabilities.
+
+
+    ```
+
+    [INFO] [WallTime: 1399886941.441992] Rapp Manager : Stopping rapp
+    'rocon_apps/teleop'.
+
+    [turtlebot/relay_video-3] killing on exit
+
+    [turtlebot/relay_cmd_vel-2] killing on exit
+
+    [turtlebot/teleop_velocity_smoother-1] killing on exit
+
+    [ INFO] [1399886941.469684467]: Unloading nodelet
+    /turtlebot/teleop_velocity_smoother from manager
+    /capability_server_nodelet_manager
+
+    [INFO] [WallTime: 1399886942.874621] Rapp Manager : stopped rapp
+    [rocon_apps/teleop]'.
+
+    [INFO] [WallTime: 1399886942.875491] Rapp Manager : Stopping required
+    capabilities.
+
+    [INFO] [WallTime: 1399886942.884842] Request to free usage of capability
+    'std_capabilities/DifferentialMobileBase' (bond id
+    'b054c6ae-d9b7-11e3-b584-2cd05ab796d3')
+
+    [INFO] [WallTime: 1399886942.885948] Capability
+    'std_capabilities/DifferentialMobileBase' being stopped because it has zero
+    references
+
+    [depthimage_to_laserscan-18] killing on exit
+
+    [camera/disparity_registered_hw-17] killing on exit
+
+    [camera/disparity_registered_sw-16] killing on exit
+
+    [camera/disparity_depth-15] killing on exit
+
+    [camera/points_xyzrgb_hw_registered-14] killing on exit
+     [camera/points_xyzrgb_sw_registered-12] killing on exit
+    [camera/depth_registered_rectify_depth-13] killing on exit
+
+    [camera/register_depth_rgb-11] killing on exit
+
+    [camera/depth_points-10] killing on exit
+
+    [camera/depth_metric-9] killing on exit
+
+    [camera/depth_metric_rect-8] killing on exit
+
+    [camera/depth_rectify_depth-7] killing on exit
+
+    [camera/rectify_ir-6] killing on exit
+
+    [camera/rectify_color-5] killing on exit
+
+    [camera/rectify_mono-4] killing on exit
+
+    [camera/debayer-3] killing on exit
+
+    [camera/driver-2] killing on exit
+
+    [camera/camera_nodelet_manager-1] killing on exit
+
+    [camera/camera_nodelet_manager-1] escalating to SIGTERM
+
+    shutting down processing monitor...
+
+    ... shutting down processing monitor complete
+
+    done
+
+    [turtlebot_bringup-2] killing on exit
+
+    Traceback (most recent call last):
+      File "/home/yujin/ros_ws/turtlebot_ws/src/turtlebot/turtlebot_capabilities/providers/launch/placeholder.py", line 6, in <module>
+        sleep(0.1)
+    KeyboardInterrupt
+
+    shutting down processing monitor...
+
+    ... shutting down processing monitor complete
+
+    done
+
+    [robot_state_publisher-1] killing on exit
+
+    shutting down processing monitor...
+
+    ... shutting down processing monitor complete
+
+    done
+
+    [ERROR] [WallTime: 1399886960.565455] Capability Instance
+    'turtlebot_capabilities/rgbd_sensor' cannot transition to 'stopping' from
+    anything but 'launching' or 'running', current state is
+    'stopping'                                                                    
+
+    [INFO] [WallTime: 1399886960.566842] Capability Provider
+    'turtlebot_capabilities/rgbd_sensor' for Capability
+    'std_capabilities/RGBDSensor' has terminated.
+
+    [INFO] [WallTime: 1399886960.567999] Capability Provider
+    'turtlebot_capabilities/turtlebot2_bringup' for Capability
+    'turtlebot_capabilities/TurtleBotBringup' has terminated.
+
+    [INFO] [WallTime: 1399886960.568654] Stopping the
+    'turtlebot_capabilities/diagnostics' provider of the
+    'std_capabilities/Diagnostics' interface, because it has no dependents left.
+
+    [ERROR] [WallTime: 1399886960.570503] RuntimeError: No running launch file
+    with PID of '815'
+
+    [diagnostic_aggregator-1] killing on exit
+
+    shutting down processing monitor...
+
+    ... shutting down processing monitor complete
+
+    done
+
+    [INFO] [WallTime: 1399886961.621882] Capability Provider
+    'turtlebot_capabilities/robot_state_publisher' for Capability
+    'std_capabilities/RobotStatePublisher' has terminated.
+
+    [INFO] [WallTime: 1399886961.622872] Capability Provider
+    'turtlebot_capabilities/diagnostics' for Capability
+    'std_capabilities/Diagnostics' has terminated.
+
+    ^C[zeroconf/zeroconf-6] killing on exit
+
+    [interactions-5] killing on exit
+
+    [app_manager-3] killing on exit
+     [master-4] killing on exit
+    [capability_server-2] killing on exit
+
+    Traceback (most recent call last):
+      File "/home/yujin/ros_ws/rocon_ws/src/capabilities/src/capabilities/placeholder_script", line 6, in <module>
+        sleep(0.1)
+    KeyboardInterrupt
+
+    [ERROR] [WallTime: 1399887012.879617] Capability Instance
+    'kobuki_capabilities/kobuki_differential_mobile_base' terminated
+    unexpectedly, it was previously in the 'running' state.
+
+    [INFO] [WallTime: 1399887012.880260] Capability Provider
+    'kobuki_capabilities/kobuki_differential_mobile_base' for Capability
+    'std_capabilities/DifferentialMobileBase' has terminated.
+
+    [INFO] [WallTime: 1399887012.880685] Stopping the
+    'kobuki_capabilities/kobuki_bringup' provider of the
+    'kobuki_capabilities/KobukiBringup' interface, because it has no dependents
+    left.
+
+    ```
+
+
+    So, here an error is thrown when the `RGBDSensor` capability is requested to
+    be stopped, while it is in the stopping state. This error is reported in the
+    service response, which makes the rapp manager abort the stopping of the
+    other caps.
+
+
+    I see two improvements required.
+
+    - Requesting to stop a stopping cap probably shouldn't be treated as an
+    error
+
+    - The rapp manager should continue to stop the remaining capabilities.
+
+
+    I'll look into the stopping capability issue in the rapp manager
+    (https://github.com/robotics-in-concert/rocon_app_platform/issues/233).
+    @wjwwood could you take a look at the capability server part of this issue?
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/63'
+  title: Fix broken tests
+  body: >
+    Running tests shows a couple of failing ones:
+
+
+    ```
+
+    Running tests...
+
+    Test project /opt/rocon_workspace/build
+          Start  1: _ctest_capabilities_nosetests_test
+     1/41 Test  #1: _ctest_capabilities_nosetests_test ..................................................................***Failed    0.74 sec
+          Start  2: _ctest_capabilities_rostest_test_rostest_test_client_test_client_module.test
+     2/41 Test  #2: _ctest_capabilities_rostest_test_rostest_test_client_test_client_module.test ........................***Failed    2.05 sec
+          Start  3: _ctest_capabilities_rostest_test_rostest_test_launch_manager_test_launch_manager.test
+     3/41 Test  #3: _ctest_capabilities_rostest_test_rostest_test_launch_manager_test_launch_manager.test ...............***Failed    1.38 sec
+          Start  4: _ctest_capabilities_rostest_test_rostest_test_server_test_client.test
+     4/41 Test  #4: _ctest_capabilities_rostest_test_rostest_test_server_test_client.test ...............................***Failed    1.60 sec
+          Start  5: _ctest_capabilities_rostest_test_rostest_test_server_test_default_provider.test
+     5/41 Test  #5: _ctest_capabilities_rostest_test_rostest_test_server_test_default_provider.test .....................***Failed    1.65 sec
+          Start  6: _ctest_capabilities_rostest_test_rostest_test_server_test_dependent_capabilities.test
+     6/41 Test  #6: _ctest_capabilities_rostest_test_rostest_test_server_test_dependent_capabilities.test ...............***Failed    1.75 sec
+          Start  7: _ctest_capabilities_rostest_test_rostest_test_server_test_invalid_specs.test
+     7/41 Test  #7: _ctest_capabilities_rostest_test_rostest_test_server_test_invalid_specs.test ........................***Failed    1.58 sec
+          Start  8: _ctest_capabilities_rostest_test_rostest_test_server_test_package_white_black_lists.test
+     8/41 Test  #8: _ctest_capabilities_rostest_test_rostest_test_server_test_package_white_black_lists.test ............***Failed    1.65 sec
+          Start  9: _ctest_capabilities_rostest_test_rostest_test_server_test_remapping.test
+     9/41 Test  #9: _ctest_capabilities_rostest_test_rostest_test_server_test_remapping.test ............................***Failed    1.59 sec
+          Start 10: _ctest_capabilities_rostest_test_rostest_test_server_test_ros_services.test
+    10/41 Test #10:
+    _ctest_capabilities_rostest_test_rostest_test_server_test_ros_services.test
+    .........................***Failed    1.65 sec
+          Start 11: _ctest_capabilities_rostest_test_rostest_test_server_test_white_black_lists.test
+    11/41 Test #11:
+    _ctest_capabilities_rostest_test_rostest_test_server_test_white_black_lists.test
+    ....................***Failed    1.65 sec
+          Start 12: _ctest_capabilities_rostest_test_rostest_test_service_discovery_test_spec_index_from_service.test
+    12/41 Test #12:
+    _ctest_capabilities_rostest_test_rostest_test_service_discovery_test_spec_index_from_service.test
+    ...***Failed    2.12 sec
+
+    ```
+
+
+    Am I doing sth wrong?
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/44'
+  title: Default provider is ignore
+  body: >
+    It's possible I'm misunderstanding how default providers work, but it
+    appears that if there are multiple providers for an interface, and a default
+    is defined, it isn't necessarily used. Instead, start_capability() just uses
+    the first provider in the list:
+
+
+    https://github.com/osrf/capabilities/blob/master/src/capabilities/server.py#L620
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels:
+    - bug
+- url: 'https://github.com/osrf/capabilities/pull/38'
+  title: Remove the need of a provider for capability dependency in another provider
+  body: >
+    Currently, when specifying a capability dependency for a provider, a
+    provider needs to be specified for that dependency. I'd like to make this
+    optional.
+
+
+    I.e. I'd like to do this:
+
+
+    ```
+
+    %YAML 1.1
+
+
+    ---
+
+    name: tb_bringup
+
+    spec_version: 1
+
+    spec_type: provider
+
+    implements: turtlebot2_capabilities/TurtleBotBringup
+
+    launch_file: 'launch/tb_bringup.launch'
+
+    depends_on:
+      'std_capabilities/DifferentialMobileBase'
+    ```
+
+
+    But currently, I need to do this:
+
+
+    ```
+
+    depends_on:
+      'std_capabilities/DifferentialMobileBase':
+        provider: 'kobuki_capabilities/kobuki_differential_mobile_base'
+    ```
+
+
+    Otherwise I get an error, when this provider is started:
+
+
+    ```
+
+    [ERROR] [WallTime: 1384062569.854299] RuntimeError: Capability Provider
+    'None' not found
+
+    ```
+
+
+    IMO, setting (default) providers is the job of the capability server
+    launcher or the service client.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/37'
+  title: 'When stopping a capability, stop all dependent capabilities as well'
+  body: |
+    Doesn't look like this is happening right now.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels:
+    - bug
+- url: 'https://github.com/osrf/capabilities/issues/33'
+  title: Make roslauncher for providers with dependencies optional
+  body: >
+    For implementing multiple caps made available by just one node/launcher (see
+    #22 ), it might be need to implement many stubs (providers with empty
+    launchers). This doesn't play nicely with the capability server's rules to
+    consider a capability shut down, when the launcher shuts down.
+
+
+    For now, I implemented a simple node, which does nothing to keep the
+    launcher alive.
+
+
+    Could we make the launcher optional, if the provider depends on another
+    interface? The state of that provider would then be determined by the state
+    of its dependency.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/32'
+  title: Simplify usage of semantic and normal capabilities
+  body: >
+    I think, from a user point of view (e.g. starting/stopping capabilies,
+    defining dependencies on them) it's not really important to distinguish
+    between semantic and normal capabilities/interfaces.
+
+
+    Is there a need to keep them separate, e.g. get_interfaces,
+    get_semantic_interfaces? The information about their difference is stored in
+    their specification anyway.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/20'
+  title: Move messages and services into separate package or repo
+  body: |
+    in order minimise dependencies, e.g. for the app manager.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/18'
+  title: fixes the way capability dependencies are started
+  body: >
+    Previously if a capability was started, it tried to start the capabilities
+    it depends on without checking to see if they are already running.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/10'
+  title: Nosetest dependency missing
+  body: >
+    When trying to run the nosetest I got this:
+
+
+    ```
+
+    $ nosetests --with-coverage --cover-package capabilities -s
+
+    nose.plugins.cover: ERROR: Coverage not available: unable to import coverage
+    module
+
+    ```
+
+
+    Installing the python coverage package fixed it.
+
+
+    ```
+
+    $ sudo apt-get install python-coverage
+
+    ```
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/8'
+  title: make run_tests fails
+  body: >
+    ```
+
+    $ make run_tests
+
+    Scanning dependencies of target clean_test_results
+
+    Built target clean_test_results
+
+    Scanning dependencies of target tests
+
+    Built target tests
+
+    Scanning dependencies of target _run_tests_capabilities_nosetests_test
+
+    -- run_tests.py: execute commands
+      /usr/bin/cmake -E make_directory /opt/sandbox_workspace/sandbox_capabilities/build/test_results/capabilities
+      /usr/bin/nosetests -P --process-timeout=60 --where=/opt/sandbox_workspace/sandbox_capabilities/src/capabilities/test --with-xunit --xunit-file=/opt/sandbox_workspace/sandbox_capabilities/build/test_results/capabilities/nosetests-test.xml
+    ..............E........
+
+    ======================================================================
+
+    ERROR: Test source code for PEP8 conformance
+
+    ----------------------------------------------------------------------
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/dist-packages/nose/case.py", line 197, in runTest
+        self.test(*self.arg)
+      File "/opt/sandbox_workspace/sandbox_capabilities/src/capabilities/test/test_code_quality.py", line 7, in test_pep8_conformance
+        pep8style = pep8.StyleGuide(max_line_length=120)
+    AttributeError: 'module' object has no attribute 'StyleGuide'
+
+
+    ----------------------------------------------------------------------
+
+    Ran 23 tests in 0.206s
+
+
+    FAILED (errors=1)
+
+    -- run_tests.py: verify result
+    "/opt/sandbox_workspace/sandbox_capabilities/build/test_results/capabilities/nosetests-test.xml"
+
+    Built target _run_tests_capabilities_nosetests_test
+
+    Scanning dependencies of target _run_tests_capabilities_nosetests
+
+    Built target _run_tests_capabilities_nosetests
+
+    Scanning dependencies of target _run_tests_capabilities
+
+    Built target _run_tests_capabilities
+
+    Scanning dependencies of target run_tests
+
+    Built target run_tests
+
+    ```
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/pull/6'
+  title: Support for system default providers
+  body: >
+    One feature that would be very helpful for deploying this on robots, and
+    making it easier on applications developers to hop from robot to robot, is
+    the notion of a set of system/platform defaults, so that a robot
+    manufacturer may easily set the default set of capabilities that should be
+    preferred when not overwritten by a particular preference passed by an app.
+
+
+    For instance, almost every robot will implement the _Navigation_ capability,
+    but will do so in their own package/launch file, setting important
+    parameters and configurations for that robot. As an application developer,
+    your application should be able to run on any of these robots, and simply
+    ask for "Navigation" and get the proper config for the robot.
+
+
+    I'm not sure how we want to implement these -- should they be parameters to
+    the capabilities server? That way, when the main robot launch file that
+    brings up drivers/roscore is launched, you've set the defaults.
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []
+- url: 'https://github.com/osrf/capabilities/issues/1'
+  title: Thoughts on the Specifications
+  body: >
+    **Remappings for non-public interfaces**
+
+
+    Looking at the nav stack provider specifically here. It defines a remapping
+    for the scan interface. Is that a remapping for itself or for the
+    LaserObservation dependency?. In the former case, since that is a non-public
+    interface, couldn't/shouldn't that be covered by the provider's launch file?
+    In the latter case, wouldn't the LaserObservation provider (hokuyo_base)
+    handle it?
+
+
+    **Interfaces**
+
+    - Topic-Provides-Requires, Services-Provides
+
+
+    Is there a reason you classify like this instead of explicitly pub, sub,
+    service? I'm not opposed to it, just curious. I should make sure to adopt a
+    similar approach to defining interfaces through other components like the
+    gateways and rapps.
+
+    - Action-Provides-Requires?
+
+
+    Will this be accommodate or simpler to break it down to topics?
+
+    - Dynamic Parameters
+
+
+    By dynamic_reconfigure or as a todo idea?
+
+    - Semantic Interface Provider
+
+
+    Just trying to imagine what this would look like. Questions, e.g. would it
+    be re-using the launch file provided by a regular camera provider?
+  repo: 'https://api.github.com/repos/osrf/capabilities'
+  labels: []

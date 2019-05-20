@@ -1,0 +1,1923 @@
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/59'
+  title: Clean up dependencies in pr2_ethercat_drivers
+  body: >
+    It looks like there are a lot of dependencies in pr2_ethercat_drivers that
+    may be unnecessary. Clean them up.
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels: []
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/57'
+  title: >-
+    eml doesn't compile on oneiric due to pthreads undefined references  (ros
+    ticket #5162)
+  body: >
+    This is blocking pr2 meta packages on oneiric
+
+
+    It looks to be missing a system dependency on pthreads
+
+
+    {{{
+     rosmake ] Last 124 lines
+    {-------------------------------------------------------------------------------
+      make[2]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml'
+      make wipe
+      make[3]: Entering directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml'
+      make -C build/eml-svn/build clean
+      make: Entering an unknown directory
+      make: **\* build/eml-svn/build: No such file or directory.  Stop.
+      make: Leaving an unknown directory
+      make[3]: [clean] Error 2 (ignored)
+      rm -rf eml installed
+      rm -rf build
+      make[3]: Leaving directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml'
+      touch wiped
+      mkdir -p build
+    `rospack find rosbuild`/bin/download_checkmd5.py
+    http://pr.willowgarage.com/downloads/eml-r36.tar.bz2 build/eml-r36.tar.bz2
+      [rosbuild] Downloading http://pr.willowgarage.com/downloads/eml-r36.tar.bz2 to build/eml-r36.tar.bz2...Done
+      touch -c build/eml-r36.tar.bz2
+      rm -rf build/eml-svn 
+      cd build; tar xjf ../build/eml-r36.tar.bz2
+      patch -d build/eml-svn -p0 < eml-r36.patch;
+      patching file tests/posix/eval_test.cpp
+      patching file tests/rtnet/eval_test.cpp
+      patching file include/ethercat/arch-eCos/ethercat/ethercat_log.h
+      patching file include/ethercat/arch-template/ethercat_log.h
+      patching file include/ethercat/arch-RTnet/ethercat/ethercat_log.h
+      patching file include/ethercat/arch-RTnet/ethercat/netif.h
+      patching file include/dll/ethercat_dll.h
+      patching file include/dll/ethercat_device_addressed_telegram.h
+      patching file include/dll/ethercat_telegram.h
+      patching file include/dll/ethercat_slave_memory.h
+      patching file include/al/ethercat_slave_conf.h
+      patching file include/al/ethercat_FSM.h
+      patching file include/al/ethercat_mbx.h
+      patching file include/al/ethercat_process_data.h
+      patching file include/al/ethercat_slave_handler.h
+      patching file src/dll/ethercat_telegram.cxx
+      patching file src/dll/ethercat_slave_memory.cxx
+      patching file src/dll/ethercat_frame.cxx
+      patching file src/dll/ethercat_dll.cxx
+      patching file src/dll/ethercat_device_addressed_telegram.cxx
+      patching file src/al/ethercat_slave_conf.cxx
+      patching file src/al/ethercat_router.cxx
+      patching file src/al/ethercat_FSM.cxx
+      patching file src/al/ethercat_process_data.cxx
+      patching file src/al/ethercat_slave_handler.cxx
+      patching file src/al/ethercat_AL.cxx
+      patching file src/arch/posix/ethercat_posix_drv.c
+      patching file src/arch/RTnet/ethercat_xenomai_drv.c
+      patching file src/CMakeLists.txt
+      patching file CMakeLists.txt
+      touch build/eml-svn/unpacked
+      cd build/eml-svn && \
+        mkdir -p build && \
+        cd build && \
+        cmake -D CMAKE_INSTALL_PREFIX=`rospack find eml`/eml .. && \
+        make install
+      -- The C compiler identification is GNU
+      -- The CXX compiler identification is GNU
+      -- Check for working C compiler: /usr/bin/gcc
+      -- Check for working C compiler: /usr/bin/gcc -- works
+      -- Detecting C compiler ABI info
+      -- Detecting C compiler ABI info - done
+      -- Check for working CXX compiler: /usr/bin/c++
+      -- Check for working CXX compiler: /usr/bin/c++ -- works
+      -- Detecting CXX compiler ABI info
+      -- Detecting CXX compiler ABI info - done
+      CMake Warning (dev) in CMakeLists.txt:
+        No cmake_minimum_required command is present.  A line of code such as
+
+    ```
+      cmake_minimum_required(VERSION 2.8)
+
+    should be added at the top of the file.  The version specified may be lower
+
+    if you wish to support older CMake versions for this project.  For more
+
+    information run "cmake --help-policy CMP0000".
+
+    ```
+
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      -- Configuring done
+      -- Generating done
+      -- Build files have been written to: /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build
+      make[3]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[4]: Entering directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[5]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      Scanning dependencies of target eml-dynamic
+      make[5]: Leaving directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[5]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      [  6%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_AL.o
+      [ 12%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_slave_handler.o
+      [ 18%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_process_data.o
+      [ 25%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_FSM.o
+      [ 31%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_router.o
+      [ 37%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_slave_conf.o
+      [ 43%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_mbx.o
+      [ 50%] Building CXX object src/CMakeFiles/eml-dynamic.dir/al/ethercat_master.o
+      [ 56%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_device_addressed_telegram.o
+      [ 62%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_dll.o
+      [ 68%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_frame.o
+      [ 75%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_slave_memory.o
+      [ 81%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_telegram.o
+      [ 87%] Building CXX object src/CMakeFiles/eml-dynamic.dir/dll/ethercat_logical_addressed_telegram.o
+      [ 93%] Building C object src/CMakeFiles/eml-dynamic.dir/arch/posix/ethercat_posix_drv.o
+      Linking CXX shared library libeml.so
+      make[5]: Leaving directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      [ 93%] Built target eml-dynamic
+      make[5]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      Scanning dependencies of target master_test
+      make[5]: Leaving directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[5]: Entering directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      [100%] Building CXX object tests/posix/CMakeFiles/master_test.dir/master_test.o
+      Linking CXX executable master_test
+      CMakeFiles/master_test.dir/master_test.o: In function`main':
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/tests/posix/master_test.cpp:156: undefined reference to `pthread_create'
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/tests/posix/master_test.cpp:160: undefined reference to`pthread_join'
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build/src/libeml.so: undefined reference to `clock_gettime'
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build/src/libeml.so: undefined reference to`pthread_mutexattr_settype'
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build/src/libeml.so: undefined reference to `pthread_mutexattr_init'
+      /tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build/src/libeml.so: undefined reference to`pthread_cancel'
+      collect2: ld returned 1 exit status
+      make[5]: **\* [tests/posix/master_test] Error 1
+      make[5]: Leaving directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[4]: *** [tests/posix/CMakeFiles/master_test.dir/all] Error 2
+      make[4]: Leaving directory`/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[3]: **\* [all] Error 2
+      make[3]: Leaving directory `/tmp/buildd/ros-electric-pr2-ethercat-drivers-1.5.3/debian/ros-electric-pr2-ethercat-drivers/opt/ros/electric/stacks/pr2_ethercat_drivers/eml/build/eml-svn/build'
+      make[2]: **\* [installed] Error 2
+    -------------------------------------------------------------------------------}
+
+    [ rosmake ] Output from build of package eml written to:
+
+    [ rosmake ]   
+    /tmp/buildd/.ros/rosmake/rosmake_output-20111117-012141/eml/build_output.log
+
+    [rosmake-12] Finished <<< eml [FAIL] [ 3.65 seconds ] 
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **tfoote**
+
+    - Reported at: **Wed Nov 16 17:30:16 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5162
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/56'
+  title: 'pr2_ethercat_drivers Holding up Oneiric PR2 Use  (ros ticket #5161)'
+  body: >
+    The pr2_ethercat_drivers package is not building on Hudson. It is needed by
+    ros-electric-pr2-desktop, which is the top level PR2 installation package on
+    the main PR2 wiki page: http://www.ros.org/wiki/Robots/PR2/electric.
+
+
+    I have two machines idle, waiting for this top level package.
+
+
+    Thanks for the help,
+
+
+    Andreas
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **paepcke**
+
+    - Reported at: **Wed Nov 16 14:11:03 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5161
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/54'
+  title: 'Handle wrapping of MCB encoder count  (ros ticket #5010)'
+  body: >
+    Encoder count is only 32bits.  It ''may'' be possible for encoder position
+    to wrap in long-term operation.  The best way to avoid the wrapping issue,
+    is to extend the encoder count to 64bit in ethercat_driver.   However, care
+    needs to be taken to correctly account for robot calibration offset.
+
+
+    trac data:
+
+    - Owner: **wheeler**
+
+    - Reporter: **dking**
+
+    - Reported at: **Tue Feb  8 20:56:38 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5010
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/52'
+  title: >-
+    Update current_time_ (robot->getTime()) when EtherCAT resends dropped
+    packet.  (ros ticket #5003)
+  body: >
+    I believe there is a problem with the robot->getTime()
+
+
+    {{{
+
+    pr2_mechanism_controllers/src/robot.cpp
+
+    ros::Time Robot::getTime()
+
+    {
+     return hw_->current_time_;
+    }
+
+    }}}
+
+
+    ''ethercat_hardware/src/ethercat_hardware.cpp''
+
+    {{{
+
+    void EthercatHardware::update(bool reset, bool halt)
+
+    {
+     ros::Time update_start_time(ros::Time::now());
+     hw_->current_time_ = update_start_time;
+
+     ...
+     ...
+
+     bool success = txandrx_PD(buffer_size_, this_buffer_, max_pd_retries_);
+    }
+
+    }}}
+
+
+    The problem is that the hw->current_time_ is the system time just
+
+    before the first EtherCAT packet is sent.
+
+    If the packet doesn't get dropped the current_time_ will be about
+
+    0-300usec older that the encoder positions in the packet.
+
+    However, if the packet gets dropped,  it will be resent but the
+
+    current_time_ value is not required.
+
+    If the packet timeout is set to 20ms, the current_time_ will be 20msec
+
+    older than the data in the packet.
+
+
+    There are two thinks that should be done:
+
+    1.  I'll change ethercat_hardware set hw->current_time_  to the time
+       just before the realtime packet is sent.
+    2.  The WG0X devices provide there own microsec precision timestamp.
+       The FPGA firmware uses a signal (ReadDataLatchStrobe) that causes all
+       realtime data to be moved to shadow registers just before it is read
+       out of device and into buffer in EtherCAT ASIC.
+       Thus the timestamp and encoder position in the data are taken from the
+       exact same clock cycle on the FPGA.   Ideally this value should be
+       used for calculation velocity.
+
+    The velocity value from actuator state is actually calculated this way
+
+    ''thercat_hardware/src/wg0x.cpp''
+
+    {{{
+
+    bool WG0X:unpackState(unsigned char *this_buffer, unsigned char
+    *prev_buffer)
+
+    {
+     ...
+       state.encoder_velocity_ = double(int(this_status->encoder_count_ -
+    prev_status->encoder_count_))
+         / (this_status->timestamp_ - prev_status->timestamp_) \* 1e+6;
+     state.velocity_ = state.encoder_velocity_ /
+    actuator_info_.pulses_per_revolution_ \* 2 \* M_PI;
+
+    }
+
+    }}}
+
+
+    The velocity_ value from actuator state should give a much better
+
+    velocity measurement (even with packet loss)
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Fri Feb  4 17:48:29 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5003
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/51'
+  title: 'Fix overflow issue with ActuatorState timestamp_  (ros ticket #5002)'
+  body: >
+    There is the timestamp_ value in  ActuatorState, that is based on the
+    timestamp coming from the MCB.
+
+
+    {{{
+
+    class ActuatorState{
+     double timestamp_; //!< The time at which this actuator state was
+    measured (in seconds)
+
+    };
+
+    }}}
+
+
+    However, the code for generating this value will overflow.
+
+
+    {{{
+
+    bool WG0X::unpackState(unsigned char *this_buffer, unsigned char
+    *prev_buffer)
+
+    {
+     ...
+     state.timestamp_ = this_status->timestamp_ / 1e+6;
+    ...
+
+    }
+
+    }}}
+
+
+    The timestamp is a 32 bit number that counts microseconds.   This will
+    overflow every 72 minutes. The timestamp will jump by -72minutes once every
+    72 min.
+
+
+    I could augment the timestamp to 64 bits and then convert to the
+
+    timestamp to fix this issue.
+
+
+    {{{
+
+    bool WG0X::unpackState(unsigned char *this_buffer, unsigned char
+    *prev_buffer)
+
+    {
+     timestamp64_ += (this_status->timestamp_ - prev_status->timestamp_);
+     ...
+     state.timestamp_ = double(timestamp64_) / 1e+6;
+     ...
+    }
+
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Fri Feb  4 17:43:47 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5002
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/50'
+  title: >-
+    Use node namespace for pr2_etherCAT instead of hardcoded value  (ros ticket
+    #4992)
+  body: |
+    from pr2_etherCAT/src/main.cpp :
+    {{{
+    static const std::string name = "pr2_etherCAT";
+    }}}
+
+    trac data:
+    - Owner: **wheeler**
+    - Reporter: **dking**
+    - Reported at: **Mon Jan 24 10:59:23 2011**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4992
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/49'
+  title: 'eml has bad export in manifest flags  (ros ticket #4978)'
+  body: >
+    The "eml" package has a bad export in the manifest linker flags. This shows
+    up in "roswtf" checks:
+
+
+    {{{
+
+    ERROR The following packages have rpath issues in manifest.xml:
+
+    - qualification: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+    - eml: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+    - ethercat_hardware: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+    - pr2_etherCAT: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+    - pr2_bringup: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+    - ectools: found flag
+    "-L/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib", but no
+    matching
+    "-Wl,-rpath,/opt/ros/unstable/stacks/pr2_ethercat_drivers/eml/eml/lib"
+
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Mon Jan 17 19:18:21 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4978
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/47'
+  title: 'pr2_etherCAT does not exit when ROS_BREAK called.  (ros ticket #4944)'
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/46'
+  title: 'Possible error in eml exports in manifest.  (ros ticket #4904)'
+  body: >
+    There seems to be a missing `/eml` in the -Wl option below
+
+    {{{
+
+    <cpp lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/eml/lib -leml"
+    cflags="-I${prefix}/eml/include"/>
+
+    }}}
+
+
+    This is in the eml manifest.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **blaise**
+
+    - Reported at: **Wed Nov 17 16:24:56 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4904
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/44'
+  title: >-
+    non-deterministic symbol lookup error in pr2_etherCAT on lucid  (ros ticket
+    #4852)
+  body: >
+    On prm1, frequently when starting the robot, we get an error message:
+
+
+    {{{
+
+    [ INFO] [1288139078.908006914]: Xml file not found, reading from parameter
+    server
+
+    /opt/ros/cturtle/stacks/pr2_robot/pr2_etherCAT/pr2_etherCAT: symbol lookup
+    error:
+    /opt/ros/cturtle/stacks/pr2_controllers/ethercat_trigger_controllers/lib/libethercat_trigger_controllers.so:
+    undefined symbol: _ZN5boost18co\
+
+    ndition_variable4waitERNS_11unique_lockINS_5mutexEEE
+
+    [INFO] 1288139079.470571: Loading controller configuration on parameter
+    server...
+
+    Traceback (most recent call last):
+      File "/opt/ros/cturtle/stacks/pr2_mechanism/pr2_controller_manager/scripts/spawner", line 159, in <module>
+        if __name__ == '**main**': main()
+      File "/opt/ros/cturtle/stacks/pr2_mechanism/pr2_controller_manager/scripts/spawner", line 137, in main
+        resp = load_controller(name)
+      File "/opt/ros/cturtle/ros/core/rospy/src/rospy/impl/tcpros_service.py", line 418, in **call**
+        return self.call(_args, *_kwds)
+      File "/opt/ros/cturtle/ros/core/rospy/src/rospy/impl/tcpros_service.py", line 487, in call
+        raise ServiceException("unable to connect to service: %s"%e)
+    rospy.service.ServiceException: unable to connect to service: [Errno 104]
+    Connection reset by peer
+
+    [ERROR] 1288139079.603237: AsynchronousUpdater failed with exception: unable
+    to connect to service: [Errno 104] Connection reset by peer
+
+    [ERROR] 1288139079.603971: AsynchronousUpdater failed with exception: unable
+    to connect to service: [Errno 104] Connection reset by peer
+
+    Traceback (most recent call last):
+      File "/opt/ros/cturtle/stacks/pr2_mechanism/pr2_controller_manager/scripts/spawner", line 159, in <module>
+        if **name** == '**main**': main()
+      File "/opt/ros/cturtle/stacks/pr2_mechanism/pr2_controller_manager/scripts/spawner", line 137, in main
+        resp = load_controller(name)
+      File "/opt/ros/cturtle/ros/core/rospy/src/rospy/impl/tcpros_service.py", line 418, in **call**
+        return self.call(_args, *_kwds)
+      File "/opt/ros/cturtle/ros/core/rospy/src/rospy/impl/tcpros_service.py", line 507, in call
+        raise ServiceException("transport error completing service call: %s"%(str(e)))
+    rospy.service.ServiceException: transport error completing service call:
+    unable to receive data from sender, check sender's logs for details
+
+    [WARN] 1288139079.612872: Spawner couldn't reach pr2_controller_manager to
+    take down controllers.
+
+    [WARN] 1288139079.613128: Spawner couldn't reach pr2_controller_manager to
+    take down controllers.
+
+    [INFO] 1288139079.618595: Arm selection was set to "auto".  Chose to
+    calibrate using "both"
+
+    [INFO] 1288139079.620719: Bringing down calibration node
+
+    Exception rospy.service.ServiceException: ServiceException('unable to
+    connect to service: [Errno 111] Connection refused',) in <bound method
+    CalibrateParallel.__del__ of <__main__.CalibrateParallel instance at
+    0x25fc908>> \
+
+    ignored
+
+    Traceback (most recent call last):
+      File "/opt/ros/cturtle/stacks/pr2_robot/pr2_bringup/scripts/calibrate_pr2.py", line 418, in <module>
+        if **name** == '**main**': main()
+      File "/opt/ros/cturtle/stacks/pr2_robot/pr2_bringup/scripts/calibrate_pr2.py", line 397, in main
+        del arm
+    UnboundLocalError: local variable 'arm' referenced before assignment
+
+    [realtime_loop-1] process has died [pid 7673, exit code 127].
+
+    log files:
+    /u/hsiao/.ros/log/c37f3d80-e15f-11df-96dc-00238bdfdf6a/realtime_loop-1_.log
+
+    [l_forearm_cam_trigger_spawner-24] process has died [pid 7845, exit code 1].
+
+    log files:
+    /u/hsiao/.ros/log/c37f3d80-e15f-11df-96dc-00238bdfdf6a/l_forearm_cam_trigger_spawner-24_.log
+
+    [spawner_camera_synchronizer-10] process has died [pid 7727, exit code 1].
+
+    log files:
+    /u/hsiao/.ros/log/c37f3d80-e15f-11df-96dc-00238bdfdf6a/spawner_camera_synchronizer-10*.log
+
+    [calibrate_pr2-2] process has died [pid 7676, exit code 1].
+
+    }}}
+
+
+    However, it does not appear to happen deterministically.
+
+
+    trac data:
+
+    - Owner: **wheeler**
+
+    - Reporter: **leibs**
+
+    - Reported at: **Tue Oct 26 17:46:58 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4852
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/42'
+  title: 'Diagnostics should complain loudly on encoder errors  (ros ticket #4820)'
+  body: >
+    I'm getting many many encoder errors in diagnostics (1376 at this point). 
+    It's causing the joint position to drift (it no longer matches the original
+    calibration).
+
+
+    This is a serious error, and should be reported as such in diagnostics.
+
+
+    trac data:
+
+    - Owner: **sglaser**
+
+    - Reporter: **sglaser**
+
+    - Reported at: **Wed Oct 20 11:59:12 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4820
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/40'
+  title: >-
+    Add warning in diagnostics if encoder errors within 5 seconds  (ros ticket
+    #4790)
+  body: >
+    We should add a warning in the diagnostics if we have encoder errors in the
+    past five seconds. Encoder errors could be causing problems with joint
+    calibration.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Oct 14 21:13:45 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4790
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/39'
+  title: >-
+    Add loop jitter to diagnostics from "Realtime Control Loop"  (ros ticket
+    #4782)
+  body: >
+    We should add a field to the diagnostics for jitter in the RT loop, which we
+    can measure in microseconds.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Oct 13 15:02:02 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4782
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/38'
+  title: 'Reduce pr2_ethercat dropped packet timeout.  (ros ticket #4761)'
+  body: >
+    pr2_etherCAT waits up to 20ms for a sent packet to return.  This causes
+    controller to glitch when only a single packet gets dropped. Reducing the
+    timeout to should reduce the severity of problems caused by a dropped
+    packet.  
+
+    The trade-off to reducing the timeout is that more packets may be dropped as
+    result of CPU overload (ie late packets).   
+
+
+    A timeout to 1ms seems to be a good setting since the realtime loop runs at
+    1kHz.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Fri Oct  1 11:06:54 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4761
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/36'
+  title: 'Launch file shutdown can cause motors to halt  (ros ticket #4750)'
+  body: >
+    It looks like operations on PR2's that start or stop lots of processes (like
+    when launching or shutting down) can cause motors to halt. The computer
+    stops sending commands to the motors, even though the realtime loop should
+    have priority. Derek thinks this may have to do with the hard drive
+    interrupts. 
+
+
+    Related to WG Support 348
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Sep 28 13:37:00 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4750
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/35'
+  title: 'update pr2_ethercat_drivers to depend on rx  (ros ticket #4695)'
+  body: >
+    fingertip_pressure depends on wxswig, which is being moved from the ros to
+    the 'rx' stack. Please release a new version of pr2_ethercat_drivers into
+    "unstable.rosdistro" with this new stack dependency. This will require
+    branching the pr2_ethercat_drivers stack
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **kwc**
+
+    - Reported at: **Fri Sep  3 19:40:42 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4695
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/34'
+  title: 'pr2_etherCAT should warn when packet loss occurs.  (ros ticket #4661)'
+  body: >
+    When pr2_etherCAT drops a packet the timeout (or 20ms) causes a range of
+    issues (controller glitches).   There are diagnostics that count these
+    dropped packets, but they are hidden to the casual user.
+
+    The diagnostics state should report a WARNING or ERROR for 30-120 seconds
+    after a packet is dropped.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Mon Aug 23 14:08:38 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4661
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/33'
+  title: >-
+    real_hardware_sensor.launch has illegal node name in fingertip_pressure 
+    (ros ticket #4649)
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/32'
+  title: >-
+    Ethercat driver warns that led_projector does not support storing
+    calibration  (ros ticket #4619)
+  body: >
+    [ WARN] [1281113758.625027775]: Device led_projector does not support
+    storing calibration offsets
+
+
+    Can the driver detect that this type of board does not need to store any
+    calibration offsets, and skip the warning?
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **wim**
+
+    - Reported at: **Fri Aug  6 09:57:58 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4619
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/31'
+  title: >-
+    pr2_etherCAT halts motors on startup when launching large files  (ros ticket
+    #4577)
+  body: >
+    I'm launching pr2_etherCAT on my machine, and another file immediately after
+    that. It looks like pr2_etherCAT is halting motors on startup. This only
+    happens the first time I load the program. After I load it once, the program
+    seems to start faster and motors don't halt. Motors halt because of a
+    watchdog timeout.
+
+
+    Using cturtle, pr2_ethercat_drivers 1.1.5, pr2_robot 1.0.1
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Jul 21 11:02:12 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4577
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/30'
+  title: >-
+    Add a message in "Ethercat Master" diagnostics when unable to reset motors 
+    (ros ticket #4475)
+  body: >
+    When a user is unable to reset motors, there should be an error message in
+    the "Ethercat Master" diagnostics saying "Unable to reset motors. Restart
+    pr2-etherCAT" or something. 
+
+
+    Users can get confused when the "reset_motors" service call doesn't work.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Sat Jun 26 00:15:12 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4475
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/29'
+  title: >-
+    Add counter for reset_motors/halt_motors service calls to pr2_etherCAT  (ros
+    ticket #4474)
+  body: >
+    It should count the number of times reset_motors/halt_motors was called
+    since startup.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Sat Jun 26 00:13:25 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4474
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/28'
+  title: 'motorconf should not need to be run as root  (ros ticket #4461)'
+  body: >
+    It can also be run with pr2_grant properly.
+
+
+    Right now, motorconf will check if it is root and abort if not. I think a
+    better answer is to warn that it isn't root and continue anyway. 
+
+
+    {{{
+
+    # Index: src/motorconf.cpp
+
+
+    --- src/motorconf.cpp   (revision 39661)
+
+    +++ src/motorconf.cpp   (working copy)
+
+    @@ -409,11 +409,10 @@
+       if (!g_options.interface_)
+         Usage("You must specify a network interface");
+    -  // Must run as root
+
+    -  // Warn if not root
+      if (geteuid() != 0)
+      {
+    -    fprintf(stderr, "You must run as root!\n");
+
+    -    exit(-1);
+
+    -    ROS_WARN("motorconf not running as root. Must run as root or with
+    pr2_grant. Continuing anyway");
+      }
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Jun 24 14:01:52 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4461
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - blocker
+    - bug
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/27'
+  title: >-
+    checkprojectorfirmware.sh produces errors about ros::Time  (ros ticket
+    #4436)
+  body: |
+    {{{
+    - Running 'c1/checkprojectorfirmware.sh'...       FAIL (Return code: 1)
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      Caught exception while logging: [Cannot use ros::Time before calling ros::init]
+      }}}
+
+    trac data:
+    - Owner: **dking**
+    - Reporter: **leibs**
+    - Reported at: **Mon Jun 14 14:49:22 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4436
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/25'
+  title: 'Remove assert from pr2_etherCAT for device count  (ros ticket #4166)'
+  body: >
+    ethercat_hardware/src/ethercat_device.cpp
+
+    {{{
+        // If this previously tried to clear the error counters but d/n get a response  
+        // then use the newly read values to guess if they got cleared or not.  
+        if (errorCountersMayBeCleared_) {
+          if (!e.isGreaterThan(errorCountersPrev_)) {
+            errorCountersPrev_.zero();
+          }
+          errorCountersMayBeCleared_ = false;
+        }
+        assert(!errorCountersPrev_.isGreaterThan(e));
+
+    ```
+
+    //
+    Accumulate                                                                                                    
+
+    this->accumulate(e, errorCountersPrev_);
+
+    errorCountersPrev_ = e;
+
+    ```
+
+
+    }}}
+
+
+    The assert can trip and we can loose our debug info. A few changes:
+
+    - We can make it a ROS_ASSERT() to get debug info/error message out
+
+    - Halt motors and publish on ROS_ERROR()
+      *
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Mon Apr 12 20:10:30 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4166
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/24'
+  title: 'view_fingertip_pressure doesn''t work in Karmic  (ros ticket #4129)'
+  body: |
+    like the summary says.
+
+    trac data:
+    - Owner: **blaise**
+    - Reporter: **kaijenhsiao**
+    - Reported at: **Mon Apr  5 17:29:09 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4129
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/23'
+  title: 'Make mtrace plot an rxbag plugin  (ros ticket #4111)'
+  body: >
+    That would be awesome.
+
+
+    Ideally, it would be very useful to compare multiple traces in the same bag,
+    from one or more motors. I'm not sure how doable this is for an rxbag
+    plugin.
+
+
+    trac data:
+
+    - Owner: **watts**
+
+    - Reporter: **watts**
+
+    - Reported at: **Fri Apr  2 14:17:47 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4111
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/21'
+  title: >-
+    Make script to move arm to known position for gripper accelerometer check 
+    (ros ticket #4086)
+  body: >
+    We need to move both arms to LED up and tips up to check the readings of the
+    gripper accelerometers. The code can use a tuckarm-style move arm command,
+    and verify the readings of the accelerometer in both positions.
+
+    - Move arm node (action server)
+
+    - Commander node, which reads accelerometer data (action client)
+
+
+    There may be an existing move arm node that's perfect for this. No collision
+    checks necessary.
+
+
+    trac data:
+
+    - Owner: **watts**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Mar 30 01:58:00 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4086
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/20'
+  title: 'Add script/utilty for turning on gripper LED''s  (ros ticket #4085)'
+  body: |
+    We need to verify these LED's during PR2 bringup tests.
+
+    trac data:
+    - Owner: **watts**
+    - Reporter: **watts**
+    - Reported at: **Tue Mar 30 01:51:04 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4085
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/19'
+  title: 'EtherCAT chain output for pr2-systemcheck  (ros ticket #3961)'
+  body: >
+    We need a machine readable output of the PR2 EtherCAT chain for a system
+    check. There should be a command line utility, like 'pr2_eth_chain', and it
+    should give output that is machine readable.
+
+
+    We can parse this output to give:
+
+    - Y/N response for pr2-systemcheck
+
+    - Give a graph that allows comparison with an "ideal" graph for debugging.
+      *
+
+    trac data:
+
+    - Owner: **leibs**
+
+    - Reporter: **watts**
+
+    - Reported at: **Mon Mar  8 11:57:08 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3961
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/18'
+  title: >-
+    Possible problem with data synchronization on packet boundary.  (ros ticket
+    #3890)
+  body: >
+    Problem with data synchronization on packet boundary.
+
+
+    In a recent version of pr2_etherCAT, verification of checksum values on
+    status data was added.   Since that time, the r_forearm_roll MCB on PRL has
+    reported checksum errors multiple times over the course of a week.  An
+    estimate of the MTBF is 30 minutes.   Initially it was assumed that there
+    was a bad solder joint on that particular MCB.  After replacing the problem
+    board in PRL, we are still seeing the same issues with issue.  Also there
+    was a report today of a checksum error on the r_forearm_roll motor on PRH. 
+
+
+    I'm now under the assumption that there is some sort of race condition that
+    only effects that particular board.  I've looked how the process data is
+    mapped on PRL and have found that the status data of device 30
+    (r_forearm_roll) is being split across two packets.
+
+
+    Debuging output from pr2_ethercat showing addresses that each devices status
+    and command data is mapped to (mapping start at address 0x10000). 
+
+    {{{ 
+
+    [ INFO] 1266471784.581650000: device 2, command  10000 = 0x10000+0
+
+    [ INFO] 1266471784.581825000: device 2, status   10008 = 0x10000+8
+
+    [ INFO] 1266471784.625008000: device 3, command  10034 = 0x10000+52
+
+    [ INFO] 1266471784.625054000: device 3, status   1003C = 0x10000+60
+
+    [ INFO] 1266471784.668233000: device 4, command  10068 = 0x10000+104
+
+    [ INFO] 1266471784.668278000: device 4, status   10070 = 0x10000+112
+
+    [ INFO] 1266471784.711455000: device 5, command  1009C = 0x10000+156
+
+    [ INFO] 1266471784.711501000: device 5, status   100A4 = 0x10000+164
+
+    [ INFO] 1266471784.754678000: device 6, command  100D0 = 0x10000+208
+
+    [ INFO] 1266471784.754727000: device 6, status   100D8 = 0x10000+216
+
+    [ INFO] 1266471784.797903000: device 7, command  10104 = 0x10000+260
+
+    [ INFO] 1266471784.797948000: device 7, status   1010C = 0x10000+268
+
+    [ INFO] 1266471784.841132000: device 8, command  10138 = 0x10000+312
+
+    [ INFO] 1266471784.841182000: device 8, status   10140 = 0x10000+320
+
+    [ INFO] 1266471784.884350000: device 9, command  1016C = 0x10000+364
+
+    [ INFO] 1266471784.884398000: device 9, status   10174 = 0x10000+372
+
+    [ INFO] 1266471784.927575000: device 10, command  101A0 = 0x10000+416
+
+    [ INFO] 1266471784.927621000: device 10, status   101A8 = 0x10000+424
+
+    [ INFO] 1266471784.970801000: device 11, command  101D4 = 0x10000+468
+
+    [ INFO] 1266471784.970847000: device 11, status   101DC = 0x10000+476
+
+    [ INFO] 1266471785.014023000: device 12, command  10208 = 0x10000+520
+
+    [ INFO] 1266471785.014105000: device 12, status   10210 = 0x10000+528
+
+    [ INFO] 1266471785.057249000: device 13, command  1023C = 0x10000+572
+
+    [ INFO] 1266471785.057296000: device 13, status   10244 = 0x10000+580
+
+    [ INFO] 1266471785.100472000: device 14, command  10270 = 0x10000+624
+
+    [ INFO] 1266471785.100519000: device 14, status   10278 = 0x10000+632
+
+    [ INFO] 1266471785.227145000: device 17, command  102A4 = 0x10000+676
+
+    [ INFO] 1266471785.227194000: device 17, status   102AC = 0x10000+684
+
+    [ INFO] 1266471785.270370000: device 18, command  102D8 = 0x10000+728
+
+    [ INFO] 1266471785.270417000: device 18, status   102E0 = 0x10000+736
+
+    [ INFO] 1266471785.313593000: device 19, command  1030C = 0x10000+780
+
+    [ INFO] 1266471785.313642000: device 19, status   10314 = 0x10000+788
+
+    [ INFO] 1266471785.356820000: device 20, command  10340 = 0x10000+832
+
+    [ INFO] 1266471785.356876000: device 20, status   10348 = 0x10000+840
+
+    [ INFO] 1266471785.400042000: device 21, command  10374 = 0x10000+884
+
+    [ INFO] 1266471785.400089000: device 21, status   1037C = 0x10000+892
+
+    [ INFO] 1266471785.443256000: device 22, command  103A8 = 0x10000+936
+
+    [ INFO] 1266471785.443298000: device 22, status   103B0 = 0x10000+944
+
+    [ INFO] 1266471785.486491000: device 23, command  103DC = 0x10000+988
+
+    [ INFO] 1266471785.486537000: device 23, status   103E4 = 0x10000+996
+
+    [ INFO] 1266471785.529773000: device 24, command  10410 = 0x10000+1040
+
+    [ INFO] 1266471785.529816000: device 24, status   10418 = 0x10000+1048
+
+    [ INFO] 1266471785.529850000: device 24, pressure 10455 = 0x10000+1109
+
+    [ INFO] 1266471785.573687000: device 25, command  104B3 = 0x10000+1203
+
+    [ INFO] 1266471785.573735000: device 25, status   104BB = 0x10000+1211
+
+    [ INFO] 1266471785.616914000: device 26, command  104E7 = 0x10000+1255
+
+    [ INFO] 1266471785.616960000: device 26, status   104EF = 0x10000+1263
+
+    [ INFO] 1266471785.660137000: device 27, command  1051B = 0x10000+1307
+
+    [ INFO] 1266471785.660185000: device 27, status   10523 = 0x10000+1315
+
+    [ INFO] 1266471785.703365000: device 28, command  1054F = 0x10000+1359
+
+    [ INFO] 1266471785.703411000: device 28, status   10557 = 0x10000+1367
+
+    [ INFO] 1266471785.746585000: device 29, command  10583 = 0x10000+1411
+
+    [ INFO] 1266471785.746632000: device 29, status   1058B = 0x10000+1419
+
+    [ INFO] 1266471785.789808000: device 30, command  105B7 = 0x10000+1463
+
+    [ INFO] 1266471785.789865000: device 30, status   105BF = 0x10000+1471
+
+    [ INFO] 1266471785.833033000: device 31, command  105EB = 0x10000+1515
+
+    [ INFO] 1266471785.833079000: device 31, status   105F3 = 0x10000+1523
+
+    [ INFO] 1266471785.876257000: device 32, command  1061F = 0x10000+1567
+
+    [ INFO] 1266471785.876304000: device 32, status   10627 = 0x10000+1575
+
+    [ INFO] 1266471785.919482000: device 33, command  10653 = 0x10000+1619
+
+    [ INFO] 1266471785.919528000: device 33, status   1065B = 0x10000+1627
+
+    [ INFO] 1266471785.919560000: device 33, pressure 10698 = 0x10000+1688
+
+    [ INFO] 1266471785.963204000: device 34, command  106F6 = 0x10000+1782
+
+    [ INFO] 1266471785.963252000: device 34, status   106FE = 0x10000+1790
+
+    [ INFO] 1266471786.006476000: device 35, command  1072A = 0x10000+1834
+
+    [ INFO] 1266471786.006535000: device 35, status   1073A = 0x10000+1850
+
+    [ INFO] 1266471786.049655000: device 36, command  10766 = 0x10000+1894
+
+    [ INFO] 1266471786.049701000: device 36, status   1076E = 0x10000+1902
+
+    }}}
+
+
+    The amount of data we allow in one packet is 1486 bytes (specifed in eml /
+    ethercat_process_data.cxx).  
+
+    The first 15 bytes of r_forearm_roll data is in the first packet (1486-1471
+    = 15).   The last 29 bytes in the second packet (1515-1486 = 29).
+
+
+    Splitting process data across a packet boundary should NOT cause issues,
+    because the EtherCAT SyncManager hardware should provide atomicity to both
+    command and status buffer access.  When the first byte of status buffer is
+    read, the SyncManager will prevents changes to the contents of the buffer
+    until the last byte of the buffer is read.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Wed Feb 17 22:46:14 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3890
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/17'
+  title: >-
+    gripper boards should discard 'full scale' bandwidth and range requests 
+    (ros ticket #3883)
+  body: >
+    Range requests of "11" and bandwidth requests of "111" seem to put the
+    accelerometer in a bad state.
+
+
+    The gripper board firmware should be smart about this, and not pass on these
+    commands to the accelerometer.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **vpradeep**
+
+    - Reported at: **Tue Feb 16 10:44:01 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3883
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/15'
+  title: 'Problem with overrun calculations in pr2_etherCAT  (ros ticket #3866)'
+  body: >
+    I was running pr2_etherCAT on a new machine, and I was having problems with
+    pr2_etherCAT. The Realtime Controller diagnostics reported 50-300 recent
+    overruns when I was using a hysteresis controller on a torso joint, no other
+    controllers running. After I killed the controller, I still got about 50
+    overruns/second.
+
+
+    The diagnostics reported the cause of the last overrun, but in all cases I
+    looked at, the sum of ec and cm was less than 1000us. 
+
+
+    Looking at the code, the only thing I can think of is that the clocks that
+    measure overruns are different than the ones that measure the ec/cm times.
+
+
+    pr2_etherCAT/src/main.cpp
+
+    {{{
+
+    static inline double now()
+
+    {
+      struct timespec n;
+      clock_gettime(CLOCK_MONOTONIC, &n);
+      return double(n.tv_nsec) / NSEC_PER_SEC + n.tv_sec;
+    }
+
+    }}}
+
+
+    {{{
+        double after_ec = now();
+        cm.update();
+        double end = now();
+
+    ```
+
+    g_stats.ec_acc(after_ec - start);
+
+    g_stats.cm_acc(end - after_ec);
+
+
+    if ((end - last_published) > 1.0)
+
+    {
+      publishDiagnostics(publisher);
+      last_published = end;
+    }
+
+
+    // Compute end of next period
+
+    timespecInc(tick, period);
+
+
+    struct timespec before; 
+
+    clock_gettime(CLOCK_REALTIME, &before); 
+
+    if ((before.tv_sec + before.tv_nsec/1e9) > (tick.tv_sec + tick.tv_nsec/1e9))
+
+    {
+      // We overran, snap to next "period"
+      tick.tv_sec = before.tv_sec;
+      tick.tv_nsec = (before.tv_nsec / period) * period;
+      timespecInc(tick, period);
+
+      g_stats.overruns++;
+      g_stats.recent_overruns++;
+      g_stats.last_overrun = 0;
+      g_stats.overrun_ec = after_ec - start;
+      g_stats.overrun_cm = end - after_ec;
+    }
+
+    ```
+
+
+    }}}
+
+
+    Why do we use monotonic for calculating cm/ec times, and realtime for the
+    overruns? I think there was a mismatch between the clocks and that caused
+    the cryptic error messages.
+
+
+    One thing I thought of is that pr2_etherCAT might not be running in a
+    realtime thread. I checked the computer, and it has an rtprempt kernel on
+    it.
+
+
+    pr2_etherCAT also has a bad error message if it fails to create the
+    diagnostic thread.
+
+    {{{
+      //Start Non-realtime diagonostic thread
+      static pthread_t diagnosticThread;
+      if ((rv = pthread_create(&diagnosticThread, NULL, diagnosticLoop, &ec)) != 0)
+      {
+        ROS_FATAL("Unable to create control thread: rv = %d", rv);
+        goto end;
+      }
+    }}}
+
+    Does it check that it is in realtime anywhere?
+
+
+    I didn't notice an "#include time.h" in the main.cpp file, so it must be
+    using an indirect include or something.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Feb 11 19:15:38 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3866
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/14'
+  title: 'Motor model white paper  (ros ticket #3853)'
+  body: >
+    We need to document and verify the motor model. The wiki should have links
+    from the diagnostic output to the inner workings of the model. 
+
+    - Users will trust and understand the model if it is well documented
+
+    - WG users can look for holes or bugs in the model using the documentation
+
+
+    Documentation should be on the wiki under "ethercat_hardware". Should have:
+
+    - Current, voltage measurement hardware implementation and limitations
+
+    - Filters for measurements
+      - Reasons and justification of filters
+      - Pictures showing raw data going through filter
+    - Motor resistance calculation
+
+    - Diagnostic message output
+      - Links from troubleshooting page to most relevant places in model
+    - Table of error tolerances, constants
+
+    - How to use mtrace tool
+
+
+    I volunteer to do doc review.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Feb 10 11:11:55 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3853
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/13'
+  title: 'Motor model resistance calculation fixes  (ros ticket #3850)'
+  body: |
+    Motor model in ethercat_hardware should:
+    - Use the given motor resistance as the initial value
+    - Publish the variance of the estimate, Kalman filter style
+
+    trac data:
+    - Owner: **dking**
+    - Reporter: **watts**
+    - Reported at: **Wed Feb 10 11:06:12 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3850
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/12'
+  title: 'Change motor model diagnostic names  (ros ticket #3845)'
+  body: |
+    {{{
+      d.addf("Current Error", "%f",              current_error);
+      d.addf("Max Current Error", "%f",          current_error_max);
+      d.addf("Filtered Current Error", "%f",     abs_current_error);
+      d.addf("Max Filtered Current Error", "%f", abs_current_error_max);
+    }}}
+
+    These names are no longer accurate.
+
+    trac data:
+    - Owner: **watts**
+    - Reporter: **watts**
+    - Reported at: **Wed Feb 10 10:33:06 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3845
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/11'
+  title: 'Motor model compute max current error incorrectly  (ros ticket #3840)'
+  body: >
+    ethercat_hardware/src/motor_model.cpp
+
+
+    {{{
+      else if (current_error_.filter() > current_error_limit)
+      {
+        //complain and shut down
+        rv = false;
+        reason = "Current loop error too large (MCB failing to hit desired current)";
+      }
+    }}}
+
+
+    Problems 
+
+    - Should this be abs current error
+
+    - Should it be a different filtered time constant? current_error_ is 0.2
+
+
+    Diagnostics:
+
+    {{{
+      filter_mutex_.lock(); 
+      {
+        motor_voltage_error         = motor_voltage_error_.filter(); 
+        motor_voltage_error_max     = motor_voltage_error_.filter_max(); 
+        abs_motor_voltage_error     = abs_motor_voltage_error_.filter(); 
+        abs_motor_voltage_error_max = abs_motor_voltage_error_.filter_max(); 
+        current_error               = current_error_.filter();  
+        current_error_max           = current_error_.filter_max(); 
+        abs_current_error           = abs_current_error_.filter(); 
+        abs_current_error_max       = abs_current_error_.filter_max(); 
+        est_motor_resistance        = motor_resistance_.filter();
+      }
+      filter_mutex_.unlock();
+
+      d.addf("Motor Voltage Error %", "%f",        100.0 \* motor_voltage_error);
+      d.addf("Max Motor Voltage Error %", "%f",    100.0 \* motor_voltage_error_max);
+      d.addf("Filtered Voltage Error %", "%f",     100.0 \* abs_motor_voltage_error);
+      d.addf("Max Filtered Voltage Error %", "%f", 100.0 \* abs_motor_voltage_error_max);
+
+      d.addf("Current Error", "%f",              current_error);
+      d.addf("Max Current Error", "%f",          current_error_max);
+      d.addf("Filtered Current Error", "%f",     abs_current_error);
+      d.addf("Max Filtered Current Error", "%f", abs_current_error_max);
+    }}}
+
+
+    The voltage and current error names are incorrect. They are ALL filtered,
+    and some of them are abs(). It looks like some of these names should be
+    removed.
+
+
+    We need to debug the intent of the motor model changes to see what the
+    desired result is.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Feb  9 14:49:40 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3840
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/10'
+  title: >-
+    ethercat_hardware eeprom code needs to verify after write  (ros ticket
+    #3794)
+  body: >
+    Have a bad MCB with bad byte on eeprom page 4095.  Motorconf programs page
+    w/o any errors but complains about board being unprogrammed afterward.
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **dking**
+
+    - Reported at: **Wed Feb  3 11:33:07 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3794
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/9'
+  title: >-
+    In released stacks, realtime control loop frequently takes too much time 
+    (ros ticket #3749)
+  body: >
+    Close if this is known/solved issue,
+
+
+    But, running on pri in "latest" I periodically get the warnings:
+
+
+    {{{
+
+    Full name: /Realtime Controllers/Realtime Control Loop
+
+    Component: Realtime Control Loop
+
+    Hardware ID: 
+
+
+    Level: Warning
+
+    Message: Realtime loop used too much time in the last 30 seconds.
+
+
+    Max EtherCAT roundtrip (us): 21330.25
+
+    Avg EtherCAT roundtrip (us): 420.66
+
+    Max Controller Manager roundtrip (us): 285.60
+
+    Avg Controller Manager roundtrip (us): 43.41
+
+    Control Loop Overruns: 31
+
+    Recent Control Loop Overruns: 0
+
+    Last Control Loop Overrun Cause: ec: 1085.71us, cm: 53.51us
+
+    }}}
+
+
+    and
+
+
+    {{{
+
+    Full name: /Realtime Controllers
+
+    Component: Realtime Controllers
+
+    Hardware ID: 
+
+
+    Level: Warning
+
+    Message: Warning
+
+
+    Controller (base_controller): Running
+
+    Controller (base_odometry): Running
+
+    Controller (forearm_camera_l_trigger): Running
+
+    Controller (forearm_camera_r_trigger): Running
+
+    Controller (head_camera_trigger): Running
+
+    Controller (head_traj_controller): Running
+
+    Controller (l_arm_controller): Running
+
+    Controller (l_gripper_controller): Running
+
+    Controller (laser_tilt_controller): Running
+
+    Controller (projector_controller): Running
+
+    Controller (projector_trigger): Running
+
+    Controller (prosilica_inhibit_projector_controller): Running
+
+    Controller (r_arm_controller): Running
+
+    Controller (r_gripper_controller): Running
+
+    Controller (torso_controller): Running
+
+    Realtime Control Loop: Realtime loop used too much time in the last 30
+    seconds.
+
+    }}}
+
+
+    In the standard configuration this is now the only warning that we see.
+
+
+    trac data:
+
+    - Owner: **wheeler**
+
+    - Reporter: **leibs**
+
+    - Reported at: **Tue Jan 26 20:34:14 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3749
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/8'
+  title: 'motorconf does not compile with goLD  (ros ticket #3748)'
+  body: |
+    Patch attached:
+    # Index: CMakeLists.txt
+
+    --- CMakeLists.txt  (revision 30099)
+    +++ CMakeLists.txt  (working copy)
+    @@ -10,5 +10,6 @@
+     rosbuild_remove_compile_flags(ethercat_hardware -W)
+
+     rosbuild_add_executable(motorconf src/motorconf.cpp src/ethercat_hardware.cpp src/ethercat_com.cpp src/ethercat_device.cpp src/wg0x.cpp src/ek1122.cpp src/wg014.cpp)
+    +target_link_libraries(motorconf rt)
+     rosbuild_link_boost (motorconf system)
+     rosbuild_remove_compile_flags(motorconf -W)
+
+    trac data:
+    - Owner: **wheeler**
+    - Reporter: **rusu**
+    - Reported at: **Tue Jan 26 20:32:31 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3748
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/7'
+  title: 'fingertips are swapped between beta and alpha  (ros ticket #3727)'
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/6'
+  title: >-
+    ethercat_hardware should detect when boards are giving bad status data  (ros
+    ticket #3701)
+  body: >
+    If boards give bad status data, ethercat_hardware could ignore it.
+
+
+    This situtation occurred on MCB in PRJ (
+    https://prdev.willowgarage.com/trac/pr2hardware/ticket/565 ).  The root
+    cause has not been identified, but extra checks could have easily caught
+    erroneous conditions.
+
+    - Put check for changing timestamp after check for enabled motor (in verify
+    function)
+
+    - Look at checksum on status data 
+
+    - add check for correct working counter on process data
+
+    - Added idiot checks on certain ET100 register value. (operational mode,
+    FMMU / SyncManager settings?)
+
+
+    trac data:
+
+    - Owner: **dking**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Jan 21 15:31:09 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3701
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/5'
+  title: >-
+    Fixed a bug in ethercat_hardware, need a release (L0 and L1 badly copied
+    to/from packet)  (ros ticket #3683)
+  body: |
+    Fix in trunk in r29733.
+
+    Need this for pr2_camera_synchronizer to fully work.
+
+    trac data:
+    - Owner: **wheeler**
+    - Reporter: **blaise**
+    - Reported at: **Thu Jan 21 00:10:54 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3683
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - blocker
+    - bug
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/4'
+  title: 'Create a tutorial for fingertip_pressure  (ros ticket #3638)'
+  body: |
+    Add a tutorial to the wiki for this package
+
+    trac data:
+    - Owner: **wheeler**
+    - Reporter: **wheeler**
+    - Reported at: **Tue Jan 19 14:30:36 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3638
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/2'
+  title: >-
+    Prevent motorconf from running at same time as pr2_etherCAT.  (ros ticket
+    #3437)
+  body: |
+    Have motorconf lock same file that pr2_etherCAT does.
+
+    trac data:
+    - Owner: **dking**
+    - Reporter: **dking**
+    - Reported at: **Wed Jan  6 14:55:41 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3437
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_ethercat_drivers/issues/1'
+  title: 'Motors shouldn''t start up as "Error" and "Halted"  (ros ticket #3056)'
+  body: |
+    Instead, how about "Warning", and "Motors warming up".
+
+    trac data:
+    - Owner: **wheeler**
+    - Reporter: **watts**
+    - Reported at: **Wed Nov  4 16:15:00 2009**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3056
+  repo: 'https://api.github.com/repos/PR2/pr2_ethercat_drivers'
+  labels:
+    - bug
+    - minor

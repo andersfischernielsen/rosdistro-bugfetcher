@@ -1,0 +1,9 @@
+- url: 'https://github.com/tradr-project/tensorflow_ros_cpp/pull/1'
+  title: >-
+    Remove a dependency that can be addressed in the upstream than
+    tensorflow_ros_cpp
+  body: >-
+    Re-opening https://github.com/tradr-project/tensorflow_ros/pull/9 to the
+    right repo.
+  repo: 'https://api.github.com/repos/tradr-project/tensorflow_ros_cpp'
+  labels: []

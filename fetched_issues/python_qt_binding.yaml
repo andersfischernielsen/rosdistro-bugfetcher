@@ -1,0 +1,377 @@
+- url: 'https://github.com/ros-visualization/python_qt_binding/pull/59'
+  title: Don't add -l prefix if it already exists.
+  body: "Similarly as discussed [here](https://github.com/ros/catkin/pull/975), a `-l` shouldn't be prefixed if a library already has a `-l` prefix. Recently (cmake 3.13) exported its dependency on pthread by adding `-lpthread` to `${Boost_LIBRARIES}`. Using the `sip_helper.py` on cmake 3.13 gives the following error:\r\n\r\n```\r\n/usr/sbin/ld: cannot find -l-lpthread\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/39'
+  title: Can install ros-kinetic-python-qt-binding
+  body: >
+    Hi,
+
+
+    I have Ubuntu 16.04 64 bits and I am tryin to install
+    ros-kinetic-python-qt-binding.
+
+    Unfortunately I get this error:
+
+
+    ```
+
+    Reading package lists... Done
+
+    Building dependency tree       
+
+    Reading state information... Done
+
+    Some packages could not be installed. This may mean that you have
+
+    requested an impossible situation or if you are using the unstable
+
+    distribution that some required packages have not yet been created
+
+    or been moved out of Incoming.
+
+    The following information may help to resolve the situation:
+
+
+    The following packages have unmet dependencies:
+     ros-kinetic-python-qt-binding : Depends: libpyside2-dev but it is not going to be installed
+    E: Unable to correct problems, you have held broken packages.
+
+
+    ```
+
+
+    Note that **libpyside2-dev** is installed
+
+
+    ```
+
+    ➜ sudo apt-get install -f libpyside2-dev      
+
+
+    Reading package lists... Done
+
+    Building dependency tree       
+
+    Reading state information... Done
+
+    libpyside2-dev is already the newest version
+    (2.0.0+dev-0~201604151742~rev1858~pkg38~ubuntu16.04.1).
+
+    ```
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - question
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/38'
+  title: kinetic version breaks rqt_graph
+  body: >
+    command ran: rosrun rqt_graph rqt_graph
+
+    error: 
+
+
+    `File
+    "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py",
+    line 83, in load
+        raise e
+    ImportError: cannot import name QGraphicsPathItem
+
+    `
+
+
+    error originates from here:
+
+
+    `File
+    "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_dotgraph/edge_item.py",
+    line 32, in <module>
+        from python_qt_binding.QtGui import QBrush, QGraphicsPathItem, QGraphicsPolygonItem, QGraphicsSimpleTextItem, QPainterPath, QPen, QPolygonF
+    ImportError: cannot import name QGraphicsPathItem
+
+    `
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - invalid
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/36'
+  title: cannot import QAction on kinetic
+  body: |
+    ```
+    $ rqt_bag
+    Traceback (most recent call last):
+      File "/home/jgoppert/git/catkin/devel/bin/rqt_bag", line 6, in <module>
+        exec(fh.read())
+      File "<string>", line 5, in <module>
+      File "/home/jgoppert/git/catkin/devel/lib/python2.7/dist-packages/rqt_bag/__init__.py", line 35, in <module>
+        exec(__fh.read())
+      File "<string>", line 35, in <module>
+      File "/home/jgoppert/git/catkin/src/rqt_common_plugins/rqt_bag/src/rqt_bag/plugins/topic_message_view.py", line 34, in <module>
+        from python_qt_binding.QtGui import QAction, QIcon, QToolBar
+    ImportError: cannot import name QAction
+    ```
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/35'
+  title: 'if python2 with Qt4 and python3 with PyQt5 are installed, python2 is choosen'
+  body: >
+    I'm not sure if this is the right place but I want to report it somewhere
+    ...
+
+
+    On Ubuntu Trusty 14.04, PyQt4 is available for python 2.7 (the default),
+    while PyQt5 is only available for python 3.4 (package python3-pyqt5).
+
+
+    Since the default python version is used, no pyqt5 package is found
+
+
+    [ 62%] Running SIP generator for rviz_sip Python bindings...
+
+    Traceback (most recent call last):
+      File "/home/ros/ros_upstream/src/python_qt_binding/cmake/sip_configure.py", line 8, in <module>
+        from PyQt5 import QtCore
+    ImportError: No module named PyQt5
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/34'
+  title: 'Multi process support broken [Qt 5]'
+  body: >
+    The `X11Embed*` classes have been removed in Qt 5. Maybe the feature can be
+    reimplemented using `QWindow::fromWinId()` and
+    `QWidget::createWindowContainer()`.
+
+
+    This is related to the transition to Qt 5 in #30.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - bug
+    - wontfix
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/33'
+  title: 'Running plugins menu broken when closing the last plugin [Qt5]'
+  body: >
+    An entry "Activate" appears when the last plugin is closed. After that the
+    menu never changes again, e.g. it doesn't show new entries for opened
+    plugins anymore.
+
+
+    This is related to the transition to Qt 5 in #30. It happens with PyQt as
+    well as PySide.
+
+
+    As a workaround the menu can hold an invisible action.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/29'
+  title: Support for Qt5
+  body: >
+    This is a dependency of rviz, @dirk-thomas do you think that any changes
+    will be necessary here for the Qt5 migration? Currently the only issue is
+    that it has a dependency on `python-qt-bindings` and `qt4-qmake` which would
+    need to change on a Kinetic branch.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/28'
+  title: 'archlinux, python2.7 not work for `buildtins.__import__(name)` in line 106'
+  body: >
+    followed ROS wiki installation for Archlinux, almost goes well. but when I
+    try call
+
+
+    ``` bash
+
+    rosrun rqt_graph rqt_graph
+
+    ```
+
+
+    got `AttributeError: 'module' object has no attribute '__import__'`
+
+
+    finally I found my Python2.7.11 work fine with `__builtin__`, but the
+    try-except in `binding_helper.py` has  no exception for this `import
+    builtins`. I'm not a python programmer, so just comment it, and add import
+    line manually.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/26'
+  title: Update PyPI
+  body: >
+    Currently `python_qt_binding` is only at [0.2.14 on
+    PyPI](https://pypi.python.org/pypi/python_qt_binding), meaning python3 Qt
+    apps cannot have it as an automatically installed dependency when installing
+    from pip. Would it be possible to update the package version available on
+    PyPI to fix this?
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/24'
+  title: binding_helper fails when "future" package is installed
+  body: >
+    Ubuntu 14.04 LTS / 64 bit. ROS/Gazebo Jade installed per instructions at
+    "http://wiki.ros.org/jade/Installation/Ubuntu"
+
+
+    I'm working through the tutorials, in order. Everything went well until the
+    first use of "rqt_graph" in the turtle tutorial. This produced the error:
+
+
+    ```
+
+    rosrun rqt_graph rqt_graph
+
+    Traceback (most recent call last):
+      File "/opt/ros/jade/lib/rqt_graph/rqt_graph", line 8, in <module>
+        sys.exit(main.main(sys.argv, standalone='rqt_graph.ros_graph.RosGraph'))
+      File "/opt/ros/jade/lib/python2.7/dist-packages/rqt_gui/main.py", line 59, in main
+        return super(Main, self).main(argv, standalone=standalone, plugin_argument_provider=plugin_argument_provider, plugin_manager_settings_prefix=str(hash(os.environ['ROS_PACKAGE_PATH'])))
+      File "/opt/ros/jade/lib/python2.7/dist-packages/qt_gui/main.py", line 336, in main
+        from python_qt_binding import QT_BINDING
+      File "/opt/ros/jade/lib/python2.7/dist-packages/python_qt_binding/__init__.py", line 55, in <module>
+        from .binding_helper import loadUi, QT_BINDING, QT_BINDING_MODULES, QT_BINDING_VERSION  # @UnusedImport
+      File "/opt/ros/jade/lib/python2.7/dist-packages/python_qt_binding/binding_helper.py", line 265, in <module>
+        getattr(sys, 'SELECT_QT_BINDING_ORDER', None),
+      File "/opt/ros/jade/lib/python2.7/dist-packages/python_qt_binding/binding_helper.py", line 84, in _select_qt_binding
+        QT_BINDING_VERSION = binding_loader(required_modules, optional_modules)
+      File "/opt/ros/jade/lib/python2.7/dist-packages/python_qt_binding/binding_helper.py", line 139, in _load_pyqt
+        _named_import('PyQt4.%s' % module_name)
+      File "/opt/ros/jade/lib/python2.7/dist-packages/python_qt_binding/binding_helper.py", line 106, in _named_import
+        module = builtins.__import__(name)
+    AttributeError: 'module' object has no attribute '__import__'
+
+    ```
+
+
+    For Python 2.7.6, that's a standard error. There is no
+
+
+    ```
+
+    builtins.__import__
+
+    ```
+
+
+    in Python 2.7.6. It's there in 2.7.9, and 3.x, but not 2.7.6. So, with the
+    stock Python of Ubuntu 14.04 LTS, ROS won't work.
+
+
+    From the Python documentation: 
+
+
+    ```
+
+    "__import__ is an advanced function that is not needed in everyday Python
+    programming, unlike importlib.import_module()." 
+
+    ```
+
+
+    It's an internal function which changes between Python releases. Using it in
+    binding_helper created a bug. Importlib should be used instead.
+
+
+    See also "http://answers.ros.org/question/210762/rqt_graph-not-finding-qt4/"
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/9'
+  title: sip bindings don't build when path contains spaces
+  body: ''
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/8'
+  title: fails to provide QString / QStringList
+  body: >
+    While these types are accessible when using e.g. PyQt4 directly:
+
+
+    ```
+
+    from PyQt4 import QtCore
+
+    QtCore.QStringList
+
+    ```
+
+
+    the same does not work thorugh python_qt_binding.
+
+
+    The user can usually use native Python strings and list of strings. But it
+    would be nice if the same way which works for the native bindings would also
+    work with python_qt_binding.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - invalid
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/7'
+  title: Is dependency on Python 3.2 necessary?
+  body: >
+    The Hydro debs for Precise pull it in. However, ROS seems not ready for it
+    (http://www.ros.org/reps/rep-0003.html#python) and on Precise there is a
+    broken symlink
+    (https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/941362).
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/6'
+  title: >-
+    Add pyqtRemoveInputHook and pyqtRestoreInputHook dummy methods on QtCore
+    when using pySide
+  body: >
+    PyQt4 has two methods on QtCore to help one futz around in the interpreter /
+    in pdb. PySide lacks that functionality, and doesn't install any input hooks
+    at all.
+
+
+    I propose that the code checks for these two methods, and if they don't
+    exists, create them as lambdas that do nothing.
+
+
+    Something like:
+
+
+    ```
+
+    dummynames = ['pyqtRemoveInputHook', 'pyqtRestoreInputHook']
+
+    for m in dummynames:
+        if not hasattr(QtCore, m):
+            setattr(QtCore, m, lambda: None)
+    ```
+
+
+    after the import goes well would suffice.
+
+
+    See http://pyqt.sourceforge.net/Docs/PyQt4/qtcore.html#pyqtRemoveInputHook
+    for more info.
+
+
+    This isn't a high priority, just a suggestion.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros-visualization/python_qt_binding/pull/4'
+  title: Change setup.py to be pure distutils or distribute
+  body: >
+    I'm unfamiliar with the catkin build environment, and I've never actually
+    used it, but I've created a simple setup.py that works for me without any
+    additional dependencies other than the standard library.
+
+
+    It would be great to get this onto pypi.
+
+
+    Let me know if there is something I should change.
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels: []
+- url: 'https://github.com/ros-visualization/python_qt_binding/issues/3'
+  title: Make python_qt_binding standalone
+  body: >
+    I just don't know why it has to depend on `catkin` & `rosbuild`. If it is
+    not necessary we can make it separate from `ROS`. I think it would be useful
+    especially after having looked at [PySide that doesn't handle .ui file
+    well](https://github.com/ros-visualization/python_qt_binding/issues/2#issuecomment-14277445).
+  repo: 'https://api.github.com/repos/ros-visualization/python_qt_binding'
+  labels:
+    - enhancement

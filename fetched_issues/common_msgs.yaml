@@ -1,0 +1,221 @@
+- url: 'https://github.com/ros/common_msgs/pull/138'
+  title: Proposed UpperTriangularCovariance message
+  body: "In most of our messages right now we transport covariance matrices as 36 64bit numbers.\r\nThis reduces it to only 21 as well as reducing the floating point representation to 32bits.\r\nThis makes it take up only 29% as much space on the wire and in memory.\r\nThe precision of the floating point values is unlikely to be important as the value is designed to capture the magnitude of the uncertainty so the 32bit representation should be fine.\r\nAnd the covariance matrices are symmetric so the other half of the matrix is redundant.\r\n\r\nWith some helper methods to convert to and from full matricies in common linear math libraries it should not effect workflows.\r\nAnd by standardizing this common checks can also be performed in a standardized way instead of the current ad-hoc method in each implementation.\r\n\r\nThis has been inspired by the URT covariance matrix implementation used in the vehicle_odometry.msg recently adopted by PX4: https://github.com/PX4/Firmware/pull/9895/files#diff-0f57b02da78e5e981838d756f46d7462R56\r\n\r\nThis is intended to be used mostly as a submessage for an evolution of https://github.com/ros/common_msgs/pull/87"
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/pull/128'
+  title: included missing import for the read_points_list method
+  body: "The read_points_list method is currently broken since the import of namedtuple is missing.\r\n\r\nPlease include this in all current branches\r\n\r\n@v4hn"
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/issues/121'
+  title: Add Point2D and Vector2
+  body: "Is there a reason these aren't included?\r\n\r\nMore importantly, is there a reason why we shouldn't make these for ourselves and start using them in our API?\r\n\r\nIs there an official place that they exist elsewhere?"
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels:
+    - question
+- url: 'https://github.com/ros/common_msgs/pull/118'
+  title: Return default value to prevent missing return warning.
+  body: "This addresses #84.\r\n\r\nOriginal suggested fix was to both return the default value and add a `ROS_BREAK()`, however the latter would require modifying the package dependencies for code is never reached. This fix returns the default value of `T` to silence warnings when compiling with clang, since this part of the code is never reached the behaviour is identical."
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/pull/117'
+  title: Add polygon with 64bit precision
+  body: "There is no polygon with 64 bit precision, this adds a Polygon64 and Polygon64Stamped. \r\n\r\nIdeally, the standard naming conventions should be maintained, where Polygon.msg has 64-bit, and Polygon32.msg has 32-bit precision, but that would change the message definition and is more likely to break dependent code."
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/pull/106'
+  title: Added test_depend on rosunit in sensor_msgs
+  body: "I noticed that this dependency was missing in sensor_msgs, which uses gtest. This is contrary to \r\nhttp://docs.ros.org/jade/api/catkin/html/howto/format1/gtest_configuration.html.\r\n\r\nSee also #85 "
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/pull/85'
+  title: fix missing test target dependency
+  body: >
+    Without this patch building the test target first fails since the message
+    generation might not have finished yet.
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/ros/common_msgs/pull/82'
+  title: remove boost dependency
+  body: |
+    fixes #81
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/issues/81'
+  title: sensor_msgs dependency on boost
+  body: >
+    The sensor_msgs package depends on boost because `boost::str()` and
+    `boost::format()` are called to format an error message in
+    [point_cloud_conversion.h:120](https://github.com/ros/common_msgs/blob/89788101b21aec550ef4d0b93c7f668e9e8d19c0/sensor_msgs/include/sensor_msgs/point_cloud_conversion.h#L120),
+    but...
+
+    - boost is not explicitly declared as a dependency (of type `<run_depend>`
+    or `<build_export_depend>`?) in package.xml, only indirectly through
+    message_runtime.
+
+    - point_cloud_conversion.h is lacking an include directive for
+    `<boost/format.hpp>` and includes this header only indirectly via
+    `ros/time.h`:
+      
+      ```
+      . /opt/ros/indigo/include/sensor_msgs/point_cloud_conversion.h
+      .. /opt/ros/indigo/include/sensor_msgs/PointCloud.h
+      ... /opt/ros/indigo/include/ros/serialization.h
+      .... /opt/ros/indigo/include/ros/time.h
+      ..... /usr/include/boost/math/special_functions/round.hpp
+      ...... /usr/include/boost/math/policies/error_handling.hpp
+      ....... /usr/include/boost/format.hpp
+      ```
+    - `convertPointCloud2ToPointCloud()` should return false after printing the
+    message to stderr in line 120.
+
+
+    This is not directly related to those three issues, but we spent some time
+    finding a problem while building sensor_msgs and dependents on a RedHat
+    system with cmake 2.8.9, because sensor_msgs picked up and exported wrong
+    Boost library paths in its generated cmake config if it was compiled without
+    the `-DBoost_NO_BOOST_CMAKE=ON` argument (see
+    http://stackoverflow.com/questions/9948375/cmake-find-package-succeeds-but-returns-wrong-path).
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []
+- url: 'https://github.com/ros/common_msgs/pull/77'
+  title: 'sensor_msgs: Generate optimal msg lentgth when both "xyz" and "rgb(a)…'
+  body: >
+    …" are given to PointCloud2Modifier.
+
+
+    With this patch PointCloud2Modifier::setPointCloud2FieldsByString make
+    PointCloud2 message with an optimal length by **removing unnecessary
+    trailling offset without messing with the padding**. It cut in half the msg
+    length.
+
+
+    When we used something like in
+    https://github.com/ros-perception/image_pipeline/blob/indigo/depth_image_proc/src/nodelets/point_cloud_xyzrgb.cpp#L251
+
+
+    ``` cpp
+         sensor_msgs::PointCloud2Modifier pcd_modifier(*cloud_msg);
+         pcd_modifier.setPointCloud2FieldsByString(2, "xyz", "rgb"); 
+    ```
+
+
+    By exemple, with kinect images the cloud msg length was 9.83MB. Now it's
+    4.92MB, like with just the xyz part.
+
+
+    Since it's a core library every project that depends on it should be
+    recompiled.
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels:
+    - needs more information
+    - needs tests
+- url: 'https://github.com/ros/common_msgs/issues/76'
+  title: PointCloud2 Packs Bits Incorrectly
+  body: >
+    The Python [library for writing point
+    clouds](https://github.com/ros/common_msgs/blob/jade-devel/sensor_msgs/src/sensor_msgs/point_cloud2.py)
+    has some weird bit-packing issues. 
+
+
+    Consider writing this script for writing colors:
+
+
+    ```
+
+    from sensor_msgs.point_cloud2 import create_cloud
+
+    from sensor_msgs.msg import PointField
+
+    import struct
+
+
+    fields = []
+
+    fields.append( PointField('rgb', 0, PointField.FLOAT32, 1) )
+
+
+    def pack_bytes(r,g,b,a):
+        print 'original:', [b,g,r,a]
+        x = (a << 24) + (r << 16) + (g << 8) + b
+        a = struct.unpack('f', struct.pack('I', x))[0]
+
+        points = [ (a, )]
+
+        nc = create_cloud(None, fields, points)
+
+        print 'packed  :', [ord(x) for x in nc.data]
+        print
+
+
+    pack_bytes(120,0,0,0)
+
+    pack_bytes(120,0,0,255)
+
+
+    pack_bytes(130,0,0,0)
+
+    pack_bytes(130,0,0,255)
+
+
+    ```
+
+
+    This outputs: 
+
+
+    ```
+
+    original: [0, 0, 120, 0]
+
+    packed  : [0, 0, 120, 0]
+
+
+    original: [0, 0, 120, 255]
+
+    packed  : [0, 0, 120, 255]
+
+
+    original: [0, 0, 130, 0]
+
+    packed  : [0, 0, 130, 0]
+
+
+    original: [0, 0, 130, 255]
+
+    packed  : [0, 0, 194, 255]
+
+    ```
+
+
+    There is a bug where if red value is over 127 and the alpha value is 255,
+    the output values do not match the input values. 
+
+
+    I realize that the alpha is not necessarily supported, but I found it in a
+    bag file (from a kinect I believe) and it was causing problems. 
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/ros/common_msgs/issues/62'
+  title: >-
+    geometry_msgs/InertiaStamped.msg depends on non-existent package
+    telemanip_msgs
+  body: >
+    I think we found a bug in geometry_msgs (branches indigo-devel and
+    jade-devel):
+
+
+    The new message definition `geometry_msgs/InertiaStamped.msg` depends on the
+    non-existent package `telemanip_msgs`. 
+
+
+    This was introduced by this pull request
+    https://github.com/ros/common_msgs/pull/55
+
+
+    Can somebody confirm this issue?
+  repo: 'https://api.github.com/repos/ros/common_msgs'
+  labels: []

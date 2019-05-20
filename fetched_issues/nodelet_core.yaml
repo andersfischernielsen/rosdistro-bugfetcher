@@ -1,0 +1,331 @@
+- url: 'https://github.com/ros/nodelet_core/issues/87'
+  title: Static linking to uuid which might be GPL?
+  body: "This is similar post with https://github.com/ros/bond_core/issues/47. While nodelet depends on bondcpp, I open a separate ticket as I'm not certain if the discussion in this ticket is the same as said ticket.\r\n\r\nIANAL and I'm not entirely sure the following concern is valid.\r\n\r\n`nodelet` [statically links to uuid](https://github.com/ros/nodelet_core/blob/2ec24ff596ca5d49295c85d951aa3b536ff10f8b/nodelet/CMakeLists.txt#L48), and `nodelet.cpp` [includes a header uuid.h](https://github.com/ros/nodelet_core/blob/2ec24ff596ca5d49295c85d951aa3b536ff10f8b/nodelet/src/nodelet.cpp#L46). \r\n\r\nOn Ubuntu [rosdep key uuid](https://github.com/ros/rosdistro/blob/2540e78253740ba105fcf8d205d20be5f9855f9d/rosdep/base.yaml#L5101) translates to [uuid-dev](https://packages.ubuntu.com/xenial/uuid-dev). Content of `/usr/share/doc/uuid-dev/copyright` shows large part of the package is licensed GPL-2+. I haven't found uuid-dev's repo nor website, but [package info on debian.org](https://metadata.ftp-master.debian.org/changelogs/main/u/util-linux/util-linux_2.33.1-0.1_copyright) also lists the similar copyright file where many portions indicates GPL-2+.\r\n\r\nIsn't nodelet considered to be a derived work, and doesn't GPL force the derived work to be declared as GPL?"
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/pull/85'
+  title: enable Windows build
+  body: add DLL import/export macro (`NODELETLIB_DECL `)
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/84'
+  title: 'ImportError: No module named rospkg while building nodelet-topic-tools'
+  body: "I am building meta-ros for ARM. Here is the build logs,\r\n\r\n| catkin_generated/env_cached.sh /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/nodelet_core-1.9.10/nodelet_topic_tools/cfg/NodeletThrottle.cfg /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/recipe-sysroot/opt/ros/indigo/share/dynamic_reconfigure/cmake/.. /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build/devel/share/nodelet_topic_tools /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build/devel/include/nodelet_topic_tools /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build/devel/lib/python3.5/site-packages/nodelet_topic_tools\r\n| Traceback (most recent call last):\r\n|   File \"/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/nodelet_core-1.9.10/nodelet_topic_tools/cfg/NodeletThrottle.cfg\", line 3, in <module>\r\n|     from dynamic_reconfigure.parameter_generator_catkin import *\r\n|   File \"/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/recipe-sysroot/opt/ros/indigo/lib/python3.5/site-packages/dynamic_reconfigure/__init__.py\", line 38, in <module>\r\n|     import roslib\r\n|   File \"/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/recipe-sysroot/opt/ros/indigo/lib/python3.5/site-packages/roslib/__init__.py\", line 50, in <module>\r\n|     from roslib.launcher import load_manifest\r\n|   File \"/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/recipe-sysroot/opt/ros/indigo/lib/python3.5/site-packages/roslib/launcher.py\", line 42, in <module>\r\n|     import rospkg\r\n| ImportError: No module named rospkg\r\n| make[2]: *** [devel/include/nodelet_topic_tools/NodeletThrottleConfig.h] Error 1\r\n| make[2]: Leaving directory `/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build'\r\n| make[1]: *** [CMakeFiles/nodelet_topic_tools_gencfg.dir/all] Error 2\r\n| make[1]: Leaving directory `/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build'\r\n| make: *** [all] Error 2\r\n| WARNING: /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/temp/run.do_compile.9139:1 exit 2 from 'VERBOSE=1 cmake --build '/local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/build' -- -j 20'\r\n| ERROR: Function failed: do_compile (log file is located at /local/mnt/workspace/Automotive/LV_ROS_Build/poky/build/tmp-glibc/work/aarch64-oe-linux/nodelet-topic-tools/1.9.10-r0/temp/log.do_compile.9139)\r\nERROR: Task (/local/mnt/workspace/Automotive/LV_ROS_Build/poky/meta-ros/recipes-ros/nodelet-core/nodelet-topic-tools_1.9.10.bb:do_compile) failed with exit code '1'\r\n"
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/76'
+  title: add `-std=c++0x` manually
+  body: "I'm working on Ubuntu 16.04.3 and the version of gcc is 5.4.0.\r\n\r\nAfter downloading the ros package nodelet from Github and all of its necessary dependencies, I tried to execute `./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release` to compile it but failed.\r\n\r\nHere is the detail: https://answers.ros.org/question/292165/nodelet-error-nullptr-was-not-declared-in-this-scope/\r\n\r\nTo compile it, I have to add `SET(CMAKE_CXX_FLAGS \"-std=c++0x\")` manually into the `CMakeLists.txt` files of `nodelet`, `test_nodelet` and `test_nodelet_topic_tools`."
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/pull/74'
+  title: uuid dependency fixup
+  body: "dont export uuid dependency as this isnt anywhere in the public api.\r\n\r\nContext: https://github.com/ros/bond_core/issues/35"
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/pull/65'
+  title: fix exec_depend that are actually build_export_depends
+  body: 'follow-up of https://github.com/ros/nodelet_core/pull/63'
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/55'
+  title: Nodelets not tear down when nodelet manager receives SIGINT
+  body: "Reposting this as a standalone issue here . Thanks @dseifert for [reporting this](https://github.com/ros/nodelet_core/issues/50#issuecomment-257175413)).\r\n\r\n>To test this, prepare the following:\r\n>1. add a destructor to nodelet_core/test_nodelet/src/plus.cpp that has a ROS_INFO (or higher) output\r\n>2. Create this launch file:\r\n>\r\n>```\r\n><launch>\r\n>  <node pkg=\"nodelet\" type=\"nodelet\" name=\"nodelet_manager\"  args=\"manager\" output=\"screen\"/>\r\n>\r\n>  <node pkg=\"nodelet\" type=\"nodelet\" name=\"n1\" output=\"screen\" args=\"load test_nodelet/Plus nodelet_manager\" />\r\n></launch>\r\n>```\r\n>\r\n>Now, perform these tests:\r\n>- Test 1: run the launch file; use `ps xa | grep nodelet` to figure out the process ID of the `nodelet load` command and `kill -SIGINT` it ... you will see that the destructor is called\r\n>- Test 2: run the launch file, use `ps xa | grep nodelet` to figure out the process ID of the `nodelet manager` command and `kill -SIGINT` it ... you will see that the destructor is NOT called\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/pull/54'
+  title: 'nodelet: drop unused dependency on tinyxml'
+  body: >-
+    Since nodelet doesn't link to TinyXML it's possible to drop the unused build
+    dependency.
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/48'
+  title: Error on declared_nodelet executable
+  body: |
+    ```
+    % rosrun nodelet declared_nodelets
+    Traceback (most recent call last):
+      File "/home/wkentaro/ros/indigo/src/ros/nodelet_core/nodelet/scripts/declared_nodelets", line 43, in <module>
+        for p in roslib.rospack.rospack_depends_on_1('nodelet'):
+    AttributeError: 'module' object has no attribute 'rospack'
+    ```
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/pull/38'
+  title: add test dependency on rosbash
+  body: |
+    http://build.ros.org/job/Jdev__nodelet_core__ubuntu_trusty_amd64/3/
+    should fix this
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/29'
+  title: The wiki page has outdated bug tracker url
+  body: >
+    http://wiki.ros.org/nodelet_core
+
+
+    Bug / feature tracker points to:
+    https://code.ros.org/trac/ros-pkg/query?component=common&status=assigned&status=new&status=reopened
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/issues/26'
+  title: Problem linking with uuid on OS X Yosemite
+  body: >
+    This seems to be the same issue as in bond_core
+    https://github.com/ros/bond_core/issues/6
+
+
+    I have already tested the changes from
+    https://github.com/ros/bond_core/pull/7 in nodelet which
+
+    seems to resolve the issue
+
+
+    ```
+
+    2 warnings generated.
+
+    Linking CXX shared library
+    /Users/robert/ros_catkin_ws/devel_isolated/nodelet/lib/libnodeletlib.dylib
+
+    [ 93%] Built target nodeletlib
+
+    Scanning dependencies of target nodelet
+
+    [100%] Building CXX object CMakeFiles/nodelet.dir/src/nodelet.cpp.o
+
+    Linking CXX executable
+    /Users/robert/ros_catkin_ws/devel_isolated/nodelet/lib/nodelet/nodelet
+
+    ld: library not found for -luuid
+
+    clang: error: linker command failed with exit code 1 (use -v to see
+    invocation)
+
+    make[2]: ***
+    [/Users/robert/ros_catkin_ws/devel_isolated/nodelet/lib/nodelet/nodelet]
+    Error 1
+
+    make[1]: *** [CMakeFiles/nodelet.dir/all] Error 2
+
+    make: *** [all] Error 2
+
+    <== Failed to process package 'nodelet': 
+      Command '/Users/robert/ros_catkin_ws/install_isolated/env.sh make -j8 -l8' returned non-zero exit status 2
+
+    Reproduce this error by running:
+
+    ==> cd /Users/robert/ros_catkin_ws/build_isolated/nodelet &&
+    /Users/robert/ros_catkin_ws/install_isolated/env.sh make -j8 -l8
+
+
+    Command failed, exiting.
+
+    ```
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/pull/18'
+  title: refresh list of available classes and fix bond issue
+  body: >
+    This is an example of implementing a solution for #17.
+
+
+    I'm not too familiar with boost::function and boost::bind and not sure, if
+    the below is best way to implement this. I basically just followed the
+    existing style.
+
+
+    Please feel free to suggest better ways of implementing this - or add your
+    own solution. :-)
+
+
+    PS: This is an important new feature addition, but does not change the API.
+    Will it be possible to add this to Inidgo?
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/nodelet_core/issues/13'
+  title: nodelet manager fails to recover if a nodelet throws an exception in init
+  body: >
+    If an exception is throw while a nodelet is initializing the ManagedNodelet
+    is left in the nodelet map preventing it from being fully destroyed. This
+    also prevents a nodelet with the same name from being loading into the
+    manger without restarting the manager
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/pull/12'
+  title: Correctly check that there are enough arguments when nodelet is launched...
+  body: |
+    ... with the unload command
+
+    Currently the node will segfault if the following is run
+    rosrun nodelet nodelet unload name
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/issues/8'
+  title: nodelets crash and repeatedly fail to respawn upon jumping system time
+  body: >
+    Launch the following launch file:
+
+
+    ```
+
+    <launch>
+
+        <node pkg="nodelet" type="nodelet" name="manager" args="manager">
+          <param name="num_worker_threads" value="8" />
+        </node>
+
+        <node pkg="nodelet" type="nodelet" name="plus"
+              args="load test_nodelet/Plus /manager" respawn="true"
+              output="screen">
+        </node>
+
+    </launch>
+
+    ```
+
+
+    Now set the system time ahead to one minute in the future:
+
+
+    ```
+
+    $ date
+
+    Tue Nov 12 15:35:04 EST 2013
+
+    $ sudo date --set="Tue Nov 12 15:36:04 EST 2013"
+
+    Tue Nov 12 15:36:04 EST 2013
+
+    ```
+
+
+    You will observe the nodelet die repeatedly, first with a "bond broken"
+    message, then with the error:
+
+
+    ```
+
+    Service call failed: service [/manager/load_nodelet] responded with an
+    error: boost::lock_error
+
+    ```
+
+
+    and then subsequently with the error:
+
+
+    ```
+
+    Cannot load nodelet /plus for one exists with that name already
+
+    ```
+
+
+    The issue can be traced to lines 109-117 of loader.cpp:
+
+
+    ```
+        // If requested, create bond to sister process
+        if (res.success && !req.bond_id.empty())
+        {
+          bond::Bond* bond = new bond::Bond(nh_.getNamespace() + "/bond", req.bond_id);
+          bond_map_.insert(req.name, bond);
+          bond->setCallbackQueue(&bond_callback_queue_);
+          bond->setBrokenCallback(boost::bind(&Loader::unload, parent_, req.name));
+          bond->start();
+        }
+    ```
+
+
+    After the first crash of the nodelet, `bond_map_` still has an entry for the
+    key "/plus". In that case, `bond_map_.insert(req.name, bond)` leaves the
+    existing entry unmodified and deletes `bond`. The `lock_error` comes from
+    the uses of `bond` after it has been deleted.
+
+
+    The issue appears to go away if the map entry is cleared first, like this:
+
+
+    ```
+        // If requested, create bond to sister process
+        if (res.success && !req.bond_id.empty())
+        {
+          bond::Bond* bond = new bond::Bond(nh_.getNamespace() + "/bond", req.bond_id);
+          bond_map_.erase(req.name);
+          bond_map_.insert(req.name, bond);
+          bond->setCallbackQueue(&bond_callback_queue_);
+          bond->setBrokenCallback(boost::bind(&Loader::unload, parent_, req.name));
+          bond->start();
+        }
+    ```
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/issues/6'
+  title: Release for Groovy
+  body: >
+    I backported a fix for `nodelet` where `pluginlib` was not being declared as
+    a transitive dependency.
+
+
+    https://github.com/ros/nodelet_core/commit/53d0f6779cecacac6edea748fbf29012015ba3f0
+
+
+    There are some other fixes that need releasing too, should we release it for
+    Groovy soon?
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - question
+- url: 'https://github.com/ros/nodelet_core/pull/5'
+  title: Export pluginlib as a transitive dependency
+  body: >
+    Also remove some old Apple specific rules which
+
+    are no longer required.
+
+
+    We might consider back porting this to groovy?
+
+
+    I discovered this when refactoring the tutorials, others who ran into this
+    might have just added an explicit dependency on class_loader to solve it.
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels: []
+- url: 'https://github.com/ros/nodelet_core/issues/4'
+  title: nodelet fails to link uuid
+  body: |2
+     nodelet_core/nodelet fails to build due to not having libuuid linked. Tiny
+     patch attached.
+
+     Environment:  Archlinux x64
+
+    From: https://code.ros.org/trac/ros-pkg/ticket/5598
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - bug
+- url: 'https://github.com/ros/nodelet_core/issues/3'
+  title: dependency in package.xml missing
+  body: >
+    nodelet_core/nodelet/CMakeLists.txt:34 asks for the package message_runtime,
+    but nodelet_core/nodelet/package.xml only adds it as a run_depend.
+
+    Did not compile for me, adding the line 
+
+
+    ```
+     <build_depend>message_runtime</build_depend>
+    ```
+
+
+    did the trick
+  repo: 'https://api.github.com/repos/ros/nodelet_core'
+  labels:
+    - invalid

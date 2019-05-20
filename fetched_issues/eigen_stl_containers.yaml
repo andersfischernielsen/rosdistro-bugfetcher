@@ -1,0 +1,47 @@
+- url: 'https://github.com/ros/eigen_stl_containers/pull/12'
+  title: Switch over to package XML format version 2
+  body: >-
+    This makes it more compatible with ROS2.  Also minor fixups while we are in
+    here, to cleanup trailing whitespace, include headers where necessary, and
+    remove an unnecessary run/exec dependency on eigen (eigen is a header-only
+    library, so by definition it is only needed at build time).
+  repo: 'https://api.github.com/repos/ros/eigen_stl_containers'
+  labels: []
+- url: 'https://github.com/ros/eigen_stl_containers/issues/7'
+  title: eigen_stl_containers fails on saucy
+  body: "https://github.com/ros-gbp/eigen_stl_containers-release/issues/1#issuecomment-257731858\r\n\r\nthe problem was https://github.com/ros/eigen_stl_containers/commit/ceb6c4d5a58e8de5c67ec17e5e51717e507839ef but if we revert this, we'll have \r\nhttps://github.com/ros/robot_model/issues/149 issue for kinetic, one option is to release 1.0.5 for indigo/jade and 1.0.6 for kinetic, otherwise, we'll have to write something like\r\n```\r\nfind_pakcge(Eigen3)\r\nif(NOT Eigen3_FOUND)\r\n  find_package(Eigen Eigen3)\r\nendif()\r\n```\r\n"
+  repo: 'https://api.github.com/repos/ros/eigen_stl_containers'
+  labels:
+    - bug
+    - indigo
+    - question
+- url: 'https://github.com/ros/eigen_stl_containers/pull/6'
+  title: Fix eigen3 depends
+  body: >
+    In addition to  #5, fixed EIGEN3_INCLUDE_DIRS problem, reported at
+    https://github.com/ros/robot_model/issues/149
+
+
+    Xenial uses eigen 3.5, where as Willy uses 3.2 and 3.2 only provides
+    EIGEN3_INCLUDE_DIR where eigen 3.5 provides EIGEN3_INCLUDE_DIRS
+
+    otherwise will have following warning and could not build as reporeted at
+    https://github.com/ros/robot_model/issues/149
+
+
+    ```
+
+    Warnings   << eigen_stl_containers:check
+    /home/catkin_ws/logs/eigen_stl_containers/build.check.001.log                             
+
+    CMake Warning at
+    /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:166 (message):
+      catkin_package() DEPENDS on 'EIGEN' but neither 'EIGEN_INCLUDE_DIRS' nor
+      'EIGEN_LIBRARIES' is defined.
+    Call Stack (most recent call first):
+      /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+      CMakeLists.txt:7 (catkin_package)
+
+    ```
+  repo: 'https://api.github.com/repos/ros/eigen_stl_containers'
+  labels: []

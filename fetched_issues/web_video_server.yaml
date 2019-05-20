@@ -1,0 +1,75 @@
+- url: 'https://github.com/RobotWebTools/web_video_server/pull/68'
+  title: Pkg format 2
+  body: "The first commit updates the package manifest to format 2 (similar to RobotWebTools/rosbridge_suite#348).\r\n\r\nThe second commit declares the dependency on `sensor_msgs` which is used in the code but not referenced in the manifest / CMake."
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels: []
+- url: 'https://github.com/RobotWebTools/web_video_server/issues/66'
+  title: Error on compiling - use of undeclared identifier 'CODEC_FLAG_GLOBAL_HEADER'
+  body: "```\r\nweb_video_server/src/libav_streamer.cpp:185:30: \r\nerror: use of undeclared identifier 'CODEC_FLAG_GLOBAL_HEADER'\r\n codec_context_->flags |= CODEC_FLAG_GLOBAL_HEADER;\r\n                             ^\r\n```\r\n\r\nFixed it by adding \r\n\r\n```\r\n/*https://stackoverflow.com/questions/46884682/error-in-building-opencv-with-ffmpeg*/\r\n#define AV_CODEC_FLAG_GLOBAL_HEADER (1 << 22)\r\n#define CODEC_FLAG_GLOBAL_HEADER AV_CODEC_FLAG_GLOBAL_HEADER\r\n``` \r\nat the top of libav_streamer.cpp, perhaps it should reside in some header file instead, but couldn't really figure out an appropriate place.\r\n\r\nPR for this change is here https://github.com/RobotWebTools/web_video_server/pull/65\r\n"
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels: []
+- url: 'https://github.com/RobotWebTools/web_video_server/pull/65'
+  title: fixed undeclared CODEC_FLAG_GLOBAL_HEADER
+  body: "This change should probably not go in this file, not sure it is even needed, but if someone else has this problem, at least they would be able to find this. \r\n\r\nMight be worth looking in to. \r\n\r\nCompiled on a Mac High Sierra, using python 3 virtualenv and ROS Melodic, so mostly latest and greatest."
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels: []
+- url: 'https://github.com/RobotWebTools/web_video_server/issues/55'
+  title: Conflicting Versions of OpenCV
+  body: >-
+    There seems to be issues with other ROS packages that use OpenCV 3.2. I have
+    many ros packages dependent on 3.2, but when running `rosrun
+    web_video_server web_video_server `, the following error occurred:
+    `/opt/ros/kinetic/lib/web_video_server/web_video_server: error while loading
+    shared libraries: libopencv_core3.so.3.3: cannot open shared object file: No
+    such file or directory`, thus trying to link against the version other ros
+    packages are dependent upon. I fixed this issue via source install, cloning
+    the respiratory and running catkin_make. 
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels: []
+- url: 'https://github.com/RobotWebTools/web_video_server/issues/36'
+  title: async_web_server_cpp
+  body: "Hello! \r\nWhat version of this web server (which is a dependency) is currently being used with Lunar?\r\nI must have missed the instructions but I'll have a go with https://github.com/GT-RAIL/async_web_server_cpp, and hopefully someone will be able to share if this was indeed the appropriate direction."
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels: []
+- url: 'https://github.com/RobotWebTools/web_video_server/issues/7'
+  title: vp8 encoding is flakey in browsers and in vlc
+  body: >
+    Using the develop branch: We saw that after a time, the vp8 streams in a
+    browser slowed down after 5-10 seconds to about 1 frame every few seconds.
+    Playing the same stream with vlc version 2.1.4 gives these outputs during
+    such slowdown:
+
+
+    [0x7f9ce80009b8] main input error: ES_OUT_SET_(GROUP_)PCR  is called too
+    late (pts_delay increased to 1000 ms)
+
+    [0x7f9ce80009b8] main input error: ES_OUT_RESET_PCR called
+
+    [vp8 @ 0x7f9cd8c3fea0] Discarding interframe without a prior keyframe!
+
+    [vp8 @ 0x7f9cd8c40300] Discarding interframe without a prior keyframe!
+
+    [vp8 @ 0x7f9cd8c42c40] Discarding interframe without a prior keyframe!
+
+    [vp8 @ 0x7f9cd8c455a0] Discarding interframe without a prior keyframe!
+
+    [vp8 @ 0x7f9cd8c3fea0] Discarding interframe without a prior keyframe!
+
+    [vp8 @ 0x7f9cd8c40300] Discarding interframe without a prior keyframe!
+
+
+    vlc eventually recovers and the stream becomes fluent again, but our Chrome
+    browser does not.
+
+
+    http://superuser.com/questions/589796/how-to-remove-interframe-errors-from-webm
+
+
+    This issue doesn't crop up when streaming as an mjpeg, although vlc gives in
+    that case:
+
+    "[mjpeg @ 0x7f0168c277e0] No JPEG data found in image" a zillion times...
+  repo: 'https://api.github.com/repos/RobotWebTools/web_video_server'
+  labels:
+    - bug
+    - enhancement

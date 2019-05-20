@@ -1,0 +1,122 @@
+- url: 'https://github.com/ros/class_loader/pull/124'
+  title: Using ament_target_dependencies when possible
+  body: 'See ros2/ros2#658'
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/123'
+  title: 'Check copyright of files where possible:'
+  body: "- This serves as an example for the EXCLUDE option of\r\nament_lint_auto_find_test_dependencies, allowing to\r\nexclude the default ament_copyright configuration and\r\nrunning with a custom configuration\r\n- See https://github.com/ament/ament_lint/pull/133 and https://github.com/ament/ament_cmake/pull/165\r\n"
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/121'
+  title: Using ament_target_dependencies where possible
+  body: 'Partially targets ros2/ros2#658'
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/issues/117'
+  title: linking tests fails with CMAKE_BUILD_TYPE=Debug
+  body: "Without specifying the build type `Poco_LIBRARIES` contains `/usr/lib/libPocoFoundation.so;dl`. When building debug the variable only contains `dl` - I assume because no debug libraries are available on the system.\r\n\r\nAs a result building the tests fails with unresolved symbols:\r\n\r\n```\r\n../devel/lib/libclass_loader.so: undefined reference to `typeinfo for Poco::RuntimeException'\r\n../devel/lib/libclass_loader.so: undefined reference to `Poco::SharedLibrary::isLoaded() const'\r\n../devel/lib/libclass_loader.so: undefined reference to `Poco::SharedLibrary::suffix[abi:cxx11]()'\r\n../devel/lib/libclass_loader.so: undefined reference to `typeinfo for Poco::LibraryLoadException'\r\n../devel/lib/libclass_loader.so: undefined reference to `typeinfo for Poco::LibraryAlreadyLoadedException'\r\n../devel/lib/libclass_loader.so: undefined reference to `Poco::SharedLibrary::SharedLibrary(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'\r\n../devel/lib/libclass_loader.so: undefined reference to `typeinfo for Poco::NotFoundException'\r\n../devel/lib/libclass_loader.so: undefined reference to `Poco::SharedLibrary::unload()'\r\n```"
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels:
+    - bug
+- url: 'https://github.com/ros/class_loader/pull/116'
+  title: ignore warnings about import/exports when deriving from std classes on MSVC
+  body: >-
+    based on [ros wiki](http://wiki.ros.org/win_ros/Contributing/Dll%20Exports),
+    ignore warnings about import/exports when deriving from std classes.
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/issues/109'
+  title: can't use ros1 and ros2 class_loader
+  body: "while developing rosbag2, we encountered that we have cyclic dependencies when trying to use ROS1 and ROS2 packages which both use their form of class loader. We worked around that by excluding \"nodelets\" from the ros1_bridge (as nodelets bring the dependency of class_loader).\r\n\r\nsee https://github.com/ros2/ros1_bridge/pull/152\r\n\r\nThe original issue and description can be found here: https://github.com/ros2/rosbag2/pull/69"
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/106'
+  title: '[ros2] CI overhaul'
+  body: "This PR fixes and update CI for the ros2 branch:\r\n\r\n- Switch to using colcon for building and testing\r\n- Use latest Python for all platform targeted by bouncy (3.7 for Windows/Mac, 3.5 for xenial)\r\n- Update package list and dependencies to match current ROS2 master\r\n- Run all tests including linters\r\n- [:warning: danger zone] switch travis from trusty to xenial"
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/105'
+  title: fix CI missing catkin_pkg and console_bridge_vendor
+  body: >-
+    As mentioned in
+    https://github.com/ros/class_loader/pull/103#issuecomment-419299945
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels:
+    - bug
+- url: 'https://github.com/ros/class_loader/issues/101'
+  title: fails when executing catkin_make on RPi Zerp
+  body: "Hi,\r\n\r\nAny idea what am I missing?\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n```\r\ncatkin_make -DCATKIN_WHITELIST_PACKAGES=\"class_loader\"\r\nBase path: /home/pi/ros_catkin_ws\r\nSource space: /home/pi/ros_catkin_ws/src\r\nBuild space: /home/pi/ros_catkin_ws/build\r\nDevel space: /home/pi/ros_catkin_ws/devel\r\nInstall space: /home/pi/ros_catkin_ws/install\r\n####\r\n#### Running command: \"make cmake_check_build_system\" in \"/home/pi/ros_catkin_ws/build\"\r\n####\r\n####\r\n#### Running command: \"make -j1 -l1\" in \"/home/pi/ros_catkin_ws/build\"\r\n####\r\n[ 20%] Building CXX object class_loader/CMakeFiles/class_loader.dir/src/class_loader.cpp.o\r\nIn file included from /home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp:46:0,\r\n                 from /home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp:30:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp: In function ‘void class_loader::impl::registerPlugin(const string&, const string&)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:181:45: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n     getCurrentlyLoadingLibraryName().c_str());\r\n                                             ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:181:45: note: (if you use ‘-fpermissive’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:199:79: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n       \"Please refactor your code to isolate plugins into their own libraries.\");\r\n                                                                               ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:222:25: error: there are no arguments to ‘CONSOLE_BRIDGE_logWarn’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logWarn’ must be available [-fpermissive]\r\n       class_name.c_str());\r\n                         ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:230:62: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n     class_name.c_str(), reinterpret_cast<void *>(new_factory));\r\n                                                              ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp: In function ‘Base* class_loader::impl::createInstance(const string&, class_loader::ClassLoader*)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:250:95: error: there are no arguments to ‘CONSOLE_BRIDGE_logError’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logError’ must be available [-fpermissive]\r\n       \"class_loader.impl: No metaobject exists for class type %s.\", derived_class_name.c_str());\r\n                                                                                               ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:270:44: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n         \"possible to shutdown the library!\");\r\n                                            ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader_core.hpp:281:56: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n     (typeid(obj).name()), reinterpret_cast<void *>(obj));\r\n                                                        ^\r\nIn file included from /home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp:30:0:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp: In member function ‘void class_loader::ClassLoader::onPluginDeletion(Base*)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp:245:36: error: there are no arguments to ‘CONSOLE_BRIDGE_logDebug’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logDebug’ must be available [-fpermissive]\r\n       reinterpret_cast<void *>(obj));\r\n                                    ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp:262:35: error: there are no arguments to ‘CONSOLE_BRIDGE_logWarn’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logWarn’ must be available [-fpermissive]\r\n           getLibraryPath().c_str());\r\n                                   ^\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp: In member function ‘Base* class_loader::ClassLoader::createRawInstance(const string&, bool)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/include/class_loader/class_loader.hpp:295:7: error: there are no arguments to ‘CONSOLE_BRIDGE_logInform’ that depend on a template parameter, so a declaration of ‘CONSOLE_BRIDGE_logInform’ must be available [-fpermissive]\r\n       );\r\n       ^\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp: In constructor ‘class_loader::ClassLoader::ClassLoader(const string&, bool)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp:72:31: error: ‘CONSOLE_BRIDGE_logDebug’ was not declared in this scope\r\n     this, library_path.c_str());\r\n                               ^\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp: In destructor ‘virtual class_loader::ClassLoader::~ClassLoader()’:\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp:82:65: error: ‘CONSOLE_BRIDGE_logDebug’ was not declared in this scope\r\n     \"Destroying class loader, unloading associated library...\\n\");\r\n                                                                 ^\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp: In member function ‘int class_loader::ClassLoader::unloadLibraryInternal(bool)’:\r\n/home/pi/ros_catkin_ws/src/class_loader/src/class_loader.cpp:122:70: error: ‘CONSOLE_BRIDGE_logWarn’ was not declared in this scope\r\n       \"destroying the ClassLoader. The library will NOT be unloaded.\");\r\n                                                                      ^\r\nclass_loader/CMakeFiles/class_loader.dir/build.make:62: recipe for target 'class_loader/CMakeFiles/class_loader.dir/src/class_loader.cpp.o' failed\r\nmake[2]: *** [class_loader/CMakeFiles/class_loader.dir/src/class_loader.cpp.o] Error 1\r\nCMakeFiles/Makefile2:736: recipe for target 'class_loader/CMakeFiles/class_loader.dir/all' failed\r\nmake[1]: *** [class_loader/CMakeFiles/class_loader.dir/all] Error 2\r\nMakefile:138: recipe for target 'all' failed\r\nmake: *** [all] Error 2\r\n```"
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/issues/100'
+  title: Use of C++11
+  body: "## Background Information\r\nThe packages `rosbag` and  `rosbag_store` includes headers from this package when the minimal installation from source is attempted. ROS assumes C++98, not C++11 and so the CMakeLists.txt don't have\r\n```cmake\r\nset(CMAKE_CXX_STANDARD 11) # or 14 or 17, but 11 suffices for compilation\r\n```\r\n\r\n## Issue\r\nThis package uses several new features of C++11 (and newer) including `std::shared_ptr<T>`, `std::unique_ptr<T>`, `nullptr` despite boost being the default standard in ROS.\r\n\r\nThis causes compilation error (which is easily fixed).\r\n\r\n## Solution\r\nEither \r\n* The CMakeLists.txt file of dependencies need to be changes and sacrifice portability for compilers not supporting C++11 or later\r\n\r\nOR\r\n* Changes need to be made in this repository to accommodate the compatibility issue.\r\n\r\nAfter the discussion, I'd be happy to send PR to whatever solution is deemed as the correct one."
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/42'
+  title: add missing exec depend on poco_vendor
+  body: >-
+    Otherwise the exported environment from `poco_vendor` is not available to
+    downstream packages using `class_loader`.
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/38'
+  title: 'Add ClassLoader::createUniqueInstance'
+  body: >
+    This PR adds a function to create managed instances wrapped in a
+    `std::unique_ptr`.
+
+
+    There are a number of advantages to `unique_ptr`:
+
+    - It accurately models the fact that you are the sole owner when you create
+    the instance.
+
+    - It can be **implicitly** converted to `std::shared_ptr` and
+    `boost::shared_ptr` (since boost 1.53).
+
+    - It can release the held pointer to be used in whichever ownership or
+    lifetime management system the user wants.
+
+
+    The header hides the `#include <memory>` and the extra function if C++11
+    support is not available. That means dependent projects are not forced to
+    enable C++11 support. Since the added function is actually a function
+    template, there isn't even a need to enable C++11 support for compiling
+    `ClassLoader`. As such it is even safe to merge this into indigo.
+
+
+    Since `std::unique_ptr` is implicitly convertible to `boost::shared_ptr` I
+    was also contemplating just changing the return type of
+    `ClassLoader::createInstance`. It would be _mostly_ API compatible. However,
+    it would not ABI compatible and there are cases where it would not be API
+    backwards compatible either (if someone is using an implicit conversion on
+    the returned `boost::shared_ptr` that is not available for
+    `std::unique_ptr`, for example). Doing this may make sense in the future,
+    but for now this seemed the most pragmatic approach.
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/30'
+  title: Ros2 poco vendor
+  body: >
+    I've wrapped a minimal version of poco-1.6.1 in poco_vendor:
+    https://github.com/ros2/poco_vendor
+
+
+    This package now provides `FindPoco.cmake` and only installs that unless
+    Poco is not found on the system. If that's the case then it will build the
+    "Foundation" component of Poco, install it to the workspace's install
+    directory additionally.
+
+
+    I also changed class_loader to not export poco as a transitive dependency.
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []
+- url: 'https://github.com/ros/class_loader/pull/29'
+  title: Add helper functions for creating OS specific library names
+  body: >
+    This won't always work (depending on how people build their plugin
+    libraries), but it should allow for less code in the default case.
+  repo: 'https://api.github.com/repos/ros/class_loader'
+  labels: []

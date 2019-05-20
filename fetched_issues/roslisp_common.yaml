@@ -1,0 +1,105 @@
+- url: 'https://github.com/ros/roslisp_common/pull/48'
+  title: Cl-tf bug
+  body: >
+    @airballking This is quite urgent, could you please merge this?
+
+
+    I accidentally got the commit from
+    https://github.com/ros/roslisp_common/pull/47 here as well, but it is also
+    an important bugfix and also urgent.
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels: []
+- url: 'https://github.com/ros/roslisp_common/pull/30'
+  title: removed dependency to  "actionlib_tutorials-msg"
+  body: |
+    removed dependency to  "actionlib_tutorials-msg" from actionlib-lisp.asd
+
+    I do not see any use for that...
+    does not seem to be used outside of the test-server package...
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels: []
+- url: 'https://github.com/ros/roslisp_common/issues/19'
+  title: cl-tf2 still uses its own datatypes instead of the ones in cl-tf-datatypes
+  body: >
+    @fairlight1337 Seems like we overlooked something during the refactoring:
+    When calling 
+
+
+    ``` lisp
+
+    (cl-tf:can-transform "some-frame" "another-frame")
+
+    ```
+
+
+    I still get an instance of type `cl-tf2:stamped-transform` instead of one of
+    type `cl-tf-datatypes:stamped-transform`. I try fixing this.
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roslisp_common/issues/17'
+  title: not all asd files in actionlib_lisp installed
+  body: >
+    fix the CMakeLists of `actionlib_lisp` to also install the asd file of the
+    new action-client implementation
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels:
+    - bug
+- url: 'https://github.com/ros/roslisp_common/issues/16'
+  title: switch cl-tf2 to new implement of actionlib client
+  body: >
+    Jan encountered lost goals with frequent requests, i.e. the exact same issue
+    which caused us to develop a new implementation of the actionlib client. See
+    if switching to the new implementation fixes that. 
+
+
+    @fairlight1337 could you maybe provide an example?
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/ros/roslisp_common/pull/15'
+  title: Added utility functions for ensurance of pose transformation
+  body: >
+    These functions were formerly part of cram_moveit, but turned out to be
+    non-moveit-specific. As they are used in other packages, they are moved to
+    cl-tf2 to not introduce unnecessary dependencies towards cram_bridge (which
+    contains cram_moveit).
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels: []
+- url: 'https://github.com/ros/roslisp_common/issues/11'
+  title: Running out of dynamic space when receiving too many tf2_msgs/TFMessage
+  body: >
+    I encountered a symptomatic behaviour when working with nodes on the same
+    ROS master that publish `tf2_msgs/TFMessage` messages while roslisp (cl-tf)
+    is listening on the `/tf` topic.
+
+
+    Loading `cl-tf` and connecting to the ROS master
+    (`(roslisp-utilities:startup-ros-node)`), and then letting a node publish
+    tf2 messages at a high rate results in SLIME entering the `ldb>` debugger
+    prompt, freezing everything else in Emacs.
+
+
+    `ldb`'s comment on this is that the dynamic memory stack is exhausted.
+    Initially, I had it's size set to 1024MB (default value), but changing it to
+    2048MB or 4096MB didn't help either. An important note here is that I didn't
+    do anything else besides initializing the tf-listener via cl-tf.
+
+
+    I cannot explain this symptom, but when the `/tf` topic is of type
+    `tf/tfMessage`, this does not happen.
+
+
+    Our setup here includes a C++ node for perception that publishes tf frames
+    via a broadcaster. Since the default implementation of tf apparently changed
+    from tf (groovy) to tf2 (hydro), initializing a tf broadcaster in C++
+    results in changing the topic on the ROS master to tf2_msgs/TFMessage. At
+    least that's what `rostopic info /tf` tells me. Again, there is no problem
+    when /tf is of type tf/tfMessage.
+
+
+    Does anybody have a clue about this? Even after restarting everything, the
+    problem still persists. I'm using `roslisp_common` from source.
+  repo: 'https://api.github.com/repos/ros/roslisp_common'
+  labels: []

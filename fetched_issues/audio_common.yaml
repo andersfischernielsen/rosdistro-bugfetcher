@@ -1,0 +1,332 @@
+- url: 'https://github.com/ros-drivers/audio_common/issues/106'
+  title: apt-get install sound_play package failure in Debian Jessie
+  body: "I'd like to install sound_play package in my debian jessie arm64 board,however I couldn't install it by using \"$apt-get install ros-kinetic-sound-play\" because of unmet dependencies \"libgstreamer-plugins-good1.0-0\" ,the detail is listed as below:\r\n\r\n```\r\nroot@linaro-alip:~/catkin_ws/src/# apt-get install ros-kinetic-sound-play\r\nReading package lists... Done\r\nBuilding dependency tree\r\nReading state information... Done\r\nSome packages could not be installed. This may mean that you have\r\nrequested an impossible situation or if you are using the unstable\r\ndistribution that some required packages have not yet been created\r\nor been moved out of Incoming.\r\nThe following information may help to resolve the situation:\r\n\r\nThe following packages have unmet dependencies:\r\n ros-kinetic-sound-play : Depends: libgstreamer-plugins-good1.0-0 but it is not installable\r\nE: Unable to correct problems, you have held broken packages.\r\n\r\n```\r\nThe linux distribution I used was Debian Jessie arm64, ros distribution was kinetic.I installed the sound_play package because I'd like to test some speech recognition and synthesis demos on my company's boards. I had installed and tested some demos on ubuntu 14.04 armhf (ros indigo) on another board,these demos mostly needed the support of the sound_play package,there were no problems on it. \r\n\r\nI needed to run these demos on our new 64bits Debian Jessie boards.I checked the wiki and make sure ROS Kinetic supported Debian Jessie.However,the error log showed that \"libgstreamer-plugins-good1.0-0\" could't be installed in Debian.\r\n\r\nIn fact,I checked it in both official websites of debian and ubuntu,the package \"libgstreamer-plugins-good1.0-0\" indeed didn't exist in Debian's package repository : https://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=libgstreamer-plugins-good1.0-0, while it exist in ubuntu's package repository:https://packages.ubuntu.com/search?suite=default&section=all&arch=any&keywords=libgstreamer-plugins-good1.0-0&searchon=names\r\n\r\nso,How to solve the dependency problem in Debian Jessie?\r\n\r\nThanks!\r\n"
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/pull/68'
+  title: '[soundplay_node] fix resources not being released on dict cleanup'
+  body: >
+    This was resulting in the number of sink inputs reaching the maximum
+    threshold,
+
+    (32 on ubuntu 14.04 with pulseaudio 4.0) after which no more sounds could be
+
+    played by the node. It would only happen if the rate of sounds being played
+    was
+
+    slower than the dictionary cleanup.
+
+
+    Some files which can help illustrate the problem:
+
+
+    `sound_play/launch/sound_test.launch`
+
+
+    ```
+
+    <launch>
+      <node pkg="sound_play" type="soundplay_node.py" name="soundplay_node"/>
+      <node pkg="sound_play" type="sound_test" name="sound_test"/>
+    </launch>
+
+
+    ```
+
+
+    `sound_play/scripts/sound_test`
+
+
+    ```
+
+    #!/usr/bin/env python
+
+
+    import os
+
+    import roslib
+
+    import rospy
+
+    from std_msgs.msg import Empty
+
+    from sound_play.libsoundplay import SoundClient
+
+
+    class SoundPlayer:
+        def sound_callback(self, msg):
+            self.sound_client.playWave(self.sound_file, 0.1)
+
+        def __init__(self):
+            rospy.init_node('sound_player')
+            rospy.sleep(1) # need to wait for sound client to init
+            self.sound_file = os.path.join(roslib.packages.get_pkg_dir('sound_play'),'sounds/BACKINGUP.ogg')
+            self.sound_client = SoundClient()
+
+        rospy.Subscriber('~play_sound', Empty, self.sound_callback)
+
+            rospy.spin()
+
+    if __name__ == '__main__':
+        player = SoundPlayer()
+    ```
+
+
+    Run `roslaunch sound_play sound_test.launch --screen` and `rostopic pub
+    /sound_test/play_sound std_msgs/Empty "{}" -r 0.09` without the update in
+    this PR. Wait approximately 6 minutes. In this time, you might want to look
+    at the output of `pactl list short sink-inputs`. As each sound is played,
+    you should notice the number of sink inputs increasing. It will increase to
+    32 (tested on ubuntu 14.04 with pulseaudio 4.0), at which point you will see
+    something like the following error in `/var/log/syslog`
+
+
+    ```
+
+    pulseaudio[3037]: [pulseaudio] sink-input.c: Failed to create sink input:
+    too many inputs per sink
+
+    ```
+
+
+    After this point, sounds from the sound node will no longer play.
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/pull/67'
+  title: sound_client actionlib dependency fix
+  body: >
+    This PR demonstrates an instance of the missing dependency on actionlib (
+    #66 ).
+
+
+    It adds a unit test that just creates a SoundClient object. This test fails
+    when running on a clean machine with all rosdep dependencies resolved, for
+    example on Travis continuous integration
+    [here](https://travis-ci.org/felixduvallet/audio_common/builds/92227443).
+
+
+    It also
+    [fixes](https://travis-ci.org/felixduvallet/audio_common/builds/92228025)
+    the problem by specifying the actionlib dependency in package.xml, so it
+    should fix the issue.
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/issues/66'
+  title: 'sound_play: missing depency on actionlib'
+  body: >
+    The sound_play package is missing a dependency on actionlib, only
+    actionlib_msgs are defined in package.xml.
+
+
+    This causes build breakage for any code using SoundClient() on a clean
+    machine, for example here:
+
+    https://travis-ci.org/felixduvallet/audio_common/builds/92227443
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/audio_common/pull/54'
+  title: Fixed underflow.
+  body: >
+    Before the sink buffer underflows the pipeline is paused. When data is
+    received again the pipeline is set to playing again.
+
+
+    This fixes #50 without changing any dependencies.
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/issues/44'
+  title: >-
+    rosdep install audio_common does not resolve issues for rosdep install
+    audio_capture, etc
+  body: >
+    On a Ubuntu 15.05 64-bit system running ROS Jade:
+
+
+    After following the tutorial here:
+    http://wiki.ros.org/audio_common/Tutorials/Streaming%20audio 
+
+    and installing from source audio_capture had an unmet dependency on
+    gstreamer-0.10.
+
+    ## rosdep install audio_common## reported everything being installed.
+
+
+    However, audio_capture still had the missing dependency. Finally 
+
+    ## rosdep install audio_capture## solved the issue.
+
+
+    Shouldn't this already happen on rosdep install audio_common?
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/issues/33'
+  title: soundplay_node no longer works on Hydro (v0.2.5)
+  body: >
+    I get the following error trying to run the code:
+
+
+    ```
+
+    bwi@calculon:~$ rosrun sound_play soundplay_node.py 
+
+    Traceback (most recent call last):
+      File "/opt/ros/hydro/lib/sound_play/soundplay_node.py", line 368, in <module>
+        soundplay()
+      File "/opt/ros/hydro/lib/sound_play/soundplay_node.py", line 304, in __init__
+        rootdir = os.path.join(roslib.packages.get_pkg_dir('sound_play'),'sounds')
+    NameError: global name 'roslib' is not defined
+
+    ```
+
+
+    I believe this change is responsible:
+
+    https://github.com/ros-drivers/audio_common/commit/f5a13555171a50c51ad818307c661c94a1243625#diff-c4ecd77ae058b18c549f3b287bd340b4R304
+
+
+    As far as I can tell, roslib is never imported, and that seems to be the
+    only error. I'll submit a PR.
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/issues/28'
+  title: Building stack for Rasberry Pi
+  body: >
+    We faced troubles during building this stack for the Raspberry Pi.
+
+    During catkin_make an error on the dependencies in CMakeLists.txt occurs.
+
+    We could solve this issue by removing line 18 in CMakeLists.txt
+    (add_dependencies(audio_play, ........).
+
+    Is this a bug?
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros-drivers/audio_common/issues/27'
+  title: 'sound_play: install lacks header file'
+  body: >
+    The hydro package of sound_play does not include the header file. The CMake
+    file lacks a proper install rule like this:
+
+
+    ```
+     install(DIRECTORY include/${PROJECT_NAME}/
+      DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+      FILES_MATCHING PATTERN "*.h")
+    ```
+
+
+    (as mentioned on
+    http://answers.ros.org/question/100941/sound_playh-not-in-included-in-ros-hydro-sound-play/)
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/audio_common/issues/24'
+  title: libsoundplay ImportError
+  body: >
+    After this steps:
+
+    1. clone audio_common into my catkin repo
+
+    2. catkin_make
+
+    3. sourcing setup.bash
+
+    4. rosrun sound_play say.py
+
+    Error message:
+
+    "from sound_play.libsoundplay import SoundClient
+
+    ImportError: No module named libsoundplay"
+
+    The reason is libsoundplay.py not in PYTHONPATH.
+
+    When I copy it to my devel/lib/python2.7/dist-packages/sound_play all works
+    fine.
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels: []
+- url: 'https://github.com/ros-drivers/audio_common/issues/23'
+  title: 'Inconsistency in sound_play documentation and code  (ros ticket #23)'
+  body: >
+    While the documentation of the sound_play node says that more than one sound
+    at a time can be played, this appears not to be the case (even when calling
+    it from the same node).
+
+
+    Lines 181-182 of soundplay_node.py are "Force only one sound at a time" and
+    "self.stopall()".  Commenting out the latter seems to allow multiple sounds
+    to be played at once.
+
+
+    Either the documentation or the code should probably be changed, however, I
+    have not experimented significantly to determine whether commenting out line
+    182 of soundplay_node.py leads to undesirable effects.
+
+
+    trac data:
+
+    - Owner: **ahendrix**
+
+    - Reporter: **elaine.g.short**
+
+    - Reported at: **Fri Mar  8 15:03:01 2013**
+
+    - URL: https://kforge.ros.org/audiocommon/trac//ticket/23
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/ros-drivers/audio_common/issues/22'
+  title: >-
+    sound_play won't work for Ubuntu 12.04 unless played as root or logged in
+    user  (ros ticket #22)
+  body: >
+    If a user is logged in, then only that user and sometimes root can play
+    audio.  For sound_play on robots, sometimes we have a GUI user that logs in,
+    but other users or scripts play noises from the background.
+
+
+    I tested this on Ubuntu 12.04 64 bit with Fuerte.
+
+
+    trac data:
+
+    - Owner: **ahendrix**
+
+    - Reporter: **chadrockey**
+
+    - Reported at: **Tue Dec 18 12:41:53 2012**
+
+    - URL: https://kforge.ros.org/audiocommon/trac//ticket/22
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/ros-drivers/audio_common/issues/21'
+  title: 'Documentation Out of Date  (ros ticket #21)'
+  body: >
+    Looks like the sound engine has changed enough to make the documentation of
+    date.  One example on this page:
+
+    http://www.ros.org/wiki/sound_play/Tutorials/ConfiguringAndUsingSpeakers
+
+
+    The asoundconf program does not seem to be installed as of 12.04 (maybe
+    earlier).
+
+
+    trac data:
+
+    - Owner: **ahendrix**
+
+    - Reporter: **chadrockey**
+
+    - Reported at: **Tue Dec  4 17:03:11 2012**
+
+    - URL: https://kforge.ros.org/audiocommon/trac//ticket/21
+  repo: 'https://api.github.com/repos/ros-drivers/audio_common'
+  labels:
+    - bug
+    - minor

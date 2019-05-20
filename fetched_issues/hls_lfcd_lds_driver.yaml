@@ -1,0 +1,11 @@
+- url: 'https://github.com/ROBOTIS-GIT/hls_lfcd_lds_driver/pull/27'
+  title: Corrected max-range to avoid fencepost error.
+  body: >-
+    The issue here is that in a laser scan the angle_min should refer to the
+    direction of the first beam and angle_max to the direction of the last beam
+    in the scan. If you assume 0 ~ 2pi, the first beam is counted twice,
+    resulting in 361 beams that should be in the scan.
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/hls_lfcd_lds_driver'
+  labels:
+    - bug
+    - enhancement

@@ -1,0 +1,313 @@
+- url: 'https://github.com/ros-drivers/libuvc_ros/issues/31'
+  title: 'libuvc_camera install fails, OS X 10.11.12, ROS Indigo'
+  body: >
+    Hi, I cloned the most recent version of the libuvc_ros repo (master) into my
+    src folder and ran catkin_make_isolated --pkg libuvc_camera --install , and
+    then I got an error while building, I reproduced the error, as suggested,
+    and got:
+
+
+    > <== Failed to process package 'libuvc_camera': 
+
+    >   Command '['/Users/gunshigupta/ros_catkin_ws/install_isolated/env.sh',
+    'make', '-j4', '-l4']' returned non-zero exit status 2
+
+    > 
+
+    > Reproduce this error by running:
+
+    > ==> cd /Users/gunshigupta/ros_catkin_ws/build_isolated/libuvc_camera &&
+    /Users/gunshigupta/ros_catkin_ws/install_isolated/env.sh make -j4 -l4
+
+    > 
+
+    > Command failed, exiting.
+
+    > yguns-MacBook-Pro:ros_catkin_ws gunshigupta$ cd
+    /Users/gunshigupta/ros_catkin_ws/build_isolated/libuvc_camera &&
+    /Users/gunshigupta/ros_catkin_ws/install_isolated/env.sh make -j4 -l4
+
+    > [ 14%] Built target libuvc_camera_gencfg
+
+    > [ 42%] Building CXX object
+    CMakeFiles/libuvc_camera_nodelet.dir/src/camera_driver.cpp.o
+
+    > [ 42%] Building CXX object
+    CMakeFiles/camera_node.dir/src/camera_driver.cpp.o
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:193:/Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp28::193
+    :28: error: error: 
+
+    >       use
+
+    >        ofuse  undeclaredof  identifierundeclared 
+    'uvc_mjpeg2rgb'identifier 
+
+    > 'uvc_mjpeg2rgb'
+
+    >     uvc_error_t conv_ret = uvc_mjpeg2rgb(frame, rgb_frame_);   
+    uvc_error_t conv_ret = uvc_mjpeg2rgb(frame, rgb_frame_);
+
+    > 
+
+    > ```
+
+    >                        ^
+
+    >                        ^
+
+    > ```
+
+    > 
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp/Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:242::24259::59
+    : warning: warning: 
+
+    > 
+
+    > ```
+
+    >         formatformat  specifiesspecifies  typetype  'unsigned
+    int''unsigned int'  butbut  thethe  argumentargument  hashas  typetype 
+    'size_t''size_t'
+
+    > 
+
+    >         (aka 'unsigned long')(aka 'unsigned long')  [-Wformat][-Wformat]
+
+    > 
+
+    >      status_class, event, selector, status_attribute, data_en);
+
+    >      status_class, event, selector, status_attribute,
+    data_len);                                                          ^~~~~~~~
+
+    > 
+
+    >                                                       ^~~~~~~~
+
+    > ```
+
+    > 
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:245:13:
+    warning:
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp
+
+    > :      245enumeration: 13value:  'UVC_STATUS_CLASS_CONTROL' notwarning :
+    handled in
+
+    >        switch enumeration
+
+    >        value[-Wswitch] 'UVC_STATUS_CLASS_CONTROL'
+
+    >  not handled in switch
+
+    >       [-Wswitch]
+
+    >     switch (status_class) {
+
+    >             ^
+
+    >     switch (status_class) {
+
+    >             ^
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:323:26:
+    error: 
+
+    >       use of undeclared identifier 'uvc_find_devices'; did you mean
+
+    >       'uv_find_device'?
+
+    >   uvc_error_t find_err = uvc_find_devices(
+
+    >                          ^~~~~~~~~~~~~~~~
+
+    >                          uv_find_device
+
+    > /usr/local/Cellar/libuvc/0.0.5/include/libuvc/libuvc.h:371:13: note: 
+
+    >       'uvc_find_device' declared here
+
+    > uvc_error_t uvc_find_device(
+
+    >             ^
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:323:26:
+    error: 
+
+    >       use of undeclared identifier 'uvc_find_devices'; did you mean
+
+    >       'uv_find_device'?
+
+    >   uvc_error_t find_err = uvc_find_devices(
+
+    >                          ^~~~~~~~~~~~~~~~
+
+    >                          uv_find_device
+
+    > /usr/local/Cellar/libuvc/0.0.5/include/libuvc/libuvc.h:371:13: note: 
+
+    >       'uvc_find_device' declared here
+
+    > uvc_error_t uvc_find_device(
+
+    >             ^
+
+    >
+    /Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp:/Users/gunshigupta/ros_catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp324::32411::11
+    : errorerror: : 
+
+    > 
+
+    > ```
+
+    >         cannotcannot  initializeinitialize  aa  parameterparameter  ofof 
+    typetype  'uvc_device_t **''uvc_device_t **'
+
+    > 
+
+    >         (aka 'uvc_device **')(aka 'uvc_device **')  withwith  anan 
+    rvaluervalue  ofof  typetype  'uvc_device_t ***''uvc_device_t ***'
+
+    > 
+
+    >         (aka 'uvc_device ***')(aka 'uvc_device ***')
+
+    > 
+
+    > ctx_, &devs,    ctx_, &devs,
+
+    > 
+
+    >       ^~~~~          ^~~~~
+
+    > ```
+
+    > 
+
+    > /usr/local/Cellar/libuvc/0.0.5/include/libuvc/libuvc.h:373:20: note:
+    passing
+
+    >       argument to parameter 'dev' here
+
+    >     uvc_device_t *_dev,
+
+    >                    ^
+
+    > /usr/local/Cellar/libuvc/0.0.5/include/libuvc/libuvc.h:373:20: note:
+    passing
+
+    >       argument to parameter 'dev' here
+
+    >     uvc_device_t *_dev,
+
+    >                    ^
+
+    > 2 warnings and 3 errors generated.
+
+    > 2 warnings and 3 errors generated.
+
+    > make[2]: **\* [CMakeFiles/camera_node.dir/src/camera_driver.cpp.o] Error 1
+
+    > make[2]: **\*
+    [CMakeFiles/libuvc_camera_nodelet.dir/src/camera_driver.cpp.o] Error 1
+
+    > make[1]: **\* [CMakeFiles/camera_node.dir/all] Error 2
+
+    > make[1]: **\* Waiting for unfinished jobs....
+
+    > make[1]: **\* [CMakeFiles/libuvc_camera_nodelet.dir/all] Error 2
+
+    > make: **\* [all] Error 2
+
+
+    What do I do to fix it?
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros-drivers/libuvc_ros'
+  labels: []
+- url: 'https://github.com/ros-drivers/libuvc_ros/issues/13'
+  title: Compilation with Clang fails
+  body: >
+    Hello,
+
+
+    Compilation with Clang under OSX fails due to:
+
+
+    /Users/tatsch/catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp/Users/tatsch/catkin_ws/src/libuvc_ros/libuvc_camera/src/camera_driver.cpp::128128::55:: 
+    errorerror: : use useof  ofundeclared  undeclaredidentifier 
+    'uvc_set_focus_auto';identifier did 
+
+    'uvc_set_focus_auto';       youdid 
+
+    mean       you'uvc_set_focus_abs'? mean
+     'uvc_set_focus_abs'?
+
+    When the incriminating line is commented:
+
+     //PARAM_INT(auto_focus, focus_auto, new_config.auto_focus ? 1 : 0);
+
+    I still can't compile due to:
+
+
+    make[2]: **\* No rule to make target
+    `/usr/local/Cellar/libuvc/0.0.3/lib/libuvc.so', needed
+    by`/Users/tatsch/catkin_ws/devel/lib/libuvc_camera/camera_node'.  Stop.
+
+    make[1]: **\* [libuvc_ros/libuvc_camera/CMakeFiles/camera_node.dir/all]
+    Error 2
+
+    make[1]: **\* Waiting for unfinished jobs....
+
+    make[2]: **\* No rule to make target
+    `/usr/local/Cellar/libuvc/0.0.3/lib/libuvc.so', needed
+    by`/Users/tatsch/catkin_ws/devel/lib/liblibuvc_camera_nodelet.dylib'.  Stop.
+
+    make[1]: **\*
+    [libuvc_ros/libuvc_camera/CMakeFiles/libuvc_camera_nodelet.dir/all] Error 2
+
+
+    But I guess that is libuvc's fault? Or can somebody give me some hints?
+  repo: 'https://api.github.com/repos/ros-drivers/libuvc_ros'
+  labels: []
+- url: 'https://github.com/ros-drivers/libuvc_ros/pull/5'
+  title: add an explicit dependency on generated files in CMake
+  body: >
+    This will make sure that the generated headers are build before they are
+    compiled which is currently a race condition. 
+
+
+    This fixes the error shown here:
+    http://jenkins.ros.org/view/HbinP32/job/ros-hydro-libuvc-camera_binarydeb_precise_i386/25/console
+
+
+    ```
+
+    [ 20%] Building CXX object CMakeFiles/camera_node.dir/src/main.cpp.o
+
+    /usr/lib/ccache/c++   -DROS_PACKAGE_NAME=\"libuvc_camera\" -g -O2
+    -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security 
+    -I/tmp/buildd/ros-hydro-libuvc-camera-0.0.2-2precise-20130923-0631/obj-i686-linux-gnu/devel/include
+    -I/tmp/buildd/ros-hydro-libuvc-camera-0.0.2-2precise-20130923-0631/include
+    -I/opt/ros/hydro/include    -o CMakeFiles/camera_node.dir/src/main.cpp.o -c
+    /tmp/buildd/ros-hydro-libuvc-camera-0.0.2-2precise-20130923-0631/src/main.cpp
+
+    In file included from
+    /tmp/buildd/ros-hydro-libuvc-camera-0.0.2-2precise-20130923-0631/src/main.cpp:36:0:
+
+    /tmp/buildd/ros-hydro-libuvc-camera-0.0.2-2precise-20130923-0631/include/libuvc_camera/camera_driver.h:12:43:
+    fatal error: libuvc_camera/UVCCameraConfig.h: No such file or directory
+
+    compilation terminated.
+
+    ```
+  repo: 'https://api.github.com/repos/ros-drivers/libuvc_ros'
+  labels: []

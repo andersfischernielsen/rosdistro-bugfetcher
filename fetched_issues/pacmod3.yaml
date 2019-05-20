@@ -1,0 +1,5 @@
+- url: 'https://github.com/astuff/pacmod3/pull/45'
+  title: Added roslint. Implemented suggestions. Changed to raw pointers.
+  body: "- Adds roslint as a dependency.\r\n- Implements all suggested roslint changes.\r\n- Changes passing around of shared_ptrs to raw pointers\r\n- Changes all containers for CAN IDs to uint32_ts."
+  repo: 'https://api.github.com/repos/astuff/pacmod3'
+  labels: []

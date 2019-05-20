@@ -1,0 +1,5 @@
+- url: 'https://github.com/PR2/pr2_kinematics/pull/4'
+  title: Add dependency to cmake_modules to solve Eigen depdency on indigo
+  body: ''
+  repo: 'https://api.github.com/repos/PR2/pr2_kinematics'
+  labels: []

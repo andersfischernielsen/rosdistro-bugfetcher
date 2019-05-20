@@ -1,0 +1,65 @@
+- url: 'https://github.com/ros-drivers/rgbd_launch/issues/43'
+  title: ' sudo apt-get install ros-kinetic-rgbd-launch'
+  body: "~/catkin_ws$    sudo apt-get install ros-kinetic-rgbd-launch\r\n\r\nReading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nE: Unable to locate package ros-kinetic-rgbd-launch"
+  repo: 'https://api.github.com/repos/ros-drivers/rgbd_launch'
+  labels: []
+- url: 'https://github.com/ros-drivers/rgbd_launch/issues/22'
+  title: Release into ROS Kinetic
+  body: >
+    As of today bloom fails because of some ROS dependencies. Let's just wait
+    and see for awhile.
+
+
+    ```
+
+    Pre-verifying Debian dependency keys...
+
+    Running 'rosdep update'...
+
+    Could not resolve rosdep key 'depth_image_proc'
+
+    Failed to resolve depth_image_proc on ubuntu:wily with: Error running
+    generator: Failed to resolve rosdep key 'depth_image_proc', aborting.
+
+    depth_image_proc is depended on by these packages: ['rgbd_launch']
+
+    <== Failed
+
+    Could not resolve rosdep key 'depth_image_proc'
+
+    Failed to resolve depth_image_proc on ubuntu:xenial with: Error running
+    generator: Failed to resolve rosdep key 'depth_image_proc', aborting.
+
+    depth_image_proc is depended on by these packages: ['rgbd_launch']
+
+    <== Failed
+
+    Could not resolve rosdep key 'image_proc'
+
+    Failed to resolve image_proc on ubuntu:wily with: Error running generator:
+    Failed to resolve rosdep key 'image_proc', aborting.
+
+    image_proc is depended on by these packages: ['rgbd_launch']
+
+    <== Failed
+
+    Could not resolve rosdep key 'image_proc'
+
+    Failed to resolve image_proc on ubuntu:xenial with: Error running generator:
+    Failed to resolve rosdep key 'image_proc', aborting.
+
+    image_proc is depended on by these packages: ['rgbd_launch']
+
+    <== Failed
+
+    ```
+  repo: 'https://api.github.com/repos/ros-drivers/rgbd_launch'
+  labels: []
+- url: 'https://github.com/ros-drivers/rgbd_launch/issues/9'
+  title: dependency issues
+  body: >
+    Pay attention to the packages that depend on rgbd_launch when changing files
+    here. the last commit requires changing the openni2.launch in openni2_launch
+    because of the now unused machine arg...
+  repo: 'https://api.github.com/repos/ros-drivers/rgbd_launch'
+  labels: []

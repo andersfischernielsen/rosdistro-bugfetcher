@@ -1,0 +1,93 @@
+- url: 'https://github.com/ros/bond_core/pull/48'
+  title: Fix import
+  body: Fixes import statement (required for python3)
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/pull/45'
+  title: add DLL import/export macro on Windows
+  body: add DLL import/export macro `BONDCPP_DECL` for Bond class
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/pull/36'
+  title: uuid dependency fixup
+  body: "dont export uuid dependency as this isnt anywhere in the public api.\r\n\r\nContext: https://github.com/ros/bond_core/issues/35\r\n\r\nShould be backported to indigo-devel as well"
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/issues/35'
+  title: 'bondcpp: UUID_INCLUDE_DIRS missing'
+  body: "In `CMakeLists.txt` of bondcpp, there's no mention of `UUID_INCLUDE_DIRS`. I've just found out it's a problem on a system without root privileges where I'm compiling ROS from sources and installing some dependencies in non-standard paths. If the libuuid-dev files aren't installed in a default system location, the build process fails to find `uuid/uuid.h`, even though the CMake module finds the correct include dir.\r\n\r\nLooking in nodelet, `UUID_INCLUDE_DIRS` are exported there in `catkin_package(INCLUDE ...)` and not used as an `include_directory()`. I'm not sure that works, too, because uuid is used there only inside a cpp file and in no header file. The same situation is in bondcpp - I've only found the include inside .cpp files.\r\n\r\nSo my assumption is adding \r\n\r\n    include_directories(${UUID_INCLUDE_DIRS})\r\n\r\nand not adding `UUID_INCLUDE_DIRS` to `catkin_package(INCLUDE ...)` should solve the issue. I tested it on my system and it works. \r\n\r\nIf all my assumptions are correct, uuid should only be marked as `<build_depend>` and `<exec_depend>` in package.xml.\r\n\r\nI'll send a PR with this change so that CI can be run on it, but it'd also be nice if somebody tested it on his system. For the test, I think the following is needed:\r\n\r\n - move all files from `dpkg -L libuuid-dev` to a different directory\r\n - re-run CMake and make sure it fails to find uuid\r\n - re-run CMake with `CMAKE_PREFIX_PATH` set so that cmake finds the moved include dir\r\n - build the package"
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/pull/21'
+  title: Fixes problem with bondpy not exiting with the node
+  body: "Currently, if the main thread exits (e.g. with a ROSInterruptException) while one of these timer threads is still running, the node does not exit.  Making these daemons causes them to exit with the main thread, allowing the node to shut down in a timely manner without requiring a SIGKILL.\r\n\r\nThis has been tested and fixes the above problem in several Python nodes that depend on bondpy."
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/issues/9'
+  title: >-
+    wait_until_formed causes terminal to be unavailable for full requested
+    duration even after node shutdown
+  body: >
+    The example below demonstrates the problem. Running this as a node and
+    cancelling (ctrl+c) it before the duration of `wait_until_formed` is over
+    results in the terminal hanging for the specified duration. In the case
+    where the duration passes and the node waits on ros to shutdown before
+    continuing, cancelling execution causes the terminal to be available
+    immediately. If instead the cancellation is sent before the duration is up,
+    subsequent code will execute and the node will be destroyed (i.e. not
+    visible with `rosnode list`), but the terminal will still be occupied.
+
+
+    ``` python
+
+    #!/usr/bin/env python
+
+
+    from bondpy import bondpy
+
+    import rospy
+
+
+    if __name__ == '__main__':
+        rospy.init_node('timeout_test')
+        bond = bondpy.Bond("bondtopic", "identifier")
+        bond.start()
+        bond.wait_until_formed(rospy.Duration(45))
+        print("finished waiting")
+        loop = rospy.Rate(1)
+        while not rospy.is_shutdown():
+            print("spinning")
+            loop.sleep()
+        print("breaking")
+        bond.break_bond()
+        bond.shutdown()
+        print("past broken")
+    ```
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []
+- url: 'https://github.com/ros/bond_core/pull/4'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/bond_core'
+  labels: []

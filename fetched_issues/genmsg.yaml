@@ -1,0 +1,866 @@
+- url: 'https://github.com/ros/genmsg/pull/81'
+  title: add missing run_depend on empy
+  body: 'Addresses the missing dependency declaration from #80.'
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/80'
+  title: License clash with em.py?
+  body: "In https://github.com/ros/genmsg/blob/indigo-devel/src/genmsg/template_tools.py#L39 you import `em`, which I believe is `em.py` from http://www.alcyone.com/software/empy/ and that is LGPL. Your package is marked as BSD (according to http://wiki.ros.org/genmsg).\r\n\r\n1.) Please add a LICENSE file to the top of the repo to make this part of the repo.\r\n2.) add em.py to a requirements.txt and list under DEPENDENCIES on (http://wiki.ros.org/genmsg)?\r\n\r\nFigure out the license situation -  can you use a different template engine?\r\n\r\nAlso right now this seems to be only used with c++?\r\nhttps://github.com/ros/gencpp/blob/indigo-devel/scripts/msg.h.template\r\nCan you confirm?"
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - question
+- url: 'https://github.com/ros/genmsg/issues/77'
+  title: Cycles in message dependency graph should be detected
+  body: "Currently, if a set of messages are defined such that they create a cycle in the message dependency graph, e.g.:\r\n\r\nMessage1.msg contains:\r\n`\r\nMessage2 field1\r\n`\r\n\r\nand Message2.msg contains:\r\n`\r\nMessage1 field2\r\n`\r\n\r\nMessage generation results in an error that looks like:\r\n\r\n  ```\r\nFile \"/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py\", line 321, in load_msg_depends\r\n    load_msg_depends(msg_context, depspec, search_path)\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py\", line 310, in load_msg_depends\r\n    depspec = msg_context.get_registered(resolved_type)\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py\", line 434, in get_registered\r\n    if self.is_registered(full_msg_type):\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/msg_loader.py\", line 423, in is_registered\r\n    package, base_type = package_resource_name(full_msg_type)\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/genmsg/names.py\", line 104, in package_resource_name\r\n    val = tuple(name.split(PRN_SEPARATOR))\r\nRuntimeError: maximum recursion depth exceeded while calling a Python object\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/safe_execute_process.cmake:11 (message):\r\n  \r\n  execute_process(/home/user/catkin_ws/build/catkin_generated/env_cached.sh\r\n  \"/usr/bin/python\" \"/usr/bin/empy\" \"--raw-errors\" \"-F\"\r\n  \"/home/user/catkin_ws/build/test_messages/cmake/test_messages-genmsg-context.py\"\r\n  \"-o\"\r\n  \"/home/user/catkin_ws/build/test_messages/cmake/test_messages-genmsg.cmake\"\r\n  \"/opt/ros/indigo/share/genmsg/cmake/pkg-genmsg.cmake.em\") returned error\r\n  code 1\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/em_expand.cmake:25 (safe_execute_process)\r\n  /opt/ros/indigo/share/genmsg/cmake/genmsg-extras.cmake:303 (em_expand)\r\n  test_messages/CMakeLists.txt:28 (generate_messages)\r\n```\r\n\r\nCycles in the dependency graph should be specifically detected and a meaningful error should be generated rather than relying on the recursion depth error."
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/genmsg/pull/75'
+  title: 'Fix undefined name: ‘l’ —> “orig_line‘'
+  body: "__l__ is an undefined name in this context.  In the error message we want to show the user the original line.\r\n\r\nflake8 testing of https://github.com/ros/genmsg on Python 2.7.14\r\n\r\n$ __flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics__\r\n```\r\n./src/genmsg/msg_loader.py:206:69: F821 undefined name 'l'\r\n            raise InvalidMsgSpec(\"Invalid constant declaration: %s\"%l)\r\n                                                                    ^\r\n1     F821 undefined name 'l\r\n```"
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/pull/71'
+  title: add architecture_independent flag
+  body: >-
+    @dirk-thomas Is it fair to assume that python only packages are architecture
+    independent ?
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/pull/62'
+  title: remove the implicit dependency on catkin
+  body: >
+    The function `assert_file_exists` is provided by `catkin` but the package
+    doesn't run-depend on it (and probably shouldn't just for this trivial
+    function).
+
+
+    Replaces #61.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/pull/61'
+  title: find_package(catkin)
+  body: >
+    If you have a directory with two files, `Foo.msg` and `CMakeLists.txt`, with
+    the following content:
+
+
+    Foo.msg:
+
+
+    ```
+
+    int16 foo
+
+    ```
+
+
+    CMakeLists.txt:
+
+
+    ```
+
+    cmake_minimum_required(VERSION 2.8.3)
+
+    #find_package(catkin REQUIRED)
+
+    find_package(genmsg REQUIRED)
+
+    add_message_files(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} FILES Foo.msg)
+
+    ```
+
+
+    then running `cmake` yields this error about an undefined macro that's
+    provided by catkin:
+
+
+    ```
+
+    -- Using these message generators: 
+
+    CMake Error at /opt/ros/jade/share/genmsg/cmake/genmsg-extras.cmake:110
+    (assert_file_exists):
+      Unknown CMake command "assert_file_exists".
+    Call Stack (most recent call first):
+      CMakeLists.txt:4 (add_message_files)
+    ```
+
+
+    The error can be avoided by uncommenting the `find_package(catkin REQUIRED)`
+    line in the user's `CMakeLists.txt`, but that's not a good answer.
+
+
+    This PR pushes the `find_package(catkin REQUIRED)` call into genmsg, where
+    the macro is being called. I'm not sure whether genmsg's `package.xml`
+    dependencies should also be modified.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/52'
+  title: syntax error in "cmake/genmsg-extras.cmake.em"
+  body: |
+    introduced in commit 80c0d2a0ee8c618f775d3bfed8d31028e142f2d8
+    missing '()' after 'endif' at line 89.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/pull/42'
+  title: add check for changed message dependencies changed
+  body: |
+    This will address #41.
+
+    @esteve @tfoote @wjwwood Please review.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/41'
+  title: >-
+    Message dependencies do not update when a dependent message's dependencies
+    change
+  body: >
+    I think I said that right in the title.
+
+
+    Basically there is a case when the message generation is not rerun even when
+    it should be. The problem is the list of .msg dependencies is generated
+    during the cmake configure step and if you add a new field to a .msg file
+    that is another message type that dependency list is never updated (until
+    you rerun the cmake step).
+
+
+    You can reproduce the problem as follows.
+
+    1. Create a message package with two messages.
+       
+       a1.msg:
+       
+       ```
+        int32 a1
+       ```
+       
+       a2.msg:
+       
+       ```
+        int32 a2
+       ```
+    2. Run catkin_make. It will generate a1.h and a2.h.
+
+    3. In a1.msg add an field that is of type a2.
+       
+       a1.msg:
+       
+       ```
+        int32 a1
+        a2 a2_msg
+       ```
+    4. Run catkin_make. a1.h is regenerated correctly.
+
+    5. Add any field to a2.msg.
+       
+       a2.msg:
+       
+       ```
+        int32 a2
+        float32 a2_float
+       ```
+    6. Run catkin_make. a2.h is regenerated correctly. However a1.h is not. You
+    can look at the "Definition" in a1.h and see it is missing the new field
+    "a2_float". The md5sum is also wrong. If you delete the build directory and
+    do a clean build the md5sum for a1 is now different.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/issues/40'
+  title: debug_message is not guarenteed to be present
+  body: >
+    It's used in the cmake extras for example:
+    https://github.com/ros/genmsg/blob/hydro-devel/cmake/genmsg-extras.cmake.em#L24
+
+
+    This fails due to clean up in ros/common_msgs#27 fixed there in
+    ros/common_msgs#30
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/issues/38'
+  title: installs relay __init__.py overwriting file from source space
+  body: >
+    When using cmi for building a workspace the generated `__init__.py` files
+    from the devel space are getting installed. This happens after the
+    `__init__.py` file from the source package has been installed.
+
+
+    This has initially been reported in ros/dynamic_reconfigure#21.
+
+
+    The problem is that the pattern for installing all `__init__.py` files from
+    the devel space **except** the one in the root of the package fails.
+
+
+    ```
+
+    REGEX "/@(pkg_name)/.+/__init__.pyc?$"
+
+    ```
+
+
+    The `/@(pkg_name)/` part actually matches the folder structure used by cmi
+    and therefore the file
+    `devel_isolated/@(pkg_name)/lib/python2.7/dist-packages/@(pkg_name)/__init__.py`
+    matches and gets installed.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/issues/34'
+  title: >-
+    Missing module __init__ in package containing messages and
+    catkin_python_setup()
+  body: >
+    Pretty sure this is a repeat of issue #10.
+
+
+    My package works fine in devel space, when I go to install it, I get this:
+
+
+    ```
+
+    $ catkin_make install  | grep __init__
+
+    Compiling
+    /home/mikepurvis/husky_ws/devel/lib/python2.7/dist-packages/clearpath_base/__init__.py
+    ...
+
+    Compiling
+    /home/mikepurvis/husky_ws/devel/lib/python2.7/dist-packages/clearpath_base/msg/__init__.py
+    ...
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/msg/__init__.pyc
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/msg/__init__.py
+
+    ```
+
+
+    The `__init__.py` file in the package root get compiled, but it never gets
+    installed.
+
+
+    On a hunch, I finally removed `catkin_python_setup()`, and then it does the
+    right thing and installs the `__init__.py` file:
+
+
+    ```
+
+    $ catkin_make install  | grep __init__
+
+    Compiling
+    /home/mikepurvis/husky_ws/devel/lib/python2.7/dist-packages/clearpath_base/__init__.py
+    ...
+
+    Compiling
+    /home/mikepurvis/husky_ws/devel/lib/python2.7/dist-packages/clearpath_base/msg/__init__.py
+    ...
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/__init__.pyc
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/__init__.py
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/msg/__init__.pyc
+
+    -- Installing:
+    /home/mikepurvis/husky_ws/install/lib/python2.7/dist-packages/clearpath_base/msg/__init__.py
+
+    ```
+
+
+    I know this is not an ideally-named package (or API design), but it's this
+    way to maintain consistency with some historical decisions. The package
+    source is here:
+
+
+    https://github.com/clearpathrobotics/clearpath_base
+
+
+    For now, I'm going to just work around this by manually installing the file,
+    but it was a pretty nasty bug to figure out.
+
+
+    ---
+
+
+    For interested parties, here's the workaround:
+
+
+    ```
+
+    install(FILES
+    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/__init__.py
+      DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION})
+    ```
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/issues/33'
+  title: CMake macro failes when global variable "config" is set
+  body: >
+    Based on the question
+    http://answers.ros.org/question/77261/using-cuda-with-catkin-cant-generate-messages/
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/issues/31'
+  title: calling generate_messages without declaring messages gives a bad error
+  body: >
+    This `CMakeLists.txt`:
+
+
+    https://github.com/allenh1/p2os/blob/eff7ff1beb99331ddcbd9bb05bf90aabead9bf38/p2os_teleop/CMakeLists.txt#L11
+
+
+    Results in this:
+
+
+    http://answers.ros.org/question/68278/jenkins-build-issues-file-install-cannot-find-obj-x86_64-linux-gnu/
+
+
+    It should probably assert that some messages are set to be generated, rather
+    than failing when it tries to install the resulting files which obviously
+    don't exist.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels:
+    - bug
+- url: 'https://github.com/ros/genmsg/pull/22'
+  title: Better errors
+  body: >
+    For cases where users get the macros in the wrong order.
+
+
+    I assume it does not cause errors to call e.g. add_message_files twice.
+
+
+    The only problem case left is if the user forgets to call
+    generate_messages(). I though about checking that in catkin_package(), but
+    not sure whether that's a good idea.
+
+
+    I think the following could maybe be better: make the xyz_genfoo macros
+    depend on a target xyz_generation_check, that is initialised with 
+    message(FATAL_ERROR "generate_messages not called"). 
+
+
+    And in generate_messages(), the target is then overwritten by No-op. What do
+    you think?
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/20'
+  title: >-
+    suggest generic message generation target to depend on with
+    add_dependencies 
+  body: >
+    The current design of genmsg requires users to depend on the xyz_gencpp
+    target to build c++ libraries against messages in the same package. This
+    requires users to know about gencpp and causes an ugly reference to gencpp
+    internals in userland CMakeLists.txt.
+
+
+    See:
+
+    https://github.com/ros/catkin_tutorials/issues/4
+
+
+    I suggest that instead genmsg should if possible provide a CMake target that
+    users can depend on generically. If changed, this also affects 
+
+
+    https://github.com/ros-infrastructure/catkin_pkg/issues/26
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/15'
+  title: Hide transitive dependencies
+  body: >
+    If a package A generates messages which depend only on package B it should
+    not need to know about B's dependencies to other message packages. Currently
+    A has to specify all recursive message dependencies for
+    `generate_messages(DEPENDENCIES ...)`.
+
+
+    All other parts in CMake (`find_package()`, `catkin_package()`) already
+    provide that so `generate_messages()` should be the same.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/12'
+  title: headers not generated before depending packages built
+  body: >
+    Only causes problems with make -jN for N greater than 1.
+
+
+    Basically, packages which depend on message packages only depend on the
+    library, not the generated headers, so they might get built before all
+    headers are generated.
+
+
+    @wjwwood 
+
+
+    See make output: https://gist.github.com/4120623
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/9'
+  title: srv cpp headers not getting generated
+  body: >
+    While trying to debug wge100_camera
+    (https://github.com/ros-drivers/wge100_driver/tree/master/wge100_camera)
+    locally I run into this error:
+
+
+    ```
+
+    ∫ make
+
+    mkdir -p bin
+
+    cd build && cmake -Wdev
+    -DCMAKE_TOOLCHAIN_FILE=/opt/ros/groovy/share/ros/core/rosbuild/rostoolchain.cmake 
+    ..
+
+    -- The C compiler identification is GNU
+
+    -- The CXX compiler identification is GNU
+
+    -- Check for working C compiler: /usr/bin/gcc
+
+    -- Check for working C compiler: /usr/bin/gcc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Check for working CXX compiler: /usr/bin/c++
+
+    -- Check for working CXX compiler: /usr/bin/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.3")
+
+    [rosbuild] Building package wge100_camera
+
+    [rosbuild] Cached build flags older than manifests; calling rospack to get
+    flags
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H - found
+
+    -- Looking for pthread_create in pthreads
+
+    -- Looking for pthread_create in pthreads - not found
+
+    -- Looking for pthread_create in pthread
+
+    -- Looking for pthread_create in pthread - found
+
+    -- Found Threads: TRUE 
+
+    -- Found gtest sources under '/usr/src/gtest': gtests will be built
+
+    -- Configuring done
+
+    -- Generating done
+
+    -- Build files have been written to: /tmp/wge100_driver/wge100_camera/build
+
+    cd build && make 
+
+    make[1]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[2]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target rospack_gensrv
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [  0%] Built target rospack_gensrv
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target rospack_gensrv_all
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [  0%] Built target rospack_gensrv_all
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target rospack_genmsg_libexe
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [  0%] Built target rospack_genmsg_libexe
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target rosbuild_precompile
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [  0%] Built target rosbuild_precompile
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target wge100camera
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [  6%] Building C object
+    src/wge100lib/CMakeFiles/wge100camera.dir/host_netutil.c.o
+
+    [ 12%] Building C object src/wge100lib/CMakeFiles/wge100camera.dir/list.c.o
+
+    /tmp/wge100_driver/wge100_camera/src/wge100lib/list.c: In function
+    ‘wge100CamListDelAll’:
+
+    /tmp/wge100_driver/wge100_camera/src/wge100lib/list.c:192:6: warning:
+    variable ‘count’ set but not used [-Wunused-but-set-variable]
+
+    [ 18%] Building C object
+    src/wge100lib/CMakeFiles/wge100camera.dir/wge100lib.c.o
+
+    /tmp/wge100_driver/wge100_camera/src/wge100lib/wge100lib.c: In function
+    ‘wge100ReliableFlashWrite’:
+
+    /tmp/wge100_driver/wge100_camera/src/wge100lib/wge100lib.c:1018:7: warning:
+    variable ‘first_read’ set but not used [-Wunused-but-set-variable]
+
+    [ 25%] Building CXX object
+    src/wge100lib/CMakeFiles/wge100camera.dir/mt9v.cpp.o
+
+    Linking CXX shared library ../../../lib/libwge100camera.so
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [ 25%] Built target wge100camera
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    Scanning dependencies of target wge100_camera_node
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[3]: Entering directory `/tmp/wge100_driver/wge100_camera/build'
+
+    [ 31%] Building CXX object
+    src/nodes/CMakeFiles/wge100_camera_node.dir/wge100_camera_node.cpp.o
+
+    /tmp/wge100_driver/wge100_camera/src/nodes/wge100_camera_node.cpp:57:39:
+    fatal error: wge100_camera/BoardConfig.h: No such file or directory
+
+    compilation terminated.
+
+    make[3]: ***
+    [src/nodes/CMakeFiles/wge100_camera_node.dir/wge100_camera_node.cpp.o] Error
+    1
+
+    make[3]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[2]: *** [src/nodes/CMakeFiles/wge100_camera_node.dir/all] Error 2
+
+    make[2]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make[1]: *** [all] Error 2
+
+    make[1]: Leaving directory `/tmp/wge100_driver/wge100_camera/build'
+
+    make: *** [all] Error 2
+
+    ```
+
+
+    There is a BoardConfig.srv file in the srv directory and there is a gensrv()
+    call in the cmake.  After running make, the srv_gen folder contains:
+
+
+    ```
+
+    ∫ ls srv_gen/
+
+    generated
+
+    ```
+
+
+    In fuerte there is a cpp and lisp folder in there and it finds the header.
+
+
+    I am building against ros-groovy debs from shadow-fixed:
+
+
+    ```
+
+    ∫ dpkg -l | grep genmsg
+
+    ii  ros-fuerte-genmsg                       
+    0.3.10-0precise-20120908-1622-+0000     Willow Garage low level build system
+    macros and infrastructure
+
+    ii  ros-groovy-genmsg                       
+    0.4.10-0precise-20120930-2328-+0000     Standalone Python library for
+    generating ROS message and service data structures for various languages.
+
+    ```
+
+
+    To reproduce:
+
+    1. Install groovy dependencies for wge100_camera
+
+    2. `source /opt/ros/groovy/setup.bash`
+
+    3. `export ROS_PACKAGE_PATH=/path/to/wge100_camera:$ROS_PACKAGE_PATH`
+
+    4. `rosmake wge100_camera`
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/6'
+  title: Error in genmsg when generating the Empty.srv service
+  body: >
+    When building the base stacks with catkin/groovy/OS X 10.7.x I get:
+
+
+    ```
+
+    ∫ make
+
+    [  0%] Building CXX object rospack/CMakeFiles/rospack.dir/src/rospack.cpp.o
+
+    [  0%] Building CXX object
+    rospack/CMakeFiles/rospack.dir/src/rospack_backcompat.cpp.o
+
+    [  0%] Building CXX object rospack/CMakeFiles/rospack.dir/src/utils.cpp.o
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rospack.dir/src/rospack_cmdline.cpp.o
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rospack.dir/tinyxml-2.5.3/tinyxml.cpp.o
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rospack.dir/tinyxml-2.5.3/tinyxmlparser.cpp.o
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rospack.dir/tinyxml-2.5.3/tinyxmlerror.cpp.o
+
+    Linking CXX shared library ../buildspace/lib/librospack.dylib
+
+    [  1%] Built target rospack
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rospackexe.dir/src/rospack_main.cpp.o
+
+    Linking CXX executable ../buildspace/bin/rospack
+
+    [  1%] Built target rospackexe
+
+    [  1%] Building CXX object
+    rospack/CMakeFiles/rosstackexe.dir/src/rosstack_main.cpp.o
+
+    Linking CXX executable ../buildspace/bin/rosstack
+
+    [  1%] Built target rosstackexe
+
+    [  1%] Building CXX object
+    ros/core/roslib/CMakeFiles/roslib.dir/src/package.cpp.o
+
+    Linking CXX shared library ../../../buildspace/lib/libroslib.dylib
+
+    [  1%] Built target roslib
+
+    [  1%] Building CXX object
+    roscpp_core/cpp_common/CMakeFiles/cpp_common.dir/src/debug.cpp.o
+
+    Linking CXX shared library ../../buildspace/lib/libcpp_common.dylib
+
+    [  1%] Built target cpp_common
+
+    [  1%] Building CXX object
+    roscpp_core/rostime/CMakeFiles/rostime.dir/src/time.cpp.o
+
+    [  1%] Building CXX object
+    roscpp_core/rostime/CMakeFiles/rostime.dir/src/rate.cpp.o
+
+    [  1%] Building CXX object
+    roscpp_core/rostime/CMakeFiles/rostime.dir/src/duration.cpp.o
+
+    Linking CXX shared library ../../buildspace/lib/librostime.dylib
+
+    [  1%] Built target rostime
+
+    [  1%] Building CXX object
+    roscpp_core/roscpp_serialization/CMakeFiles/roscpp_serialization.dir/src/serialization.cpp.o
+
+    Linking CXX shared library
+    ../../buildspace/lib/libroscpp_serialization.dylib
+
+    [  1%] Built target roscpp_serialization
+
+    [  1%] Generating C++ code from std_msgs/Bool.msg
+
+    [  1%] Generating C++ code from std_msgs/Byte.msg
+
+    [  1%] Generating C++ code from std_msgs/ByteMultiArray.msg
+
+
+
+    ....
+
+
+
+    Scanning dependencies of target rosgraph_msgs_genpy
+
+    [ 37%] Generating Python from MSG rosgraph_msgs/Clock
+
+    [ 37%] Generating Python from MSG rosgraph_msgs/Log
+
+    [ 37%] Generating Python msg __init__.py for rosgraph_msgs
+
+    [ 37%] Built target rosgraph_msgs_genpy
+
+    [ 37%] Generating C++ code from std_srvs/Empty.srv
+
+    [ 37%] Built target std_srvs_gencpp
+
+    [ 37%] Generating Lisp code from std_srvs/Empty.srv
+
+    Traceback (most recent call last):
+      File "/Users/william/devel/groovy/base/install/lib/python2.7/site-packages/genlisp-0.4.0-py2.7.egg/genlisp/genlisp_main.py", line 35, in genmain
+        search_path = genmsg.command_line.includepath_to_dict(options.includepath)
+      File "/Users/william/devel/groovy/base/install/lib/python2.7/site-packages/genmsg/command_line.py", line 35, in includepath_to_dict
+        for path in includepath:
+    TypeError: 'NoneType' object is not iterable
+
+    ERROR:  'NoneType' object is not iterable
+
+    make[2]: *** [buildspace/share/common-lisp/ros/std_srvs/srv/Empty.lisp]
+    Error 3
+
+    make[1]: ***
+    [ros_comm/messages/std_srvs/CMakeFiles/std_srvs_genlisp.dir/all] Error 2
+
+    make: *** [all] Error 2
+
+    ```
+
+
+    Not sure what brings this about, it looks like genlisp_main.py is getting
+    called without the includepath command line option being set.  I don't know
+    if this just needs to check for None and return a default value or if the
+    real problem is that the includepath command line option is not getting set.
+
+
+    This problem does occur with plain old `make` as well.
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []
+- url: 'https://github.com/ros/genmsg/issues/1'
+  title: Userfriendly error message for missing DEPENDENCIES in generate_messages
+  body: >
+    If the correct dependencies are not specified in generate_messages macro the
+    genmsg will spit out a confusing python error. This should give a usefull
+    error like:
+
+    "actionlib_msgs not found when generating for actionlib. Did you forget to
+    specify actionlib_msgs in generate_messages() DEPENDENCIES" or something
+    similar....
+
+
+    The current error message is:
+
+
+    ```
+
+    --- Error parsing token: @{
+
+    import sys, genmsg, os
+
+    genmsg.base.log_verbose('GENMSG_VERBOSE' in os.environ)
+
+    # put this path at the beginning
+
+    sys.path.insert(0, genmsg_python_path)
+
+    import genmsg.deps
+
+
+    msg_deps = {}
+
+    for m in messages:
+      msg_deps[m] = genmsg.deps.find_msg_dependencies(pkg_name, m, dep_search_paths)
+
+    srv_deps = {}
+
+    for s in services:
+      srv_deps[s] = genmsg.deps.find_srv_dependencies(pkg_name, s, dep_search_paths)
+
+    }
+        if __name__ == '__main__': main()
+      File "/usr/bin/empy", line 3290, in main
+        invoke(sys.argv[1:])
+      File "/usr/bin/empy", line 3273, in invoke
+        interpreter.wrap(interpreter.file, (file, name))
+      File "/usr/bin/empy", line 2273, in wrap
+        self.fail(e)
+      File "/usr/bin/empy", line 2264, in wrap
+        apply(callable, args)
+      File "/usr/bin/empy", line 2337, in file
+        self.safe(scanner, done, locals)
+      File "/usr/bin/empy", line 2379, in safe
+        self.parse(scanner, locals)
+      File "/usr/bin/empy", line 2400, in parse
+        token.run(self, locals)
+      File "/usr/bin/empy", line 1410, in run
+        interpreter.execute(self.code, locals)
+      File "/usr/bin/empy", line 2580, in execute
+        exec statements in self.globals
+      File "<string>", line 10, in <module>
+      File "/home/local/catkin_build2/build/lib/genmsg/deps.py", line 17, in find_msg_dependencies
+        genmsg.msg_loader.load_depends(msg_context, spec, search_paths)
+      File "/home/local/catkin_build2/build/lib/genmsg/msg_loader.py", line 343, in load_depends
+        return load_msg_depends(msg_context, spec, msg_search_path)
+      File "/home/local/catkin_build2/build/lib/genmsg/msg_loader.py", line 320, in load_msg_depends
+        load_msg_depends(msg_context, depspec, search_path)
+      File "/home/local/catkin_build2/build/lib/genmsg/msg_loader.py", line 312, in load_msg_depends
+        depspec = load_msg_by_type(msg_context, resolved_type, search_path)
+      File "/home/local/catkin_build2/build/lib/genmsg/msg_loader.py", line 118, in load_msg_by_type
+        file_path = get_msg_file(package_name, base_type, search_path)
+      File "/home/local/catkin_build2/build/lib/genmsg/msg_loader.py", line 78, in get_msg_file
+        % (base_type, package, search_path))
+    genmsg.msg_loader.MsgNotFound: Cannot locate message [GoalID]: unknown
+    package [actionlib_msgs] on search path [{'actionlib':
+    '/home/local/catkin_build2/build/actionlib/actions_gen', 'std_msgs':
+    '/home/local/catkin_build2/std_msgs/msg'}]
+
+    CMake Error at catkin/cmake/safe_execute_process.cmake:13 (message):
+      Error executing process with arguments COMMAND
+      /home/local/catkin_build2/build/env.sh /usr/bin/empy --raw-errors -F
+      /home/local/catkin_build2/catkin/cmake/empy_util.py -F
+      /home/local/catkin_build2/build/actionlib/cmake/actionlib-genmsg-context.py
+      -F /home/local/catkin_build2/build/catkin/catkin-context.py -o
+      /home/local/catkin_build2/build/actionlib/cmake/actionlib-genmsg.cmake
+      /home/local/catkin_build2/genmsg/cmake/pkg-genmsg.cmake.em
+    Call Stack (most recent call first):
+      catkin/cmake/em_expand.cmake:14 (safe_execute_process)
+      build/cmake/genmsg/genmsg-extras.cmake:101 (em_expand)
+      actionlib/CMakeLists.txt:28 (generate_messages)
+    ```
+  repo: 'https://api.github.com/repos/ros/genmsg'
+  labels: []

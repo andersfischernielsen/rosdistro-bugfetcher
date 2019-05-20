@@ -1,0 +1,6 @@
+- url: 'https://github.com/OUXT-Polaris/quaternion_operation/issues/2'
+  title: Unnecessary and strange funtion
+  body: "Don’t you forget to remove it? Line 63-73 of quaternion_operation.h:\r\n```cpp\r\n    /**\r\n     * @brief calculate rotation of\r\n     * \r\n     * @param pose_orientation orientation of pose\r\n     * @param rotation rotation quaternion\r\n     * @return geometry_msgs::Quaternion result of rotation\r\n     */\r\n    geometry_msgs::Quaternion roataion(geometry_msgs::Quaternion pose_orientation,geometry_msgs::Quaternion rotation)\r\n    {\r\n        return pose_orientation*pose_orientation;\r\n    }\r\n```"
+  repo: 'https://api.github.com/repos/OUXT-Polaris/quaternion_operation'
+  labels:
+    - bug

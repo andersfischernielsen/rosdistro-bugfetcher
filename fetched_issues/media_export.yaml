@@ -1,0 +1,11 @@
+- url: 'https://github.com/ros/media_export/issues/1'
+  title: Indigo
+  body: >
+    Is anyone willing to maintain/release media_export into Indigo. It is a
+    blocking dependency for `rviz`.
+
+
+    I am going to release the current version into Indigo as unmaintained for
+    now.
+  repo: 'https://api.github.com/repos/ros/media_export'
+  labels: []

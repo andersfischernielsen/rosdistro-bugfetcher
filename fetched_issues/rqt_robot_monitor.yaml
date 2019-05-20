@@ -1,0 +1,42 @@
+- url: 'https://github.com/ros-visualization/rqt_robot_monitor/issues/9'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get it released there.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_monitor'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_robot_monitor/issues/1'
+  title: 'rqt_robot_monitor: Apparent threading bug'
+  body: >-
+    _From @abencz on December 11, 2014 18:35_
+
+
+    While running rqt_robot_monitor I get a continuous stream of the following
+    in the parent terminal:
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/home/alex/ros_rocksteady_gui/src/rqt_robot_plugins/rqt_robot_monitor/src/rqt_robot_monitor/timeline_view.py", line 194, in _slot_redraw
+        for i, m in enumerate(self._timeline):
+      File "/home/alex/ros_rocksteady_gui/src/rqt_robot_plugins/rqt_robot_monitor/src/rqt_robot_monitor/timeline.p  y", line 158, in __iter__
+        for msg in self._queue:
+    RuntimeError: deque mutated during iteration
+
+    ```
+
+
+    Looks like the timeline queue is being modified by the ROS message callback
+    in the `Timeline` class while at the same time being iterated over by
+    `TimelineView`. I'm not what a good fix is, but I'm guessing this is causing
+    more than just annoying error messages because I also see frequent
+    rqt_robot_monitor freezes and crashes - most often when using the inspector
+    window.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_robot_plugins#78_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_monitor'
+  labels:
+    - bug

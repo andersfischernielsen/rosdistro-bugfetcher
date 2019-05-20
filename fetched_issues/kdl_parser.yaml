@@ -1,0 +1,36 @@
+- url: 'https://github.com/ros/kdl_parser/issues/16'
+  title: postscript file tries to be a urdf file?
+  body: "Hi,\r\n\r\nthe repository contains `kdl_parser_py/test/kdl_parser_py.urdf` which is not a urdf file but a postscript document containing just a single image:\r\n\r\n![prefix-000](https://user-images.githubusercontent.com/84850/42727864-39c91464-87ae-11e8-82e7-b090daa3e280.png)\r\n\r\nHow does this make sense?"
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels:
+    - bug
+    - help wanted
+- url: 'https://github.com/ros/kdl_parser/pull/14'
+  title: Remove the declaration of a library from kdl_parser_py.
+  body: "It does not install a library, so it shouldn't declare it here.\r\nAlso fix up the dependencies to be more correct, since it really\r\nrequires urdfdom_py, not urdf.  It also needs a <build_depend>\r\non urdfdom_py now.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>"
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels: []
+- url: 'https://github.com/ros/kdl_parser/pull/13'
+  title: Standalone kdl_parser library
+  body: "As proposed in https://github.com/ros/kdl_parser/issues/12, this PR makes `catkin` and `rosconsole` optional. I.e. plain CMake macros are used if catkin is not available and logging is done via std io streams if `rosconsole` is not available.\r\n\r\nSince [`urdf`](https://github.com/ros/urdf) itself depends on ROS for similar reasons, it has been replaced by `urdfdom`. This disables some of the functions like `treeFromParam` and `treeFromXml`, which use methods that are not present in `urdfdom`. In the log term it would be beneficial, if `urdf` also would be disentangled from ROS.\r\n\r\nI copied `FindTinyXML.cmake` and `FindTinyXML2.cmake` from https://github.com/ros/cmake_modules into this repo, to not introduce another dependency."
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels: []
+- url: 'https://github.com/ros/kdl_parser/issues/12'
+  title: Standalone kdl_parser library
+  body: "The `kdl_parser` is used in a couple of robotics applications outside of ROS. It would be nice, if the ROS and catkin dependencies would be removed or become optional (e.g. only use `catkin` and `rosconsole` if they are available).\r\n\r\nThe dependency on ROS is very low, since only the logging capabilities from `rosconsole` (`ROS_ERROR`, ...) are used. This could be disabled at compile time and just be stream to `cerr` if `rosconsole` is not available. Since the `urdf` package is now part of the Ubuntu repo, there is no need to use `catkin` to discover its location. A plain `CMakeLists.txt` could achieve the same.\r\n\r\nAre there other outstanding issues, which prevent to disentangle `kdl_parser` from ROS?"
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels:
+    - enhancement
+    - help wanted
+    - question
+- url: 'https://github.com/ros/kdl_parser/pull/3'
+  title: Make rostest a test_depend
+  body: 'While we are at it, also switch us over to package.xml format 2.'
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels: []
+- url: 'https://github.com/ros/kdl_parser/pull/2'
+  title: 'kdl_parser: switch from TinyXML to TinyXML2'
+  body: "The library TinyXML is considered to be unmaintained and\r\nsince all future development is focused on TinyXML2 this\r\npatch updates kdl_parser to use TinyXML2.\r\n\r\ndepends on https://github.com/ros/robot_model/pull/205"
+  repo: 'https://api.github.com/repos/ros/kdl_parser'
+  labels:
+    - question

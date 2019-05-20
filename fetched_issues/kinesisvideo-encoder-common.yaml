@@ -1,0 +1,37 @@
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/pull/14'
+  title: Add gtest and gmock as test dependencies
+  body: "By submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/pull/7'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/pull/6'
+  title: use master branch for cloud extension dependencies
+  body: "*Description of changes:*\r\n\r\nProperly implementing the \"master\" Travis build pipeline, where dependencies should come from HEAD instead of release tags or released binaries.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license."
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/pull/5'
+  title: Restrict aws robotics dependencies
+  body: "Set aws-robotics dependencies to less than 2.0\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/pull/3'
+  title: >-
+    workaround avcodec_find_encoder_by_name() unreliably indicating that
+    h264_omx codec is available
+  body: "*Issue #2*\r\n\r\n*Description of changes:*\r\n\r\nOn Ubuntu Bionic 18.04 x64, libavcodec.so's `avcodec_find_encoder_by_name()` indicates that the \"h264_omx\" codec is available, but the codec depends on libOMX_Core.so/libOMXCore.so, which are not available and means that the \"h264_omx\" codec simply does not work.\r\n\r\nThe fix is to have CMake detect the presence of libOMX_Core.so/libOMXCore.so (or libopenmaxil.so and libbcm_host.so in the case of Raspberry Pi's, see https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/omx.c#L142) on the system to decide whether or not the hardware encoder should be used.\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-encoder-common/issues/2'
+  title: Improperly detecting h264_omx encoder on Ubuntu Bionic
+  body: >-
+    On Ubuntu 18.04 Bionic Beaver x86_64, I am finding that ffmpeg is indicating
+    the "h264_omx" encoder is available even though it is not working
+    ("libOMXCore.so" is not available), which means the h264_video_encoder node
+    is effectively broken on Bionic Beaver x86/x64.
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-encoder-common'
+  labels:
+    - bug

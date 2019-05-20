@@ -1,0 +1,200 @@
+- url: 'https://github.com/wg-perception/people/pull/50'
+  title: '[indigo][test] Missing dependency'
+  body: ''
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels: []
+- url: 'https://github.com/wg-perception/people/issues/47'
+  title: people package uninstallable in kinetic
+  body: >
+    Due to dependencies on unreleased packages:
+    https://github.com/ros/rosdistro/pull/12313
+
+
+    ```
+
+    $ sudo apt install ros-kinetic-people
+
+    Reading package lists... Done
+
+    Building dependency tree       
+
+    Reading state information... Done
+
+    Some packages could not be installed. This may mean that you have
+
+    requested an impossible situation or if you are using the unstable
+
+    distribution that some required packages have not yet been created
+
+    or been moved out of Incoming.
+
+    The following information may help to resolve the situation:
+
+
+    The following packages have unmet dependencies:
+     ros-kinetic-people : Depends: ros-kinetic-leg-detector but it is not installable
+                          Depends: ros-kinetic-people-velocity-tracker but it is not installable
+    E: Unable to correct problems, you have held broken packages.
+
+    ```
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels: []
+- url: 'https://github.com/wg-perception/people/issues/39'
+  title: Namspace issue with nh_.resolveName
+  body: >
+    I think I'm having an issue with the use of `nh_.resolveName` messing up the
+    `face_detector`'s ability to subscribe to specified topics while within a
+    namespace. See the info below:
+
+    ![image](https://cloud.githubusercontent.com/assets/2293573/13024364/74c918e8-d1c1-11e5-9f83-36e87a00dbef.png)
+
+
+    Notice that `camera_info` is the only properly connected topic in the
+    mismatched bunch. I believe this is due to the fact that it's one of the few
+    topics not filtered by `nh_.resolveName`:
+    [face_detection.cpp#L249](https://github.com/wg-perception/people/blob/8dc5a7e2965fdee76b4b7d2621224f7afe9e1dc3/face_detector/src/face_detection.cpp#L249)
+
+
+    Here is the launch file that works for the simple simulated turtlebot in
+    gazebo, yet not in the `robot_0` namespace I'm importing it into without
+    overriding default any args:
+
+
+    ``` xml
+
+    <launch>
+
+      <arg name="fixed_frame" default="camera_rgb_frame" />
+
+      <!--include file="$(find openni_launch)/launch/openni.launch"/-->
+      <node name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters $(arg camera)/driver">
+        <param name="depth_registration" type="bool" value="true" />
+      </node>
+
+     <node pkg="face_detector" type="face_detector" name="face_detector" output="screen">
+        <param name="fixed_frame" type="string" value="$(arg fixed_frame)" />
+        <param name="classifier_name" type="string" value="frontalface" />
+        <rosparam command="load" file="$(find face_detector)/param/classifier.yaml"/>
+        <param name="classifier_reliability" type="double" value="0.9"/>
+        <param name="do_continuous" type="bool" value="true" />
+        <param name="do_publish_faces_of_unknown_size" type="bool" value="false" />
+        <param name="do_display" type="bool" value="false" />
+        <param name="use_rgbd" type="bool" value="true" />
+        <param name="approximate_sync" type="bool" value="true" />
+      </node>
+
+    </launch>
+
+    ```
+
+
+    _Update_: removed remaps in snippet, they're omission has no effect
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels:
+    - faces
+- url: 'https://github.com/wg-perception/people/issues/38'
+  title: Connection between face_detector and leg_detector
+  body: >
+    It is hinted in the [leg_detector wiki
+    page](http://wiki.ros.org/leg_detector?distro=hydro#Possible_Usages) that
+    the leg_detector can be seeded with input from the face_detector. However,
+    the output from the face_detector on `/people_tracker_measurements_array` is
+    `people_msgs/PositionMeasurementArray` even though the [wiki page for
+    face_detector](http://wiki.ros.org/face_detector#Published_Topics) syas that
+    it should output `people_msgs/PositionMeasurement`s on
+    `/people_tracker_measurements`.
+
+
+    I guess the leg_detector could easily handle an array in a for loop in the
+    [peopleCalback](http://docs.ros.org/hydro/api/leg_detector/html/leg__detector_8cpp_source.html#l00352).
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels:
+    - bug
+    - faces
+    - legs
+- url: 'https://github.com/wg-perception/people/pull/25'
+  title: revive train_leg_detector
+  body: |
+    - split laser_leg_processor into library
+    - update dependencies
+    - update train_leg_detector to use new rosbag API
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels: []
+- url: 'https://github.com/wg-perception/people/issues/10'
+  title: people_tracker and leg_detector use different message types
+  body: >
+    Trying to run the people_tracker together with leg_detector yields the
+    following error:
+
+
+    ```
+
+    [ERROR] [1407405500.928511110]: Client [/people_tracker] wants topic
+    /people_tracker_measurements to have datatype/md5sum
+    [people_msgs/PositionMeasurement/54fa938b4ec28728e01575b79eb0ec7c], but our
+    version has
+    [people_msgs/PositionMeasurementArray/59c860d40aa739ec920eb3ad24ae019e].
+    Dropping connection.
+
+    ```
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels:
+    - bug
+- url: 'https://github.com/wg-perception/people/issues/9'
+  title: leg_detector launch files point to wrong map_laser files
+  body: >
+    The file `filtered_leg_detector.launch` tries to include:
+
+
+    ```
+
+    <include file="$(find map_laser)/lfilter.launch"/>
+
+    ```
+
+
+    Which does not exist in the current version of the map_laser package from
+    the hydro repositories. The correct include would be:
+
+
+    ```
+
+    <include file="$(find map_laser)/config/lfilter.launch"/>
+
+    ```
+
+
+    The `shadows.launch` has a similar problem:
+
+
+    ```
+
+    <rosparam command="load" file="$(find map_laser)/filters.yaml" />
+
+    ```
+
+
+    Should be 
+
+
+    ```
+
+    <rosparam command="load" file="$(find map_laser)/config/filters.yaml" />
+
+    ```
+
+
+    to make it work with the current version of map_laser.
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels:
+    - bug
+- url: 'https://github.com/wg-perception/people/pull/7'
+  title: 'More dependencies, move PVT src to scripts'
+  body: ''
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels: []
+- url: 'https://github.com/wg-perception/people/pull/6'
+  title: Missing dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/wg-perception/people'
+  labels: []

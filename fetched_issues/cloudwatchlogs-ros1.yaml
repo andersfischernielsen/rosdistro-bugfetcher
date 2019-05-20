@@ -1,0 +1,33 @@
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/issues/20'
+  title: CloudWatch Logger node generating a lot of logging info
+  body: "Reviewing logs that are coming in and finding the cloudwatch_logger node itself generating a ton of INFO messages that seems to be consistent with the `publish_frequency`. The original 5s interval hit a API limit compared to the little logs our application sends.\r\n\r\nHere is a logs with a 60s frequency with `min_log_verbosity` set to `INFO`. We are concious about uncessary logs since these are shipped over cellular.\r\n\r\n![logs](https://user-images.githubusercontent.com/413937/55451189-7f8ed300-5597-11e9-98ef-8c080ae566b8.png)\r\n\r\nIs it possible to suppress this logging from the node vs bumping our logging levels within our entire application? Or would it be better to set `sub_to_rosout` to `False` and start pushing logs to a dedicated topic?\r\n\r\nAny guidance appreciated!"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels:
+    - bug
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/pull/17'
+  title: Add missing rostest dependency to package.xml
+  body: "In order to fix broken build: http://build.ros.org/job/Mbin_uB64__cloudwatch_logger__ubuntu_bionic_amd64__binary/2/console\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/pull/12'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/pull/10'
+  title: Get dependencies from rosdep instead of building from source.
+  body: "The release branch of cloud extension packages should take dependencies from rosdep(apt) instead of building from source.\r\n\r\n*Issue #, if available:* N/A\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/pull/8'
+  title: Use master branch for cloud extension dependencies
+  body: "*Issue #, if available:*\r\n\r\n*Description of changes:*\r\nUse master branch for cloud extension dependencies, so we can use the master branches of the packages for testing in travis before a bloom release\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchlogs-ros1/issues/1'
+  title: CloudWatcher Failing To Start
+  body: "Hi,\r\n\r\nI've been testing cloudwatcher. I updated the sample_configuration.yaml to a custom log_stream_name\r\n\r\nHowever I get the error messages below:\r\n\r\n> [ERROR] [1543682968.675952432]: [AWSClient] HTTP response code: 400\r\n> Exception name: ResourceAlreadyExistsException\r\n> Error message: The specified log group already exists\r\n> 5 response headers:\r\n> connection : close\r\n> content-length : 94\r\n> content-type : application/x-amz-json-1.1\r\n> date : Sat, 01 Dec 2018 16:49:28 GMT\r\n> x-amzn-requestid : 116c39c3-f589-11e8-be76-d3e7ff879f8f\r\n> [ERROR] [1543682968.676457696]: [CreateLogGroup] Failed to create Log Group :robot_application_name due to: The specified log group already exists, with error code: 135\r\n> [ERROR] [1543682968.790863450]: [AWSClient] HTTP response code: 400\r\n> Exception name: ResourceAlreadyExistsException\r\n> Error message: The specified log stream already exists\r\n> 5 response headers:\r\n> connection : close\r\n> content-length : 95\r\n> content-type : application/x-amz-json-1.1\r\n> date : Sat, 01 Dec 2018 16:49:27 GMT\r\n> x-amzn-requestid : 117c8dd5-f589-11e8-bd16-65b3e1494de1\r\n> [ERROR] [1543682968.791192148]: [CreateLogStream] Failed to create Log Stream :mxnet_kobuki_robot_log_stream in Log Group :robot_application_name due to: The specified log stream already exists, with error code: 135\r\n> \r\n\r\nAccording to the config file - it will try to create the log stream if it doesn't exist. Although the error messages seem to indicate otherwise.\r\n\r\nHow can I resolve this? And where should I expect the log stream to appear - I'm assuming eu-west-2 (I updated this config to reflect this.\r\n\r\nThanks and Regards\r\n\r\nMark"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchlogs-ros1'
+  labels:
+    - bug
+    - enhancement

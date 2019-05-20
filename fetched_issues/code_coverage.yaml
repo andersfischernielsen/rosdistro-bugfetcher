@@ -1,0 +1,16 @@
+- url: 'https://github.com/mikeferguson/code_coverage/pull/8'
+  title: 'documentation: degrade to test_depend'
+  body: "Why do you need a build depend, if the coverage is only evaluated, when running the testsuite?\r\nAnd the README should note that the build type should be set to Debug.\r\n\r\nThis commit also includes the typo fix from #5."
+  repo: 'https://api.github.com/repos/mikeferguson/code_coverage'
+  labels: []
+- url: 'https://github.com/mikeferguson/code_coverage/issues/6'
+  title: 'binary package not working: cmake_modules_DIR not necessarily set'
+  body: "In a clean workspace (with no package depending on cmake_modules), the include ist still not found:\r\n\r\n```\r\nCMake Error at [...]/CMakeLists.txt:64 (include):\r\n  include could not find load file:\r\n\r\n    CodeCoverage\r\n```\r\n\r\nAdding a debug message shows, that `${cmake_modules_DIR}`.\r\n\r\nPull request follows..."
+  repo: 'https://api.github.com/repos/mikeferguson/code_coverage'
+  labels: []
+- url: 'https://github.com/mikeferguson/code_coverage/issues/4'
+  title: 'binary package not working: code_coverage-extras.cmake not installed'
+  body: "Thank you for providing the CodeCoverage cmake macro as ROS package. When I clone your repository, it works as described in the Readme.\r\n\r\nBut if I just install the binary apt package I get an error message\r\n\r\n```\r\nCMake Error at [mypackage]/CMakeLists.txt:11 (include):\r\n  include could not find load file:\r\n\r\n    CodeCoverage\r\n```\r\n\r\nThe problem seems to be that the .deb package does not contain the `-extras` file and thus the CMAKE_MODULE_PATH is not set:\r\n```\r\n$ roscd code_coverage\r\n/opt/ros/kinetic/share/code_coverage$ find\r\n.\r\n./cmake\r\n./cmake/code_coverageConfig-version.cmake\r\n./cmake/Modules\r\n./cmake/Modules/CodeCoverage.cmake\r\n./cmake/code_coverageConfig.cmake\r\n./package.xml\r\n```\r\n\r\nWhile in a similar package `cmake_modules` the `.in` files are available in the installed package:\r\n```\r\n$ roscd cmake_modules/\r\n/opt/ros/kinetic/share/cmake_modules$ find\r\n.\r\n./cmake\r\n./cmake/cmake_modules-extras.cmake\r\n./cmake/cmake_modulesConfig-version.cmake\r\n./cmake/Modules\r\n[...]\r\n```"
+  repo: 'https://api.github.com/repos/mikeferguson/code_coverage'
+  labels:
+    - bug

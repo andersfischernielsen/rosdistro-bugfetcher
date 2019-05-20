@@ -1,0 +1,33 @@
+- url: 'https://github.com/RethinkRobotics-opensource/gennodejs/issues/13'
+  title: Test for kinetic release
+  body: "We should release a new version of this into kinetic (`rosnodejs` npm release is held up by it) but we need to do more testing first. Mostly, we need to do the following\r\n\r\n- [x] Create a workspace A with `gennodejs` and messages, build, check that devel space messages work in `rosnodejs` (probably just running tests, examples)\r\n- [x] Test that workspace A install space messages work in `rosnodejs`\r\n- [x] Create a workspace B overlaying workspace A with new messages, check that devel space messages work in `rosnodejs`\r\n- [x] Test that workspace B install space messages worko\r\n- [ ] Verify each of these again using `Python3`\r\n\r\nThis depends on merging #12 "
+  repo: 'https://api.github.com/repos/RethinkRobotics-opensource/gennodejs'
+  labels:
+    - task
+- url: 'https://github.com/RethinkRobotics-opensource/gennodejs/issues/5'
+  title: Change name to gennodejs
+  body: >
+    After a discussion on [ROS REP
+    142](https://github.com/ros-infrastructure/rep/pull/113), it seems the
+    consensus-building move is to change the name of this repository and package
+    to `gennodejs`. To do this:
+
+    - [x] Change the name of this repository and update all git remotes
+
+    - [x] Update `message_generation` to depend on `gennodejs` rather than
+    `genjs`
+
+    - [x] Update the `ros-core` REP 142 with `gennodejs` rather than `genjs`
+
+    - [x] Update any `genjs` names in this repo to `gennodejs`
+
+    - [x] Rename the release repo as `gennodejs-release`
+
+    - [x] Bloom this package up to `rosdistro` as `gennodejs`
+
+    - [x] Submit a custom pull request to `rosdistro` to remove `genjs` and add
+    `gennodejs`
+
+    - [x] Kindly ask Tully to remove the old docs and debs for `genjs`
+  repo: 'https://api.github.com/repos/RethinkRobotics-opensource/gennodejs'
+  labels: []

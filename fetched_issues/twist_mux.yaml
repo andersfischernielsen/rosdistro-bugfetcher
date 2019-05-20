@@ -1,0 +1,88 @@
+- url: 'https://github.com/ros-teleop/twist_mux/issues/12'
+  title: 'How to Properly Implement twist_mux? '
+  body: "Hi there,\r\n\r\nI am trying to provide velocity commands to control my robot, but these velocity commands can be generated from different sources. I have keyboard controller, Joystick, voice commands that generates velocity, and navigation package that also creates velocity command. I am publishing each of these velocities on a separate topic and would like to use twist_mux to combine all of them and choose one source at a time depending on the activation order. However, it is not very clear to me how to switch between these sources. I need to switch back and forth between sources, therefore, they all have the same priority. For example, assume I have given my robot a goal location, and the navigation package is publishing velocity into nav_cmd_vel topic, and twist_mux is passing that to cmd_vel to move the robot. Now, I press on the joystick and I want the joystick to take over the velocity control. Which means the twist_mux should pass joy_cmd_vel to cmd_vel instead even though the nav_cmd_vel is still being published on. Later, if I provide another goal location, I want the nav_cmd_vel to be passed to cmd_vel again. I do not know how to activate the switch for twist_mux in my codes so that it is automatically applied when new inputs come in.\r\n\r\nI would really appreciate any hint."
+  repo: 'https://api.github.com/repos/ros-teleop/twist_mux'
+  labels: []
+- url: 'https://github.com/ros-teleop/twist_mux/issues/5'
+  title: Updating Diagnostics?
+  body: >
+    For some reason it seems `twist_mux` does not update all the status of its
+    diagnostic message:
+
+    Although one of the topics is `unmasked`, the values of the keys `current
+    priority`, `loop time` and `data age` are not updated...
+
+    Anybody seen this, too?
+
+
+    ```
+
+
+    ---
+
+    header: 
+      seq: 789
+      stamp: 
+        secs: 873
+        nsecs: 0
+      frame_id: ''
+    status: 
+      - 
+        level: 0
+        name: base/twist_mux: Twist mux status
+        message: ok
+        hardware_id: none
+        values: 
+          - 
+            key: velocity navigation
+            value:  masked (listening to twist_mux/command_navigation @ 0.250000s with priority #20)
+          - 
+            key: velocity collision_velocity_filter
+            value:  masked (listening to twist_mux/command_safe @ 0.250000s with priority #10)
+          - 
+            key: velocity teleop_joystick
+            value:  masked (listening to twist_mux/command_teleop_joy @ 0.250000s with priority #100)
+          - 
+            key: velocity teleop_keyboard
+            value:  unmasked (listening to twist_mux/command_teleop_keyboard @ 0.500000s with priority #80)
+          - 
+            key: velocity teleop_android
+            value:  masked (listening to twist_mux/command_teleop_android @ 0.500000s with priority #90)
+          - 
+            key: velocity script_server
+            value:  masked (listening to twist_mux/command_script_server @ 0.500000s with priority #70)
+          - 
+            key: velocity syncmm
+            value:  masked (listening to twist_mux/command_syncmm @ 0.500000s with priority #70)
+          - 
+            key: lock pause_navigation
+            value:  free (listening to twist_mux/locks/pause_navigation @ 0.000000s with priority #21)
+          - 
+            key: lock pause_teleop
+            value:  free (listening to twist_mux/locks/pause_teleop @ 0.000000s with priority #101)
+          - 
+            key: lock pause_all
+            value:  free (listening to twist_mux/locks/pause_all @ 0.000000s with priority #255)
+          - 
+            key: current priority
+            value: 0
+          - 
+            key: loop time in [sec]
+            value: 0
+          - 
+            key: data age in [sec]
+            value: 0
+    ```
+  repo: 'https://api.github.com/repos/ros-teleop/twist_mux'
+  labels:
+    - bug
+- url: 'https://github.com/ros-teleop/twist_mux/pull/2'
+  title: Add diagnostic_updater dependency
+  body: ''
+  repo: 'https://api.github.com/repos/ros-teleop/twist_mux'
+  labels: []
+- url: 'https://github.com/ros-teleop/twist_mux/pull/1'
+  title: Add diagnostic_updater dependency
+  body: ''
+  repo: 'https://api.github.com/repos/ros-teleop/twist_mux'
+  labels: []

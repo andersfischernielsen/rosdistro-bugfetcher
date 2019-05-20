@@ -1,0 +1,132 @@
+- url: 'https://github.com/tork-a/roswww/pull/30'
+  title: Utilize test_depend that is defined in REP-140
+  body: >
+    Looks like using `test_depend` is more appropriate than build_depend, after
+    [REP-140](http://www.ros.org/reps/rep-0140.html) got [implemented for Groovy
+    and
+    later](http://lists.ros.org/lurker/message/20141003.232955.5710a2bf.da.html).
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/issues/21'
+  title: alphabetic order run depend.
+  body: |
+    https://github.com/tork-a/roswww/blob/develop/package.xml
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/pull/20'
+  title: Restructured roswww webserver
+  body: |
+    @130s 
+    - classfy roswww webserver
+    - remove ros runtime dependency. No roscore is required.
+
+    To execute
+
+    > ./roswww/scripts/webserver.py --port 8081 --webpath www
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/pull/18'
+  title: Restructured roswww webserver
+  body: |
+    @130s 
+    - classfy roswww webserver
+    - remove ros runtime dependency. No roscore is required.
+
+    To execute
+
+    > ./roswww/scripts/webserver.py --port 8081 --webpath www
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/issues/14'
+  title: Browser keeps trying to connect
+  body: >
+    Continued from
+    https://github.com/tork-a/roswww/pull/13#issuecomment-68227901
+
+    Confirmed with de2d9e00e96932d1da4178900fc7fee021dc63f7 on Indigo, Trusty
+
+
+    Error description updated:
+
+
+    `$ rosrun roswww webserver.py` then accessing http://localhost:8000 doesn't
+    return (web browser keeps trying on and on). When I kill webserver.py's
+    process, browser immediately shows "server not found", so I assume the
+    browser is able to connect to the webserver (webserver log file might help
+    here..).
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels:
+    - bug
+    - invalid
+- url: 'https://github.com/tork-a/roswww/issues/10'
+  title: webserver.py is not installed neither as a script nor module.
+  body: |
+    So that you can't either import nor execute.
+    In version 0.1.2.
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels:
+    - bug
+- url: 'https://github.com/tork-a/roswww/issues/9'
+  title: Propose to update roswww as webserver without ros_comm dependency
+  body: >
+    I was looking into `roswww` implementation to utilise as webserver which
+    does not bring any ros_comm related dependencies.
+
+
+    The following was requiring ros dependency in roswww
+
+    - Logger(rospy.loginfo,logwarn...) 
+
+    - rosparam for port parameterization
+
+    - rospack shell command
+
+    - tornado
+
+
+    I would like to propose changes to keep ROS dependency minimal in roswww
+
+    - Logger - It would not necessary to ros logger since it is webserver.
+    Rather to use stdio or python logger
+
+    - rosparam - replaceable with command line argument.
+
+    - rospack shell command - It is necessary. [rospack
+    dependency](https://github.com/ros/rospack/blob/indigo-devel/package.xml#L18-L30)
+    should not be a problem. It is pure C++ module which does not bring ros_comm
+
+    - tornado - I have proposed to separated out tornado from rosbridge_server.
+    https://github.com/RobotWebTools/rosbridge_suite/pull/147
+
+
+    Then roswww package will only depend on
+
+    - rosbridge_tools : for tornado
+
+    - rospack : for package crawl script
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/issues/8'
+  title: update dependency
+  body: |
+    roswww should depend on rosbridge_tools rather than rosbridge_server.
+
+    tornado is soon to be in rosbridge_tools package.  #146  #147 #149
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/issues/2'
+  title: Remove src/tornado and depend rosbridge instead.
+  body: >
+    Based on the decision
+    [here](https://github.com/start-jsk/open_industrial_ros_controllers/issues/7#issuecomment-28779429).
+    This should fix issue #1
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels: []
+- url: 'https://github.com/tork-a/roswww/issues/1'
+  title: roswww cannot be installed with rosbridge as there is a conflict
+  body: >
+    They both contain tornado and it is installed by both. Just install the two
+    packages to reproduce.
+  repo: 'https://api.github.com/repos/tork-a/roswww'
+  labels:
+    - bug

@@ -1,0 +1,9 @@
+- url: 'https://github.com/diogoalmeida/generic_control_toolbox/issues/4'
+  title: Verify if joint states message is valid
+  body: >-
+    In the KDL manager, it is assumed that the joint states position and
+    velocity members have the same size as the name member. When this is not
+    verified, there should be an error.
+  repo: 'https://api.github.com/repos/diogoalmeida/generic_control_toolbox'
+  labels:
+    - bug

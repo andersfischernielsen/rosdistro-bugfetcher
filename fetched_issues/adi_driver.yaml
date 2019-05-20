@@ -1,0 +1,5 @@
+- url: 'https://github.com/tork-a/adi_driver/pull/19'
+  title: Change to depend on imu_tools
+  body: "- We got error in rviz if rviz_imu_plugin not installed\r\n- It's better to depend on imu_tools meta-package"
+  repo: 'https://api.github.com/repos/tork-a/adi_driver'
+  labels: []

@@ -1,0 +1,1783 @@
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/83'
+  title: Unable to import module in Python3
+  body: "There are a few instances in the package that use the < Python 2.6 syntax for exception handling. This can cause failures when trying to import the module in Python 3 which no longer supports that syntax. Example:\r\n\r\n```\r\nuser@host:~ $ lsb_release -a\r\nNo LSB modules are available.\r\nDistributor ID: Ubuntu\r\nDescription:    Ubuntu 16.04.5 LTS\r\nRelease:        16.04\r\nCodename:       xenial\r\nuser@host:~ $ dpkg -l | rg rosdoc\r\nii  ros-kinetic-rosdoc-lite                                     0.2.7-0xenial-20180824-081737-0800                    amd64        This ROS package wraps documentation tools like doxygen, sphinx, and epydoc, making it convenient to generate ROS package documentation.\r\nuser@host:~ $ python\r\nPython 2.7.12 (default, Nov 12 2018, 14:36:49)\r\n[GCC 5.4.0 20160609] on linux2\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> import rosdoc_lite\r\n>>> quit()\r\nuser@host:~ $ python3\r\nPython 3.5.2 (default, Nov 12 2018, 13:43:14)\r\n[GCC 5.4.0 20160609] on linux\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> import rosdoc_lite\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rosdoc_lite/__init__.py\", line 188\r\n    except Exception, e:\r\n                    ^\r\nSyntaxError: invalid syntax\r\n```"
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/76'
+  title: >-
+    AttributeError: 'module' object has no attribute 'parse_package' (in latest
+    rosdoc_late)
+  body: "Hi all,\r\n\r\nwhen I am running rosdoc_lite (latest version as of 08 Jun 17), I get:\r\n\r\n> $ rosdoc_lite /opt/ros/kinetic/share/rviz\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/bin/rosdoc_lite\", line 37, in <module>\r\n    rosdoc_lite.main()\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rosdoc_lite/__init__.py\", line 225, in main\r\n    pkg_desc = get_pkg_desc(path)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rosdoc_lite/__init__.py\", line 241, in get_pkg_desc\r\n    pkg_desc = packages.parse_package(path)\r\nAttributeError: 'module' object has no attribute 'parse_package'\r\n\r\nThe package path provided as argument doesn't matter -- it happens with all tested packages (pure Python and pure C++).\r\n\r\nThe error can be fixed by patching /opt/ros/kinetic/lib/python2.7/dist-packages/rosdoc_lite/init.py (replacing `from catkin_pkg import packages` with `from catkin_pkg import package` as well as `pkg_desc = packages.parse_package(path)` with `pkg_desc = package.parse_package(path)`). However, modifying system packages / files isn't a good idea. ;-)\r\n\r\nAlso note the following:\r\n```shell\r\n$ python\r\nPython 2.7.12 (default, Nov 19 2016, 06:48:10) \r\n[GCC 5.4.0 20160609] on linux2\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n```\r\n```python\r\n>>> import catkin_pkg.package\r\n>>> dir(catkin_pkg.package)\r\n['Dependency', 'Export', 'InvalidPackage', 'PACKAGE_MANIFEST_FILENAME', 'Package', 'Person', 'Url', '__builtins__', '__doc__', '__file__', '__name__', '__package__', '_get_dependencies', '_get_node', '_get_node_attr', '_get_node_value', '_get_nodes', '_get_optional_node', '_get_optional_node_value', '_get_package_xml', 'deepcopy', 'dom', 'os', 'package_exists_at', 'parse_package', 'parse_package_for_distutils', 'parse_package_string', 'print_function', 're', 'sys']\r\n>>> import catkin_pkg.packages\r\n>>> dir(catkin_pkg.packages)\r\n['PACKAGE_MANIFEST_FILENAME', '_PackageParser', '__builtins__', '__doc__', '__file__', '__name__', '__package__', '_get_package_xml', 'find_package_paths', 'find_packages', 'find_packages_allowing_duplicates', 'multiprocessing', 'os', 'parse_package_string', 'verify_equal_package_versions']\r\n```\r\n\r\nAnyone else having this issue? (I am using ROS Kinetic.)"
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/pull/74'
+  title: fix import
+  body: >-
+    As of
+    https://github.com/ros-infrastructure/catkin_pkg/pull/171/files#diff-881522bb0a022aef976784a4d7855226
+    the import is not available anymore. Instead use the actual location where
+    the function is defined.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/67'
+  title: Unable to build epydoc docs
+  body: >
+    It seems that unlike with Sphinx and Doxygen, successfully generating epydoc
+    depends on the package being built and on the `PYTHONPATH`. And the epydoc
+    docs clearly build successfully in ros_buildfarm
+    ([eg](http://jenkins.ros.org/view/Idoc/job/Idoc__ros_comm__ubuntu_trusty_amd64/22/consoleFull#console-section-36)),
+    so I'm struggling to understand where this goes wrong:
+
+
+    ```
+
+    rosinstall_generator rosdoc_lite rospy --rosdistro indigo --deps --tar >
+    test.rosinstall
+
+    rosinstall src test.rosinstall -j8
+
+    catkin build rospy rosdoc_lite
+
+    source devel/setup.bash
+
+    rosdoc_lite src/ros_comm/rospy
+
+    ```
+
+
+    Result:
+
+
+    ```
+
+    Documenting a catkin package
+
+    Documenting rospy located here: /home/mpurvis/rosdoc_ws/src/ros_comm/rospy
+
+    {'epydoc': {'builder': 'epydoc', 'config': 'epydoc.config'}}
+
+    Catkin package, no need to generate python paths
+
+    generate_epydoc() paths:
+
+    generate_epydoc() additional_packages:
+
+    generate_epydoc() PYTHONPATH:
+    /home/mpurvis/rosdoc_ws/devel/lib/python2.7/dist-packages
+
+    epydoc-building rospy [epydoc --html rospy -o doc/html/. --config
+    /home/mpurvis/rosdoc_ws/src/ros_comm/rospy/epydoc.config]
+
+
+    [ ... snip, output has identical warnings and errors to console log from
+    ros_buildfarm ... ]
+
+
+    UNEXPECTED ERROR:
+
+    [Errno 2] No such file or directory: 'doc/html/.'
+
+
+    Use --debug to see trace information.
+
+
+    Unable to generate epydoc for [rospy]. The return code is 3
+
+    Traceback (most recent call last):
+      File "<string>", line 187, in generate_docs
+      File "/home/mpurvis/rosdoc_ws/src/rosdoc_lite/src/rosdoc_lite/epyenator.py", line 80, in generate_epydoc
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT, env=env, cwd=path)
+      File "/usr/lib/python2.7/subprocess.py", line 573, in check_output
+        raise CalledProcessError(retcode, cmd, output=output)
+    CalledProcessError: Command '['epydoc', '--html', 'rospy', '-o',
+    'doc/html/.', '--config',
+    '/home/mpurvis/rosdoc_ws/src/ros_comm/rospy/epydoc.config']' returned
+    non-zero exit status 3
+
+    plugin [epydoc] failed
+
+    []
+
+    []
+
+    []
+
+    copying
+    /home/mpurvis/rosdoc_ws/src/rosdoc_lite/src/rosdoc_lite/templates/msg-styles.css
+    to doc/html/msg-styles.css
+
+    Done documenting rospy you can find your documentation here:
+    /home/mpurvis/rosdoc_ws/doc
+
+    ```
+
+
+    The weirdest thing of all, though, is that if I _manually_ execute the
+    epydoc command outside of rosdoc_lite's mangling of the PYTHONPATH, it
+    totally succeeds:
+
+
+    ```
+
+    epydoc --html rospy -o doc/html/. --config
+    /home/mpurvis/rosdoc_ws/src/ros_comm/rospy/epydoc.config
+
+    ls doc/html/  # yay, docs
+
+    ```
+
+
+    I tried not building rospy, and also building it in a separate workspace
+    with catkin_make rather than catkin_tools, and using the install rather than
+    devel space— no dice. What am I doing wrong here?
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/66'
+  title: Consider changing this to be a non-catkin independent package?
+  body: >
+    The only catkin-y thing this package has is a dependence on genmsg, which it
+    uses to generate message documentation, in this one file:
+
+
+    https://github.com/ros-infrastructure/rosdoc_lite/blob/d6f63f94c62b3b73f5d3350a7773ffb7478b353a/src/rosdoc_lite/msgenator.py
+
+
+    It feels awkward to me that rosdoc_lite has to be "built" in a catkin
+    workspace, in order to document another catkin workspace— seems like it
+    would be cleaner for it to be a fully external affair, etc, `sudo apt-get
+    install python-rosdoc; rosdoc path/to/my/package`
+
+
+    I don't have a ton of bandwidth to look into this further, but I'm curious
+    to have others' thoughts on it.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/65'
+  title: Add a documentation dependency on python-catkin-sphinx
+  body: |
+    Add a `<doc_depend>` on `python-catkin-sphinx`.
+
+    See discussion in ros-infrastructure/catkin-sphinx#6.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/54'
+  title: Breathe integration for the Sphinx generator?
+  body: >
+    Would be great to be able to embed/reference C++ classes in Sphinx
+    documentation, similar to referencing Python. This is possible [using
+    Breathe](https://github.com/michaeljones/breathe)
+    ([docs](http://breathe.readthedocs.org/en/latest/)), but there are a few
+    things necessary:
+
+    - The Sphinx generator in rosdoc_lite would need to learn how to run doxygen
+    for its XML output prior to running the main Sphinx job.
+
+    - We'd need to find a way to distribute Breathe, probably by backporting the
+    [Utopic python-breathe
+    package](http://packages.ubuntu.com/utopic/python/python-breathe) to Trusty
+    and hosting it on packages.ros.org, so that rosdoc_lite could depend on
+    this.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/52'
+  title: labels on graph sometimes wrong
+  body: >
+    This is was discovered in #51 debugging. Some labels on the graph are
+    incorrect. It looks like doxygen is not tracking things correctly. 
+
+
+    To see the problem see
+    http://docs.ros.org/indigo/api/rosbag/html/c++/player_8h.html
+
+
+    The image
+    ![](http://docs.ros.org/indigo/api/rosbag/html/c++/player_8h__incl.png)
+     Has 3 copies of rosbag/macros.h each one linking to different macros.h files. They link correctly but the names on the 2nd and 3rd should be cpp_common and rospack not rosbag.  
+
+    Currently we believe that this is an issue internal to doxygen. 
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/51'
+  title: Cross referencing broken
+  body: >
+    Some cross references work correctly, e.g.:
+    http://docs.ros.org/indigo/api/roscpp/html/classros_1_1XMLRPCCallWrapper.html
+
+
+    `XmlRpc::XmlRpcServerMethod` in the inheritance diagram links to the correct
+    page in a different package.
+
+
+    But some others are broken, e.g.:
+    http://docs.ros.org/indigo/api/rosbag/html/c++/player_8h.html
+
+
+    `rosbag/macros.h` in the include dependency graph links to the wrong URL.
+
+
+    I suspect the problem to be related to the fact that the second case uses
+    `c++` subfolders for the docs (since these packages also generate Python
+    docs). Based on that assumption it seems to be a very big problem for the
+    ROS documentation.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/50'
+  title: do not hide epydoc output
+  body: >
+    This ignores any output of the epydoc invocation:
+    https://github.com/ros-infrastructure/rosdoc_lite/blob/f543bf04f4563a6fe1f45a3c897a11b7183beeab/src/rosdoc_lite/epyenator.py#L80
+
+
+    This makes debugging or any analysis what happened impossible, e.g.
+    ros-infrastructure/jenkins_scripts#76
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/43'
+  title: Weird failure building fuerte doc job
+  body: >
+    I get this:
+
+
+    ```
+
+    See <http://jenkins.ros.org/job/doc-fuerte-serial/172/>
+
+
+    ------------------------------------------
+
+    [...truncated 627 lines...]
+
+    -- Check for working C compiler: /usr/lib/ccache/gcc
+
+    -- Check for working C compiler: /usr/lib/ccache/gcc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Check for working CXX compiler: /usr/lib/ccache/c++
+
+    -- Check for working CXX compiler: /usr/lib/ccache/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.3")
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H - found
+
+    -- Looking for pthread_create in pthreads
+
+    -- Looking for pthread_create in pthreads - not found
+
+    -- Looking for pthread_create in pthread
+
+    -- Looking for pthread_create in pthread - found
+
+    -- Found Threads: TRUE
+
+    INFOBuilding GTest from source.
+
+    TODO: implement add_roslaunch_check() in rostest-extras.cmake.
+
+    -- Building stack rosdoc_lite
+
+    -- Configuring done
+
+    -- Generating done
+
+    -- Build files have been written to:
+    <http://jenkins.ros.org/job/doc-fuerte-serial/ws/rosdoc_lite/build>
+
+    Executing command 'make'
+
+    Scanning dependencies of target gtest
+
+    [ 50%] Building CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+
+    Linking CXX shared library libgtest.so
+
+    [ 50%] Built target gtest
+
+    Scanning dependencies of target gtest_main
+
+    [100%] Building CXX object
+    gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+
+    Linking CXX shared library libgtest_main.so
+
+    [100%] Built target gtest_main
+
+    Executing command 'make install'
+
+    [ 50%] Built target gtest
+
+    [100%] Built target gtest_main
+
+    Install the project...
+
+    -- Install configuration: ""
+
+    -- Installing: /usr/local/share/rosdoc_lite/stack.xml
+
+    -- Installing: /usr/local/lib/pkgconfig/rosdoc_lite.pc
+
+    -- Installing: /usr/local/share/rosdoc_lite/cmake/rosdoc_lite-config.cmake
+
+    -- Installing:
+    /usr/local/share/rosdoc_lite/cmake/rosdoc_lite-config-version.cmake
+
+    + [ -n  ]
+
+    + cd <http://jenkins.ros.org/job/doc-fuerte-serial/ws/rosdoc_lite>
+
+    + /usr/bin/env
+    PYTHONPATH=/usr/local/lib/python2.7/dist-packages:<http://jenkins.ros.org/job/doc-fuerte-serial/ws/rosdoc_lite/build/gen/py>:/opt/ros/fuerte/lib/python2.7/dist-packages:
+    CATKIN_BINARY_DIR=<http://jenkins.ros.org/job/doc-fuerte-serial/ws/rosdoc_lite/build>
+    /usr/bin/python
+    <http://jenkins.ros.org/job/doc-fuerte-serial/ws/rosdoc_lite/setup.py>
+    install --install-layout=deb --prefix=/usr/local
+
+    /usr/lib/python2.7/distutils/dist.py:267: UserWarning: Unknown distribution
+    option: 'install_requires'
+      warnings.warn(msg)
+    running install
+
+    running build
+
+    running build_py
+
+    creating build/lib.linux-x86_64-2.7
+
+    creating build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/doxygenator.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/landing_page.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/sphinxenator.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/rdcore.py -> build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/__init__.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/python_paths.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/epyenator.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    copying src/rosdoc_lite/msgenator.py ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite
+
+    creating build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/msg.template ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/doxy.template ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/msg-index.template ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/doxygen.css ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/footer.html ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/msg-styles.css ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/landing.template ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/manifest.html ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/header.html ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/styles.css ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    copying src/rosdoc_lite/templates/action.template ->
+    build/lib.linux-x86_64-2.7/rosdoc_lite/templates
+
+    running build_scripts
+
+    creating build/scripts-2.7
+
+    copying and adjusting scripts/rosdoc_lite -> build/scripts-2.7
+
+    changing mode of build/scripts-2.7/rosdoc_lite from 644 to 755
+
+    running install_lib
+
+    creating /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/doxygenator.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/landing_page.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/sphinxenator.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/rdcore.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    creating /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/msg.template ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/doxy.template ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/msg-index.template
+    -> /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/doxygen.css ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/footer.html ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/msg-styles.css ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/landing.template ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/manifest.html ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/header.html ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/styles.css ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/templates/action.template ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/templates
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/__init__.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/python_paths.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/epyenator.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    copying build/lib.linux-x86_64-2.7/rosdoc_lite/msgenator.py ->
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/doxygenator.py to
+    doxygenator.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/landing_page.py to
+    landing_page.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/sphinxenator.py to
+    sphinxenator.pyc
+
+    byte-compiling /usr/local/lib/python2.7/dist-packages/rosdoc_lite/rdcore.py
+    to rdcore.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/__init__.py to
+    __init__.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/python_paths.py to
+    python_paths.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/epyenator.py to
+    epyenator.pyc
+
+    byte-compiling
+    /usr/local/lib/python2.7/dist-packages/rosdoc_lite/msgenator.py to
+    msgenator.pyc
+
+    running install_scripts
+
+    copying build/scripts-2.7/rosdoc_lite -> /usr/local/bin
+
+    changing mode of /usr/local/bin/rosdoc_lite to 755
+
+    running install_egg_info
+
+    Writing /usr/local/lib/python2.7/dist-packages/rosdoc_lite-0.1.3.egg-info
+
+    Executing command 'apt-get install python-kitchen --yes'
+
+    Reading package lists...
+
+    Building dependency tree...
+
+    Reading state information...
+
+    The following extra packages will be installed:
+      python-chardet
+    The following NEW packages will be installed:
+      python-chardet python-kitchen
+    debconf: delaying package configuration, since apt-utils is not installed
+
+    0 upgraded, 2 newly installed, 0 to remove and 9 not upgraded.
+
+    Need to get 0 B/243 kB of archives.
+
+    After this operation, 986 kB of additional disk space will be used.
+
+    Selecting previously unselected package python-chardet.
+
+    (Reading database ... 35940 files and directories currently installed.)
+
+    Unpacking python-chardet (from .../python-chardet_2.0.1-2build1_all.deb) ...
+
+    Selecting previously unselected package python-kitchen.
+
+    Unpacking python-kitchen (from .../python-kitchen_1.0.0-0ubuntu2_all.deb)
+    ...
+
+    Setting up python-chardet (2.0.1-2build1) ...
+
+    Setting up python-kitchen (1.0.0-0ubuntu2) ...
+
+    Executing command 'apt-get install python-catkin-pkg python-docutils
+    python-rospkg python-networkx --yes'
+
+    Reading package lists...
+
+    Building dependency tree...
+
+    Reading state information...
+
+    python-docutils is already the newest version.
+
+    python-docutils set to manually installed.
+
+    python-networkx is already the newest version.
+
+    python-catkin-pkg is already the newest version.
+
+    python-catkin-pkg set to manually installed.
+
+    python-rospkg is already the newest version.
+
+    python-rospkg set to manually installed.
+
+    0 upgraded, 0 newly installed, 0 to remove and 9 not upgraded.
+
+    Executing command 'apt-get install graphviz python-sphinx python-yaml
+    doxygen python-epydoc --yes'
+
+    Reading package lists...
+
+    Building dependency tree...
+
+    Reading state information...
+
+    python-sphinx is already the newest version.
+
+    doxygen is already the newest version.
+
+    graphviz is already the newest version.
+
+    python-epydoc is already the newest version.
+
+    python-yaml is already the newest version.
+
+    0 upgraded, 0 newly installed, 0 to remove and 9 not upgraded.
+
+    Installed catkin_basic
+
+    Done installing ros
+
+    Repo path
+    <http://jenkins.ros.org/job/doc-fuerte-serial/ws/doc_stacks/2013-12-07_11-24-22.612532>
+
+    Looking for the packages in
+    <http://jenkins.ros.org/job/doc-fuerte-serial/ws/doc_stacks/2013-12-07_11-24-22.612532/serial>
+
+    Running documentation generation on
+
+    packages: ['serial']
+
+    Ininitalize rosdep database
+
+    Executing command 'apt-get install --yes lsb-release python-rosdep'
+
+    Reading package lists...
+
+    Building dependency tree...
+
+    Reading state information...
+
+    lsb-release is already the newest version.
+
+    The following NEW packages will be installed:
+      python-rosdep
+    debconf: delaying package configuration, since apt-utils is not installed
+
+    0 upgraded, 1 newly installed, 0 to remove and 9 not upgraded.
+
+    Need to get 0 B/47.1 kB of archives.
+
+    After this operation, 264 kB of additional disk space will be used.
+
+    Selecting previously unselected package python-rosdep.
+
+    (Reading database ... 36128 files and directories currently installed.)
+
+    Unpacking python-rosdep (from .../python-rosdep_0.10.24-1_all.deb) ...
+
+    Setting up python-rosdep (0.10.24-1) ...
+
+    Processing triggers for python-support ...
+
+    Executing command 'rosdep init'
+
+    Wrote /etc/ros/rosdep/sources.list.d/20-default.list
+
+    Recommended: please run
+
+            rosdep update
+
+    Executing command 'rosdep update'
+
+    Warning: running 'rosdep update' as root is not recommended.
+      You should remove the rosdep database with 'sudo rm -fr /home/rosbuild/.ros/rosdep/sources.cache' and invoke 'rosdep update' again without sudo.
+    reading in sources list data from /etc/ros/rosdep/sources.list.d
+
+    Hit https://github.com/ros/rosdistro/raw/master/rosdep/osx-homebrew.yaml
+
+    Hit https://github.com/ros/rosdistro/raw/master/rosdep/gentoo.yaml
+
+    Hit https://github.com/ros/rosdistro/raw/master/rosdep/base.yaml
+
+    Hit https://github.com/ros/rosdistro/raw/master/rosdep/python.yaml
+
+    Hit https://github.com/ros/rosdistro/raw/master/rosdep/ruby.yaml
+
+    Hit https://github.com/ros/rosdistro/raw/master/releases/fuerte.yaml
+
+    Ignore legacy gbpdistro "groovy"
+
+    Ignore legacy gbpdistro "hydro"
+
+    Query rosdistro index https://raw.github.com/ros/rosdistro/master/index.yaml
+
+    Add distro "groovy"
+
+    Add distro "hydro"
+
+    updated cache in /home/rosbuild/.ros/rosdep/sources.cache
+
+    Building dictionaries from a rosdep's db
+
+    Executing command 'rosdep db'
+
+    Dependencies: ['catkin', 'boost']
+
+    Apt dependencies: [u'ros-fuerte-catkin', u'libboost-all-dev']
+
+    Build order that honors deps:
+
+    ['serial']
+
+    Getting dependencies for ros-fuerte-catkin
+
+    Getting dependencies for libboost-all-dev
+
+    Installing all dependencies for serial
+
+    Executing command 'apt-get install ros-fuerte-catkin libboost-all-dev --yes'
+
+    Reading package lists...
+
+    Building dependency tree...
+
+    Reading state information...
+
+    libboost-all-dev is already the newest version.
+
+    libboost-all-dev set to manually installed.
+
+    ros-fuerte-catkin is already the newest version.
+
+    ros-fuerte-catkin set to manually installed.
+
+    0 upgraded, 0 newly installed, 0 to remove and 9 not upgraded.
+
+    Done installing dependencies
+
+    Removing the CMakeLists.txt file generated by rosinstall
+
+    Retrieve the ROS build environment by sourcing /opt/ros/fuerte/setup.bash
+
+    Calling cmake...
+
+    Executing command 'catkin_init_workspace
+    <http://jenkins.ros.org/job/doc-fuerte-serial/ws/doc_stacks/2013-12-07_11-24-22.612532'>
+
+    Traceback (most recent call last):
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/doc",> line 209, in <module>
+        main()
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/doc",> line 119, in main
+        doit(args.rosdistro, args.repo, workspace, docspace, args.platform, args.arch, args.no_chroot, args.skip_garbage, args.force)
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/doc",> line 205, in doit
+        homepage, no_chroot, skip_garbage, **necessary)
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/doc_stack.py",> line 404, in document_repo
+        source, errs = build_repo_messages(catkin_packages, docspace, ros_distro, local_install_path)
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/message_generation.py",> line 298, in build_repo_messages
+        call("catkin_init_workspace %s" % docspace, ros_env)
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/common.py",> line 137, in call
+        return call_with_list(command.split(' '), envir, verbose)
+      File "<http://jenkins.ros.org/job/doc-fuerte-serial/ws/jenkins_scripts/common.py",> line 115, in call_with_list
+        helper = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, env=envir)
+      File "/usr/lib/python2.7/subprocess.py", line 679, in __init__
+        errread, errwrite)
+      File "/usr/lib/python2.7/subprocess.py", line 1249, in _execute_child
+        raise child_exception
+    OSError: [Errno 2] No such file or directory
+
+    I: Copying back the cached apt archive contents
+
+    I: unmounting /var/cache/pbuilder/ccache filesystem
+
+    I: unmounting <http://jenkins.ros.org/job/doc-fuerte-serial/ws/> filesystem
+
+    I: unmounting /home/rosbuild filesystem
+
+    I: unmounting dev/pts filesystem
+
+    I: unmounting proc filesystem
+
+    I: cleaning the build env
+
+    I: removing directory /var/cache/pbuilder/build//18397 and its
+    subdirectories
+
+    Build step 'Execute shell' marked build as failure
+
+    Build step 'Groovy Postbuild' marked build as failure
+
+    Recording test results
+
+    ```
+
+
+    I don't understand from looking at the error what the problem is.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/38'
+  title: Python packages not documented correctly
+  body: >
+    There are currently multiple issues:
+
+    - [x] having no documentation at all (e.g.
+    http://docs.ros.org/hydro/api/rospy/html/index.html)
+
+    - [x] the documentation only contains an _empty_ package (e.g.
+    http://docs.ros.org/hydro/api/dynamic_reconfigure/html/)
+
+    - [x] source code for code implemented in the package **init**.py file is
+    not available (e.g. http://docs.ros.org/groovy/api/rostest/html/)
+
+    - [x] for python packages the doxygen documentation lacks most of the
+    content (e.g. http://docs.ros.org/hydro/api/uuid_msgs/html/)
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/32'
+  title: catkin documentation does not contain generated cmake api
+  body: >
+    Since the doc job does not know about the `make html` target it does neither
+    generate the cmake api nor links to that file in the index.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+    - wontfix
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/28'
+  title: Unfoldable doc status "jumps"
+  body: >
+    The unfoldable doc status list jumps roughly one line up after finishing to
+    unfold. This is due to the fact that the `ul` element has a `margin-top`.
+    This margin will collapse with the `margin-bottom` of the line with the ros
+    distro links. Instead use a `padding-top` on the `ul` element and set the
+    `margin-top to zero`.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/26'
+  title: Wiki output must be independent from jenkins
+  body: >
+    Displaying the documentation status in the ROS wiki must work without
+    contacting jenkins. If additional information like "currently building" are
+    integrated they must gracefully fall back.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/25'
+  title: Metapackages that include <buildtool-depend> end up on catkin's wiki page
+  body: >
+    It looks like metapackages that include <buildtool-depend>catkin make the
+    wiki think that catkin is sourced from multiple packages.  Right now, it
+    claims catkin is part of the tutorials, image_transport_plugins, ros, and
+    perception_pcl.
+
+
+    The offending wiki page is:
+
+    http://ros.org/wiki/catkin
+
+
+    I believe the issue is caused by package.xml like the following:
+
+    https://github.com/ros/ros_tutorials/blob/f7da7779e82dcc3977b2c220a843cd86dd269832/ros_tutorials/package.xml
+
+
+    And I've attached a screenshot in case the maintainers fix the xml before
+    this issue is resolved:
+
+    ![BadMetapackages](https://f.cloud.github.com/assets/230240/76603/49109d18-60f7-11e2-9cec-c7318ac48e03.png)
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/21'
+  title: rosdoc missing main index.html in fuerte (11/07/12)
+  body: >
+    Issue migrated from code.ros.org and submitted by zaza1851983, ticket #4062 
+
+    https://code.ros.org/trac/ros/ticket/4062
+
+
+    Description 
+
+
+    I had an ubuntu 10.04 system with ros diamondback and some own packages. I
+    upgraded to ubuntu 12.04 and ros electric. Whenever I call
+
+
+    rosrun rosdoc rosdoc pkg1 pkg2
+
+    Everything seems to work fine with some warning about missing dependancies,
+    every package has generated its own documentation, but the main index.html
+    is missing
+
+
+    Ubuntu 12.04 64 bit ros fuerte from the repository
+
+
+    Output:
+
+    rosrun rosdoc rosdoc camera1394 vision_msgs
+
+    2   /opt/ros/fuerte/stacks/documentation/rosdoc/src/rosdoc/rdcore.py:43:
+    UserWarning: roslib.rospack is deprecated, please use rospkg
+
+    3     import roslib.rospack
+
+    4   initializing rosdoc context:
+
+    5           package filters: ['camera1394', 'vision_msgs']
+
+    6           path filters: []
+
+    7   +package[vision_msgs]
+
+    8   +package[camera1394]
+
+    9   +stack[trunk]
+
+    10  doxygen-ating vision_msgs [doxygen /tmp/tmpMxinvw]
+
+    11  warning: Tag `DETAILS_AT_TOP' at line 23 of file /tmp/tmpMxinvw has
+    become obsolete.
+
+    12  To avoid this warning please update your configuration file using
+    "doxygen -u"
+
+    13  doxygen-ating camera1394 [doxygen /tmp/tmprdNhrW]
+
+    14  warning: Tag`DETAILS_AT_TOP' at line 23 of file /tmp/tmprdNhrW has
+    become obsolete.
+
+    15  To avoid this warning please update your configuration file using
+    "doxygen -u"
+
+    16  warning: tag INCLUDE_PATH: include path
+    `/opt/ros/fuerte/stacks/driver_common/driver_base/msg/cpp' does not exist
+
+    17  warning: tag INCLUDE_PATH: include
+    path`/opt/ros/fuerte/stacks/diagnostics/self_test/srv/cpp' does not exist
+
+    18  warning: tag INCLUDE_PATH: include path
+    `/opt/ros/fuerte/stacks/dynamic_reconfigure/msg/cpp' does not exist
+
+    19  warning: tag INCLUDE_PATH: include
+    path`/opt/ros/fuerte/stacks/dynamic_reconfigure/srv/cpp' does not exist
+
+    20  warning: source /opt/ros/fuerte/stacks/driver_common/driver_base/msg/cpp
+    is not a readable file or directory... skipping.
+
+    21  warning: source /opt/ros/fuerte/stacks/diagnostics/self_test/srv/cpp is
+    not a readable file or directory... skipping.
+
+    22  warning: source /opt/ros/fuerte/stacks/dynamic_reconfigure/msg/cpp is
+    not a readable file or directory... skipping.
+
+    23  warning: source /opt/ros/fuerte/stacks/dynamic_reconfigure/srv/cpp is
+    not a readable file or directory... skipping.
+
+    24  copying /opt/ros/fuerte/stacks/documentation/rosdoc/templates/styles.css
+    to doc/styles.css
+
+    25  copying
+    /opt/ros/fuerte/stacks/documentation/rosdoc/templates/msg-styles.css to
+    doc/msg-styles.css
+
+    26  Timings
+
+    27   \* 0.00 epydoc
+
+    28   \* 0.00 support_files
+
+    29   \* 2.66 doxygen
+
+    30   \* 0.00 sphinx
+
+    31   \* 0.00 upload
+
+    32   \* 0.00 landing-page
+
+    33  
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/18'
+  title: >-
+    rosdoc environment doesn't have sphinx autodoc extension installed
+    (07/06/12)
+  body: >
+    Issue migrated from trac originally posted by "tfoote", ticket #4002
+
+
+    Description 
+
+
+    This would be helpful for packages.
+
+
+    Change History
+
+
+    Changed 6 months ago by joq 
+
+
+    Specifically, the released versions have all their modules documented, but
+    the development version does not. E.g.:
+
+     http://ros.org/doc/fuerte/api/geodesy/html/python/geodesy.wu_point.html
+     http://ros.org/doc/api/geodesy/html/python/geodesy.wu_point.html
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/17'
+  title: rosdoc job is broken due to not having the new stack.xml parsing (06/25/12)
+  body: >
+    Issue migrated from trac originally posted by "tfoote",  ticket #3994 
+
+
+    Description 
+
+
+    It either needs to be backported to electric or the rosdoc job needs to jump
+    forward to fuerte.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/16'
+  title: API documentation can't link to other package docs (09/21/09)
+  body: >
+    Issue migrated from code.ros.org, ticket #1753 originally posted by
+    mihelich 
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/15'
+  title: Create a script that will list all unindexed wiki pages
+  body: >
+    We need to get the wiki cleaned up.  There are many important packages that
+    have been overlooked in the rosdistro/wiki change.
+
+
+    For example, image_proc is missing it's groovy component:
+
+    http://www.ros.org/wiki/image_proc
+
+
+    Is it possible to create a script or chart that will list the wiki page and
+    which distros are missing?  We'll need to either fix these or contact the
+    specific maintainers.
+
+
+    Note that this issue interacts with
+    https://github.com/ros-infrastructure/roswiki/issues/3, as some
+    packages/distros should not have an entry.  This is where the 'do not index'
+    file would be useful so that we can separate missing entries from
+    intentionally left out entries.
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/14'
+  title: Jobs are getting a lot of white space in their console output
+  body: >
+    See
+    http://jenkins.willowgarage.com:8080/view/Edoc/job/doc-electric-cn-alica-ros-pkg/22/consoleText
+
+
+    It's by a rough estimate 75% whitespace. 
+
+
+    ```
+
+    tfoote@dodos:/tmp/cn-alica-ros-pkg$ grep . consoleText | wc -l
+
+    712
+
+    tfoote@dodos:/tmp/cn-alica-ros-pkg$ wc -l consoleText 
+
+    40890 consoleText
+
+    ```
+
+
+    Ok my rough estimate was way off.  More like 98%
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/11'
+  title: traceback and failure due to tag merge conflict
+  body: >
+    It seems that several jobs failed due to merge conflicts.  This should be
+    caught and handled.  I believe we discussed that if the tags had a conflict
+    to just ignore it and they'll be added later upstream.  We might want to
+    revisit this as we seem to have a lot of conflicts as we have a lot of doc
+    jobs running simultaneously.  (note they do seem to be running much faster
+    with the new use of rsync.  possibly 3x)
+
+
+    For example
+    http://jenkins.willowgarage.com:8080/view/Fdoc/job/doc-fuerte-srs_public/15/consoleText:
+
+
+    ```
+
+    Executing command 'bash -c rsync -e "ssh -o StrictHostKeyChecking=no" -qr
+    /home/rosbuild/hudson/workspace/doc-fuerte-srs_public/doc_stacks/2012-12-23_14-08-28.464095/doc/fuerte
+    rosbuild@wgs32:/var/www/www.ros.org/html/rosdoclite'
+
+
+
+    Executing command 'git add
+    /home/rosbuild/hudson/workspace/doc-fuerte-srs_public/rosdoc_tag_index/fuerte'
+
+
+
+    Commiting changes to tags and deps lists....
+
+    Executing command 'git commit -a -m Updating tags and deps lists for fuerte'
+
+    [master e29f64d] Updating tags and deps lists for fuerte
+     Committer: root <root@host84.storm.willowgarage.com>
+    Your name and email address were configured automatically based
+
+    on your username and hostname. Please check that they are accurate.
+
+    You can suppress this message by setting them explicitly:
+
+        git config --global user.name "Your Name"
+        git config --global user.email you@example.com
+
+    After doing this, you may fix the identity used for this commit with:
+
+        git commit --amend --reset-author
+
+     35 files changed, 201 insertions(+), 183 deletions(-)
+     rewrite fuerte/metapackages/srs_public (100%)
+     rewrite fuerte/tags/libassimp-dev (95%)
+     rewrite fuerte/tags/libeigen3-dev (98%)
+     rewrite fuerte/tags/ros-fuerte-actionlib (97%)
+     rewrite fuerte/tags/ros-fuerte-bfl (100%)
+     rewrite fuerte/tags/ros-fuerte-bond-core (78%)
+     rewrite fuerte/tags/ros-fuerte-bullet (98%)
+     rewrite fuerte/tags/ros-fuerte-cob-calibration-data (72%)
+     rewrite fuerte/tags/ros-fuerte-cob-extern (100%)
+     rewrite fuerte/tags/ros-fuerte-cob-substitute (100%)
+     rewrite fuerte/tags/ros-fuerte-common-msgs (74%)
+     rewrite fuerte/tags/ros-fuerte-common-rosdeps (96%)
+     rewrite fuerte/tags/ros-fuerte-control (88%)
+     rewrite fuerte/tags/ros-fuerte-diagnostics (86%)
+     rewrite fuerte/tags/ros-fuerte-driver-common (92%)
+     rewrite fuerte/tags/ros-fuerte-executive-smach-visualization (100%)
+     rewrite fuerte/tags/ros-fuerte-genlisp (97%)
+     rewrite fuerte/tags/ros-fuerte-geometry-experimental (95%)
+     rewrite fuerte/tags/ros-fuerte-geometry-visualization (73%)
+     rewrite fuerte/tags/ros-fuerte-image-common (85%)
+     rewrite fuerte/tags/ros-fuerte-openni-camera (85%)
+     rewrite fuerte/tags/ros-fuerte-openni-kinect (64%)
+     rewrite fuerte/tags/ros-fuerte-pr2-common (64%)
+     rewrite fuerte/tags/ros-fuerte-pr2-gui (100%)
+     rewrite fuerte/tags/ros-fuerte-prosilica-driver (86%)
+     rewrite fuerte/tags/ros-fuerte-python-qt-binding (73%)
+     rewrite fuerte/tags/ros-fuerte-ros (67%)
+     rewrite fuerte/tags/ros-fuerte-ros-comm (63%)
+     rewrite fuerte/tags/ros-fuerte-rospack (90%)
+
+
+    Executing command 'git fetch origin'
+
+
+    Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of
+    known hosts.
+
+    From github.com:ros-infrastructure/rosdoc_tag_index
+       121490f..c9f5c43  master     -> origin/master
+
+    Executing command 'git merge origin/master'
+
+    Auto-merging fuerte/tags/ros-fuerte-rospack
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-rospack
+
+    Auto-merging fuerte/tags/ros-fuerte-ros-comm
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-ros-comm
+
+    Auto-merging fuerte/tags/ros-fuerte-ros
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-ros
+
+    Auto-merging fuerte/tags/ros-fuerte-openni-kinect
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-openni-kinect
+
+    Auto-merging fuerte/tags/ros-fuerte-openni-camera
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-openni-camera
+
+    Auto-merging fuerte/tags/ros-fuerte-image-common
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-image-common
+
+    Auto-merging fuerte/tags/ros-fuerte-genlisp
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-genlisp
+
+    Auto-merging fuerte/tags/ros-fuerte-driver-common
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-driver-common
+
+    Auto-merging fuerte/tags/ros-fuerte-diagnostics
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-diagnostics
+
+    Auto-merging fuerte/tags/ros-fuerte-common-rosdeps
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-common-rosdeps
+
+    Auto-merging fuerte/tags/ros-fuerte-common-msgs
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-common-msgs
+
+    Auto-merging fuerte/tags/ros-fuerte-bullet
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-bullet
+
+    Auto-merging fuerte/tags/ros-fuerte-bond-core
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-bond-core
+
+    Auto-merging fuerte/tags/ros-fuerte-actionlib
+
+    CONFLICT (content): Merge conflict in fuerte/tags/ros-fuerte-actionlib
+
+    Auto-merging fuerte/tags/libeigen3-dev
+
+    CONFLICT (content): Merge conflict in fuerte/tags/libeigen3-dev
+
+    Auto-merging fuerte/tags/libassimp-dev
+
+    CONFLICT (content): Merge conflict in fuerte/tags/libassimp-dev
+
+    Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+    /!\  Failed to execute command '['git', 'merge', 'origin/master']'
+
+    Failed to fetch and merge...
+
+    Trying again attempt 1 of 3...
+
+    Executing command 'git fetch origin'
+
+
+    Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of
+    known hosts.
+
+
+    Executing command 'git merge origin/master'
+
+
+    error: 'merge' is not possible because you have unmerged files.
+
+    hint: Fix them up in the work tree,
+
+    hint: and then use 'git add/rm <file>' as
+
+    hint: appropriate to mark resolution and make a commit,
+
+    hint: or use 'git commit -a'.
+
+    fatal: Exiting because of an unresolved conflict.
+
+
+    /!\  Failed to execute command '['git', 'merge', 'origin/master']'
+
+    Failed to fetch and merge...
+
+    Trying again attempt 2 of 3...
+
+    Executing command 'git fetch origin'
+
+
+    Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of
+    known hosts.
+
+
+    Executing command 'git merge origin/master'
+
+
+    error: 'merge' is not possible because you have unmerged files.
+
+    hint: Fix them up in the work tree,
+
+    hint: and then use 'git add/rm <file>' as
+
+    hint: appropriate to mark resolution and make a commit,
+
+    hint: or use 'git commit -a'.
+
+    fatal: Exiting because of an unresolved conflict.
+
+
+    /!\  Failed to execute command '['git', 'merge', 'origin/master']'
+
+    Failed to fetch and merge...
+
+    Trying again attempt 3 of 3...
+
+    Executing command 'git fetch origin'
+
+
+    Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of
+    known hosts.
+
+
+    Executing command 'git merge origin/master'
+
+
+    error: 'merge' is not possible because you have unmerged files.
+
+    hint: Fix them up in the work tree,
+
+    hint: and then use 'git add/rm <file>' as
+
+    hint: appropriate to mark resolution and make a commit,
+
+    hint: or use 'git commit -a'.
+
+    fatal: Exiting because of an unresolved conflict.
+
+
+    /!\  Failed to execute command '['git', 'merge', 'origin/master']'
+
+    Failed to fetch and merge...
+
+    Traceback (most recent call last):
+      File "/home/rosbuild/hudson/workspace/doc-fuerte-srs_public/jenkins_scripts/doc", line 158, in <module>
+        main()
+      File "/home/rosbuild/hudson/workspace/doc-fuerte-srs_public/jenkins_scripts/doc", line 155, in main
+        homepage, rosdoc_lite_version, jenkins_scripts_version)
+      File "/home/rosbuild/hudson/workspace/doc-fuerte-srs_public/jenkins_scripts/doc_stack.py", line 298, in document_repo
+        tags_db.commit_db(excludes)
+      File "/home/rosbuild/hudson/workspace/doc-fuerte-srs_public/jenkins_scripts/tags_db.py", line 203, in commit_db
+        raise e
+    common.BuildException
+
+    ```
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/10'
+  title: cmake invoked for metapackages which fails
+  body: >
+    The doc jobs invoke cmake on metapackages which by definition do not have a
+    CMakeLists,txt and therefore the command fails. (i.e.
+    http://jenkins.willowgarage.com:8080/job/doc-groovy-control/26/console)
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/9'
+  title: out/err output of rosdoc jobs is separated
+  body: >
+    Looking at
+    http://jenkins.willowgarage.com:8080/job/doc-groovy-control/26/console it
+    looks like stdout is printed first and afterwards comes stderr. That makes
+    reading the log extremely difficult. The order of output should be
+    preserved.
+
+
+    ```-- The CXX compiler identification is GNU
+
+    -- Check for working C compiler: /usr/lib/ccache/gcc
+
+    -- Check for working C compiler: /usr/lib/ccache/gcc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Check for working CXX compiler: /usr/lib/ccache/c++
+
+    -- Check for working CXX compiler: /usr/lib/ccache/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /home/rosbuild/hudson/workspace/doc-groovy-control/doc_stacks/2012-12-05_23-48-17.025681/build_repo/devel
+
+    -- Using CMAKE_PREFIX_PATH: /opt/ros/groovy
+
+    -- This workspace overlays: /opt/ros/groovy
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.3")
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H
+
+    -- Looking for include files CMAKE_HAVE_PTHREAD_H - found
+
+    -- Looking for pthread_create in pthreads
+
+    -- Looking for pthread_create in pthreads - not found
+
+    -- Looking for pthread_create in pthread
+
+    -- Looking for pthread_create in pthread - found
+
+    -- Found Threads: TRUE 
+
+    -- Found gtest sources under '/usr/src/gtest': gtests will be built
+
+    -- catkin 0.5.52
+
+    -- BUILD_SHARED_LIBS is on
+
+    -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    -- ~~  traversing packages in topological order:
+
+    -- ~~  - control_msgs
+
+    -- ~~  - control
+
+    -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    -- +++ add_subdirectory(control_msgs/control_msgs)
+
+    -- control_msgs: 1 messages, 0 services
+
+    -- +++ add_subdirectory(control_msgs/compatibility/control)
+
+    -- Configuring incomplete, errors occurred!
+
+
+    control_msgs has BUILD message dependencies:
+      -std_msgs
+      -trajectory_msgs
+      -geometry_msgs
+      -actionlib_msgs
+    control_msgs has BUILD dependencies:
+      -catkin
+      -genmsg
+      -langs-dev
+      -std_msgs
+      -trajectory_msgs
+      -geometry_msgs
+      -actionlib_msgs
+    catkingenmsglangs-devstd_msgstrajectory_msgsgeometry_msgsactionlib_msgs
+      Export my include dir: 
+      Export my lib dir: 
+    CMake Error at /opt/ros/groovy/share/catkin/cmake/catkin_workspace.cmake:53
+    (add_subdirectory):
+      The source directory
+
+    ```
+
+    /home/rosbuild/hudson/workspace/doc-groovy-control/doc_stacks/2012-12-05_23-48-17.025681/control_msgs/compatibility/control
+
+    ```
+
+      does not contain a CMakeLists.txt file.
+    Call Stack (most recent call first):
+      CMakeLists.txt:51 (catkin_workspace)
+
+    /!\  Failed to execute command '['cmake', '..']'
+
+    FAILED TO CALL CMAKE ON CATKIN REPOS```
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/8'
+  title: rosdoc jobs are hanging and blocking the build farm
+  body: >
+    There were basically 20-30 rosdoc jobs which were running for several hours
+    preventing the build farm from turning over.  There needs to be  a timeout
+    mechanism to prevent this.  Most of the jobs usually only take 3-5
+    minutes.  
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/7'
+  title: rosdoc jobs are creating many GBs of data in jenkins WORKSPACE
+  body: |
+    Below is a snippet of the accumulated workspaces on  a single executor
+
+    ```
+    ...
+    7.3M    doc-fuerte-rospkg-precise-amd64
+    36M doc-fuerte-ros-precise-amd64
+    136M    doc-fuerte-ros_realtime-precise-amd64
+    48M doc-fuerte-rosserial_android-precise-amd64
+    60M doc-fuerte-rosserial_java-precise-amd64
+    8.1M    doc-fuerte-rosserial-precise-amd64
+    32M doc-fuerte-ros_tutorials
+    53M doc-fuerte-ros_tutorials-precise-amd64
+    53M doc-fuerte-rovio
+    15M doc-fuerte-rqt
+    130M    doc-fuerte-rx-precise-amd64
+    94M doc-fuerte-scan_tools
+    226M    doc-fuerte-schunk_modular_robotics-precise-amd64
+    103M    doc-fuerte-schunk_robots
+    83M doc-fuerte-schunk_simulation
+    61M doc-fuerte-schunk_simulation-precise-amd64
+    3.9M    doc-fuerte-serial_communication-precise-amd64
+    485M    doc-fuerte-shadow_robot-precise-amd64
+    39M doc-fuerte-simple_object_capture
+    37M doc-fuerte-simple_object_capture-precise-amd64
+    238M    doc-fuerte-simulator_gazebo
+    1.3G    doc-fuerte-simulator_gazebo-precise-amd64
+    32M doc-fuerte-slam_gmapping-precise-amd64
+    61M doc-fuerte-slam_karto-precise-amd64
+    13M doc-fuerte-sound_drivers-precise-amd64
+    332K    doc-fuerte-sql_database-precise-amd64
+    16M doc-fuerte-srs_common-precise-amd64
+    406M    doc-fuerte-sr_visualization
+    756K    doc-fuerte-sr_visualization-precise-amd64
+    53M doc-fuerte-stage-precise-amd64
+    24M doc-fuerte-std_msgs
+    22M doc-fuerte-std_msgs-precise-amd64
+    121M    doc-fuerte-symbolic_planning-precise-amd64
+    251M    doc-fuerte-tabletop_object_perception-precise-amd64
+    65M doc-fuerte-topological_navigation
+    142M    doc-fuerte-topological_navigation-precise-amd64
+    61M doc-fuerte-trajectory_filters-precise-amd64
+    756K    doc-fuerte-tu-darmstadt-ros-pkg-precise-amd64
+    70M doc-fuerte-turtlebot
+    211M    doc-fuerte-turtlebot_apps-precise-amd64
+    149M    doc-fuerte-turtlebot_arm
+    144M    doc-fuerte-turtlebot-precise-amd64
+    72M doc-fuerte-turtlebot_simulator
+    62M doc-fuerte-turtlebot_simulator-precise-amd64
+    117M    doc-fuerte-turtlebot_viz-precise-amd64
+    37M doc-fuerte-universal_robot-precise-amd64
+    24M doc-fuerte-vcstools
+    24M doc-fuerte-vcstools-precise-amd64
+    11M doc-fuerte-velodyne-precise-amd64
+    32M doc-fuerte-velodyne_utils-precise-amd64
+    55M doc-fuerte-vision_opencv
+    53M doc-fuerte-vision_opencv-precise-amd64
+    78M doc-fuerte-vision_visp
+    127M    doc-fuerte-vision_visp-precise-amd64
+    40M doc-fuerte-viso2-precise-amd64
+    187M    doc-fuerte-visualization_engine-precise-amd64
+    117M    doc-fuerte-visualization_experimental
+    202M    doc-fuerte-visualization_experimental-precise-amd64
+    352M    doc-fuerte-visualization-precise-amd64
+    138M    doc-fuerte-vslam-precise-amd64
+    32M doc-fuerte-warehousewg-precise-amd64
+    160M    doc-fuerte-web_interface-precise-amd64
+    24M doc-fuerte-wg_common
+    27M doc-fuerte-wg_common-precise-amd64
+    52M doc-fuerte-wge100_driver
+    4.0K    doc-fuerte-wge100_driver-precise-amd64
+    452M    doc-fuerte-wg_hardware_test
+    1012M   doc-fuerte-wg_hardware_test-precise-amd64
+    57M doc-fuerte-wg_pr2_apps-precise-amd64
+    323M    doc-fuerte-wg_robots_gazebo-precise-amd64
+    18M doc-fuerte-wifi_drivers-precise-amd64
+    110M    doc-fuerte-worldmodel
+    84M doc-fuerte-worldmodel-precise-amd64
+    42M doc-fuerte-xacro-precise-amd64
+    34M doc-fuerte-zeroconf_avahi_suite
+    7.5M    doc-fuerte-zeroconf_implementations-precise-amd64
+    34M doc-groovy-ackermann_msgs-precise-amd64
+    93M doc-groovy-actionlib
+    56M doc-groovy-arbotix-precise-amd64
+    40M doc-groovy-arm_navigation_experimental-precise-amd64
+    85M doc-groovy-arm_navigation-precise-amd64
+    258M    doc-groovy-art_vehicle-precise-amd64
+    22M doc-groovy-bfl-precise-amd64
+    37M doc-groovy-bosch_3rdparty
+    45M doc-groovy-brown_perception
+    24M doc-groovy-brown_perception-precise-amd64
+    43M doc-groovy-camera1394-precise-amd64
+    23M doc-groovy-camera_info_manager_py
+    77M doc-groovy-camera_pose
+    25M doc-groovy-catkin
+    51M doc-groovy-catkin-precise-amd64
+    57M doc-groovy-clearpath_common-precise-amd64
+    143M    doc-groovy-clearpath_husky-precise-amd64
+    33M doc-groovy-clearpath_kingfisher
+    26M doc-groovy-clearpath_turtlebot-precise-amd64
+    31M doc-groovy-cob_calibration_data
+    24M doc-groovy-cob_command_tools
+    66M doc-groovy-cob_command_tools-precise-amd64
+    768K    doc-groovy-cob_environments
+    31M doc-groovy-cob_extern-precise-amd64
+    73M doc-groovy-cob_navigation
+    163M    doc-groovy-cob_navigation-precise-amd64
+    101M    doc-groovy-cob_robots
+    768K    doc-groovy-cob_simulation
+    63M doc-groovy-cob_simulation-precise-amd64
+    23M doc-groovy-common_msgs-precise-amd64
+    21M doc-groovy-common_tutorials-precise-amd64
+    25M doc-groovy-control-precise-amd64
+    73M doc-groovy-diagnostics
+    22M doc-groovy-diagnostics_monitors
+    46M doc-groovy-diagnostics_monitors-precise-amd64
+    68M doc-groovy-diagnostics-precise-amd64
+    60M doc-groovy-driver_common
+    43M doc-groovy-driver_common-precise-amd64
+    41M doc-groovy-dynamixel_motor-precise-amd64
+    222M    doc-groovy-ecl_core-precise-amd64
+    58M doc-groovy-ecl_lite
+    30M doc-groovy-ecl_manipulation
+    59M doc-groovy-ecl_navigation
+    42M doc-groovy-ecl_tools-precise-amd64
+    102M    doc-groovy-erratic_robot-precise-amd64
+    122M    doc-groovy-ethzasl
+    38M doc-groovy-ethzasl_aseba-precise-amd64
+    223M    doc-groovy-ethzasl-precise-amd64
+    28M doc-groovy-ethzasl_xsens_driver
+    27M doc-groovy-ethzasl_xsens_driver-precise-amd64
+    33M doc-groovy-executive_smach
+    21M doc-groovy-executive_smach_visualization
+    25M doc-groovy-executive_smach_visualization-precise-amd64
+    21M doc-groovy-executive_teer
+    21M doc-groovy-executive_teer-precise-amd64
+    39M doc-groovy-filters
+    21M doc-groovy-flirtlib_features
+    21M doc-groovy-flirtlib_features-precise-amd64
+    31M doc-groovy-gencpp
+    23M doc-groovy-gencpp-precise-amd64
+    24M doc-groovy-genlisp-precise-amd64
+    27M doc-groovy-genpy
+    113M    doc-groovy-geometry_experimental
+    99M doc-groovy-geometry_experimental-precise-amd64
+    22M doc-groovy-geometry_tutorials
+    19M doc-groovy-geometry_tutorials-precise-amd64
+    34M doc-groovy-geometry_visualization
+    29M doc-groovy-gps_drivers
+    20M doc-groovy-gps_drivers-precise-amd64
+    34M doc-groovy-gps_umd-precise-amd64
+    23M doc-groovy-humanoid_msgs-precise-amd64
+    4.1M    doc-groovy-ias_common-precise-amd64
+    2.2M    doc-groovy-image_common-precise-amd64
+    2.2M    doc-groovy-image_pipeline
+    3.8M    doc-groovy-image_pipeline-precise-amd64
+    40M doc-groovy-image_transport_plugins
+    34M doc-groovy-imu_drivers-precise-amd64
+    2.2M    doc-groovy-interactive_markers
+    2.2M    doc-groovy-interactive_markers-precise-amd64
+    5.4M    doc-groovy-joystick_drivers-precise-amd64
+    691M    doc-groovy-knowrob
+    314M    doc-groovy-knowrob-precise-amd64
+    3.9M    doc-groovy-kobuki_desktop
+    62M doc-groovy-kobuki-precise-amd64
+    49M doc-groovy-laser_assembler-precise-amd64
+    36M doc-groovy-laser_drivers-precise-amd64
+    34M doc-groovy-laser_filters
+    27M doc-groovy-map_manager_app-precise-amd64
+    54M doc-groovy-map_store
+    44M doc-groovy-map_store-precise-amd64
+    26M doc-groovy-megatree_pcl
+    756K    doc-groovy-multimaster_experimental-precise-amd64
+    33M doc-groovy-multimaster_fkie-precise-amd64
+    204M    doc-groovy-navigation
+    33M doc-groovy-navigation_experimental-precise-amd64
+    383M    doc-groovy-navigation-precise-amd64
+    21M doc-groovy-netft-precise-amd64
+    31M doc-groovy-nmea_gps_driver
+    24M doc-groovy-nmea_gps_driver-precise-amd64
+    216M    doc-groovy-object_manipulation-precise-amd64
+    37M doc-groovy-occupancy_grid_utils
+    47M doc-groovy-occupancy_grid_utils-precise-amd64
+    40M doc-groovy-octomap_mapping
+    24M doc-groovy-octomap_mapping-precise-amd64
+    32M doc-groovy-openni_camera-precise-amd64
+    25M doc-groovy-openni_launch-precise-amd64
+    26M doc-groovy-openni_tracker-precise-amd64
+    82M doc-groovy-orocos_kinematics_dynamics-precise-amd64
+    24M doc-groovy-pluginlib-precise-amd64
+    94M doc-groovy-pr2_apps
+    19M doc-groovy-pr2_apps-precise-amd64
+    321M    doc-groovy-pr2_arm_navigation
+    121M    doc-groovy-pr2_arm_navigation-precise-amd64
+    27M doc-groovy-pr2_calibration
+    98M doc-groovy-pr2_calibration-precise-amd64
+    95M doc-groovy-pr2_common_actions-precise-amd64
+    238M    doc-groovy-pr2_common-precise-amd64
+    22M doc-groovy-pr2_controllers-precise-amd64
+    20M doc-groovy-pr2_ethercat_drivers-precise-amd64
+    42M doc-groovy-pr2_kinematics
+    78M doc-groovy-pr2_kinematics-precise-amd64
+    29M doc-groovy-pr2_make_a_map_app
+    34M doc-groovy-pr2_make_a_map_app-precise-amd64
+    39M doc-groovy-pr2_mannequin_mode_app
+    19M doc-groovy-pr2_mechanism-precise-amd64
+    45M doc-groovy-pr2_object_manipulation
+    25M doc-groovy-pr2_pan_tilt-precise-amd64
+    340M    doc-groovy-pr2_plugs
+    57M doc-groovy-pr2_power_drivers
+    52M doc-groovy-pr2_power_drivers-precise-amd64
+    34M doc-groovy-pr2_props_app-precise-amd64
+    24M doc-groovy-pr2_ps3_joystick_app
+    30M doc-groovy-pr2_ps3_joystick_app-precise-amd64
+    100M    doc-groovy-pr2_self_test
+    39M doc-groovy-pr2_teleop_app
+    29M doc-groovy-pr2_teleop_app-precise-amd64
+    113M    doc-groovy-pr2_web_apps-precise-amd64
+    57M doc-groovy-prosilica_driver
+    28M doc-groovy-reconfigure_gui
+    39M doc-groovy-reconfigure_gui-precise-amd64
+    34M doc-groovy-remote_lab-precise-amd64
+    50M doc-groovy-riq_hand-precise-amd64
+    15M doc-groovy-robot_model_tutorials-precise-amd64
+    31M doc-groovy-robot_model_visualization
+    25M doc-groovy-robot_model_visualization-precise-amd64
+    32M doc-groovy-rocon_comms-precise-amd64
+    236M    doc-groovy-ros_comm
+    691M    doc-groovy-ros_comm-precise-amd64
+    33M doc-groovy-roscpp_core
+    18M doc-groovy-roscpp_core-precise-amd64
+    20M doc-groovy-rosdoc_lite-precise-amd64
+    25M doc-groovy-rosh_core-precise-amd64
+    35M doc-groovy-rosh_desktop_plugins-precise-amd64
+    36M doc-groovy-roshpit-precise-amd64
+    62M doc-groovy-rosh_robot_plugins
+    39M doc-groovy-rosh_robot_plugins-precise-amd64
+    23M doc-groovy-roslisp_support
+    33M doc-groovy-rospack-precise-amd64
+    110M    doc-groovy-rosserial-precise-amd64
+    23M doc-groovy-ros_tutorials
+    21M doc-groovy-ros_tutorials-precise-amd64
+    163M    doc-groovy-rviz-precise-amd64
+    64M doc-groovy-rx-precise-amd64
+    143M    doc-groovy-schunk_modular_robotics
+    274M    doc-groovy-schunk_modular_robotics-precise-amd64
+    53M doc-groovy-schunk_robots
+    72M doc-groovy-simple_arms
+    53M doc-groovy-simple_arms-precise-amd64
+    42M doc-groovy-slam_gmapping-precise-amd64
+    31M doc-groovy-sql_database-precise-amd64
+    36M doc-groovy-stage
+    28M doc-groovy-stage-precise-amd64
+    13M doc-groovy-std_msgs-precise-amd64
+    126M    doc-groovy-symbolic_planning
+    222M    doc-groovy-symbolic_planning-precise-amd64
+    78M doc-groovy-turtlebot_apps
+    68M doc-groovy-turtlebot_simulator
+    38M doc-groovy-turtlebot_simulator-precise-amd64
+    36M doc-groovy-turtlebot_viz-precise-amd64
+    31M doc-groovy-unique_identifier-precise-amd64
+    53M doc-groovy-universal_robot-precise-amd64
+    57M doc-groovy-velodyne
+    90M doc-groovy-velodyne-precise-amd64
+    30M doc-groovy-velodyne_utils
+    20M doc-groovy-velodyne_utils-precise-amd64
+    2.2M    doc-groovy-vision_opencv-precise-amd64
+    24M doc-groovy-vision_visp-precise-amd64
+    81M doc-groovy-visualization_common-precise-amd64
+    45M doc-groovy-warehousewg-precise-amd64
+    96M doc-groovy-web_interface-precise-amd64
+    24M doc-groovy-wg_common
+    21M doc-groovy-wg_common-precise-amd64
+    45M doc-groovy-wge100_driver
+    22M doc-groovy-wge100_driver-precise-amd64
+    21M doc-groovy-wg_pr2_apps
+    32M doc-groovy-wg_pr2_apps-precise-amd64
+    30M doc-groovy-wifi_drivers
+    50M doc-groovy-win_ros
+    25M doc-groovy-xacro-precise-amd64
+    31M doc-groovy-zeroconf_avahi_suite-precise-amd64
+    103M    doc-groovy-zeroconf_implementations-precise-amd6
+    ...
+    ```
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels:
+    - bug
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/issues/6'
+  title: Missing dependency on python-catkin-pkg
+  body: |
+    I installed ros-fuerte-rosdoc-lite and tried to run rosdoc ./ but got
+    the error:
+    ImportError: No module named catkin_pkg.package
+    I solved it by installing the package "python-catkin-pkg" via apt-get.
+    It should
+    be added to rosdoc's dependencies.
+    I am running ubuntu 11.10.
+
+    Regards,
+    Felix
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []
+- url: 'https://github.com/ros-infrastructure/rosdoc_lite/pull/1'
+  title: Potential fix for rospkg dependency problem.
+  body: ''
+  repo: 'https://api.github.com/repos/ros-infrastructure/rosdoc_lite'
+  labels: []

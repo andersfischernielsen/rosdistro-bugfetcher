@@ -1,0 +1,1178 @@
+- url: 'https://github.com/PR2/pr2_common/issues/262'
+  title: '[pr2_description] Remove dependency on ivcon'
+  body: >-
+    It would be great to commit "already converted meshes" to pr2_description.
+    That would allow to get rid of the dependency on ivcon that has the benefit
+    of making releases faster and get rid of non-BSD licenced pieces of software
+    in desktop_full
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels: []
+- url: 'https://github.com/PR2/pr2_common/issues/240'
+  title: Could not determine the type of ''.
+  body: >
+    When compiling from source on gentoo I get this
+
+
+    ```
+
+    ==> cmake /opt/ros/ros_catkin_ws/src/pr2_common/pr2_description
+    -DCATKIN_DEVEL_PREFIX=/opt/ros/ros_catkin_ws/devel_isolated/pr2_description
+    -DCMAKE_INSTALL_PREFIX=/opt/ros/indigo -DCMAKE_BUILD_TYPE=Release
+    -DSETUPTOOLS_ARG_EXTRA= -DSETUPTOOLS_DEB_LAYOUT=OFF -G Unix Makefiles in
+    '/opt/ros/ros_catkin_ws/build_isolated/pr2_description'
+
+    -- The C compiler identification is GNU 4.8.4
+
+    -- The CXX compiler identification is GNU 4.8.4
+
+    -- Check for working C compiler: /usr/bin/cc
+
+    -- Check for working C compiler: /usr/bin/cc -- works
+
+    -- Detecting C compiler ABI info
+
+    -- Detecting C compiler ABI info - done
+
+    -- Check for working CXX compiler: /usr/bin/c++
+
+    -- Check for working CXX compiler: /usr/bin/c++ -- works
+
+    -- Detecting CXX compiler ABI info
+
+    -- Detecting CXX compiler ABI info - done
+
+    -- Using CATKIN_DEVEL_PREFIX:
+    /opt/ros/ros_catkin_ws/devel_isolated/pr2_description
+
+    -- Using CMAKE_PREFIX_PATH: /opt/ros/indigo
+
+    -- This workspace overlays: /opt/ros/indigo
+
+    -- Found PythonInterp: /usr/bin/python (found version "2.7.9") 
+
+    -- Using PYTHON_EXECUTABLE: /usr/bin/python
+
+    -- Using default Python package layout
+
+    -- Found PY_em: /usr/lib/python2.7/site-packages/em.pyc  
+
+    -- Using empy: /usr/lib/python2.7/site-packages/em.pyc
+
+    -- Using CATKIN_ENABLE_TESTING: ON
+
+    -- Call enable_testing()
+
+    -- Using CATKIN_TEST_RESULTS_DIR:
+    /opt/ros/ros_catkin_ws/build_isolated/pr2_description/test_results
+
+    -- Found gtest: gtests will be built
+
+    -- Using Python nosetests: /usr/bin/nosetests
+
+    -- catkin 0.6.14
+
+    -- Configuring done
+
+    -- Generating done
+
+    CMake Warning:
+      Manually-specified variables were not used by the project:
+
+        SETUPTOOLS_ARG_EXTRA
+
+
+    -- Build files have been written to:
+    /opt/ros/ros_catkin_ws/build_isolated/pr2_description
+
+    ==> make -j1 -l1 in '/opt/ros/ros_catkin_ws/build_isolated/pr2_description'
+
+    Scanning dependencies of target media_files
+
+    [  0%] Generating
+    /opt/ros/ros_catkin_ws/src/pr2_common/pr2_description/meshes/gripper_v0/convex/upper_finger_l.obj
+
+
+    DATA_READ - Fatal error!
+      Could not determine the type of ''.
+
+    COMMAND_LINE - Fatal error!
+      Failure while reading input data.
+    CMakeFiles/media_files.dir/build.make:287: set di istruzioni per l'obiettivo
+    "/opt/ros/ros_catkin_ws/src/pr2_common/pr2_description/meshes/gripper_v0/convex/upper_finger_l.obj"
+    non riuscito
+
+    make[2]: ***
+    [/opt/ros/ros_catkin_ws/src/pr2_common/pr2_description/meshes/gripper_v0/convex/upper_finger_l.obj]
+    Errore 1
+
+    CMakeFiles/Makefile2:282: set di istruzioni per l'obiettivo
+    "CMakeFiles/media_files.dir/all" non riuscito
+
+    Makefile:126: set di istruzioni per l'obiettivo "all" non riuscito
+
+    <== Failed to process package 'pr2_description': 
+      Command '['/opt/ros/indigo/env.sh', 'make', '-j1', '-l1']' returned non-zero exit status 2
+
+    Reproduce this error by running:
+
+    ==> cd /opt/ros/ros_catkin_ws/build_isolated/pr2_description &&
+    /opt/ros/indigo/env.sh make -j1 -l1
+
+
+    make[1]: *** [CMakeFiles/media_files.dir/all] Errore 2
+
+    make: *** [all] Errore 2
+
+    Command failed, exiting.
+
+    ./src/catkin/bin/catkin_make_isolated --install --install-space  
+
+    ```
+
+
+    but I don't know what's wrong.
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels: []
+- url: 'https://github.com/PR2/pr2_common/pull/232'
+  title: >-
+    Making test_urdf independent from urdfdom ros package to avoid test from
+    failing
+  body: >
+    I noticed that the test for the correctness of the urdf files is failing
+    because of the fact that the urdfdom package can't be found. As recommended
+    in the urdfdom package itself I made the test now independent from this
+    package and using liburdfdom-dev instead.
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels: []
+- url: 'https://github.com/PR2/pr2_common/pull/228'
+  title: decimated many arm collision meshes (stl files) to speed up moveit.
+  body: >
+    This is in response to https://github.com/ros-planning/moveit_ros/issues/380
+    where I found that the startup time for move_group (in debug mode, it is
+    true) was about 30 seconds and almost all of that time was spent simplifying
+    meshes.
+
+
+    This pull request is the result of me opening blender and importing each of
+    the changed .stl meshes, decimating them with the decimate tool to the
+    lowest ratio that seemed like it still looked "pretty good" to my eye, and
+    then exporting the .stl file back over the original.
+
+
+    I believe each of these meshes is only used for the _collision_ data for the
+    PR2's urdf, which means this should not change the typical appearance of the
+    PR2 in rviz at all.  The visual models use collada (.dae) files and those
+    have not been changed here.
+
+
+    This set of changes reduces the relevant part of my (debug mode) moveit
+    startup time from 30 seconds to about 0.5 seconds.
+
+
+    Here is what the PR2 collision meshes look like before this change:
+
+    ![original-pr2](https://f.cloud.github.com/assets/1562730/1636427/c184dcdc-57cd-11e3-9366-c91196594fcb.png)
+
+
+    And here is what the PR2 collision meshes look like after this change:
+
+    ![decimated-pr2](https://f.cloud.github.com/assets/1562730/1636428/c67b81fa-57cd-11e3-8fb9-a9b32d33bb67.png)
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels: []
+- url: 'https://github.com/PR2/pr2_common/issues/212'
+  title: 'Kinect URDF has wrong scaling  (ros ticket #5185)'
+  body: >
+    How to reproduce:
+
+    {{{
+
+    $ roslaunch pr2_gazebo pr2_kinect_empty_world.launch
+
+    }}}
+
+
+    ... and watch the PR2 fly.
+
+
+    Fix:
+
+    In file
+    {{{/opt/ros/electric/stacks/pr2_common/pr2_description/urdf/sensors/kinect_camera.urdf.xacro}}},
+
+    replace all occurences of 
+
+    {{{
+
+    <mesh
+    filename="package://pr2_description/meshes/sensors/kinect_v0/kinect.dae" />
+
+    }}}
+
+    by
+
+    {{{
+
+    <mesh
+    filename="package://pr2_description/meshes/sensors/kinect_v0/kinect.dae"
+    scale="0.001 0.001 0.001" />
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **martin_guenther**
+
+    - Reported at: **Thu Feb 23 02:49:40 2012**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5185
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/211'
+  title: 'add safety limits to [lr]_gripper_motor_slider_joint  (ros ticket #5160)'
+  body: >
+    Please add safety limits to the [lr]_gripper_motor_slider_joint in
+    urdf/gripper_v0/gripper.urdf.xacro to support the qual system.
+
+
+    This set of limits works in testing:
+
+    <limit effort="1000.0" velocity="0.2" lower="-0.1" upper="0.1" />
+
+
+    trac data:
+
+    - Owner: **ahendrix**
+
+    - Reporter: **ahendrix**
+
+    - Reported at: **Tue Nov  8 15:00:21 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5160
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/210'
+  title: 'Add Kinect meshes to pr2_description  (ros ticket #5157)'
+  body: >
+    The Kinect meshes should be added to pr2_description so that users can
+    modify their PR2's URDF's if desired.
+
+
+    I haved added the files to kt2_pr2_defs. These files are:
+
+    - meshes/kinect/*
+
+    - urdf/sensors/kinect*
+
+
+    The gazebo URDF extension uses the plugin in kt2_gazebo_plugins. The STL and
+    collada files work with Gazebo and rviz.
+
+
+    trac data:
+
+    - Owner: **stanford**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Oct 27 13:54:05 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5157
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/209'
+  title: 'prosilica camera_info frame_id is wrong in gazebo  (ros ticket #5145)'
+  body: >
+    [[http://answers.ros.org/question/2053/prosilica-camera_info-frame_id-in-gazebo-off
+    As pointed out by Chris]]
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Thu Sep  1 16:57:29 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5145
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/208'
+  title: 'Update PR2 URDF for Kinect-friendly gains  (ros ticket #5141)'
+  body: >
+    With a Kinect on a PR2 head, the robot cannot lift it's head when the head
+    is tilted all the way forward.
+
+
+    Gil and Stu reported the fix to pr2-users:
+
+    {{{
+
+    For anyone that is using the WG kinect mounting strategy where the kinect is
+    mounted significantly above the head here's what we've found to be a working
+    solution for the head controller configuration (mostly just mirroring what
+    Stu said):
+
+
+    First, manually edit the urdf you are loading for the robot and change the
+    entry for the head_tilt_joint to mirror the following (the only change is
+    that the value for k_velocity is altered from "1.5" to "3.0"):
+
+     <joint name="head_tilt_joint" type="revolute">
+        <axis xyz="0 1 0"/>
+        <limit effort="15" lower="-0.471238" upper="1.39626" velocity="5"/>
+        <!-- alpha tested velocity and effort limits -->
+        <safety_controller k_position="100" k_velocity="3.0" soft_lower_limit="-0.3712" soft_upper_limit="1.29626"/>
+        <calibration falling="0.0"/>
+        <dynamics damping="1.0"/>
+        <origin rpy="0 0 0" xyz="0.068 0 0"/>
+        <parent link="head_pan_link"/>
+        <child link="head_tilt_link"/>
+      </joint>
+
+    Next, you'll need to overlay the package pr2_controller_configuration
+    (https://code.ros.org/svn/wg-ros-pkg/stacks/pr2_robot/trunk/pr2_controller_configuration)
+    somewhere where it will be read when you do a 'robot start'.  Then change
+    the file pr2_head_controller.yaml to read the following:
+
+
+    head_traj_controller:
+      type: robot_mechanism_controllers/
+    JointTrajectoryActionController
+      joints: ['head_pan_joint', 'head_tilt_joint']
+      gains:
+        head_pan_joint:
+          p: 25.0
+          i: 12.0
+          d: 2.0
+          i_clamp: 0.5 
+        head_tilt_joint:
+          p: 100.0
+          i: 2.0
+          d: 3.0
+          i_clamp: 0.1 
+
+    We just changed the head_tilt_joint/p value to 100.0 and the
+    head_tilt_joint/d value to 3.0.  Do a 'robot start' and you should be good
+    to go.  Let us know if this isn't working for you.
+
+
+    Also, our intern Adam Leeper has been working on the point_head_action, and
+    it should now give correct behavior regarding the pointing_axis and
+    pointing_frame.  If you'd like to try it out overlay pr2_head_action trunk
+    (https://code.ros.org/svn/wg-ros-pkg/stacks/pr2_controllers/trunk/pr2_head_action).
+
+
+    -Gil 
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Aug  9 13:53:07 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5141
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/207'
+  title: 'Extra Stuff in the pr2_description  (ros ticket #5126)'
+  body: >
+    I found a couple things that are off the standard spec in the PR2
+    description. 
+
+
+    First, a base collision element has a material. 
+
+
+    Second, several parts in the forearm and gripper have a verbose tag. 
+
+
+    Third, the head has two unexpanded macros that should either be defined or
+    removed.
+
+
+    trac data:
+
+    - Owner: **davidlu**
+
+    - Reporter: **davidlu**
+
+    - Reported at: **Thu Jun 16 10:23:35 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5126
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_common/issues/206'
+  title: >-
+    Frames in PR2 description reversed: l(r)_torso_life_side_plate_link  (ros
+    ticket #5106)
+  body: >
+    l(r)_torso_life_side_plate_link are reversed in the PR2 description.  Easy
+    to verify just by pulling up the tf frames in RViz with the PR2.  Please fix
+    ASAP as we are using this frame in a live demo soon.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **kwc**
+
+    - Reported at: **Thu Apr 28 11:01:41 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5106
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/205'
+  title: 'Commit PR2 mass/inertia data to wg-ros-pkg  (ros ticket #5090)'
+  body: >
+    We should commit the PR2 inertia/mass data to wg-ros-pkg somewhere. There
+    are multiple copies of "the" spreadsheet floating around and we should have
+    a single place to reference them.
+
+
+    See #5028 for an example of why this data is useful.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **watts**
+
+    - Reported at: **Thu Apr  7 21:26:16 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5090
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/204'
+  title: 'Double k_velocity value for PR2 head tilt joint  (ros ticket #5075)'
+  body: >
+    If we can double the k_velocity safely, then we can lift a PR2 head with a
+    Kinect installed.
+
+
+    trac data:
+
+    - Owner: **wim**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Mar 15 13:21:06 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5075
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/203'
+  title: 'Correct caster effort/velocity limits in URDF  (ros ticket #5031)'
+  body: >
+    The caster effort and velocity limits in the current URDF are very high.
+    Although this can't cause a problem on the PR2, these limits should be
+    corrected for simulation. 
+
+
+    Caster wheel limits:
+
+    - effort = 7
+
+    - velocity = 15
+
+    - k_velocity = 10
+
+    - damping = 1.0
+
+
+    Limits for the turret should probably be similar. Actual max velocity of the
+    PR2 caster wheel is around 10, max effort is around 6.5.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Feb 16 20:53:27 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5031
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/202'
+  title: 'model mass compensation spring for torso lift  (ros ticket #5022)'
+  body: >
+    This might reduce some of the stiffness experienced at the torso_lift joint.
+
+
+    To cancel mass of upper body, one can do this for now:
+
+    {{{
+
+    rosservice call gazebo/apply_joint_effort '{ joint_name: "torso_lift_joint"
+    , effort: 462.56 , start_time: 0, duration: -1 }'
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Tue Feb 15 15:29:58 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5022
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/201'
+  title: 'Fix YAML formatting in pr2_arm_controllers.yaml  (ros ticket #5021)'
+  body: >
+    The YAML formatting in the existing file makes a user have to change two
+    values to change gain values.
+
+
+    Attached is a YAML file that won't do that.
+
+
+    trac data:
+
+    - Owner: **watts**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Feb 15 15:23:57 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5021
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/200'
+  title: >-
+    pr2_description 1.4.0 URDF Belt Stretch Transmissions are unstable  (ros
+    ticket #4994)
+  body: >
+    I just tried running with the 1.4.0 version of the URDF on PRO, and the arms
+    are definitely unstable.  Changing the gains could possibly fix this, but
+    more testing should probably be done to verify that the gains work across
+    multiple robots.
+
+
+    trac data:
+
+    - Owner: **sglaser**
+
+    - Reporter: **vpradeep**
+
+    - Reported at: **Mon Jan 24 19:12:39 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4994
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/199'
+  title: >-
+    verify that pr2_description does not use deprecated urdf features  (ros
+    ticket #4974)
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/198'
+  title: 'pr2_description needs to deploy new belt transmissions  (ros ticket #4973)'
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/197'
+  title: 'Add pr2_msgs/GPUStatus to pr2_msgs for Diamondback  (ros ticket #4958)'
+  body: >
+    This message allows us to have machine readable debugging of an NVIDIA
+    Quadro 600 GPU. 
+
+
+    See review here:
+
+    http://www.ros.org/wiki/pr2_msgs/Reviews/2011-1-11%20GPU%20Status%20MSG%20API%20Review
+
+
+    trac data:
+
+    - Owner: **watts**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Jan 11 11:25:30 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4958
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/196'
+  title: 'pr2_bringup failing  (ros ticket #4935)'
+  body: "{{{\n[rosmake-0] Starting >>> pr2_bringup [ make test ]  \n[ rosmake ] ['bash', '-c', 'cd /tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup && make test']\n[ rosmake ] Last 122 lines\n{-------------------------------------------------------------------------------\n  mkdir -p bin\n  cd build && cmake -Wdev -DCMAKE_TOOLCHAIN_FILE=`rospack find rosbuild`/rostoolchain.cmake  ..\n  [rosbuild] Building package pr2_bringup\n  [rosbuild] Including /opt/ros/unstable/stacks/ros_comm/clients/roslisp/cmake/roslisp.cmake\n  [rosbuild] Including /opt/ros/unstable/stacks/ros_comm/clients/rospy/cmake/rospy.cmake\n  [rosbuild] Including /opt/ros/unstable/stacks/ros_comm/clients/cpp/roscpp/cmake/roscpp.cmake\n\n  [rosbuild] WARNING: the file /opt/ros/unstable/stacks/common/xacro/cmake/xacro.cmake is being included automatically.  This behavior is deprecated.  The package containing that file should instead export the directory containing the file, and you should use rosbuild_include() to include the file explicitly.\n\n  [rosbuild] Including /opt/ros/unstable/stacks/common/xacro/cmake/xacro.cmake\n  -- Configuring done\n  -- Generating done\n  -- Build files have been written to: /tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build\n  cd build && make -j16\n  make[1]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[1]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  if cd build && make -k test; then make test-results; else make test-results && exit 1; fi\n  make[1]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[2]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[3]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target clean-test-results\n  make[4]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Built target clean-test-results\n  make[4]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target tests\n  make[4]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Built target tests\n  make[4]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target rostest_test_pr2_analyzers_load_test.launch\n  make[4]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  ... logging to /tmp/ros/.ros/log/rostest-wgsf9-6348.log\n  [ROSUNIT] Outputting test results to /tmp/ros/test_results/depends_on_overlay/pr2_bringup/TEST-rostest__test_pr2_analyzers_load_test.xml\n  testanalyzer_load_test ... FAILURE!\n  FAILURE: Test node [diagnostic_aggregator/analyzer_loader] does not exist or is not executable\n    File \"/usr/lib/python2.6/unittest.py\", line 279, in run\n      testMethod()\n    File \"/opt/ros/unstable/stacks/ros_comm/tools/rostest/src/rostest/runner.py\", line 60, in fn\n      self.fail(message)\n    File \"/usr/lib/python2.6/unittest.py\", line 317, in fail\n      raise self.failureException, msg\n\n---\n\n  [ROSTEST]-----------------------------------------------------------------------\n\n  [testanalyzer_load_test][failed]\n\n  SUMMARY\n  \e[1;31m \\* RESULT: FAIL\e[0m\n- TESTS: 0\n- ERRORS: 0\n  \e[1;31m \\* FAILURES: 1\e[0m\n  \n  ERROR: The following tests failed to run:\n- testanalyzer_load_test\n  \n  rostest log file is in /tmp/ros/.ros/log/rostest-wgsf9-6348.log\n  make[4]: **\\* [CMakeFiles/rostest_test_pr2_analyzers_load_test.launch] Error 1\n  make[4]: Target `CMakeFiles/rostest_test_pr2_analyzers_load_test.launch.dir/build' not remade because of errors.\n  make[4]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[3]: **\\* [CMakeFiles/rostest_test_pr2_analyzers_load_test.launch.dir/all] Error 2\n  make[3]: Target `CMakeFiles/test.dir/all' not remade because of errors.\n  make[3]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[2]: **\\* [CMakeFiles/test.dir/rule] Error 2\n  make[2]: Target `test' not remade because of errors.\n  make[2]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[1]: **\\* [test] Error 2\n  make[1]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[1]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[2]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[3]: Entering directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target rostest_test_pr2_analyzers_load_test.launch_result\n  make[4]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[4]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Checking for test results in /tmp/ros/test_results/depends_on_overlay/pr2_bringup/TEST-rostest__test_pr2_analyzers_load_test.xml\n  make[4]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Built target rostest_test_pr2_analyzers_load_test.launch_result\n  make[4]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target test-results-run\n  make[4]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Built target test-results-run\n  make[4]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  Scanning dependencies of target test-results\n  make[4]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  ## make[4]: Entering directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  \n  \e[1m[AGGREGATED TEST RESULTS SUMMARY]\e[0m\n  \n  ERRORS/FAILURES:\n  [pr2_bringup.rostest__test_pr2_analyzers_load_test/testanalyzer_load_test][FAILURE]\n  Test node [diagnostic_aggregator/analyzer_loader] does not exist or is not executable\n    File \"/usr/lib/python2.6/unittest.py\", line 279, in run\n      testMethod()\n    File \"/opt/ros/unstable/stacks/ros_comm/tools/rostest/src/rostest/runner.py\", line 60, in fn\n      self.fail(message)\n    File \"/usr/lib/python2.6/unittest.py\", line 317, in fail\n  ##     raise self.failureException, msg\n  \n  PACKAGES: \n- pr2_bringup\n  \n  SUMMARY\n  \e[1;31m \\* RESULT: FAIL\e[0m\n- TESTS: 1\n- ERRORS: 0\n  \e[1;31m \\* FAILURES: 1\e[0m\n  \n  make[4]: **\\* [CMakeFiles/test-results] Error 1\n  make[4]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[3]: *** [CMakeFiles/test-results.dir/all] Error 2\n  make[3]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[2]: **\\* [CMakeFiles/test-results.dir/rule] Error 2\n  make[2]: Leaving directory `/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  make[1]: *** [test-results] Error 2\n  make[1]: Leaving directory`/tmp/install_dir/depends_on_overlay/pr2_robot/pr2_bringup/build'\n  -------------------------------------------------------------------------------}\n  [ rosmake ] Output from build of package pr2_bringup written to:\n  [ rosmake ]    /tmp/ros/test_output/pr2_bringup/build_test_output.log\n  [rosmake-0] Finished <<< pr2_bringup [FAIL] [ 1.50 seconds ]  \n  }}}\n\ntrac data:\n- Owner: **watts**\n- Reporter: **tfoote**\n- Reported at: **Mon Dec 13 17:22:47 2010**\n- URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4935\n"
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/194'
+  title: >-
+    Investigate changing head tilt velocity damping to allow more torque  (ros
+    ticket #4919)
+  body: >
+    Currently, the head_tilt_joint has a k_velocity of 1.5 in the URDF. This has
+    the effect of limiting the max torque the joint can apply to half its
+    possible value. 
+
+
+    We need to look into changing this value to 3.0 to see if the head tilt
+    performance can be increased. We'll have to validate any changes using our
+    HW test systems.
+
+
+    trac data:
+
+    - Owner: **wim**
+
+    - Reporter: **watts**
+
+    - Reported at: **Tue Nov 30 13:01:20 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4919
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/193'
+  title: >-
+    pr2_common depends on rosrecord which is gone in unstable  (ros ticket
+    #4875)
+  body: >
+    http://build.willowgarage.com/view/released_unstable/job/released_unstable_pr2_common_lucid_amd64/2/
+
+
+    trac data:
+
+    - Owner: **tfield**
+
+    - Reporter: **tfoote**
+
+    - Reported at: **Mon Nov  1 16:26:06 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4875
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_common/issues/192'
+  title: 'pr2_defs/pr2_description missing dependency on pr2_ogre  (ros ticket #4845)'
+  body: >
+    It looks like pr2_defs and pr2_description have a hidden dependency on
+    pr2_ogre. Is there a reason this is missing, or is this just an oversight?
+
+
+    pr2_description:
+
+    {{{
+
+    urdf/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_caster_texture.png"
+    />
+
+    urdf/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png" />
+
+    urdf/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_right.png"
+    />
+
+    urdf/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png" />
+
+    }}}
+
+
+    pr2_defs:
+
+    {{{
+
+    defs/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png" />
+
+    defs/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_right.png"
+    />
+
+    defs/materials.urdf.xacro:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png" />
+
+    manifest.xml:  <depend package="pr2_ogre" />
+
+    robots/r_gripper.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/hca.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/hcc.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/pr2_armless.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/l_gripper.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/r_forearm_gripper.urdf.xacro:  <resource type="ogre"      
+    location="$(find pr2_ogre)/Media/models"/>
+
+    robots/prg.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/pr2.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/prf.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/l_arm.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/pre.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/r_arm.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    robots/hcb.urdf.xacro:  <resource type="ogre"       location="$(find
+    pr2_ogre)/Media/models"/>
+
+    test/tmp.urdf:  <resource
+    location="/opt/ros/cturtle/stacks/pr2_simulator/pr2_ogre/Media/models"
+    type="ogre"/>
+
+    test/tmp.urdf:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png"/>
+
+    test/tmp.urdf:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_right.png"/>
+
+    test/tmp.urdf:    <texture
+    filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png"/>
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **watts**
+
+    - Reported at: **Mon Oct 25 15:30:16 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4845
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/191'
+  title: 'pr2_defs: remove deprecated URDF fields  (ros ticket #4826)'
+  body: >
+    See here for an example:
+    http://build.willowgarage.com/job/prerelease_unstable_robot_model_lucid_amd64/1/consoleText
+
+
+    Before releasing, could you run the prerelease builds
+    http://code.ros.org/prerelease/.
+
+
+    {{{
+
+    testing:
+    /tmp/install_dir/depends_on_overlay/pr2_common_alpha/pr2_defs/robots/prf.urdf.xacro
+
+      testing: /tmp/install_dir/depends_on_overlay/pr2_common_alpha/pr2_defs/robots/pre.urdf.xacro
+      Not found
+      /tmp/install_dir/depends_on_overlay/pr2_common_alpha/pr2_defs/test/test_urdf.cpp:103: Failure
+      Value of: test_result == 0
+        Actual: false
+      Expected: true
+      [  FAILED  ] URDF.CorrectFormat
+      [----------] Global test environment tear-down
+      [==========] 1 test from 1 test case ran.
+      [  PASSED  ] 0 tests.
+      [  FAILED  ] 1 test, listed below:
+      [  FAILED  ] URDF.CorrectFormat
+
+       1 FAILED TEST
+      ... logging to /tmp/ros/.ros/log/rostest-wgsf9-5729.log
+      [ROSTEST] Outputting test results to /tmp/ros/test_results/depends_on_overlay/pr2_defs/TEST-rostest__test_urdf.xml
+      runTest ... ok
+      [ROSTEST]-----------------------------------------------------------------------
+
+      [pr2_defs.test_urdf/CorrectFormat][FAILURE]-------------------------------------
+      /tmp/install_dir/depends_on_overlay/pr2_common_alpha/pr2_defs/test/test_urdf.cpp:103
+      Value of: test_result == 0
+        Actual: false
+      Expected: true
+
+    ---
+
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **watts**
+
+    - Reporter: **wim**
+
+    - Reported at: **Thu Oct 21 14:36:06 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4826
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_common/issues/189'
+  title: >-
+    Push new urdf in /etc/ros/urdf for each release of a distro  (ros ticket
+    #4531)
+  body: >
+    Every time a new distro comes out, we should put a new urdf file in the
+    /etc/ros/urdf folder. This will help users to pick an up-to-date urdf file
+    when they recalibrate the robot.
+
+
+    trac data:
+
+    - Owner: **leibs**
+
+    - Reporter: **wim**
+
+    - Reported at: **Wed Jul  7 14:00:57 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4531
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/188'
+  title: 'Add ball joint support in urdf  (ros ticket #4530)'
+  body: |
+    Phantom hand has a ball joint.  This should not be too hard to do.
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Wed Jul  7 10:33:53 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4530
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/187'
+  title: 'Remove ''reference_position'' field from pr2 description  (ros ticket #4480)'
+  body: |
+    This field has been replaced by the 'rising' and 'falling' fields
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **wim**
+    - Reported at: **Mon Jun 28 14:04:08 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4480
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/186'
+  title: 'pr2 urdf specifies unsupported floating link  (ros ticket #4448)'
+  body: >
+    The pr2 urdf uses a floating link for the gripper. The urdf spec does not
+    support this (the parser does, but that is a 'bug' we hope to fix). The
+    solution we discussed for the pr2 urdf is to attach the gripper link to one
+    of the finger tips, and create an extra link for the other finger tip. The
+    name of this extra link will be the same as the existing link, but with the
+    string 'link' replaced by 'frame'. Patch is on the way.
+
+
+    trac data:
+
+    - Owner: **wim**
+
+    - Reporter: **wim**
+
+    - Reported at: **Tue Jun 22 11:46:56 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4448
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/185'
+  title: >-
+    new collision meshes exhibit incorrect behavior in the collision  (ros
+    ticket #4365)
+  body: >
+    There's a test in
+    arm_navigation_tests/tests/planning_environment/planning_environment_tests.launch
+    that places a small cube in the middle of the r_wrist_roll_link and tests
+    for collision.  The primary purpose of the test is to make sure that
+    collision is being detected properly and in the correct locations.  On
+    pr2_description trunk no collision is detected until I make the box .03m on
+    a side, at which point collision is detected and in the correct locations. 
+    The screenshot shows the results with a .03m box and the new meshes.  A .02m
+    or .01m box will not collide.  On pr_description/latest this test passes
+    with a .01m block with collisions detected at the proper places.  
+
+
+    This test involves many modules, and the errors may either be in the new
+    collision meshes themselves, the code that transforms the meshes into the
+    convex meshes that actually get used in collision checking, or the way the
+    code treats the meshes.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **gjones**
+
+    - Reported at: **Mon May 24 14:41:07 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4365
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/184'
+  title: >-
+    material name should not be required unless it is defined outside of the
+    visual element  (ros ticket #4306)
+  body: |
+    right now urdf requires it
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Tue May 11 09:31:38 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4306
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/183'
+  title: >-
+    switch head_tilt, head_pan, torso_lift, base collision to the low-res beta
+    meshes  (ros ticket #4297)
+  body: |
+    right now they are simple boxes or "slabs".
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Mon May 10 13:18:10 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4297
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/182'
+  title: 'update PR2 head masses in URDF  (ros ticket #4296)'
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/181'
+  title: >-
+    pr2_msgs/AccessPoint message does not follow conventions.  (ros ticket
+    #4282)
+  body: >
+    I fear that pr2_msgs/AccessPoint has never been reviewed. It currently
+    contains some fields that do not follow conventions.
+
+
+    The pr2_msgs/AccessPoint contains:
+
+    {{{
+
+    string rate
+
+    string tx_power
+
+    }}}
+
+
+    It is being filled out by wifi_ddwrt/ddwrt.py as:
+
+    {{{
+
+    rate: 78 Mbps
+
+    tx_power: 71 mW
+
+    }}}
+
+
+    I think that these should be numeric fields, and that the unit should not be
+    stored as part of the message.
+
+
+    Not sure what the right way of fixing this while maintaining compatibility
+    is. Assigning to wim, as he seems to be the one who moved the message into
+    pr2_msgs in r27774.
+
+
+    trac data:
+
+    - Owner: **wim**
+
+    - Reporter: **blaise**
+
+    - Reported at: **Wed May  5 17:17:52 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4282
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/180'
+  title: 'base.urdf.xacro missing include to Hokuyo macro  (ros ticket #4270)'
+  body: >
+    It looks like it needs an include to "hokuyo_lx30_laser.urdf.xacro"
+
+
+    File: `pr2_description/urdf/base_v0/base.urdf.xacro`
+
+
+    {{{
+
+    watts@nsf:/wg/stor2/watts/ros/pkgs/pr2_common/pr2_description/urdf$ grep
+    hokuyo -HR \* | grep -v svn
+
+    base_v0/base.urdf.xacro:  <!-- simplified box collision geometry for hokuyo
+    laser -->
+
+    base_v0/base.urdf.xacro:    <xacro:hokuyo_lx30_laser_v0 name="${name}_laser"
+    parent="${name}" ros_topic="base_scan" update_rate="20" min_angle="-2.2689"
+    max_angle="2.2689" >
+
+    base_v0/base.urdf.xacro:    /xacro:hokuyo_lx30_laser_v0
+
+    sensors/hokuyo_lx30_laser.urdf.xacro:  <include filename="$(find
+    pr2_description)/urdf/sensors/hokuyo_lx30_laser.gazebo.xacro" />
+
+    sensors/hokuyo_lx30_laser.urdf.xacro:  <xacro:macro
+    name="hokuyo_lx30_laser_v0" params="name parent *origin ros_topic
+    update_rate min_angle max_angle">
+
+    sensors/hokuyo_lx30_laser.urdf.xacro:    <xacro:hokuyo_lx30_laser_gazebo_v0
+    name="${name}" ros_topic="${ros_topic}" update_rate="${update_rate}"
+    min_angle="${min_angle}" max_angle="${max_angle}" />
+
+    sensors/hokuyo_lx30_laser.gazebo.xacro:  <xacro:macro
+    name="hokuyo_lx30_laser_gazebo_v0" params="name ros_topic update_rate
+    min_angle max_angle">
+
+    tilting_laser_v0/tilting_laser.urdf.xacro:  <include filename="$(find
+    pr2_description)/urdf/sensors/hokuyo_lx30_laser.urdf.xacro" />
+
+    tilting_laser_v0/tilting_laser.urdf.xacro:          <mesh
+    filename="package://pr2_description/meshes/tilting_laser_v0/tilting_hokuyo.stl"
+    />
+
+    tilting_laser_v0/tilting_laser.urdf.xacro:    <xacro:hokuyo_lx30_laser_v0
+    name="${name}" parent="${name}_mount" ros_topic="tilt_scan" update_rate="40"
+    min_angle="-1.3962634" max_angle="1.3962634" >
+
+    tilting_laser_v0/tilting_laser.urdf.xacro:    /xacro:hokuyo_lx30_laser_v0
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **watts**
+
+    - Reported at: **Mon May  3 15:14:16 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4270
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/179'
+  title: >-
+    URDF: remove inertial/visual/collision elements from gripper_tool_frame 
+    (ros ticket #4098)
+  body: |
+    r34760 committed to trunk, untested on robot
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Wed Mar 31 12:42:53 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/4098
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_common/issues/178'
+  title: 'model floating pads dynamics on the gripper  (ros ticket #3979)'
+  body: >
+    Model the constrained dynamics of the gripper, including the floating pads. 
+    Get detailed interior gripper joints specs from function.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Tue Mar  9 00:32:59 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3979
+  repo: 'https://api.github.com/repos/PR2/pr2_common'
+  labels:
+    - bug
+    - major

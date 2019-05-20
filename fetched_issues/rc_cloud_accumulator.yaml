@@ -1,0 +1,5 @@
+- url: 'https://github.com/roboception/rc_cloud_accumulator/pull/1'
+  title: Declare libvtk-qt dependency to fix Debian Stretch builds
+  body: "Add `libvtk-qt` dependency to the package.xml. This will install [`libvtk6-qt-dev`](https://github.com/ros/rosdistro/blob/71d6005f8d46ba0b71919b79614b727e592d705c/rosdep/base.yaml#L3340) that PCL 1.8.0 needs but doesn't install (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=894656)\r\n\r\nThis should fix the currently failing Debian Stretch jobs: http://build.ros.org/view/Lbin_ds_dS64/job/Lbin_ds_dS64__rc_cloud_accumulator__debian_stretch_amd64__binary/17\r\nhttp://build.ros.org/view/Mbin_ds_dS64/job/Mbin_ds_dS64__rc_cloud_accumulator__debian_stretch_amd64__binary/16/\r\n\r\n@clalancette FYI"
+  repo: 'https://api.github.com/repos/roboception/rc_cloud_accumulator'
+  labels: []

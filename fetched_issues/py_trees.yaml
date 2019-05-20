@@ -1,0 +1,183 @@
+- url: 'https://github.com/splintered-reality/py_trees/pull/188'
+  title: '[timers] points to right license'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/182'
+  title: '[all] a plethora of minor changes/fixes'
+  body: "* [trees] `tick_tock(sleep_msg, ...)` &rarr; `tick_tock(period_ms, ...)`\r\n* [trees] threaded timers instead of multiprocessing for `setup()` timeouts\r\n* [trees] `setup()` &rarr; `setup(**kwargs)`\r\n* [display] bugfix root element display"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:behaviours'
+    - 'component:composites'
+    - 'component:display'
+    - 'component:trees'
+    - 'type:bug'
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees/pull/181'
+  title: '[decorators, tip] bugfixes and define logic for tip() via tests'
+  body: "Never really properly specified the logic for what `tip()` should be as it was always just a useful hint. We may be using it rather critically to help debug on CI before even needing a full log replay, so it will be important to make sure the logic isn't surprising. \r\n\r\nTo this end, I'm putting in some test-driven requirements that spec. and test what it should be doing, with as much coverage as possible. \r\n\r\nFYI @sachit-tri "
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:behaviours'
+    - 'component:composites'
+    - 'component:decorators'
+    - 'component:tests'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/177'
+  title: '[display] optional arguments for generate_pydot_graph'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:display'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/175'
+  title: Fixes for Decorators
+  body: "1. Fixes the tip method for decorators #173\r\n2. Fixes the parenting issue #174"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:decorators'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/174'
+  title: Decorators do not set the parent for their decorated child
+  body: Will also add a PR fix + test for this soon.
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:decorators'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/173'
+  title: Decorators don't override their tip() method
+  body: "This causes them to use Behaviour.tip() instead which is incorrect.\r\nI will PR a fix + update the tests soon."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:decorators'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/172'
+  title: CircleCI not triggering after the organisation move
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/171'
+  title: '[display] optional arguments for generate_pydot_graph'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:display'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/168'
+  title: Missing feedback_message in root of the behaviour
+  body: "The method py_trees.display_generate_ascii_tree does not add the root behaviours feedback_message.\r\n\r\nReproduce like this:\r\n```python\r\nimport py_trees\r\n\r\nclass FakeBehaviour(py_trees.behaviours.Success):\r\n    def update(self):\r\n        self.feedback_message = \"BLA\"\r\n        return super().update()\r\n\r\ntree = py_trees.trees.BehaviourTree(root=FakeBehaviour())\r\ntree.setup()\r\ntree.tick()\r\npy_trees.display.print_ascii_tree(tree.root, show_status=True)\r\n```"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:display'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/165'
+  title: '[decorators] timeout that respects the childs last tick'
+  body: "Make sure the timeout respects the childs last tick. If you do not, the underlying subsystem might be already off and pursuing some kind of action because the child succeeded but is now inconsistent because the timeout masks this.\r\n\r\nExemplar problem:\r\n\r\n* Tree configured to tick periodically every 1.0s\r\n* Timeout configured with duration of 5.0 seconds\r\n* Tree starts ticking at global time 0.0\r\n* Tree ticks at global time 1.0\r\n* Decorator initialised, child is running \r\n* Tree ticks through global time 2.0->4.0\r\n* Child is potentially ready to switch to SUCCESS at 4.1 seconds\r\n* Tree ticks at global time 5.0\r\n* Child returns SUCCESS, but timeout is triggered, FAILURE is returned\r\n\r\nThis is logically incorrect and will be especially obvious if, for example, the underlying child behaviour is connected to an action which actually did finish at global time 4.1."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:decorators'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/163'
+  title: fixes doc warnings
+  body: "resolves the doc warnings in this [build](http://build.ros.org/job/Kdoc__py_trees__ubuntu_xenial_amd64/9/console).\r\n\r\nnot sure if this solves the build failing issue."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'type:bug'
+    - 'type:documentation'
+- url: 'https://github.com/splintered-reality/py_trees/pull/161'
+  title: Fixes double edge problem
+  body: "Before:\r\n![seq](https://user-images.githubusercontent.com/34048126/53204722-31260600-35e1-11e9-8c52-24313598fa53.png)\r\n\r\nAfter:\r\n![seq](https://user-images.githubusercontent.com/34048126/53204700-253a4400-35e1-11e9-9749-68dbf8907ae8.png)\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:display'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/157'
+  title: Threads in lieu of processes on tree setup.
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:trees'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/155'
+  title: Synchronous tree setup when using infinite timeout.
+  body: 'relates to stonier/py_trees#154'
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:trees'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/154'
+  title: Consider timeout threads on setup instead of multi-process
+  body: "If someone, e.g. embeds the py_trees in a python interpreter, then multi-process on `setup` won't work.\r\n\r\nIn that case, the thread solution may still be practical. i.e. `join` won't work, but it's probably not critical. What is important is to log messages to the user, not recover.\r\n\r\nSee #148 for the original multiprocess implementation discussion."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:trees'
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees/issues/149'
+  title: Broken autodoc on devel branch
+  body: 'See https://py-trees.readthedocs.io/en/devel/modules.html'
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+    - 'type:documentation'
+- url: 'https://github.com/splintered-reality/py_trees/pull/141'
+  title: '[infra] circle ci logs to artifacts'
+  body: "Gives us some stdout debugging on the install dependencies and linting step.\r\n\r\nLooks like the linter is throwing lots of warnings, but not failing the build. I'll follow up with a PR to clean up the package and error on problems in future."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees/pull/109'
+  title: '[composites] reset children''s parents when removing them'
+  body: 'This fixes #108'
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:composites'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/108'
+  title: Remove parent when removing children of composites
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:composites'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/107'
+  title: CircleCI doesnt' trigger on PR's
+  body: >-
+    Especially relevant for PR's coming in from other repositories. Just happens
+    to work for local branch PR's since the circle ci job is triggered by any
+    commit on any branch in this repository already anyway.
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/101'
+  title: '[blackboard] debug flag for handling the costly blackboard check'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/pull/99'
+  title: Replace newlines printing ascii trees
+  body: 'Resolves #98'
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/98'
+  title: Substitue Name Newlines in Ascii Display
+  body: "Currently get something awkward:\r\n\r\n```\r\nReality\r\n(-) Is Initialised?\r\n    --> Check Init\r\nFlag\r\n    [-] Initialising\r\n        --> Wait For Init\r\n        [-] Initialise\r\nScenario\r\n            --> Add Bob\r\n            --> Add Joe\r\n        --> Set Init\r\nFlag\r\n(o) Simulate\r\n    [-] Gather Data\r\n        --> SimTime2BB\r\n```"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees/issues/97'
+  title: zip_safe = True needed for python3
+  body: Building with colcon throws this warning. Investigate.
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees'
+  labels:
+    - 'component:infra'
+    - 'type:bug'

@@ -1,0 +1,90 @@
+- url: 'https://github.com/swri-robotics/swri_console/pull/25'
+  title: 'Update CI--deprecate Jade, update Lunar'
+  body: >-
+    Deprecate Jade, which no longer builds, and update Lunar to build against
+    the released dependencies.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels: []
+- url: 'https://github.com/swri-robotics/swri_console/pull/22'
+  title: Add kinetic and lunar and simplify CI
+  body: "- Remove cruft from CI configuration\r\n- Add ROS kinetic to CI configuration\r\n- Add ROS lunar to CI configuration\r\n- Remove shadow-fixed builds from CI configuration. Since this repository has very few catkin dependencies, there's no reason to build for both shadow-fixed and released."
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels: []
+- url: 'https://github.com/swri-robotics/swri_console/issues/10'
+  title: Saving to bag vs text has different behavior.
+  body: >
+    Saving to a text file only includes the messages from the current view while
+    saving to a bag file includes all logs in the database.  It is confusing to
+    a user that the output format would lead to different content.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/swri_console/issues/8'
+  title: Fix handling of log messages with multiple lines
+  body: >
+    The console is doing a really bad job when log messages have multiple
+    lines.  They are either cut off to only show the top line, or every other
+    log item is expanded to have the same height, leaving a ton of white space
+    and making the log difficult to read, depending on what row the list view
+    uses to determine the row height.  
+
+
+    Part of the problem is that the list view is set to use a uniform row
+    height.  Without uniform height, the view is basically unusable on systems
+    with a lot of traffic.  I think the right way forward is either to find a
+    different optimization, or to split log messages with multiple lines into
+    multiple rows.  The second seems preferable, but we'd ideally do it in a way
+    that works well with searching and copying.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/swri_console/issues/6'
+  title: Ctrl+a while node list has focus no longer selects all nodes
+  body: >
+    Pressing ctrl+a while the node list has focused used to select all the
+    nodes.  This behavior was broken around the time clipboard support was
+    added, and now ctrl+a seems to always select all the messages even if the
+    node list has focus.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/swri_console/issues/5'
+  title: Nodes reappear in node list after clear node list button was pressed.
+  body: >
+    If you press the "Clear Node List" button, the nodes disappear from the list
+    but will reappear the next time a message is received.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/swri_console/issues/2'
+  title: Save & restore user settings
+  body: >
+    As swri_console becomes more powerful and more customizable, it would make
+    sense to save user settings and load them on startup so that users don't
+    have to re-set everything every time it loads. The QSettings class provides
+    a handy, platform-independent way of saving settings.
+
+
+    Things that should probably be saved:
+
+    Show Timestamps
+
+    Absolute Timestamps
+
+    Use regular expressions
+
+    Include filter
+
+    Exclude filter
+
+    Severity display selection
+
+    Follow Newest Messages
+
+    Font
+
+    There are other features that haven't been implemented yet (such as
+    colorizing log messages) that should be saved, too.
+  repo: 'https://api.github.com/repos/swri-robotics/swri_console'
+  labels:
+    - enhancement

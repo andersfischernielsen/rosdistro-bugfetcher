@@ -1,0 +1,100 @@
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/pull/88'
+  title: Add OGRE dependency
+  body: null
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/issues/71'
+  title: Missing vtable on OSX Build
+  body: "Hi @davetcoleman ,\r\n\r\nI'm trying to compile MoveIt on my OSX machine and running across an error while building rviz_visual_tools, which was required by moveit. It seems like the issue has to do with Qt but I cant put my finger on it. Does this have to do with comment in the package.xml\r\n\r\n```\r\n<!-- Something changed in ROS Lunar / Ubuntu Zesty that requires extra QT5 dependency-->\r\n  <!-- I suspect this depend is more than needed, but was the only dependency available -->\r\n  <!-- from the rosdep list that worked: https://github.com/ros/rosdistro/blob/master/rosdep/base.yaml -->\r\n  <depend>libqt5x11extras5-dev</depend>\r\n```\r\n\r\nMy settings:\r\nOSX Sierra 10.12.1\r\nHomebrew 1.5.4\r\ncmake version 3.10.2\r\nPython 3.6.4\r\nRos Kinetic \r\n\r\nI have rosdep'ed my source and all other moveit ros packages build fine. Other qt dependent packages, e.g. ROS-Desktop-Full were successfully built.\r\n```\r\nScanning dependencies of target rviz_visual_tools\r\n[100%] Building CXX object rviz_visual_tools/CMakeFiles/rviz_visual_tools.dir/src/rviz_visual_tools.cpp.o\r\n[100%] Building CXX object rviz_visual_tools/CMakeFiles/rviz_visual_tools.dir/src/tf_visual_tools.cpp.o\r\n[100%] Building CXX object rviz_visual_tools/CMakeFiles/rviz_visual_tools.dir/rviz_visual_tools_autogen/mocs_compilation.cpp.o\r\n[100%] Linking CXX shared library /Users/kchintamani/sandbox/moveit_ws/devel/lib/librviz_visual_tools_gui.dylib\r\nUndefined symbols for architecture x86_64:\r\n  \"vtable for rviz_visual_tools::RvizVisualToolsGui\", referenced from:\r\n      rviz_visual_tools::RvizVisualToolsGui::RvizVisualToolsGui(QWidget*) in rviz_visual_tools_gui.cpp.o\r\n  NOTE: a missing vtable usually means the first non-inline virtual member function has no definition.\r\n  \"vtable for rviz_visual_tools::KeyTool\", referenced from:\r\n      rviz_visual_tools::KeyTool::KeyTool() in key_tool.cpp.o\r\n      rviz_visual_tools::KeyTool::~KeyTool() in key_tool.cpp.o\r\n  NOTE: a missing vtable usually means the first non-inline virtual member function has no definition.\r\nld: symbol(s) not found for architecture x86_64\r\nclang: error: linker command failed with exit code 1 (use -v to see invocation)\r\nmake[2]: *** [/Users/kchintamani/sandbox/moveit_ws/devel/lib/librviz_visual_tools_gui.dylib] Error 1\r\nmake[1]: *** [rviz_visual_tools/CMakeFiles/rviz_visual_tools_gui.dir/all] Error 2\r\nmake[1]: *** Waiting for unfinished jobs....\r\n/Users/kchintamani/sandbox/moveit_ws/src/rviz_visual_tools/src/rviz_visual_tools.cpp:56:68: warning:\r\n      suggest braces around initialization of subobject [-Wmissing-braces]\r\n  ...= { RED,        GREEN,  BLUE,   GREY,   DARK_GREY,\r\n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n1 warning generated.\r\n[100%] Linking CXX shared library devel/lib/librviz_visual_tools.dylib\r\n[100%] Built target rviz_visual_tools\r\nmake: *** [all] Error 2\r\nInvoking \"make -j4 -l4\" failed\r\n```\r\nAny suggestions are welcome"
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/pull/53'
+  title: Add dependency on QT5 for Ubuntu Zesty/Lunar support
+  body: ''
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/pull/45'
+  title: Catkin depend on eigen and tf conversions
+  body: >
+    Same as https://github.com/davetcoleman/rviz_visual_tools/pull/44 into
+    `kinetic-devel`
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/pull/44'
+  title: Catkin depend on eigen and tf conversions
+  body: >
+    We need `eigen_conversions` and `tf_conversions` in `CATKIN_DEPENDS`, so the
+    executables (or libraries) linking against this library build without adding
+    those dependencies on them, since it's actually a (transitive) dependency of
+    `rviz_visual_tools`.
+
+
+    Error:
+
+
+    ``` bash
+
+    /usr/bin/ld: warning: libeigen_conversions.so, needed by
+    /opt/ros/indigo/lib/librviz_visual_tools.so, not found (try using -rpath or
+    -rpath-link)
+
+    /usr/bin/ld: warning: libtf_conversions.so, needed by
+    /opt/ros/indigo/lib/librviz_visual_tools.so, not found (try using -rpath or
+    -rpath-link)
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::pointEigenToMsg(Eigen::Matrix<double, 3, 1, 0, 3, 1> const&,
+    geometry_msgs::Point_<std::allocator<void> >&)'
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::poseMsgToEigen(geometry_msgs::Pose_<std::allocator<void> > const&,
+    Eigen::Transform<double, 3, 2, 0>&)'
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::vectorEigenToTF(Eigen::Matrix<double, 3, 1, 0, 3, 1> const&,
+    tf::Vector3&)'
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::quaternionTFToEigen(tf::Quaternion const&, Eigen::Quaternion<double,
+    0>&)'
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::transformEigenToMsg(Eigen::Transform<double, 3, 2, 0> const&,
+    geometry_msgs::Transform_<std::allocator<void> >&)'
+
+    /opt/ros/indigo/lib/librviz_visual_tools.so: undefined reference to
+    `tf::poseEigenToMsg(Eigen::Transform<double, 3, 2, 0> const&,
+    geometry_msgs::Pose_<std::allocator<void> >&)'
+
+    collect2: error: ld returned 1 exit status
+
+    ```
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []
+- url: 'https://github.com/PickNikRobotics/rviz_visual_tools/issues/35'
+  title: Merging rviz_visual_tools and moveit_visual_tools into one unified repo
+  body: >
+    moveit_visual_tools uses the same parent class RvizVisualTools so would be a
+    good candidate to merge together. I'm trying to reduce the time I spend
+    maintaining and releasing lots of separate repos. The downside to this merge
+    is that by default you will have to bring in lots of moveit dependencies
+    when you do a git clone. The workaround for this group of users will be
+    either to:
+
+    - simply add CATKIN_IGNORE to moveit_visual_tools
+
+    - delete the folder
+
+    - use catkin-tools' blacklist feature
+
+
+    Thoughts?
+
+
+    Note: one of my main motivations for doing this is for practice for a much
+    bigger [moveit
+    merge](http://discourse.ros.org/t/migration-to-one-github-repo-for-moveit/266/11)
+    that I've been working on. I've already made the script that will merge the
+    git histories together.
+  repo: 'https://api.github.com/repos/PickNikRobotics/rviz_visual_tools'
+  labels: []

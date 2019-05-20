@@ -1,0 +1,48 @@
+- url: 'https://github.com/ros/message_generation/pull/4'
+  title: Added gennodejs message generation
+  body: >
+    This adds the dependency of `gennodejs` to message generation to force the
+    buildfarm. I am not sure this is strictly necessary, as `catkin_make` and
+    `catkin_make install` run in a developer's workspace will both generate and
+    deploy the messages as expected (without needing to explicitly patch
+    `message_generation`).
+
+    However, as of last night's build, `shadow-fixed` had the `gennodejs`
+    package in it, but did not generate any messages. Is there any way to test
+    that this change to `message_generation` will have the desired effect of
+    rebuilding all ROS messages for Javascript?
+  repo: 'https://api.github.com/repos/ros/message_generation'
+  labels: []
+- url: 'https://github.com/ros/message_generation/issues/2'
+  title: add depeus dependency
+  body: >
+    I'd like to add geneus dependency, currently it is within jsk_roseus
+    repository but may be we have to create isolated repository that only
+    includes genesu. This packages only depends on python.
+
+    https://github.com/jsk-ros-pkg/jsk_roseus/tree/master/geneus
+
+
+    I understand there are already genlisp exists, but our geneus is lisp
+    message generator for our implementation of lisp. So they are different.
+    Having multiple implementation is a kind of Lisp tradition.
+
+
+    c.f.
+    http://answers.ros.org/question/193612/how-to-add-message-generator-in-ros-buildform/?comment=193628#comment-193628
+  repo: 'https://api.github.com/repos/ros/message_generation'
+  labels: []
+- url: 'https://github.com/ros/message_generation/issues/1'
+  title: A genjava dependency
+  body: >
+    Feasability of an official genjava generator - the main worry would be
+    introducing a large dependency on openjdk or some such since the generator
+    needs to compile java class files into a jar.
+
+
+    This could be a build_depend only though.
+
+
+    Are there any issues/worries with this?
+  repo: 'https://api.github.com/repos/ros/message_generation'
+  labels: []

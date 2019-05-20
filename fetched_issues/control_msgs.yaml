@@ -1,0 +1,55 @@
+- url: 'https://github.com/ros-controls/control_msgs/issues/25'
+  title: Fix bouncy CMakeLists.txt
+  body: "as reported on [ROS answers](https://answers.ros.org/question/310623/cannot-import-module-control_msgs/?answer=310632#post-id-310632).\r\n\r\n`rosidl_generate_interfaces` should get called.\r\n\r\n@AustinDeric: Please have a look at it."
+  repo: 'https://api.github.com/repos/ros-controls/control_msgs'
+  labels: []
+- url: 'https://github.com/ros-controls/control_msgs/issues/22'
+  title: ros2 bouncy?
+  body: "Has anyone attempted to convert this to ros2?  A bunch of the ros-industrial code depends on this great package and we are converting to ros2.\r\n\r\nIf not, i am going to go ahead and do that.\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/ros-controls/control_msgs'
+  labels: []
+- url: 'https://github.com/ros-controls/control_msgs/pull/11'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros-controls/control_msgs'
+  labels: []
+- url: 'https://github.com/ros-controls/control_msgs/pull/2'
+  title: SUCCESS by ROS convention should be 1
+  body: |
+    No errors should be 0 as it's the default value of variables.
+
+    Maybe code that depends on this needs to be changed...
+  repo: 'https://api.github.com/repos/ros-controls/control_msgs'
+  labels: []
+- url: 'https://github.com/ros-controls/control_msgs/issues/1'
+  title: PointHeadAction.action should be renamed PointHead.action
+  body: >
+    Otherwise the messages get generated as PointHeadActionAction.msg.
+
+
+    (Or does it need to be different than the original PointHead.action in
+    pr2_controllers_msgs?
+  repo: 'https://api.github.com/repos/ros-controls/control_msgs'
+  labels:
+    - bug

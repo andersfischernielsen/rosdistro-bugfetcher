@@ -1,0 +1,48 @@
+- url: 'https://github.com/ethz-adrl/towr/issues/54'
+  title: Access to optimization parameters
+  body: "There are many important private parameters (e.g. `dt_constraint_range_of_motion_` or ` duration_base_polynomial_`) in [`towr::Parameters` class](https://github.com/ethz-adrl/towr/blob/b9015edb06c28e9272b0eb85dc171e28c09283a8/towr/include/towr/parameters.h#L132)  which values are hardcoded. So it is impossible to change  their value without recompilation of library. Shouldn't they be public?\r\n\r\nThere is the same question about [`SetGaits()` in `towr::GaitGenerator`](https://github.com/ethz-adrl/towr/blob/b9015edb06c28e9272b0eb85dc171e28c09283a8/towr/include/towr/initialization/gait_generator.h#L99). Because this function is protected it is impossible to create custom gaits and change number of steps."
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/issues/48'
+  title: How to import a new robot
+  body: "Hello! I am very glad you can check out this issue.\r\nWhen I learning your TOWR, I got some trouble about the robot models. I have built a robot model with URDF and I want to use TOWR to solve some gait optimization problem. But when I import the model into TOWR by modifying the URDF files of TOWR, it's quite abnormal bcause its feet are always suspend in air no matter how I change the height of the base. Besides, I found that the end effectors and  the cubes  are still touch the ground although the feet of the model are in the air. So I wonder if it's because I didn't change the inverse kinematics rules, or because I didn't modify some parameters when I imported the model? \r\nHere is the picture of my robots in the RVIZ.\r\n![mymodel](https://user-images.githubusercontent.com/42257676/49516126-c9122e80-f8d3-11e8-904c-dbaed22cf2fb.png)\r\n\r\nHere is the picture of the TOWR after I imported the model.\r\n![2018-12-04 23-24-09](https://user-images.githubusercontent.com/42257676/49516138-d29b9680-f8d3-11e8-8380-c3f1f22e1705.png)\r\n\r\nAnd the files I modified are these:\r\n![2018-12-05 21-23-32](https://user-images.githubusercontent.com/42257676/49516212-0d9dca00-f8d4-11e8-8304-b1e20bb38342.png)\r\n\r\nCould you please give me some suggestions or guidance on how to fix this problem?"
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/issues/44'
+  title: 'libtowr.so: undefined reference to `ifopt::Component::Print() const'''
+  body: "Attempting to make TOWR using the cmake functionality. The IFOPT example works (and IFOPT itself has compiled), but making TOWR fails.\r\n\r\nIf I adjust the CmakeLists.txt to comment out any of the TOWR test examples, it also compiles fine, so it seems to be an issue with one of the example files, but I can't seem to nail down the issue.\r\n\r\nFull error:\r\n\r\nScanning dependencies of target towr-example\r\n[100%] Building CXX object CMakeFiles/towr-example.dir/test/hopper_example.cc.o\r\nLinking CXX executable towr-example\r\nlibtowr.so: undefined reference to `ifopt::Component::Print() const'\r\ncollect2: error: ld returned 1 exit status\r\nmake[2]: *** [towr-example] Error 1\r\nmake[1]: *** [CMakeFiles/towr-example.dir/all] Error 2\r\nmake: *** [all] Error 2\r\n\r\n\r\nInterestingly enough, the software compiles fine on another, local, account I've setup on my machine with a clean install of IPOPT, IFOPT, and TOWR.\r\n"
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/issues/41'
+  title: Setting to Disallow Vertical Footholds?
+  body: "I am noticing that with terrain featuring big step sizes (such as the \"Block\" terrain, at least with the \"Biped\" robot model), that the robot often picks footholds that are on the vertical edge of the step. This is unrealistic for many robots-- they would not be able to grip that vertical edge and pull themselves up by that one end effector, as what seems to be the case here. There should be a way to prevent the selection of such footholds completely.\r\n\r\nThank you for your important contribution to robotics."
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/issues/39'
+  title: Can't find  ros-kinetic-towr_ros package
+  body: "Hi, \r\nI' m trying to install towr.  I followed the instruction as below:\r\n\r\n `sudo apt-get install ros-kinetic-towr_ros`\r\nbut  got some errors:\r\n\r\n> Reading package lists... Done\r\nBuilding dependency tree       \r\nReading state information... Done\r\nE: Unable to locate package ros-kinetic-towr_ros\r\n\r\nCould anyone figure it out? Thanks"
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/pull/32'
+  title: Changed CMakeLists to install header files
+  body: Allows to include header files of "towr_ros" in dependent packages
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/pull/10'
+  title: Remove catkin dependency and adapt to new ifopt interface
+  body: "- catkin dependency now optional\r\n- Adapt to new ifopt interface: <https://github.com/ethz-adrl/ifopt/pull/17>\r\n\r\n"
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []
+- url: 'https://github.com/ethz-adrl/towr/issues/8'
+  title: Trying to replicate the Biped Gap Crossing scenario
+  body: "I am trying to reproduce the _bipedal_ results for traversing the terrain with a gap, as presented in the paper and its [supplementary video](https://www.youtube.com/watch?v=0jE46GqzxMM).\r\n\r\nI am on the _master_ branch. I have set the time to **4.4 s**, the gait to number **7**, and the goal to **`[3.7, 0.0, 0.66]`** (all of these using the console interface).\r\n\r\nFurthermore, since this part of the code was hardcoded, I modified [towr_ros.cc](https://github.com/ethz-adrl/towr/blob/master/towr_ros/src/towr_ros.cc) like follows:\r\n\r\n```diff\r\n-  std::vector<Eigen::Vector3d> ee_pos(4);\r\n+  std::vector<Eigen::Vector3d> ee_pos(2);\r\n\r\n-  ee_pos.at(0) <<  0.31,  0.29, 0.0; // LF\r\n-  ee_pos.at(1) <<  0.31, -0.29, 0.0; // RF\r\n-  ee_pos.at(2) << -0.31,  0.29, 0.0; // LH\r\n-  ee_pos.at(3) << -0.31, -0.29, 0.0; // RH\r\n+  ee_pos.at(0) << 0.0,  0.2, 0.0; // L\r\n+  ee_pos.at(1) << 0.0, -0.2, 0.0; // R\r\n\r\n-  model_.dynamic_model_   = std::make_shared<towr::HyqDynamicModel>();\r\n-  model_.kinematic_model_ = std::make_shared<towr::HyqKinematicModel>();\r\n-  gait_                   = std::make_shared<towr::QuadrupedGaitGenerator>();\r\n+  model_.dynamic_model_   = std::make_shared<towr::BipedDynamicModel>();\r\n+  model_.kinematic_model_ = std::make_shared<towr::BipedKinematicModel>();\r\n+  gait_                   = std::make_shared<towr::BipedGaitGenerator>();\r\n```\r\n\r\nThis is the result I get:\r\n![gif](https://thumbs.gfycat.com/GlisteningInsecureGrison-max-14mb.gif)\r\n\r\nI also tried switching between `\"ma27\"`, `\"ma57\"`, and `\"ma86\"` but without luck.\r\nI haven't tried using any other solver besides **Ipopt**.\r\n\r\nI don't know if the _diff_ above contains all the required changes to run the biped robot on the gap-crossing environment. Particularly, I am not sure whether `[0.0, 0.2, 0.0]` and `[0.0, -0.2, 0.0]` are the correct `ee_pos` for the initial state.\r\n\r\nThank you very much,\r\n\\- Henrique Ferrolho"
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels:
+    - bug
+- url: 'https://github.com/ethz-adrl/towr/pull/4'
+  title: >-
+    Improve centroidal dynamics model and add continuous base acceleration
+    constraint.
+  body: Inertia matrix changes depending on base orientation.
+  repo: 'https://api.github.com/repos/ethz-adrl/towr'
+  labels: []

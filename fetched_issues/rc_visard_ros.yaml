@@ -1,0 +1,10 @@
+- url: 'https://github.com/roboception/rc_visard_ros/issues/9'
+  title: Regression on Lunar and Melodic
+  body: "This package currently has a regression in both Lunar and Melodic: http://repositories.ros.org/status_page/ros_melodic_default.html?q=REGRESSION and http://repositories.ros.org/status_page/ros_lunar_default.html?q=REGRESSION .  There are actually a couple of different problems:\r\n\r\n1.  rc_visard now depends on rc_hand_eye_calibration_client.  rc_hand_eye_calibration_client is failing to [build](http://build.ros.org/job/Lbin_uX64__rc_hand_eye_calibration_client__ubuntu_xenial_amd64__binary/3/consoleFull) because of a missing dependency on OpenSSL .  Adding a `<depend>` in rc_hand_eye_calibration_client package.xml may fix this.\r\n1.  rc_visard_driver is failing because it is failing the final link step: http://build.ros.org/view/Lbin_uX64/job/Lbin_uX64__rc_visard_driver__ubuntu_xenial_amd64__binary/21/console .  I'm not entirely sure what the is going on with that failure, but it bears looking into.\r\n\r\nI'd like to do a sync of Lunar and Melodic next week, so any attention here would be appreciated.  If we don't get it resolved by sometime next week, I'll probably go back to an older version of rc_visard for the sync.\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/roboception/rc_visard_ros'
+  labels: []
+- url: 'https://github.com/roboception/rc_visard_ros/issues/2'
+  title: Cloning the refferenced repos
+  body: "I have an issue when cloning the particular REPO.  There are folders where the dependant REPOS (such as: rc_dynamics_api,  rc_genicam_api, rc_dynamics_msgs as well as the external: CPR and JSON).  For some reason: git clone git@github.com:roboception/rc_visard_ros.git leaves all the corresponding folders empty.\r\n\r\nNotice that when I manually copy all these REPOs in the right folders, the whole project compiles smoothly."
+  repo: 'https://api.github.com/repos/roboception/rc_visard_ros'
+  labels: []

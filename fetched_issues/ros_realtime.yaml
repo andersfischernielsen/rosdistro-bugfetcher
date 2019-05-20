@@ -1,0 +1,248 @@
+- url: 'https://github.com/ros/ros_realtime/issues/6'
+  title: 'ros_realtime: add support for Xenomai RTOS'
+  body: >
+    Migrated from code.ros.org, issue #3231 
+
+    Reported by:    mrinal
+
+    ## https://code.ros.org/trac/ros/ticket/3231
+
+
+    When the rosrt::Publisher is used from a Xenomai task, it causes the task to
+    switch to secondary mode when signaling a boost/pthread condition variable.
+
+
+    The attached patch is a first attempt at adding Xenomai support to rosrt. It
+    adds three wrapper classes, rosrt::mutex, rosrt::condition_variable, and
+    rosrt::thread, which wrap xenomai functions or boost classes depending on
+    the platform. Tests have also been modified to work on Xenomai, because a
+    loop without sleeps in a real-time thread can starve the system since there
+    is no preemption.
+  repo: 'https://api.github.com/repos/ros/ros_realtime'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/ros_realtime/issues/4'
+  title: 'ros_realtime: Stop calling publish() after rosrt publisher shuts down'
+  body: >
+    Migrated from code.ros.org, issue #2885 
+
+    Reported by:    sglaser
+
+    ## https://code.ros.org/trac/ros/ticket/2885
+
+
+    This tickets comes out of using rosrt and nodelets together. Each nodelet
+    creates its own callback queue, and all ros publishers created in the
+    nodelet depend on this callback queue. The rosrt publisher is created from a
+    ros publisher that depend on the nodelet's callback queue.
+
+
+    In this situation, unloading the nodelet results in a segfault. The rosrt
+    publisher holds a handle to the ros publisher and continues to publish
+    messages. By the time the rosrt publisher finishes (and releases the ros
+    publisher), the callback queue has been destroyed. When the ros publisher
+    shuts down, it grabs the invalid callback queue and causes a segfault.
+
+
+    Backtrace of the crash:
+
+
+    ```
+
+    (gdb) bt
+
+    #0  0x0000000000000002 in ?? ()
+
+    #1  0x00007f8321355291 in ros::Publication::removeCallbacks
+    (this=0x7f82ec0c7580, callbacks=@0x7f82ec013fc8)
+        at /u/sglaser/ros/ros/core/roscpp/src/libros/publication.cpp:132
+    #2  0x00007f8321337dd8 in ros::TopicManager::unadvertise (this=0x647ee0,
+    topic=@0x0, callbacks=@0x7f82ec013fc8)
+        at /u/sglaser/ros/ros/core/roscpp/src/libros/topic_manager.cpp:432
+    #3  0x00007f832139323d in ros::Publisher::Impl::unadvertise
+    (this=0x7f82ec013fb0)
+        at /u/sglaser/ros/ros/core/roscpp/src/libros/publisher.cpp:57
+    #4  0x00007f83213933ee in ~Impl (this=0x7f82ec013fb0) at
+    /u/sglaser/ros/ros/core/roscpp/src/libros/publisher.cpp:44
+
+    #5  0x00007f8321393f62 in
+    boost::detail::sp_counted_impl_p<ros::Publisher::Impl>::dispose (this=<value
+    optimized out>)
+        at /opt/boost-wg/include/boost/checked_delete.hpp:34
+    #6  0x00007f82f01941e2 in rosrt::detail::PublishQueue::publishAll
+    (this=<value optimized out>)
+        at /opt/boost-wg/include/boost/smart_ptr/detail/sp_counted_base_gcc_x86.hpp:145
+    #7  0x00007f82f0194363 in rosrt::detail::PublisherManager::publishThread
+    (this=0x6f5420)
+        at /u/sglaser/ros/stacks/ros_realtime/rosrt/src/publisher.cpp:126
+    #8  0x00007f8320a10a0e in thread_proxy () from
+    /opt/boost-wg/lib/libboost_thread.so.1.40.0
+
+    #9  0x00007f831f1fd3ba in start_thread () from /lib/libpthread.so.0
+
+    ```
+
+
+    The hosed callback queue:
+
+
+    ```
+
+    (gdb) print *((CallbackQueue*)callbacks.px.callback_queue_)
+
+    $22 = {
+      <ros::CallbackQueueInterface> = {
+        _vptr.CallbackQueueInterface = 0x7f82ec0948c0
+      },
+      members of ros::CallbackQueue:
+      callbacks_ = {
+        <std::_Deque_base<ros::CallbackQueue::CallbackInfo, std::allocator<ros::CallbackQueue::CallbackInfo> >> = {
+          _M_impl = {
+            <std::allocator<ros::CallbackQueue::CallbackInfo>> = {
+              <__gnu_cxx::new_allocator<ros::CallbackQueue::CallbackInfo>> = {<No data fields>}, <No data fields>},
+            members of std::_Deque_base<ros::CallbackQueue::CallbackInfo, std::allocator<ros::CallbackQueue::CallbackInfo> >::_Deque_impl:
+            _M_map = 0x2,
+            _M_map_size = 140200617443327,
+            _M_start = {
+              _M_cur = 0x2d37302d30003038,
+              _M_first = 0x3431203331,
+              _M_last = 0x25,
+              _M_node = 0x7f82ec0a3cc0
+            },
+            _M_finish = {
+              _M_cur = 0x0,
+              _M_first = 0x7f82ec01fa80,
+              _M_last = 0x45,
+              _M_node = 0x1b
+            }
+          }
+        }, <No data fields>},
+      calling_ = 27,
+      mutex_ = {
+        <boost::noncopyable_::noncopyable> = {<No data fields>},
+        members of boost::mutex:
+        m = {
+          __data = {
+            __lock = 0,
+            __count = 0,
+            __owner = 1869770799,
+            __nusers = 1952671082,
+            __kind = 1952412271,
+            __spins = 1734830450,
+            __list = {
+              __prev = 0x745f66666f2f7265,
+              __next = 0x656d69
+            }
+          },
+          __size = "\000\000\000\000\000\000\000\000/projector_trigger/off_time\000\000\000\000",
+          __align = 0
+        } 
+      },  
+      condition_ = {
+        cond = {
+          __data = {
+            __lock = 1921,
+    ...
+
+    ```
+
+
+    The temporary fix is to reconstruct the NodeHandle? so it uses the global
+    callback queue.
+  repo: 'https://api.github.com/repos/ros/ros_realtime'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_realtime/issues/3'
+  title: 'ros_realtime: Publisher is crashing during destruction'
+  body: >
+    Migrated from code.ros.org, issue #2877 
+
+    Reported by:    sglaser
+
+    ## https://code.ros.org/trac/ros/ticket/2877
+
+
+    I'm bringing up a nodelet which brings up a rosrt publisher, and then
+    bringing down the nodelet and it crashes:
+
+
+    ```
+
+    Program received signal SIGTRAP, Trace/breakpoint trap.
+
+    [Switching to Thread 0x7f167cff9950 (LWP 9727)]
+
+    ros::Publisher::publish<tirt_controller::JointSetpoint_<std::allocator<void>
+    > const> (this=0x7f16940ef458, message=@0x0)
+        at /u/sglaser/ros/ros/core/roscpp/include/ros/publisher.h:85
+    85        }
+
+    Current language:  auto; currently c++
+
+    (gdb) bt
+
+    #0 
+    ros::Publisher::publish<tirt_controller::JointSetpoint_<std::allocator<void>
+    > const> (this=0x7f16940ef458, message=@0x0)
+        at /u/sglaser/ros/ros/core/roscpp/include/ros/publisher.h:85
+    #1  0x00007f168fdf2c32 in
+    rosrt::detail::publishMessage<tirt_controller::JointSetpoint_<std::allocator<void>
+    > > (pub=@0x7f16bb532720,
+        msg=<value optimized out>) at /u/sglaser/ros/stacks/ros_realtime/rosrt/include/rosrt/publisher.h:59
+    #2  0x00007f1684f8f146 in rosrt::detail::PublishQueue::publishAll
+    (this=<value optimized out>)
+        at /u/sglaser/ros/stacks/ros_realtime/rosrt/src/publisher.cpp:80
+    #3  0x00007f1684f8f373 in rosrt::detail::PublisherManager::publishThread
+    (this=0x7f1680066ce0)
+        at /u/sglaser/ros/stacks/ros_realtime/rosrt/src/publisher.cpp:126
+    #4  0x00007f16bb102a0e in thread_proxy () from
+    /opt/ros/lib/libboost_thread.so.1.40.0
+
+    #5  0x00007f16b98ef3ba in start_thread () from /lib/libpthread.so.0
+
+    #6  0x00007f16b965c02d in clone () from /lib/libc.so.6
+
+    #7  0x0000000000000000 in ?? ()
+
+    ```
+
+
+    Not sure why this is dying, but it is consistent.
+  repo: 'https://api.github.com/repos/ros/ros_realtime'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_realtime/issues/2'
+  title: 'ros_realtime: Allow ignoring messages from a particular publisher'
+  body: >
+    Migrated from code.ros.org, issue #2755
+
+    Reported by: sglaser
+
+    ## https://code.ros.org/trac/ros/ticket/2755
+
+
+    Consider a system for passing messages in realtime. ROS has various mutexes
+    around publishing and subscribing, so to avoid blocking the messages must
+    short-circuit ROS. It shouldn't avoid ROS completely: messages published
+    should be received by other nodes, and other nodes should be able to send
+    messages into realtime.
+
+
+    It's not currently possible to achieve this with ROS. Messages sent from a
+    realtime publisher to a realtime subscirber will arrive twice: once from the
+    short-circuited path and once from the standard ROS path. The realtime
+    system should only pass on the message from the short-circuited path. To do
+    this, it requires one of the following:
+
+
+    ROS must throw out messages from a particular publisher.
+
+    The message must be labeled with which publisher it comes from.
+
+    It's important that it be the publisher and not the node that distinguishes
+    where the message came from. It's entirely possible to have a publisher and
+    subscriber in the same process that do wish to communicate over standard ROS
+    and not through the realtime short-circuited system.
+  repo: 'https://api.github.com/repos/ros/ros_realtime'
+  labels:
+    - enhancement

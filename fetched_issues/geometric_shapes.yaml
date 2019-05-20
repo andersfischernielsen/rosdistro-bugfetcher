@@ -1,0 +1,291 @@
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/84'
+  title: 0.5.4 does not build on Debian Jessie
+  body: "It is using a too new version of console bridge. This has caused the regression of ~71 downstream packages so I'm rolling it's release into kinetic back:https://github.com/ros/rosdistro/pull/17589\r\n\r\n\r\nFor example: http://build.ros.org/job/Kbin_dj_dJ64__geometric_shapes__debian_jessie_amd64__binary/53/console\r\n```\r\n00:23:11.534 make -f CMakeFiles/geometric_shapes.dir/build.make CMakeFiles/geometric_shapes.dir/depend\r\n00:23:11.536 make[4]: Entering directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:11.536 cd /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends \"Unix Makefiles\" /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu/CMakeFiles/geometric_shapes.dir/DependInfo.cmake --color=\r\n00:23:11.615 Scanning dependencies of target geometric_shapes\r\n00:23:11.616 make[4]: Leaving directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:11.617 make -f CMakeFiles/geometric_shapes.dir/build.make CMakeFiles/geometric_shapes.dir/build\r\n00:23:11.629 make[4]: Entering directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:11.629 /usr/bin/cmake -E cmake_progress_report /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu/CMakeFiles 1\r\n00:23:11.637 [ 14%] Building CXX object CMakeFiles/geometric_shapes.dir/src/bodies.cpp.o\r\n00:23:11.646 /usr/lib/ccache/c++   -DGEOMETRIC_SHAPES_HAVE_QHULL_2011 -Dgeometric_shapes_EXPORTS -Dqh_QHpointer -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -DNDEBUG -D_FORTIFY_SOURCE=2  -fPIC -I/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/include -I/usr/include/eigen3 -I/usr/include/assimp -I/opt/ros/kinetic/include    -std=c++11 -o CMakeFiles/geometric_shapes.dir/src/bodies.cpp.o -c /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp: In member function ‘virtual void bodies::ConvexMesh::useDimensions(const shapes::Shape*)’:\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp:811:57: error: ‘CONSOLE_BRIDGE_logWarn’ was not declared in this scope\r\n00:23:15.908      CONSOLE_BRIDGE_logWarn(\"Convex hull creation failed\");\r\n00:23:15.908                                                          ^\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp: In member function ‘void bodies::BodyVector::setPose(unsigned int, const Affine3d&)’:\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp:1209:62: error: ‘CONSOLE_BRIDGE_logError’ was not declared in this scope\r\n00:23:15.908      CONSOLE_BRIDGE_logError(\"There is no body at index %u\", i);\r\n00:23:15.908                                                               ^\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp: In member function ‘const bodies::Body* bodies::BodyVector::getBody(unsigned int) const’:\r\n00:23:15.908 /tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/src/bodies.cpp:1220:62: error: ‘CONSOLE_BRIDGE_logError’ was not declared in this scope\r\n00:23:15.908      CONSOLE_BRIDGE_logError(\"There is no body at index %u\", i);\r\n00:23:15.908                                                               ^\r\n00:23:15.909 CMakeFiles/geometric_shapes.dir/build.make:57: recipe for target 'CMakeFiles/geometric_shapes.dir/src/bodies.cpp.o' failed\r\n00:23:15.909 make[4]: *** [CMakeFiles/geometric_shapes.dir/src/bodies.cpp.o] Error 1\r\n00:23:15.909 make[4]: Leaving directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:15.909 CMakeFiles/Makefile2:156: recipe for target 'CMakeFiles/geometric_shapes.dir/all' failed\r\n00:23:15.910 make[3]: *** [CMakeFiles/geometric_shapes.dir/all] Error 2\r\n00:23:15.910 make[3]: Leaving directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:15.910 Makefile:120: recipe for target 'all' failed\r\n00:23:15.910 make[2]: *** [all] Error 2\r\n00:23:15.910 make[2]: Leaving directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4/obj-x86_64-linux-gnu'\r\n00:23:15.910 dh_auto_build: make -j1 returned exit code 2\r\n00:23:15.912 debian/rules:35: recipe for target 'override_dh_auto_build' failed\r\n00:23:15.912 make[1]: *** [override_dh_auto_build] Error 2\r\n00:23:15.912 make[1]: Leaving directory '/tmp/binarydeb/ros-kinetic-geometric-shapes-0.5.4'\r\n00:23:15.914 debian/rules:22: recipe for target 'build' failed\r\n00:23:15.914 make: *** [build] Error 2\r\n00:23:15.915 dpkg-buildpackage: error: debian/rules build gave error exit status 2\r\n00:23:15.917 E: Building failed\r\n00:23:15.920 Traceback (most recent call last):\r\n00:23:15.921   File \"/tmp/ros_buildfarm/ros_buildfarm/binarydeb_job.py\", line 138, in build_binarydeb\r\n00:23:15.921     subprocess.check_call(cmd, cwd=source_dir)\r\n00:23:15.921   File \"/usr/lib/python3.4/subprocess.py\", line 561, in check_call\r\n00:23:15.921     raise CalledProcessError(retcode, cmd)\r\n00:23:15.921 subprocess.CalledProcessError: Command '['apt-src', 'build', 'ros-kinetic-geometric-shapes']' returned non-zero exit status 1\r\n00:23:15.921 \r\n```\r\n\r\nIt is possible to support both versions of the console bridge API through a single source tree using macros like this: https://github.com/ros/class_loader/blob/indigo-devel/include/class_loader/console_bridge_compatibility.hpp however another common approach is to simply fork the development branches.\r\n"
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/83'
+  title: >-
+    wstool/rosdep fetches incompatible versions of geometric_shapes and
+    libconsole-bridge
+  body: "I ran into compatibility issues when trying to build this package with ROS from source on armhf Debian jessie following [this guide](http://wiki.ros.org/kinetic/Installation/Source). The problem came from rosdep fetching the latest version it could find of libconsole-bridge which is only [0.2.5-2](https://packages.debian.org/jessie/libdevel/libconsole-bridge-dev). #72 removed support for this old version of libconsole-bridge. In order to get the package to compile, I removed the latest version of geometric_shapes which was automatically fetched by wstool and replaced it with version [0.5.3](https://github.com/ros-planning/geometric_shapes/releases/tag/0.5.3), from before #72.\r\n\r\nIs there a way which you can define that geometric_shapes depends on a newer version of console-bridge to prevent people running into this issue in the future?"
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/78'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for geometric_shapes are available in Melodic, so it
+    would be great to get this released there.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/65'
+  title: Lunar release
+  body: "Hi @isucan, @davetcoleman and geometric_shapes maintainers,\r\n\r\nAs you may know the next ROS release Lunar Loggerhead is around the corner :tada: \r\nIs it possible to roll out the current release of `geometric_shapes` on ROS Lunar? Being a low level package it will [allow many maintainers](http://repositories.ros.org/status_page/blocked_releases_lunar.html?q=id%3D%22geometric_shapes%22&s=6&r=1) to release their own packages that depend directly or indirectly on geometric_shapes.\r\n\r\nThanks!\r\n"
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/pull/52'
+  title: Clear root transformation on imported Collada meshes.
+  body: >
+    Assimp enforces a Y_UP convention when importing file formats that store
+    this metadata, such as the collada format with the `<up_axis>` tag. If an
+    imported model is using a different convention such as Z_UP, the whole model
+    is rotated until the Y axis of the model is pointing up [1]. This is both
+    confusing and not in-line with the ROS convention where the Z axis is
+    pointing up.
+
+
+    Even worse, it causes collision checks on most collada models to use this
+    wrongly rotated model. Rviz is already undoing this rotation[2], so the
+    collision mesh used by moveit doesn't even match the collision mesh as
+    visualized by rviz.
+
+
+    It is conceivable though that the root node transformation may be used for
+    legit purposes with other file types, so this PR limits itself to files with
+    `dae` or `zae` extension.
+
+
+    I made a small test case which publishes three meshes as markers [3]: a
+    collada model with Z_UP, one with Y_UP and an stl model. Without this patch
+    the Z_UP model is rotated, with the patch all three models are the same and
+    the metadata is basically ignored.
+
+
+    Another option would be to assume Y is pointing up after import and rotate
+    the model to make Z point up again. This would be in line with the ROS
+    convention. However, this would still leave a mismatch with rviz, and
+    frankly I think that Assimp adjusting the model orientation based on this
+    metadata is misguided in the first place. I think that what was X in the CAD
+    program or 3D modelling software should remain X after importing.
+
+
+    [1]
+    https://github.com/assimp/assimp/blob/23baecaff30b7a280648834368b1c0c792e4092e/code/ColladaLoader.cpp#L192
+
+    [2]
+    https://github.com/ros-visualization/rviz/blob/0d423d6249a39f7f3ddd591007952c6dc940b6ac/src/rviz/mesh_loader.cpp#L232
+
+    [3] https://github.com/de-vri-es/test_load_mesh
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/pull/50'
+  title: Export C++11 compiler flag
+  body: >
+    I'd recommend waiting on merging this until we get a bit more feedback on
+    https://github.com/ros-planning/geometric_shapes/issues/49
+
+
+    If we decide to keep `std::shared_ptr` in the API of geometric_shapes, this
+    PR exports the `-std=c++11` compiler flag so that packages that depend on
+    geometric_shapes will compile properly.
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/42'
+  title: Migrating from fcl to moveit-geometric shapes
+  body: >
+    Hello everyone,
+
+
+    I was using before the fcl libraries, but after founding several problems I
+    would like to use this library.
+
+    The code I had before was:
+
+    _typedef std::shared_ptr fcl::CollisionGeometry CollisionGeometryPtr_t;
+
+    // Define a Ellipsoid with the dimensions of the joint+link
+      //This geometry may be modified depending on the robot
+      CollisionGeometryPtr_t boxGeometry (new fcl::Box (16.,16.,8.));_
+
+    The one for using this library would be:
+
+    _shapes::Shape *shape = new shapes::Box(16.0, 16.0, 8.0);_
+
+    Without any collisiongeometry defined. Now how can I define a
+    collisionGeometry to check if two boxes collide?
+
+    Thank you in advance
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/38'
+  title: 'Assimp::Importer::ReadFileFromMemory creates a mesh with too many vertices'
+  body: >
+    Assimp::Importer::ReadFileFromMemory creates a mesh with way too many
+    vertices. For example, for this simple .obj cube:
+
+
+    ```
+
+    # Blender v2.74 (sub 0) OBJ File: ''
+
+    # www.blender.org
+
+    mtllib cube_2_5_red_2.mtl
+
+    o Cube.001
+
+    v 0.012500 -0.012500 -0.012500
+
+    v 0.012500 -0.012500 0.012500
+
+    v -0.012500 -0.012500 0.012500
+
+    v -0.012500 -0.012500 -0.012500
+
+    v 0.012500 0.012500 -0.012500
+
+    v -0.012500 0.012500 -0.012500
+
+    v -0.012500 0.012500 0.012500
+
+    v 0.012500 0.012500 0.012500
+
+    vn 0.000000 -1.000000 -0.000000
+
+    vn 0.000000 1.000000 0.000000
+
+    vn 1.000000 -0.000000 0.000000
+
+    vn 0.000000 -0.000000 1.000000
+
+    vn -1.000000 0.000000 0.000000
+
+    vn 0.000000 0.000000 -1.000000
+
+    usemtl Material.001
+
+    s 1
+
+    f 1//1 2//1 3//1 4//1
+
+    f 5//2 6//2 7//2 8//2
+
+    f 1//3 5//3 8//3 2//3
+
+    f 2//4 8//4 7//4 3//4
+
+    f 3//5 7//5 6//5 4//5
+
+    f 5//6 1//6 4//6 6//6
+
+    ```
+
+
+    Creates 24 instead of the 8 required, 2/3 of them duplicated. The why is
+    explained
+    [here](http://stackoverflow.com/questions/26024283/assimp-vs-meshlab-wavefront-object-obj-import)
+    (thanks to @gavanderhoorn to point me to this explanation). 
+
+
+    This should not be a problem, as the resulting mesh looks fine. But for any
+    reason, possibly related with how OpenGL handles occlusions, it doesn't work
+    for clearing the octomap with DepthImageOctomapUpdater::excludeShape. All
+    this is explained in [this MoveIt group
+    post](https://mail.google.com/mail/u/0/#inbox/151ab6f3cf8f0552).
+
+
+    The solution pointed by @gavanderhoorn's suggested explanation is to use the
+    RemoveComponents post-processing step, removing all but the meshes. (I'll PR
+    in a moment)
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/pull/33'
+  title: Add run_depend on visualization_msgs
+  body: >
+    I get a configuration error on utopic without this change:
+
+
+    ```
+
+    CMake Error at /opt/ros/jade/share/catkin/cmake/catkin_package.cmake:217
+    (message):
+      catkin_package() DEPENDS on the catkin package 'visualization_msgs' which
+      must therefore be listed as a run dependency in the package.xml
+    Call Stack (most recent call first):
+      /opt/ros/jade/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)
+      CMakeLists.txt:42 (catkin_package)
+
+
+    -- Configuring incomplete, errors occurred!
+
+    See also
+    "/home/ws/build_isolated/geometric_shapes/CMakeFiles/CMakeOutput.log".
+
+    See also
+    "/home/ws/build_isolated/geometric_shapes/CMakeFiles/CMakeError.log".
+
+    Makefile:675: recipe for target 'cmake_check_build_system' failed
+
+    make: *** [cmake_check_build_system] Error 1
+
+    <== Failed to process package 'geometric_shapes': 
+
+    ```
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/pull/31'
+  title: Add dependency
+  body: null
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/27'
+  title: Release into ROS Jade
+  body: >
+    Before release, want to:
+
+    - [ ] test and pull other changes from
+    https://github.com/ros-planning/geometric_shapes/pull/25 into indigo-devel
+
+
+    Blocking upstream dependencies:
+
+    - [x] eigen_stl_containers
+
+    - [x] octomap
+
+    - [x]
+    [random_numbers](https://github.com/ros-planning/random_numbers/issues/9#issuecomment-94998694)
+
+    - [x] resource_retriever
+
+    - [x] shape_tools
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/pull/21'
+  title: update to use debian console_bridge dependency.
+  body: |
+    https://github.com/ros/rosdistro/issues/4633
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels: []
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/17'
+  title: Update CMakeLists.txt to find eigen in indigo
+  body: >
+    The FindEigen is in cmake_modules now. 
+
+
+    You need to call find_package(Eigen REQUIRED) after find packaging
+    find_package(catkin COMPONENTS cmake_modules) 
+
+
+    And cmake_modules needs to be a build_depend. 
+
+
+    This sort of patch: https://github.com/ros-visualization/rviz/pull/727
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels:
+    - bug
+- url: 'https://github.com/ros-planning/geometric_shapes/issues/12'
+  title: octomap include dirs not included
+  body: >
+    `octomap` is `find_package`'ed, and the `OCTOMAP_INCLUDE_DIRS` are exported
+    in the `catkin_package` call, but they are never passed to
+    `include_directories`:
+
+
+    https://github.com/ros-planning/geometric_shapes/blob/hydro-devel/CMakeLists.txt#L38
+
+
+    This causes a build failure on a truly isolated caktin workspace build.
+  repo: 'https://api.github.com/repos/ros-planning/geometric_shapes'
+  labels:
+    - bug

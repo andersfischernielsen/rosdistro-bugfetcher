@@ -1,0 +1,35 @@
+- url: 'https://github.com/Terabee/teraranger_array/pull/60'
+  title: Removed teraranger_array library from catkin_package LIBRARIES
+  body: "This file isn't built, so packages referencing teraranger_array\r\nfail when searching for the non-existent library.  This fix\r\nremoves it from the list of dependent libraries in the\r\ngenerated teraranger_arrayConfig.cmake.\r\n\r\nLet me know if you want a corresponding issue to track against or if this \r\nis good enough as-is.  Thanks!"
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger_array/pull/56'
+  title: Mention dependency on serial package in readme
+  body: >-
+    Another detail for compiling with ROS Kinetic. The serial package isn't part
+    of the kinetic distribution (yet), so it must be downloaded and built
+    manually.
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger_array/pull/55'
+  title: Avoid narrowing cast in switch case
+  body: "`case -1` when the switch variable is uint32_t does not compile with C++11,\r\nand is probably not a good idea anyway. As far as I can tell, casting -1\r\nto unsigned gives the max unsigned value, so I replaced the -1 with UINT32_MAX.\r\nThat might be platform-dependent and I'm not even sure if it's defined\r\nbehaviour.\r\n\r\nI'm building on ~kinetic~ melodic, which uses C++11 by default, hence the issue."
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger_array/pull/31'
+  title: Revert "Fix serial dependency"
+  body: 'Reverts Terabee/teraranger_array#30'
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger_array/pull/30'
+  title: Fix serial dependency
+  body: ''
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger_array/pull/23'
+  title: Merge feature/handling_infinity into master
+  body: >-
+    Should only be merged when all dependent software will be checked or adapted
+    for compatibility.
+  repo: 'https://api.github.com/repos/Terabee/teraranger_array'
+  labels: []

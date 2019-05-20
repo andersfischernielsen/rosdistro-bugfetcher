@@ -1,0 +1,19 @@
+- url: 'https://github.com/ros-perception/laser_assembler/issues/15'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get this released.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-perception/laser_assembler'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_assembler/pull/11'
+  title: Update package.xml
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_assembler'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_assembler/pull/10'
+  title: Update CMakeLists.txt
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_assembler'
+  labels: []

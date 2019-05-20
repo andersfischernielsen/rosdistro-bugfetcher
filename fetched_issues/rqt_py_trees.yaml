@@ -1,0 +1,44 @@
+- url: 'https://github.com/stonier/rqt_py_trees/issues/12'
+  title: Error when running tutorials after being installed from ROS repositories
+  body: "When installing the py_trees suite from the ROS repos and trying to run the tutorials I get:\r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/rqt_py_trees/rqt_py_trees\", line 10, in <module>\r\n    from rqt_py_trees.behaviour_tree import RosBehaviourTree\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/__init__.py\", line 16, in <module>\r\n    from . import behaviour_tree\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/behaviour_tree.py\", line 55, in <module>\r\n    from qt_dotgraph.dot_to_qt import DotToQtGenerator\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/qt_dotgraph/__init__.py\", line 21, in <module>\r\n    from . import dot_to_qt\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/qt_dotgraph/dot_to_qt.py\", line 23, in <module>\r\n    import pygraphviz\r\nImportError: No module named pygraphviz\r\n```\r\n\r\nFixed with #11 . Until pushed to the repos the package can be cloned and then the dependency can be resolved by running [rosdep](http://docs.ros.org/independent/api/rosdep/html/commands.html) (rosdep install --from-paths (path of package or workspace) --ignore-src --rosdistro=$ROS_DISTRO -y)"
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/rqt_py_trees/pull/11'
+  title: Added python-pygraphviz run dependency
+  body: "When installing the py_trees suite from the ROS repos and trying to run the tutorials I get:\r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/rqt_py_trees/rqt_py_trees\", line 10, in <module>\r\n    from rqt_py_trees.behaviour_tree import RosBehaviourTree\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/__init__.py\", line 16, in <module>\r\n    from . import behaviour_tree\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/behaviour_tree.py\", line 55, in <module>\r\n    from qt_dotgraph.dot_to_qt import DotToQtGenerator\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/qt_dotgraph/__init__.py\", line 21, in <module>\r\n    from . import dot_to_qt\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_py_trees/qt_dotgraph/dot_to_qt.py\", line 23, in <module>\r\n    import pygraphviz\r\nImportError: No module named pygraphviz\r\n```\r\n\r\nAs pygraphviz is defined in [python's rosdistro](https://github.com/ros/rosdistro/blob/master/rosdep/python.yaml) I just add its name to resolve the dependency.\r\n\r\nTested in Kubuntu 16.04 and ROS kinetic."
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels: []
+- url: 'https://github.com/stonier/rqt_py_trees/issues/10'
+  title: Broken in kinetic
+  body: Import errors
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/rqt_py_trees/pull/9'
+  title: Switches argparse key for bag-dir from '-d' to '-g'
+  body: "In [qt_gui_core](https://github.com/ros-visualization/qt_gui_core/pull/69/files), '-d' is taken for '--disable-init-threads'.\r\n\r\n`b` is also not vacant.\r\n\r\nSolution for issue #8 "
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels:
+    - bug
+- url: 'https://github.com/stonier/rqt_py_trees/issues/3'
+  title: Qt to Dot Package
+  body: >
+    See #2 for some rants about this package. It's buggy, poorly does the
+    multi-package abstraction and incomplete with respect to dot functionality.
+
+
+    I've imported this internally for the moment, but I'd like this to go back
+    upstream eventually. Just the amount of work we have to do on it would take
+    forever to push upstream and probably require quite some ping pong. Need to
+    consider how to do this cleanly.
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels: []
+- url: 'https://github.com/stonier/rqt_py_trees/issues/2'
+  title: Rqt Py Trees Laggy
+  body: >
+    Whenever it gets a new message, the gui 'hang's for a second or
+    two...sometimes more if there is a flurry of new messages.
+  repo: 'https://api.github.com/repos/stonier/rqt_py_trees'
+  labels:
+    - bug

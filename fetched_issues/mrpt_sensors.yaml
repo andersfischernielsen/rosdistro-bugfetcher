@@ -1,0 +1,5 @@
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_sensors/issues/1'
+  title: To-do list
+  body: "* [ ] generic mrpt sensor lib, on which all nodes depend on\r\n   * [ ] nodelets\r\n   * [ ] publish as CObservation binary\r\n* [x] `mrpt_generic_sensor` node\r\n* [ ] diagnostics (?)\r\n"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_sensors'
+  labels: []

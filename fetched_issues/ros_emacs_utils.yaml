@@ -1,0 +1,47 @@
+- url: 'https://github.com/code-iai/ros_emacs_utils/issues/8'
+  title: Yasnippets from Debian packages under Ubuntu 12.04
+  body: |
+    I tried:
+    1. yasnippet from debian package
+    2. rosrun roslisp_repl roslisp_repl
+
+    I got:
+
+    Symbol's function definition is void: yas-global-mode
+  repo: 'https://api.github.com/repos/code-iai/ros_emacs_utils'
+  labels:
+    - bug
+- url: 'https://github.com/code-iai/ros_emacs_utils/issues/5'
+  title: Default output not redirected to `*slime-repl sbcl*`
+  body: >
+    When during SBCL startup in the repl, `swank:*globally-redirect-io*` is set
+    to `nil` (which it is by default right now), all (or most?) output from
+    `(format ...)` and `(ros-info ...)` and alike goes to `*inferior-lisp*`
+    instead of `*slime-repl sbcl*`. I found this out totally by chance, when I
+    realized that most of my usual output disappears into nirvana.
+
+
+    Setting the flag in
+    `~/catkin_ws/install/share/common-lisp/source/slime/contrib/swank-repl.lisp`
+    to `t` and restarting the inferior lisp brings it back to normal.
+
+
+    This wasn't like that before, so I assume this is a bug. Or is this an
+    intended change?
+
+
+    @gheorghelisca and me ran into this problem. @airballking, does this concern
+    you as well?
+  repo: 'https://api.github.com/repos/code-iai/ros_emacs_utils'
+  labels:
+    - bug
+    - question
+- url: 'https://github.com/code-iai/ros_emacs_utils/issues/2'
+  title: ASDF priority loading
+  body: >
+    The original debian package for slime has a priority over our slime_wrapper
+    in some cases. It's not ensured with the current setup (.sbclrc) that ASDF
+    always finds the slime_wrapper systems before the original ones.
+  repo: 'https://api.github.com/repos/code-iai/ros_emacs_utils'
+  labels:
+    - bug

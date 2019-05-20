@@ -1,0 +1,10 @@
+- url: 'https://github.com/RobotWebTools/tf2_web_republisher/issues/23'
+  title: 'Unresolved dependency actionlib:1.11.7 for kinetic with rosjava'
+  body: "This is an issue related to rosjava. It seems the actionlib messages were not updated (see [discussion](http://answers.ros.org/question/242389/genjava-and-actionlib-error-generating-action-messages/) and related [ticket](https://github.com/rosjava/rosjava_mvn_repo/issues/17)).\r\n\r\nThe build output is:\r\n\r\n    Could not resolve all dependencies for configuration ':runtime'.\r\n    Could not find org.ros.rosjava_messages:actionlib:1.11.7.\r\n    Searched in the following locations:  ....\r\n    Required by:\r\n        org.ros.rosjava_messages:tf2_web_republisher:0.3.1"
+  repo: 'https://api.github.com/repos/RobotWebTools/tf2_web_republisher'
+  labels: []
+- url: 'https://github.com/RobotWebTools/tf2_web_republisher/pull/22'
+  title: Added dependency to message_generation and message_runtime
+  body: "I had to add this dependency for a ROS kinetic workspace with rosjava.\r\n\r\nThe thrown error was oddly specific:\r\n \r\n    IOError: could not find tf2_web_republisher among message packages. Does the that package have a <build_depend> on message_generation in its package.xml?"
+  repo: 'https://api.github.com/repos/RobotWebTools/tf2_web_republisher'
+  labels: []

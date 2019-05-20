@@ -1,0 +1,5 @@
+- url: 'https://github.com/mikeferguson/simple_grasping/pull/4'
+  title: add libvtk6-qt-dev dependency to build on Debian Stretch
+  body: "the `libpcl-dev` package is missing a dependency causing the `Qt5::Widgets` target to be exported but not satisfied.\r\n\r\nThis should fix the currently failing Stretch builds (e.g. http://build.ros.org/job/Lbin_ds_dS64__simple_grasping__debian_stretch_amd64__binary/1/)"
+  repo: 'https://api.github.com/repos/mikeferguson/simple_grasping'
+  labels: []

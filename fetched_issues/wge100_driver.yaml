@@ -1,0 +1,76 @@
+- url: 'https://github.com/ros-drivers/wge100_driver/issues/14'
+  title: request release on melodic
+  body: "our pr2_robot package depends on this\r\nhttps://travis-ci.com/PR2/pr2_robot/jobs/189534413\r\n\r\n@trainman419 "
+  repo: 'https://api.github.com/repos/ros-drivers/wge100_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/wge100_driver/issues/10'
+  title: reconfigure_cam seems to be killing all cameras at once
+  body: >
+    Opened 3 years ago
+
+    Last modified 12 months ago
+
+
+    Reported by:    blaise
+
+    Owned by:   jamesb
+
+
+    Change History:
+
+
+    Changed 2 years ago by blaise 
+
+
+    owner changed from blaise to jamesb
+
+    Need to check whether this is still the case, and if so figure out why.
+    Probably only worth doing on the new firmware, so passing on to James.
+
+
+    Changed 12 months ago by joq 
+
+
+    component changed from camera_drivers to wge100_driver
+  repo: 'https://api.github.com/repos/ros-drivers/wge100_driver'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/wge100_driver/issues/7'
+  title: 'wge100, did not get timestamp message should not only be debug'
+  body: >
+    Opened 2 years ago
+
+    Last modified 12 months ago
+
+
+    Reported by:    blaise
+
+    Owned by:   blaise
+
+
+    Description:
+
+
+    Currently this is only seen with debugging on. Very misleading...
+
+
+    `[DEBUG] [1284765338.042548750]: TriggerMatcher did not get timestamp for
+    frame #24`
+
+
+    Change History:
+
+
+    Changed 2 years ago by blaise 
+
+
+    This message needs to be prioritized without resulting in spewage.
+
+
+    Changed 12 months ago by joq 
+
+
+    component changed from camera_drivers to wge100_driver
+  repo: 'https://api.github.com/repos/ros-drivers/wge100_driver'
+  labels:
+    - bug

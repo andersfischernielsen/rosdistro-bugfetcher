@@ -1,0 +1,5 @@
+- url: 'https://github.com/rst-tu-dortmund/costmap_converter/pull/4'
+  title: Breaks repo into several packages
+  body: "This PR breaks the repo into several packages and one metapackage `costmap_converter`.\r\n\r\n#### `costmap_converter`  \r\nIs now a metapackage.\r\n\r\n#### `costmap_converter_msgs`  \r\nContains both `ObstacleMsg` and `ObstacleArrayMsg`.  \r\nMessages are thus defined in the namespace `costmap_converter_msgs`.\r\n\r\n#### `costmap_converter_core`  \r\nContains the base class `BaseCostmapToPolygons` and the node `CostmapStandaloneConversion`.\r\nIt depends on `costmap_converter_msgs`.\r\n\r\n#### `costmap_converter_dynamic_obstacles`  \r\nContains the plugin `CostmapToDynamicObstacles`.  \r\n\r\n#### `costmap_converter_DBScan`  \r\nContains the plugins `CostmapToPolygonsDBSMCCH`, `CostmapToLinesDBSMCCH`, `CostmapToLinesDBSRANSAC` and `CostmapToPolygonsDBSConcaveHull`.\r\n\r\nModification to the actual code where kept to a minimum :  \r\n- fixing includes to reflect the new packages\r\n- enable the **compilation** with ROS Indigo\r\n\r\nfix #3"
+  repo: 'https://api.github.com/repos/rst-tu-dortmund/costmap_converter'
+  labels: []

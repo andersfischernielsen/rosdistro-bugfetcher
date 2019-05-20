@@ -1,0 +1,15 @@
+- url: 'https://github.com/ros/urdf/pull/9'
+  title: Tinyxml2 support
+  body: "Based on this [comment](https://github.com/ros/urdf/pull/4/files#r169813112) this PR is an alternative to #4.  Instead of removing the TinyXML APIs completely, we deprecate them and add the TinyXML2 APIs alongside.  That way we won't break everything that depends on us, while still moving forward.  Sometime in the future we can actually remove the TinyXML APIs.\r\n\r\nNote that I've targeted this at `kinetic-devel` instead of `melodic-devel`, since we can add this to kinetic without breaking anything, and thus not branch off.  If we decide to go with this PR, then we can delete the `melodic-devel` branch completely.\r\n\r\nIn addition to this work, this PR also cleans up the code and adds some tests.\r\n\r\n@rojkov, @sloretz FYI"
+  repo: 'https://api.github.com/repos/ros/urdf'
+  labels: []
+- url: 'https://github.com/ros/urdf/pull/6'
+  title: Add a exec dependency to enable check_urdf.
+  body: >-
+    http://wiki.ros.org/urdf#Verification introduces a tool `check_urdf` that
+    requires this dependency. This tool used to be a part of `urdf` AFAIR and
+    today it took me some time to figure out why a test that depends on that
+    tool fails on CI even though the pkg depends on ROS urdf pkg. It'd be nice
+    to have this dependency for convenience.
+  repo: 'https://api.github.com/repos/ros/urdf'
+  labels: []

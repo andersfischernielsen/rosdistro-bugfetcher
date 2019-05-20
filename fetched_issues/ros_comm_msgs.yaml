@@ -1,0 +1,29 @@
+- url: 'https://github.com/ros/ros_comm_msgs/issues/3'
+  title: Hydro-Indigo version conflict
+  body: >
+    Hydro versions
+    ([ros_comm](https://github.com/ros/ros_comm/tree/hydro-devel/messages)) >
+    Indigo versions ([ros_comm_msgs](https://github.com/ros/ros_comm_msgs)). 
+
+
+    These are [1.10.12](http://www.ros.org/debbuild/hydro.html?q=rosgraph_msgs)
+    vs [1.10.3](http://www.ros.org/debbuild/indigo.html?q=rosgraph_msgs)
+    respectively.
+
+
+    This is causing a problem in the java maven repositories where it's not only
+    writing over older versions, but pulling in older hydro versions when given
+    an open ended version dependency (e.g. [1.10, 1.11)).
+
+
+    Might these indigo versions get a nudge?
+  repo: 'https://api.github.com/repos/ros/ros_comm_msgs'
+  labels: []
+- url: 'https://github.com/ros/ros_comm_msgs/pull/1'
+  title: Add TopicStatistics message
+  body: |
+    This is a dependency of this pull request:
+
+    https://github.com/ros/ros_comm/pull/383
+  repo: 'https://api.github.com/repos/ros/ros_comm_msgs'
+  labels: []

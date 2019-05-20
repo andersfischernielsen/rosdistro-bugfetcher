@@ -1,0 +1,7 @@
+- url: 'https://github.com/ros-visualization/rqt_top/issues/3'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get it released there.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_top'
+  labels: []

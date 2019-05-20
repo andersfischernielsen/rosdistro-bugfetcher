@@ -1,0 +1,133 @@
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/168'
+  title: >-
+    Segmentation fault when creating custom timeseries that use data from
+    multiple messages in ulg
+  body: "I am trying to use the custom timeseries feature with a `ulg` file.\r\nI want to write a function whose output depends on fields from multiple different messages.\r\nCreating a custom timeseries that only uses the source data works fine.\r\nWhen adding another curve from the curves tab and clicking \"Create new time series\" or \"Modify timeseries\", PJ segfaults.\r\n\r\n# Steps to reproduce\r\n- Open PJ and load a ulg file\r\n- create a custom timeseries, e.g. with \"Source data\" `actuator_controls_0/control.00` and leave the default function `return value*2`\r\n- give it a name and click \"Create new time series\", add it to a plot. Everything works as it should\r\n- Edit the custom timeseries\r\n- add another curve by going to the \"Curve selector\" tab and double clicking e.g. `battery_status/average_current_a`. You can insert it before or after the `return ...` line. You do not have to try to use the variable\r\n- click \"Modify timeseries\"\r\n- PJ segfaults with the following output:\r\n```\r\nStack trace (most recent call last):\r\n#31   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Core.so.5\", at 0x7f8e68f5aa0e, in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>)\r\n#30   Object \"/lib/x86_64-linux-gnu/libglib-2.0.so.0\", at 0x7f8e6649249b, in g_main_context_iteration\r\n#29   Object \"/lib/x86_64-linux-gnu/libglib-2.0.so.0\", at 0x7f8e664923ef, in g_main_context_dispatch\r\n#28   Object \"/lib/x86_64-linux-gnu/libglib-2.0.so.0\", at 0x7f8e66492196, in g_main_context_dispatch\r\n#27   Object \"/tmp/.mount_PlotJuXcnTmr/plugins/platforms/../../lib/libQt5XcbQpa.so.5\", at 0x7f8e5e3d19df, in QXcbGlIntegrationPlugin::qt_metacall(QMetaObject::Call, int, void**)\r\n#26   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Gui.so.5\", at 0x7f8e692ddd1a, in QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>)\r\n#25   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Gui.so.5\", at 0x7f8e69304a44, in QGuiApplicationPrivate::processWindowSystemEvent(QWindowSystemInterfacePrivate::WindowSystemEvent*)\r\n#24   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Gui.so.5\", at 0x7f8e69302b0f, in QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*)\r\n#23   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Core.so.5\", at 0x7f8e68f05117, in QCoreApplication::notifyInternal2(QObject*, QEvent*)\r\n#22   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698b5056, in QApplication::notify(QObject*, QEvent*)\r\n#21   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698ad64b, in QApplicationPrivate::notify_helper(QObject*, QEvent*)\r\n#20   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e69909442, in QDesktopWidget::qt_metacall(QMetaObject::Call, int, void**)\r\n#19   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e699069e5, in QDesktopWidget::qt_metacall(QMetaObject::Call, int, void**)\r\n#18   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698b461e, in QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool)\r\n#17   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Core.so.5\", at 0x7f8e68f05117, in QCoreApplication::notifyInternal2(QObject*, QEvent*)\r\n#16   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698b5c7a, in QApplication::notify(QObject*, QEvent*)\r\n#15   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698ad64b, in QApplicationPrivate::notify_helper(QObject*, QEvent*)\r\n#14   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e698ec677, in QWidget::event(QEvent*)\r\n#13   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e699a854c, in QAbstractButton::mouseReleaseEvent(QMouseEvent*)\r\n#12   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e699a83cd, in QAbstractButton::keyPressEvent(QKeyEvent*)\r\n#11   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e699a6723, in QAbstractButton::toggled(bool)\r\n#10   Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Widgets.so.5\", at 0x7f8e699a64f1, in QAbstractButton::clicked(bool)\r\n#9    Object \"/tmp/.mount_PlotJuXcnTmr/lib/libQt5Core.so.5\", at 0x7f8e68f31743, in QMetaObject::activate(QObject*, int, int, void**)\r\n[1]    27110 segmentation fault (core dumped)  PlotJuggler-2.1.8-x86_64.AppImage\r\n```\r\n\r\nThis is with PJ 2.1.8.\r\n\r\nHere is a log with which to reproduce:\r\n[log_2019-03-27-00-34-42.ulg.zip](https://github.com/facontidavide/PlotJuggler/files/3022388/log_2019-03-27-00-34-42.ulg.zip)\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels: []
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/163'
+  title: New MessageParser plugins
+  body: "Discussion moved from #152\r\n\r\nThe idea is that given P serialization protocols and T transport layers, we may have potentially P*T plugins. of course we don't want that.\r\n\r\nSerializetions **Protocols** might be:\r\n\r\n    JSON\r\n    XML\r\n    Google Protocol Buffer (requires schema)\r\n    Flatbuffers (requires schema)\r\n    etc...\r\n\r\n**Transport** Layers might be:\r\n\r\n    UDP\r\n    WebSockets\r\n    MQTT\r\n    ZeroMQ\r\n    etc...\r\n\r\nTherefore I would like to have, in particular at the level or Serialization/Parsing individual libraries.\r\n\r\nI took the first tiny step in this direction creating this branch:\r\n\r\nhttps://github.com/facontidavide/PlotJuggler/tree/parsers\r\n\r\nThe goal is to decouple **Protocols** from **Transport**.\r\nFor this reason, I created a new type of plugin, the **MessageParser**, that basically represents a mechanism to implement a Protocol deserializer, independent from the actual transport layer used to deliver the message.\r\n\r\nMessageParsers are meta-plugins, because they are used by **DataLoader** and **DataStreamer** plugins."
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels: []
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/150'
+  title: '[Feature request] Show PX4 parameters'
+  body: "Hi, I'm trying to open an issue every time I have to go back to FlightPlot to find something I miss in PlotJuggler. Here is a new one:\r\n\r\nI usually need to check the parameters of a `.ulg` file in order to understand the behavior of the drone. This information is available in FlightPlot and is really important to have:\r\n![log_info](https://user-images.githubusercontent.com/14822839/53580980-04dc2d80-3b7d-11e9-96df-eebafe32e8e8.png)\r\nIt doesn't need to be nice, even a raw list is usually enough. A quick-search might be nice to have but I would prefer to have the list quickly without it if it is too much effort to have the quick-search.\r\n\r\nThanks a lot, that tool is awesome!"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels: []
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/145'
+  title: >-
+    Custom calculation on a msg struct (rather than a msg endpoint) as source
+    data
+  body: "First of all, thanks for the great 'custom timeseries' feature! It is really cool and has proven to be very useful for me already! \r\n\r\nIf I understand correctly, the 'source data' can currently only give you access to 1 datapoint, existing of a timestamp and a value. The source data seems to always be a and 'endpoint' of a topic, i.e. the value will never point to a struct, always just a basic datatype (int, float/double, string). \r\n\r\nThat makes me wonder how the example snippet `yaw_from_quaternion` is supposed to be used. It needs the values x,y,z,w, which are parsed with the double dollars (`$$x$$`). I believe you call such variables 'channels' or 'curves'. However, how can I get all values from 1 quaternion in these 4 channel variables? The only way I know would be to replace them each. E.g. for a topic `/foo` with `pose` filed of type `geometry_msgs/Pose` I'd change:\r\n\r\n* `$$x$$` to `$$/foo/pose/orientation/x$$`\r\n* `$$y$$` to `$$/foo/pose/orientation/y$$`\r\n* `$$z$$` to `$$/foo/pose/orientation/z$$`\r\n* `$$w$$` to `$$/foo/pose/orientation/w$$`\r\n\r\nThat's a bit clumsy I think. I'm looking forward to build a set of useful functions based on certain message types. Hence, it would be nicer if I could don one of these things:\r\n\r\n1. Select a struct (parent, rather than endpoint) as source data.\r\n2. Select a struct as channel variable.\r\n3. Get creative with eval to separate prefix (topic name + fields) from variable names.\r\n\r\nI tried all 3 options and none of them work yet. \r\n\r\n**Option 1: select struct from 'source data' list**\r\nA suggestion could be to select from a tree view, similar to your idea in #140. For the tree view, instead of a flat dropdown list you could consider either adding fold/unfold buttons, or expanding menus (like the top menu File -> Open Recent -> (list of recents)).\r\nSuch a tree view would be useful to add to the timeseries list of the main window and the source data and curves lists of the 'create custom timeseries' window. The important part for me would be the ability to select a struct, rather than an endpoint.\r\n\r\n**Option 2: Select a struct as channel variable.**\r\n\r\nI tried this. What I did in the function calc body:\r\n\r\n```js\r\nvar quat = $$/foo/pose/orientation$$\r\n// and then do e.g. \r\nreturn quat.x\r\n// or something more complex ;)\r\n```\r\n\r\nWhenever I just try setting something like `var quat = $$/foo/pose/orientation$$` I get the error, 'invalid channel name' as soon as I hit 'Create New Timeseries'.\r\n\r\n**Option 3: Get creative with eval**\r\n\r\nThis is not a serious option, but rather a quick workaround I tried. Surprisingly enough, I couldn't get it to work:\r\n\r\n```js\r\nvar x1 = $$/foo/pose/orientation/x$$ // works!\r\nvar x2 = eval('$$/foo/pose/orientation/x$$') // works!\r\n\r\nvar channel_string = '$$/foo/pose/orientation/x$$'\r\nvar x3 = eval(channel_string) // works!\r\n\r\nvar x4 = eval('$$/foo/pose/orientation/'+'x$$') // doesn't work (invalid channel name)... I don't understand why\r\nvar channel_string_left = '$$/foo/pose/orientation/'\r\nvar channel_string_right = 'x$$'\r\nvar channel_string_total = channel_string_left.append(channel_string_right)\r\nvar x5 = eval(channel_string_total) // doesn't work (invalid channel name)... I don't understand why\r\n\r\n// and what I actually wanted:\r\nvar prefix = '/foo/pose/orientation/'\r\nvar x5 = eval('$$'+prefix+'x'+'$$') // also doesn't work (invalid channel name)... I don't understand why\r\n```\r\n\r\n**Finally**\r\n\r\nIt would be great if you could make option 1 or 2 to work. I saw that rosmsg generates js libraries for all message types too, so having the structs available in js shouldn't be an issue.\r\n\r\nOf course I understand this is still experimental functionality. I'll just patiently wait until this feature request is implemented (if ever)! Just wanted to point it out, as I guess more users would enjoy such functionality. \r\n\r\nAnd again: thanks a lot for the custom timeseries functionality so far: it's really useful! \r\n\r\n**Setup data**\r\n\r\nUsed latest version of master (a8743184bd2b01f2862f9ca46bfd5e81e8a035e5)\r\nROS Kinetic in Ubuntu 16.04.\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels: []
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/142'
+  title: several icons missed
+  body: >-
+    I use ubuntu 16.04, ROS Kinetic. I like the tool. Recently it seems upgraded
+    for the automatically update. However, some of the icons disappeared
+    including the "add a new row", now on the right (before is on the left)
+    there is only 3 icons: clean, legend and link. How should I do?
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/138'
+  title: 'Fix PR #137 : Save all tabs as images'
+  body: "@d-walsh  Unfortunately there are a couple of issues with this new feature.\r\n\r\n    1. If multiple tabs share the same name, the previous files with the same name are overwritten.\r\n    2. Zero warnings when files are overwritten.\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/135'
+  title: Scaling x-axis independently from y
+  body: "When loading long bagfiles and maximizing the y-axis vertical zoom, datapoints can get very crowded on the x-axis. It would be very useful to keep the y-axis scaling as is, but be able to \"stretch\" the x-axis via the mouse. This is a feature that's available in [rqt_multiplot](https://github.com/anybotics/rqt_multiplot_plugin) by holding the right mouse-button and moving the mouse left/right and it would be awesome to have it in PlotJuggler.\r\n\r\nOne can achieve a similar effect by manually specifying (high) y axis limits that \"squish\" the y axis down, but this is fairly cumbersome.\r\n\r\nI searched for similar issues and talked to other PlotJuggler users about below feature request, apologies if I missed existing discussions, or even the existence of the feature ;)"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - enhancement
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/132'
+  title: Update all tabs when switching off streaming.
+  body: >-
+    I believe this is the same issue as #82 however it's currently happening on
+    **master** so could be a possible regression?
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/131'
+  title: check "Move Tab to other window..."
+  body: "It seems to be buggy.\r\n\r\nAdditionally, we need to add a warning dialog when a Window is closed"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/127'
+  title: stop publisher(s) when rosbag reloaded or data deleted
+  body: ''
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/126'
+  title: RosIntrospectionFactory need to be reset (or refactored)
+  body: "The same topic_name might correspond to different message types if multiple files are loaded.\r\n\r\nFor example \"tf\" might correspond to the __old tf__ or __tf2__.\r\n\r\nMay be use MD5SUM as key or/and reset the factory when data is reloaded."
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/125'
+  title: Problem with slider bar
+  body: >-
+    When the slider at the bottom is moved manually, it won't work correctly
+    (wrong time offset).
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/117'
+  title: 'Bug: Saved layout misses custom x-axis'
+  body: "Dear Davide,\r\n\r\nsorry for being such a nuisance, but using PlotJuggler a lot recently shows a few quirks which I will report here.\r\n\r\nThe saved plot layouts seem to not include the information that a plot was using a custom x-axis that I dragged with the right mouse button onto another plot. After reloading the layout I have to re-apply that custom x-axis.\r\n\r\nBest regards"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/104'
+  title: No way to "clear buffer" while streaming
+  body: "version: **1.7.1**\r\nos: **ubuntu 16.04**\r\n\r\nThere is currently no way to clear the buffer while streaming. The ideal case would be to have streaming data, then click a button to entirely clear the buffer, new data would continue to stream and all timeseries would start at 0.\r\n\r\nThis presents two issues, depending on whether you're playing back data from a bag or streaming data live.\r\n\r\n**Streaming data live**\r\nIssue: to clear the buffer, one must:\r\n\r\n1. Streaming > Stop streaming\r\n2. Streaming > Clear buffer\r\n3. Streaming > Start: ROS_Topic_Streamer\r\n4. [OK]\r\n\r\nSeems fine but is annoying to have to do every time.\r\n\r\n**Playing back from a bag**\r\nIf the buffer isn't cleared between bag playbacks, then\r\n\r\n- any time series isn't offset anymore, making the data less useful\r\n- any x/y plots (ie: non time-series plots) have a line drawn from the end of the first bag to the beginning of the second bag\r\n\r\nWe might assume that most people won't stream while replaying a bag, but this does often happen (if i'm wanting to visualize thing in RViz at the same time, for example). Though this case is a much lower priority, I'm leaving it on here so that it's on your radar. "
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - enhancement
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/103'
+  title: Window does not respond
+  body: "version: **1.7.1**\r\nos: **ubuntu 16.04**\r\n\r\nOccasionally PlotJuggler becomes unresponsive and I have to force quit. Often this happens when I've loaded large files or are otherwise doing \"two things at once\".\r\n\r\nNo error message is visible. I'll wait as much as 5 min then force quit.\r\n\r\n![not-responsive](https://user-images.githubusercontent.com/14950045/43982884-d117442c-9cac-11e8-8689-b83211cedc67.png)\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/102'
+  title: 'Grey Plots, sometimes'
+  body: "version: **1.7.1**\r\nos: **ubuntu 16.04**\r\n\r\nIt's unclear why sometimes plots turn grey. Sometimes there are curves in them sometimes not. Seems to be associated with lack of use? When I put another curve in them they seem to turn white again.\r\n\r\n![grey plots](https://user-images.githubusercontent.com/14950045/43975539-e323425c-9c92-11e8-994e-fc949b7c5f4e.png)\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/92'
+  title: 'Linker error: undefined reference to `DataStreamer::connectionClosed()'''
+  body: "Trying to compile the latest from the master branch (c9a5ed9ef458e1b176cd38f2128dd3103eb5dfe2), I get the following error:\r\n```\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS/datastream_ROS.cpp.o: In function `DataStreamROS::timerCallback()':\r\nsrc/PlotJuggler/plugins/ROS/DataStreamROS/datastream_ROS.cpp:217: undefined reference to `DataStreamer::connectionClosed()'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS/datastream_ROS.cpp.o: In function `DataStreamROS::~DataStreamROS()':\r\nsrc/PlotJuggler/./include/PlotJuggler/datastreamer_base.h:27: undefined reference to `vtable for DataStreamer'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS/datastream_ROS.cpp.o: In function `DataStreamROS::DataStreamROS() [clone .cold.1120]':\r\nsrc/PlotJuggler/./include/PlotJuggler/datastreamer_base.h:27: undefined reference to `vtable for DataStreamer'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS_autogen/mocs_compilation.cpp.o: In function `DataStreamROS::qt_metacast(char const*)':\r\nbuild/plotjuggler/plugins/ROS/DataStreamROS_autogen/L2RW7QHEBF/moc_datastream_ROS.cpp:97: undefined reference to `DataStreamer::qt_metacast(char const*)'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS_autogen/mocs_compilation.cpp.o: In function `DataStreamROS::qt_metacall(QMetaObject::Call, int, void**)':\r\nbuild/plotjuggler/plugins/ROS/DataStreamROS_autogen/L2RW7QHEBF/moc_datastream_ROS.cpp:102: undefined reference to `DataStreamer::qt_metacall(QMetaObject::Call, int, void**)'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS_autogen/mocs_compilation.cpp.o:(.data.rel.ro._ZTI13DataStreamROS[_ZTI13DataStreamROS]+0x10): undefined reference to `typeinfo for DataStreamer'\r\nCMakeFiles/DataStreamROS.dir/DataStreamROS_autogen/mocs_compilation.cpp.o:(.data.rel.ro+0x0): undefined reference to `DataStreamer::staticMetaObject'\r\ncollect2: error: ld returned 1 exit status\r\n```\r\nLooks like it's not able to find the `connectionClosed` signal which is defined in `datastreamer_base.h`. I think that the header needs to be added to the source files for the plugin so that cmake generates the files for the signal/slot stuff to work:\r\n```diff\r\n--- a/plugins/ROS/CMakeLists.txt\r\n+++ b/plugins/ROS/CMakeLists.txt\r\n@@ -54,6 +54,7 @@ add_dependencies(DataLoadROS\r\n SET( DATASTREAM_SRC\r\n     DataStreamROS/datastream_ROS.cpp\r\n     DataStreamROS/datastream_ROS.h\r\n+    ../../include/PlotJuggler/datastreamer_base.h\r\n     )\r\n \r\n add_library( DataStreamROS SHARED ${DATASTREAM_SRC} )\r\n```"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels: []
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/82'
+  title: plot update missing when streaming off and switch to different tab
+  body: "Hey again,\r\n\r\nI use the latest master and build from source.\r\n\r\nSuppose I stream data from ROS topics.\r\nI create two tabs (tab 1 and tab 2) and add curves to the plots of each tab.\r\nNow I observe the contents of tab 1 for a while, see an interesting behavior, and stop streaming via the \"Streaming ON\" button on the bottom left.\r\nWhen I switch back tab 2, I expect to see the streamed data up to the moment I stopped it.\r\nBut this is not the case. The plot on tab 2 will still show old data instead.\r\n\r\nIf I do all of that rather quickly and continue streaming from tab 2 right away, the plot is updated again and I can see the correct data as expected."
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/80'
+  title: dragged topic sticks to pointer after drop
+  body: "I've been wondering about this behavior for quite some time now...\r\nNot always, but on a regular basis, when I drag and drop a field from the list on the left to a plot, the name of the field still sticks to the pointer even after I released the mouse and the plot was added.\r\n\r\n![screenshot from 2018-04-24 18-06-04](https://user-images.githubusercontent.com/680358/39180753-4d792296-47ea-11e8-807e-0a0e729eebe2.png)\r\n\r\nClicking anywhere on the screen resolves this, but it's still a bit annoying. \r\n\r\nA second problem with drag&drop, I'm not sure they are related so feel free to scold me for putting two problems in one issue, is that sometimes drag&drop simply fails.\r\nOn releasing the mouse button simply nothing happens. In this case I think I've always experienced that the label sticks to the pointer."
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/78'
+  title: 'axis is stick to [-0.1, 0.1]'
+  body: "I used the streaming function, when I add the pose.x to the plot the y axis is somehow stick to [-0.1, 0.1] which I can not zoom in and out. \r\n\r\n\r\n\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug
+- url: 'https://github.com/facontidavide/PlotJuggler/issues/73'
+  title: Exception in Rosout plugin
+  body: "any::bad_cast apparently....\r\n"
+  repo: 'https://api.github.com/repos/facontidavide/PlotJuggler'
+  labels:
+    - bug

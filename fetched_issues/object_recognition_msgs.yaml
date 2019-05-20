@@ -1,0 +1,443 @@
+- url: 'https://github.com/wg-perception/object_recognition_msgs/issues/6'
+  title: Release into ROS Melodic
+  body: "This package is [depended by some MoveIt! packages](http://repositories.ros.org/status_page/blocked_releases_melodic.html?q=id%3D%22object_recognition_msgs%22&s=6&r=1).\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/wg-perception/object_recognition_msgs'
+  labels: []
+- url: 'https://github.com/wg-perception/object_recognition_msgs/issues/4'
+  title: new release 0.4.0 broke moveit-ros-perception
+  body: >
+    The restructuring of Table.msg seems to be the issue:
+    https://github.com/wg-perception/object_recognition_msgs/compare/0.3.19...0.4.0
+
+
+    http://jenkins.ros.org/view/HbinP32/job/ros-hydro-moveit-ros-perception_binarydeb_precise_i386/70/
+
+
+    ```
+
+    Started by upstream project ros-hydro-moveit-core_binarydeb_precise_i386
+    build number 50
+
+    originally caused by:
+
+
+    Started by upstream project ros-hydro-moveit-msgs_binarydeb_precise_i386
+    build number 23
+
+    originally caused by:
+
+    Started by upstream project
+    ros-hydro-object-recognition-msgs_binarydeb_precise_i386 build number 19
+
+    originally caused by:
+
+    Started by upstream project ros-hydro-object-recognition-msgs_sourcedeb
+    build number 2
+
+    originally caused by:
+
+    Started by user Internal
+
+    ```
+
+
+    Error: 
+
+
+    ```
+
+    -isystem /usr/include/pcl-1.7 -isystem /opt/ros/hydro/include/opencv    -o
+    CMakeFiles/moveit_semantic_world.dir/src/semantic_world.cpp.o -c
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function 'bool
+    moveit::semantic_world::SemanticWorld::addTablesToCollisionWorld()':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:145:57:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:146:45:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'header'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function 'object_recognition_msgs::TableArray
+    moveit::semantic_world::SemanticWorld::getTablesInROI(double, double,
+    double, double, double, double) const':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:163:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:164:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:165:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:166:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:167:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:168:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function 'std::vector<std::basic_string<char> >
+    moveit::semantic_world::SemanticWorld::getTableNamesInROI(double, double,
+    double, double, double, double) const':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:183:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:184:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:185:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:186:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:187:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:188:24:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function
+    'std::vector<geometry_msgs::PoseStamped_<std::allocator<void> > >
+    moveit::semantic_world::SemanticWorld::generatePlacePoses(const Table&,
+    double, double, double, unsigned int, double) const':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:310:24:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:314:46:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:315:58:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:315:78:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:316:58:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:316:78:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:318:31:
+    error: 'const Table' has no member named 'x_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:318:43:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:319:31:
+    error: 'const Table' has no member named 'y_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:319:43:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:327:48:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:329:75:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:333:35:
+    error: 'const Table' has no member named 'x_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:333:47:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:334:35:
+    error: 'const Table' has no member named 'y_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:334:47:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:354:73:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:355:73:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:358:41:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:365:42:
+    error: 'const _pose_type' has no member named 'header'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function 'bool
+    moveit::semantic_world::SemanticWorld::isInsideTableContour(const Pose&,
+    const Table&, double, double) const':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:380:24:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:384:46:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:385:58:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:385:78:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:386:58:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:386:78:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:388:31:
+    error: 'const Table' has no member named 'x_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:388:43:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:389:31:
+    error: 'const Table' has no member named 'y_max'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:389:43:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:397:48:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:399:75:
+    error: 'const _convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:409:33:
+    error: 'const _pose_type' has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:420:35:
+    error: 'const Table' has no member named 'x_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:421:35:
+    error: 'const Table' has no member named 'y_min'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:
+    In member function 'void
+    moveit::semantic_world::SemanticWorld::transformTableArray(object_recognition_msgs::TableArray&)
+    const':
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:464:61:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'header'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:465:42:
+    error: 'object_recognition_msgs::Table_<std::allocator<void>
+    >::_convex_hull_type' has no member named 'vertices'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:467:786:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:467:839:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:467:892:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:473:51:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:475:66:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:476:32:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'header'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:477:840:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'header'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:479:789:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:479:842:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:479:895:
+    error: 'object_recognition_msgs::Table_<std::allocator<void> >::_pose_type'
+    has no member named 'pose'
+
+    In file included from /usr/include/boost/variant.hpp:17:0,
+                     from /opt/ros/hydro/include/geometric_shapes/shape_messages.h:43,
+                     from /opt/ros/hydro/include/geometric_shapes/shape_operations.h:41,
+                     from /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:43:
+    /usr/include/boost/variant/variant.hpp: In member function 'void
+    boost::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13,
+    T14, T15, T16, T17, T18, T19>::convert_construct(T&, int, mpl_::false_)
+    [with T = std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >, T0_ =
+    shape_msgs::SolidPrimitive_<std::allocator<void> >, T1 =
+    shape_msgs::Mesh_<std::allocator<void> >, T2 =
+    shape_msgs::Plane_<std::allocator<void> >, T3 =
+    boost::detail::variant::void_, T4 = boost::detail::variant::void_, T5 =
+    boost::detail::variant::void_, T6 = boost::detail::variant::void_, T7 =
+    boost::detail::variant::void_, T8 = boost::detail::variant::void_, T9 =
+    boost::detail::variant::void_, T10 = boost::detail::variant::void_, T11 =
+    boost::detail::variant::void_, T12 = boost::detail::variant::void_, T13 =
+    boost::detail::variant::void_, T14 = boost::detail::variant::void_, T15 =
+    boost::detail::variant::void_, T16 = boost::detail::variant::void_, T17 =
+    boost::detail::variant::void_, T18 = boost::detail::variant::void_, T19 =
+    boost::detail::variant::void_, mpl_::false_ = mpl_::bool_<false>]':
+
+    /usr/include/boost/variant/variant.hpp:1379:9:   instantiated from
+    'boost::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13,
+    T14, T15, T16, T17, T18, T19>::variant(T&) [with T =
+    std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >, T0_ =
+    shape_msgs::SolidPrimitive_<std::allocator<void> >, T1 =
+    shape_msgs::Mesh_<std::allocator<void> >, T2 =
+    shape_msgs::Plane_<std::allocator<void> >, T3 =
+    boost::detail::variant::void_, T4 = boost::detail::variant::void_, T5 =
+    boost::detail::variant::void_, T6 = boost::detail::variant::void_, T7 =
+    boost::detail::variant::void_, T8 = boost::detail::variant::void_, T9 =
+    boost::detail::variant::void_, T10 = boost::detail::variant::void_, T11 =
+    boost::detail::variant::void_, T12 = boost::detail::variant::void_, T13 =
+    boost::detail::variant::void_, T14 = boost::detail::variant::void_, T15 =
+    boost::detail::variant::void_, T16 = boost::detail::variant::void_, T17 =
+    boost::detail::variant::void_, T18 = boost::detail::variant::void_, T19 =
+    boost::detail::variant::void_]'
+
+    /tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/semantic_world/src/semantic_world.cpp:122:98:  
+    instantiated from here
+
+    /usr/include/boost/variant/variant.hpp:1300:9: error: no matching function
+    for call to 'boost::variant<shape_msgs::SolidPrimitive_<std::allocator<void>
+    >, shape_msgs::Mesh_<std::allocator<void> >,
+    shape_msgs::Plane_<std::allocator<void> > >::initializer::initialize(void*,
+    std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >&)'
+
+    /usr/include/boost/variant/variant.hpp:1300:9: note: candidates are:
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note: static int
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::initialize(void*,
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T) [with BaseIndexPair =
+    boost::mpl::pair<boost::detail::variant::make_initializer_node::apply<boost::mpl::pair<boost::detail::variant::make_initializer_node::apply<boost::mpl::pair<boost::detail::variant::initializer_root,
+    mpl_::int_<0> >,
+    boost::mpl::l_iter<boost::mpl::list3<shape_msgs::SolidPrimitive_<std::allocator<void>
+    >, shape_msgs::Mesh_<std::allocator<void> >,
+    shape_msgs::Plane_<std::allocator<void> > > > >::initializer_node,
+    mpl_::int_<1> >,
+    boost::mpl::l_iter<boost::mpl::list2<shape_msgs::Mesh_<std::allocator<void>
+    >, shape_msgs::Plane_<std::allocator<void> > > > >::initializer_node,
+    mpl_::int_<2> >, Iterator =
+    boost::mpl::l_iter<boost::mpl::list1<shape_msgs::Plane_<std::allocator<void>
+    > > >, boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T = const
+    shape_msgs::Plane_<std::allocator<void> >&]
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note:   no known
+    conversion for argument 2 from
+    'std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >' to 'const
+    shape_msgs::Plane_<std::allocator<void> >&'
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note: static int
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::initialize(void*,
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T) [with BaseIndexPair =
+    boost::mpl::pair<boost::detail::variant::initializer_root, mpl_::int_<0> >,
+    Iterator =
+    boost::mpl::l_iter<boost::mpl::list3<shape_msgs::SolidPrimitive_<std::allocator<void>
+    >, shape_msgs::Mesh_<std::allocator<void> >,
+    shape_msgs::Plane_<std::allocator<void> > > >,
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T = const
+    shape_msgs::SolidPrimitive_<std::allocator<void> >&]
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note:   no known
+    conversion for argument 2 from
+    'std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >' to 'const
+    shape_msgs::SolidPrimitive_<std::allocator<void> >&'
+
+    /usr/include/boost/variant/detail/initializer.hpp:122:17: note: static void
+    boost::detail::variant::initializer_root::initialize()
+
+    /usr/include/boost/variant/detail/initializer.hpp:122:17: note:   candidate
+    expects 0 arguments, 2 provided
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note: static int
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::initialize(void*,
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T) [with BaseIndexPair =
+    boost::mpl::pair<boost::detail::variant::make_initializer_node::apply<boost::mpl::pair<boost::detail::variant::initializer_root,
+    mpl_::int_<0> >,
+    boost::mpl::l_iter<boost::mpl::list3<shape_msgs::SolidPrimitive_<std::allocator<void>
+    >, shape_msgs::Mesh_<std::allocator<void> >,
+    shape_msgs::Plane_<std::allocator<void> > > > >::initializer_node,
+    mpl_::int_<1> >, Iterator =
+    boost::mpl::l_iter<boost::mpl::list2<shape_msgs::Mesh_<std::allocator<void>
+    >, shape_msgs::Plane_<std::allocator<void> > > >,
+    boost::detail::variant::make_initializer_node::apply<BaseIndexPair,
+    Iterator>::initializer_node::param_T = const
+    shape_msgs::Mesh_<std::allocator<void> >&]
+
+    /usr/include/boost/variant/detail/initializer.hpp:89:24: note:   no known
+    conversion for argument 2 from
+    'std::vector<geometry_msgs::Point_<std::allocator<void> >,
+    std::allocator<geometry_msgs::Point_<std::allocator<void> > > >' to 'const
+    shape_msgs::Mesh_<std::allocator<void> >&'
+
+    make[4]: ***
+    [semantic_world/CMakeFiles/moveit_semantic_world.dir/src/semantic_world.cpp.o]
+    Error 1
+
+    make[4]: Leaving directory
+    `/tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/obj-i686-linux-gnu'
+
+    make[3]: *** [semantic_world/CMakeFiles/moveit_semantic_world.dir/all] Error
+    2
+
+    make[3]: Leaving directory
+    `/tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/obj-i686-linux-gnu'
+
+    make[2]: *** [all] Error 2
+
+    make[2]: Leaving directory
+    `/tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950/obj-i686-linux-gnu'
+
+    dh_auto_build: make -j1 returned exit code 2
+
+    make[1]: *** [override_dh_auto_build] Error 2
+
+    make[1]: Leaving directory
+    `/tmp/buildd/ros-hydro-moveit-ros-perception-0.5.9-0precise-20131208-1950'
+
+    make: *** [build] Error 2
+
+    dpkg-buildpackage: error: debian/rules build gave error exit status 2
+
+    E: Failed autobuilding of package
+
+    ```
+
+
+    @sachinchitta @isucan @vrabaud 
+  repo: 'https://api.github.com/repos/wg-perception/object_recognition_msgs'
+  labels:
+    - bug

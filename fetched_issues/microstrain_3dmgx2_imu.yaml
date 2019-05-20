@@ -1,0 +1,19 @@
+- url: 'https://github.com/ros-drivers/microstrain_3dmgx2_imu/issues/9'
+  title: How to extract Magnetic data independently?
+  body: "Hi All!\r\n\r\nRecently I'm using **3DM-GX3-25 IMU** on the Husky robot and got the rostopic `/imu/data`. However, what I need is **only the Magnetic data** measured by the IMU. \r\n\r\nI checked on my Husky robot and found that it used the driver **microstrain_3dmgx2_imu**. Then I checked the ros-drivers and it seems that gyroscope data, accelerometer data and magnetic data are fused and output together as `/imu/data`. \r\n\r\n\r\nSo I'm wondering is there any way to modify the driver to **only extract the Magnetic data** (output as a rostopic like `/imu/magnetic`)?\r\nAny advice or hint is appreciated.\r\n\r\nThanks!\r\n@chadrockey @mmwise @kwc @gerkey \r\n"
+  repo: 'https://api.github.com/repos/ros-drivers/microstrain_3dmgx2_imu'
+  labels: []
+- url: 'https://github.com/ros-drivers/microstrain_3dmgx2_imu/issues/3'
+  title: Missing explicit dependency and include on log4cxx
+  body: >
+    In the latest version of rosconsole the strict dependency on log4cxx has
+    been removed. Now your package `microstrain_3dmgx2_imu` fails to build since
+    it relied on the transitive dependency.
+
+
+    Please make the dependency on log4cxx explicit and import the necessary
+    header file to unbreak the build on the farm
+    (http://jenkins.ros.org/view/HbinP32/job/ros-hydro-microstrain-3dmgx2-imu_binarydeb_precise_i386).
+  repo: 'https://api.github.com/repos/ros-drivers/microstrain_3dmgx2_imu'
+  labels:
+    - bug

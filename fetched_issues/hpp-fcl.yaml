@@ -1,0 +1,55 @@
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/63'
+  title: Flag not found on Mac
+  body: "I installed Pinocchio on Mac. When I try to import  Pinocchio in the python2, I met the following error:\r\n\r\nImportError: dlopen(/usr/local/lib/python2.7/site-packages/pinocchio/libpinocchio_pywrap.so, 2): Symbol not found: __ZN5boost6system16generic_categoryEv\r\n  Referenced from: /usr/local/lib/libhpp-fcl.dylib\r\n  Expected in: /usr/local/opt/boost/lib/libboost_system-mt.dylib\r\n in /usr/local/lib/libhpp-fcl.dylib\r\n\r\nI guess this is caused by the library of hpp-fcl or the boost, though I have tried many times to install these two packages with latest home-brew. Can you help me out?\r\n\r\n"
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels: []
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/39'
+  title: additional constructor for collisionrequest is a bad idea
+  body: "https://github.com/humanoid-path-planner/hpp-fcl/commit/6732f6962e6f352a2853e304b0cbc447989e596e\r\n\r\nBecause of the default parameter signature in the other constructor, and \r\nbecause bool and size_t  can be used indifferently, the constructor called is undefined\r\ndepending on the parameters given. As a matter of fact, the constructor called \r\nin CollisionValidation is not the one you think. This leads to a bug where max_num_contacts parameter\r\nis in fact set to 0. I am creating a pull request to fix this in hpp-core, but the ambiguity should be removed"
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels: []
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/37'
+  title: 'GJK::evaluate does not converge'
+  body: "Since commits 0f951512 and aadec3c, method GJK::evaluate in src/narrowphase/gjk.cpp sometimes fails to converge to a solution (status = Valid of status = Inside) and reaches the maximal number if iterations. Since commit 9c980291, if the method returns \"Failed\" and the distance between object is small enough, GJKSolver_indep::shapeDistance returns collision with pentration distance equal to 0.\r\n\r\nhttps://github.com/florent-lamiraux/hpp-fcl/blob/7c65d1ef1a369b4b80d598cfd1a837f96d948efc/test/test_fcl_geometric_shapes.cpp#L253 provides a test where a cylinder is in collision with a box and the method does not converge."
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels:
+    - bug
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/33'
+  title: Octomap version is not handled internally
+  body: "To cope with the change of API in octomap 1.8 with respect to previous version,\r\n\r\na routine OCTOMAP_VERSION_AT_LEAST has been implemented ( http://cpc.cx/mCk )\r\nHowever this routine uses variables defined in the CMakeLists.txt (http://cpc.cx/mCl),\r\nand thus not defined in depending subprojects.\r\n\r\nI suggest putting the implementation of the methods using OCTOMAP_VERSION_AT_LEAST in corresponding cpp files to hide their use\r\n"
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels:
+    - bug
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/pull/25'
+  title: Minor fixes
+  body: ''
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels:
+    - bug
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/22'
+  title: FCL not compiling with Eigen 3.3.x
+  body: >-
+    According to stack-of-tasks/pinocchio#385, it seems that FCL with the Eigen
+    support does not compile with versions 3.3.x of Eigen.
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels:
+    - bug
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/20'
+  title: Test mesh loader
+  body: >
+    I encountered some issues with current version of HPP-FCL with assimp on
+    robotpkg because for some ASSIMP version, C_Str for aiString are missing. 
+
+    I suggest to add missing unit tests concerning mesh loading.
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels:
+    - bug
+- url: 'https://github.com/humanoid-path-planner/hpp-fcl/issues/16'
+  title: hpp-fcl is now dependent on assimp and pkg-config
+  body: |
+    I don't agree with both dependencies,
+    especially the one on pkg-config,
+    which is unnecessary and prevents any user friendly external use of hpp-fcl
+    by other people than laas
+  repo: 'https://api.github.com/repos/humanoid-path-planner/hpp-fcl'
+  labels: []

@@ -1,0 +1,196 @@
+- url: 'https://github.com/stonier/ecl_core/pull/78'
+  title: Stonier/no decl
+  body: ''
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'result: invalid'
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/pull/77'
+  title: '[core] no exception declarations'
+  body: ''
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/76'
+  title: 'warning: dynamic exception specifications are deprecated in C++11'
+  body: "Hi,\r\n\r\nMy package depends on ecl_geometry, and when I was trying to migrate from Indigo to Melodic, I got a lot of warnings regarding dynamic exception specifications, like this one:\r\n\r\n> /opt/ros/melodic/include/ecl/exceptions/macros.hpp:120:44: warning: dynamic exception specifications are deprecated in C++11 [-Wdeprecated]\r\n>    #define ecl_assert_throw_decl(exception) throw(exception)\r\n> /opt/ros/melodic/include/ecl/exceptions/macros.hpp:120:44: note: in definition of macro ‘ecl_assert_throw_decl’\r\n> #define ecl_assert_throw_decl(exception) throw(exception)\r\n\r\nI found a discussion in [StackOverflow](https://stackoverflow.com/questions/13841559/deprecated-throw-list-in-c11) about this issue.\r\nI would suggest to change that, since it is deprecated."
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/pull/73'
+  title: Make sure to ament_export_libraries.
+  body: "ament_export_libraries() ends up generating a setup.sh file\r\nfor each library that exports LD_LIBRARY_PATH.  This is\r\nimportant when building in isolated mode so that downstream\r\nconsumers of the libraries can find the library at runtime.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>"
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels: []
+- url: 'https://github.com/stonier/ecl_core/issues/72'
+  title: Failing to build when using ament `--symlink-install`
+  body: "Using the `--symlink-install` flag to `ament` allows you to make modifications to things like Python scripts in the source directory without a compile/install cycle.  Currently trying to build ecl with:\r\n\r\n```\r\nament build --isolated --symlink-install\r\n```\r\n\r\nFails initially with:\r\n\r\n```\r\n+++ Installing 'ecl_eigen'\r\n==> '. /home/ubuntu/ecl_ws/build_isolated/ecl_eigen/cmake__install.sh && /usr/bin/make install' in '/home/ubuntu/ecl_ws/build_isolated/ecl_eigen'\r\nInstall the project...\r\n-- Install configuration: \"\"\r\n-- Execute custom install script\r\n-- Symlinking: /home/ubuntu/ecl_ws/install_isolated/ecl_eigen/include/ecl/eigen.hpp\r\nCMake Error at ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:152 (message):\r\n  ament_cmake_symlink_install_files() can't find\r\n  '/home/ubuntu/ecl_ws/src/ecl_core/ecl_eigen/COPYING.LESSER'\r\nCall Stack (most recent call first):\r\n  ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:308 (ament_cmake_symlink_install_files)\r\n  cmake_install.cmake:36 (include)\r\n  \r\n\r\n\r\nMakefile:61: recipe for target 'install' failed\r\nmake: *** [install] Error 1\r\n```\r\n\r\n(if I comment that out and continue on, further errors manifest as well)"
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/pull/70'
+  title: Catch dependency errors building in isolation
+  body: Hadn't done this previously so a few errors were hiding.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/69'
+  title: Failing to build with ament in isolation
+  body: "I have an Ubuntu 16.04 container with `ecl_tools`, `ecl_lite`, `ecl_core`, and `sophus` checked out in a workspace.  If I try to build in isolation:\r\n\r\n```\r\nament build --isolated --make-flags VERBOSE=1\r\n```\r\n\r\nThen the build fails with:\r\n\r\n```\r\n[ 16%] Building CXX object src/lib/CMakeFiles/ecl_exceptions.dir/standard_exception.cpp.o\r\ncd /home/ubuntu/ecl_ws/build_isolated/ecl_exceptions/src/lib && /usr/bin/c++   -DROS_PACKAGE_NAME=\\\"ecl_exceptions\\\" -Decl_exceptions_EXPORTS -isystem /home/ubuntu/ecl_ws/install_isolated/ecl_config/include  -std=c++14 -Wall -Wextra -Wl,--no-as-needed -fPIC   -o CMakeFiles/ecl_exceptions.dir/standard_exception.cpp.o -c /home/ubuntu/ecl_ws/src/ecl_core/ecl_exceptions/src/lib/standard_exception.cpp\r\nIn file included from /home/ubuntu/ecl_ws/src/ecl_core/ecl_exceptions/src/lib/standard_exception.cpp:19:0:\r\n/home/ubuntu/ecl_ws/src/ecl_core/ecl_exceptions/src/lib/../../include/ecl/exceptions/standard_exception.hpp:31:35: fatal error: ecl/errors/handlers.hpp: No such file or directory\r\ncompilation terminated.\r\n```\r\n\r\nIt looks like ecl_exception isn't properly pulling in the include directories for ecl_error, but I'm not quite sure how to fix it."
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/65'
+  title: Build error ecl_math
+  body: "I tried to build `ecl_core` package in a ROS kinetic setup. Sophus branch is `release/0.9.1-kinetic`.\r\n\r\n```\r\nIn file included from /root/ros_catkin_ws/src/ecl_core/ecl_linear_algebra/include/ecl/linear_algebra/sophus.hpp:20:0,\r\n                 from /root/ros_catkin_ws/src/ecl_core/ecl_linear_algebra/include/ecl/linear_algebra.hpp:20,\r\n                 from /root/ros_catkin_ws/src/ecl_core/ecl_linear_algebra/src/lib/sophus_interpolators.cpp:9:\r\n/root/ros_catkin_ws/src/ecl_core/ecl_linear_algebra/include/ecl/linear_algebra/sophus/helpers.hpp:56:56: error: ‘SE3Group’ does not name a type\r\n std::ostream & operator << ( std::ostream & out, const SE3Group<T> & se3 )\r\n```\r\n\r\nDo you have any hints on this bug? Thanks."
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/pull/58'
+  title: '[ecl_containers] Fix gcc v7.1 compilation issue'
+  body: "When built with gcc v7.1 compilation fails with an error message\r\nabout using an expression as a function when updating\r\nthe private attribute FloatContainerFormatter.prm_width.\r\n\r\nThe patch uses assignment to update the attribute."
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/56'
+  title: '[threads] check for unlocked mutex before destroying'
+  body: "From the man page for [pthread_mutex_destroy](https://linux.die.net/man/3/pthread_mutex_destroy)...\r\n\r\n*It shall be safe to destroy an initialized mutex that is unlocked. Attempting to destroy a locked mutex results in undefined behavior.*\r\n\r\nThe ecl threads Mutex class just destroys without checking inside it's [destructor](https://github.com/stonier/ecl_core/blob/devel/ecl_threads/src/lib/mutex_pos.cpp#L65)..."
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/34'
+  title: Client connections sending SIGPIPE
+  body: >
+    @jakan2 says that the ecl socket server is getting killed when the client
+    connection breaks. The relevant ecl code:
+
+
+    ```
+
+    long SocketServer::write(const char *s, unsigned long n)
+    ecl_debug_throw_decl(StandardException) {
+        int bytes_written = ::send(client_socket_fd,s,n,0);
+        if ( bytes_written < 0 ) {
+            switch(errno) {
+                case ( EPIPE ) : {
+                    close();
+                    return ConnectionHungUp;
+                }
+                default : {
+                    ecl_debug_throw( devices::send_exception(LOC) );
+                    error_handler = devices::send_error();
+                    return ConnectionProblem;
+                }
+            }
+        }
+    }
+
+    ```
+
+
+    So it seems we already had handling for exactly this in our old use cases,
+    but this no longer works. Look up the man pages:
+
+
+    ```
+       EPIPE  The  local  end  has been shut down on a connection oriented socket.  In this case the process will also receive a SIGPIPE unless MSG_NOSIGNAL is set.
+    ```
+
+
+    So SIGPIPE is getting sent which kills the server. The 'fix' would be to do
+    this:
+
+
+    ```
+      int bytes_written = ::send(client_socket_fd,s,n,0);
+      int bytes_written = ::send(client_socket_fd,s,n,MSG_NOSIGNAL);
+    ```
+
+
+    The question is....why is this code falling over now and not before? If we
+    know this, then we can know that we're not introducing another problem.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/33'
+  title: CMake logic failing on build farm tests
+  body: >
+    Code is ok, and tests run locally ok, but something causing it to fail on
+    the build farm in places (here it is a `ECL_PLATFORM_HAS_POSIX_THREADS`
+    check).
+
+
+    http://jenkins.ros.org/job/prerelease-hydro-ecl_core/ARCH_PARAM=amd64,UBUNTU_PARAM=precise,label=prerelease/3/console
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/31'
+  title: internal eigen does not trigger if not including the root linear_algebra.hpp
+  body: |
+    e.g. 
+
+    ```
+    #include <ecl/linear_algebra/core.hpp>
+    ```
+
+    fails...
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/8'
+  title: Ros wiki documentation not getting updated
+  body: >
+    It's still stuck at Nov22 on the old google code. Refer to
+    http://www.ros.org/wiki/ecl_core
+
+
+    Also applies to the other ecl_xxx stacks.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/7'
+  title: ecl_debug_catch fails in release
+  body: |
+    ```
+    ecl_debug_try {
+        // something
+    ecl_debug_catch(Exception &e) { 
+        std::cout << e.what() << std::endl;
+    }
+    ```
+
+    is broken in release mode because it doesn't know what e is.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/6'
+  title: ECL_HAS_EXCEPTIONS is false in release mode
+  body: >
+    This is rather unintuitive, I should perhaps define this as
+    ECL_HAS_DEBUG_EXCEPTIONS, and further define this differently.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/5'
+  title: In place .hpp.in is a broken concept
+  body: >
+    These need to get made and used from the build directory, otherwise things
+    like CMAKE_BUILD_TYPE switches break.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'
+- url: 'https://github.com/stonier/ecl_core/issues/1'
+  title: Push and Pop Formatter Broken
+  body: >
+    From [kobuki](https://github.com/yujinrobot/kobuki/issues/172).
+
+
+    In my opinion, the bug is
+    [here](https://github.com/stonier/ecl_core/blob/master/ecl_containers/include/ecl/containers/push_and_pop/formatters.hpp#L108).
+
+
+    `follower` member variable of `ecl::PushAndPop` is not always zero, but
+    `ecl::formatters::ByteArrayFormatter` always reads buffer from zero.
+  repo: 'https://api.github.com/repos/stonier/ecl_core'
+  labels:
+    - 'type: bug'

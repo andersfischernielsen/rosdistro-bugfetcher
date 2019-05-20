@@ -1,0 +1,15 @@
+- url: 'https://github.com/facontidavide/ros_type_introspection/issues/20'
+  title: Move to abseil
+  body: "Abseil, a C++ library built by Google, has been released a couple of days ago. \r\nhttps://github.com/abseil/abseil-cpp\r\nIt has a lot of interesting features that will make the code of this library more expressive.\r\n\r\nI am planning to build a catkinized version of abseil and depend on it"
+  repo: 'https://api.github.com/repos/facontidavide/ros_type_introspection'
+  labels: []
+- url: 'https://github.com/facontidavide/ros_type_introspection/pull/8'
+  title: One vector to contain them all
+  body: "The benchmark shows that this approach is 50% slower than the 2 vectors approach (in my laptop it takes 4600 vs 3000). I rely on boost::any to store all data without casting all numbers to doubles. Also the data container was decoupled from the type (until now stored in a uint_8 array with dimension 9).  A vector is used for the data and a variable called _type to store the type.\r\nI also added a function called auto_convert that automatically chooses what cast type to use and put it into a boost::any output variable.\r\nFor reading the data (in a callback for example) a switch depending on the type of the variable should be used combined with boost::any_cast. I did not find a better solution until now."
+  repo: 'https://api.github.com/repos/facontidavide/ros_type_introspection'
+  labels: []
+- url: 'https://github.com/facontidavide/ros_type_introspection/issues/7'
+  title: Master branch has less features than the ros-kinetic package
+  body: "I wanted to do some changes to the source code and switched from using the deb package to master. However, my ros node depending on ros_type_introspection did not compile anymore. \r\nI took a closer look and noticed that the renamed_values vector doesn't exist anymore in the ROSTypeFlat structure. The class VarNumber doesn't overload the operator double() anymore and buildRosFlatType now requires a fifth parameter max_array_size.\r\nIs there a reason for those changes?"
+  repo: 'https://api.github.com/repos/facontidavide/ros_type_introspection'
+  labels: []

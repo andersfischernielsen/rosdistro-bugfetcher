@@ -1,0 +1,5 @@
+- url: 'https://github.com/locusrobotics/robot_navigation/pull/23'
+  title: Fix Buildfarm Tests
+  body: "I encountered [two problems](http://build.ros.org/job/Idev__robot_navigation__ubuntu_trusty_amd64/2/testReport/) getting this to  build on the buildfarm. \r\n 1) It's slower.\r\n 2) It only installs the packages depended on. \r\n\r\nFor 1, I increased the time limit on my longest test. \r\n\r\nProblem 2 struck me in two places. \r\n * `nav_core_adapter` runs a test that loads the default nav_core2 local planner. However, if only the dependencies are installed, `DWB` is not installed, so the test wasn't passing. I added it as a test dependency. \r\n * `dlux_global_planner` had a test that was testing `dlux_global_planner` knowledge, but also used `dlux_plugins`. I just moved the test to `dlux_plugins`."
+  repo: 'https://api.github.com/repos/locusrobotics/robot_navigation'
+  labels: []

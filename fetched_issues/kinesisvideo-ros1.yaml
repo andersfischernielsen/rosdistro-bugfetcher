@@ -1,0 +1,31 @@
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/19'
+  title: use log4cplus from apt
+  body: "*Description of changes:*\r\n\r\nWith the `kinesis_manager` package using version 1.7.8 of the KVS Producer SDK, the `log4cplus` dependency will now come from APT, which is now a different version of `log4cplus`.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license."
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/9'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/8'
+  title: use master branch for cloud extension dependencies
+  body: "*Description of changes:*\r\n\r\nProperly implementing the \"master\" Travis build pipeline, where dependencies should come from HEAD instead of release tags or released binaries.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/7'
+  title: Restrict aws robotics dependencies
+  body: "*Description of changes:*\r\nSet aws-robotics dependencies to less than 2.0\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/5'
+  title: Use separate node and stream config in example
+  body: "*Issue #, if available:* #2 \r\n\r\n*Description of changes:* This changes splits the default configuration file for kinesis_video_streamer into two, so there is a node wide configuration for AWS client configuration, and another file for the single stream that is used in sample_application.launch. Without this change `roslaunch kinesis_video_streamer sample_application.launch` is not able to use the AWS client configuration defined on `kinesis_video_streamer/config/sample_configuration.yaml`, and `roslaunch kinesis_video_streamer sample_application.launch` crashes if the AWS region is not defined on `~/.aws/config` for a default profile\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels:
+    - bug
+- url: 'https://github.com/aws-robotics/kinesisvideo-ros1/pull/1'
+  title: diagnostic_msgs headers are used in the headers
+  body: "This means it needs to be at least a build_export depend. And likely the messages will be used at runtime so I'm going to make it a full depend tag.\r\n\r\nResolve issue discovered in http://build.ros.org/view/Kbin_uX64/job/Kbin_uX64__kinesis_video_streamer__ubuntu_xenial_amd64__binary/4/console\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/kinesisvideo-ros1'
+  labels: []

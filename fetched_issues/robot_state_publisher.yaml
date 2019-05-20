@@ -1,0 +1,287 @@
+- url: 'https://github.com/ros/robot_state_publisher/issues/110'
+  title: Could not load the file sensor_msgs/JointState.h
+  body: "Hi,\r\n\r\nI have an error with the package `robot_state_publisher` when I'm try to `catkin_make_isolated` with `ROS Melodic` on `Raspbian 9 (stretch)`.\r\n\r\nSpecifically, I get an error from the file `robot_state_publisher/include/robot_state_publisher/joint_state_listener.h` on line `43`.\r\n\r\n`fatal error: sensor_msgs/JointState.h: No such file or directory`\r\n\r\nHowever, the dependency `sensor_msgs` is correctly loaded in the `package.xml` file and the searched file exists at the indicated path.\r\n\r\nCould you help me ?\r\n\r\nBest regards,\r\n\r\nRobin Hède."
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - Melodic
+    - question
+- url: 'https://github.com/ros/robot_state_publisher/pull/100'
+  title: Remove treefksolver completely from the repository.
+  body: "It isn't used anywhere.\r\n\r\nBesides removing some dead code, this also clears up the license ambiguity in this package as pointed out in https://github.com/ros/robot_state_publisher/issues/99 , and makes this a pure BSD package.  This also brings this repository into alignment with the ros2 fork, which already did this removal in https://github.com/ros2/robot_state_publisher/commit/e08b19f6287f5e26066eda72fba1750b9f9d6cae .\r\n\r\nI will note that there is some slight possibility of regression here, in that a class that used to be available through this package is no longer available.  However, since it is packaged up deep inside this package, with no package on its own, I think the chances that someone discovered and used this independently is low, and the gain of being consistent with the license in this package is greater.  If it does turn out that someone is using the code, we can split it out into a separate package.\r\n\r\nFinally, I'll note that we should cherry-pick this back to kinetic-devel and indigo-devel as well.\r\n\r\nFYI @tfoote @andrewbacha"
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/issues/88'
+  title: >-
+    robot_state_publisher stops working until the /clock topic is equal to the
+    last timestep before the reset
+  body: "Hello. \r\nThere is a delay when I perform a reset_simulation for /clock topic.\r\n\r\nBelow is my code:\r\n```\r\ndef resetSimulation(self):\r\n    rospy.wait_for_service('/gazebo/reset_simulation')\r\n    try:\r\n        self.reset_proxy()\r\n    except rospy.ServiceException as e:\r\n        print (\"/gazebo/reset_simulation service call failed\")\r\n    while tfData is None:\r\n      try:\r\n          tfData = rospy.wait_for_message('/ground_truth/state', Odometry, timeout=5)\r\n      except:\r\n          rospy.loginfo(\"Current drone pose not ready yet, retrying to get robot pose\")\r\n```\r\nThe reset is successful but it takes a lot of time for the simulation to start again. The robot_state_publisher stops working until the clock is equal to the last timestep before the reset."
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - bug
+    - help-wanted
+- url: 'https://github.com/ros/robot_state_publisher/pull/87'
+  title: Add in a public default constructor
+  body: "This should fix #23, and obsoletes #43 .  This PR does a number of things:\r\n\r\n1.  It pushes the remaining TF dependency as deeply as possible.  To completely get rid of TF would mean we would have to get rid of the `tf_prefix` functionality.\r\n1.  It moves the include of `boost::shared_ptr` over to the one place it is needed.  We basically can't get rid of this use of boost, since it is what is returned in the callback.\r\n1.  It does some cleanup of namespaces.\r\n1.  It switches the package to package format 2.\r\n1.  It removes the deprecated name of `robot_state_publisher` (`state_publisher`).  That's been deprecated since a commit in 2012, so it is probably safe to remove.\r\n1.  It splits the `main` out from the `joint_state_listener.cpp` file and into its own file.  This makes it so that `JointStateListener` could be used as a library on its own now.\r\n1.  It adds in public default constructors for both `RobotStatePublisher` and `JointStateListener`.\r\n\r\nIt is easiest to review this PR on a commit-by-commit basis, since the individual commits all make sense.  Let me know if you'd prefer me to split this up into separate PRs."
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/pull/82'
+  title: Remove dependency on tf and tf_prefix support
+  body: >-
+    This PR removes the dependency on tf (#79) and the long deprecated
+    tf_prefix. I have not done a prerelease test yet. It is likely the removal
+    of the `tf_prefix` argument will break downstream users of the c++ API.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - Melodic
+- url: 'https://github.com/ros/robot_state_publisher/issues/79'
+  title: Remove dependency on tf
+  body: >-
+    It looks like robot_state_publisher already uses tf2 for publishing
+    transforms, but depends on `tf` so it can use `tf::resolve` on a frame given
+    a tf_prefix. Removing the tf dependency would required dropping support for
+    tf_prefix ([which was removed in
+    tf2](http://wiki.ros.org/tf2/Migration#tf_and_tf2)), and [would break ABI
+    compatibility](https://github.com/ros/robot_state_publisher/blob/530bba1d7001afb2d61dea6c52b966111f927f20/include/robot_state_publisher/robot_state_publisher.h#L79)
+    so it should be done no sooner than ROS Melodic.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - Melodic
+- url: 'https://github.com/ros/robot_state_publisher/issues/76'
+  title: Add C++11 flag to CMakeLists.txt
+  body: >-
+    robot_state_publisher depends from urdf, which uses std::shared_ptr and
+    other abilities of C++11 in its headers. For example, shared pointer is used
+    in /usr/include/urdf_world/types.h, so lack of appropriate compiler flag
+    leads to errors.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - bug
+    - question
+- url: 'https://github.com/ros/robot_state_publisher/issues/74'
+  title: Lunar release
+  body: "Hi @clalancette and @sloretz,\r\n\r\nAll dependencies of `robot_state_publisher` are now released in ROS Lunar :tada: !\r\n\r\nIs it possible make a lunar release of `robot_state_publisher` soon to unlock [downstream packages](http://repositories.ros.org/status_page/blocked_releases_lunar.html?q=id%3D%22robot_state_publisher%22&s=6&r=1)? Thanks!"
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/issues/68'
+  title: Unintended actuator behavior
+  body: "Hi,\r\n\r\n I have a robot description\r\n\r\n   [Superchick](https://github.com/lakehanne/superchicko/blob/indigo-devel/superchick/superchick.xacro)\r\n\r\nwhich includes a mannequin head and three actuators. Each actuator is supposed to control the each of three degree of freedoms of the head, i.e., (i) head vertically up, (ii) head and neck moving northwest, or (iii) head and neck moving northeast from the table top where the head lies in a supine position.\r\n\r\nIn my URDF model, I position one bladder directly under the head to control the pitch motion, position one left of neck-base and the last one right of neck base. I modeled the joints as [continuous joints](http://wiki.ros.org/urdf/XML/joint#attributes).\r\n\r\nThis is what I found though, when I run the model in rviz (by calling `roslaunch superchick display.launch`) I find that only the [right actuator](https://github.com/lakehanne/superchicko/blob/indigo-devel/superchick/superchick.xacro#L53-#L61)  controller exerts an effect on the head. When I comment out any other two controllers and roslaunch the urdf, I find that each of the actuators work as intended independent of the other actuators. The problem seems to be when I try to use them all simultaneously in rViz.\r\n\r\nI tried to change the joint types to `floating` but the urdf parser seems to convert it to `\"fixed\"` every time spewing stuff like `joint type is unknown; joint x will be converted to fixed`\r\n\r\nI am at a loss on what I could be missing.\r\n\r\nWould appreciate any help or insight. \r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/pull/66'
+  title: 'Make rostest dependency conditional, depending on CATKIN_ENABLE_TESTING'
+  body: 'Closes #58 '
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/pull/60'
+  title: 'Use urdf::*ShredPtr instead of boost::shared_ptr'
+  body: |
+    urdfdom_headers uses C++ std::shared_ptr. As it exports it as custom
+    *SharedPtr type, we can use the to sty compatible.
+
+    This also adds a proper dependency for urdfdom-headers
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/issues/59'
+  title: Use new urdf SharedPtr typedefs
+  body: >
+    Urdf has moved to a new SharedPtr type which results in a compile error:
+
+
+    ```
+
+    /opt/ros/ros_catkin_ws/src/robot_state_publisher/src/joint_state_listener.cpp:
+    In function 'int main(int, char**)':
+
+    /opt/ros/ros_catkin_ws/src/robot_state_publisher/src/joint_state_listener.cpp:164:98:
+    error: conversion from 'std::map<std::__cxx11::basic_string<char>,
+    std::shared_ptr<urdf::Joint> >::iterator {aka
+    std::_Rb_tree_iterator<std::pair<const std::__cxx11::basic_string<char>,
+    std::shared_ptr<urdf::Joint> > >}' to non-scalar type
+    'std::map<std::__cxx11::basic_string<char>, boost::shared_ptr<urdf::Joint>
+    >::iterator {aka std::_Rb_tree_iterator<std::pair<const
+    std::__cxx11::basic_string<char>, boost::shared_ptr<urdf::Joint> > >}'
+    requested
+       for(std::map< std::string, boost::shared_ptr< urdf::Joint > >::iterator i = model.joints_.begin(); i != model.joints_.end(); i++){
+    ```
+
+
+    (3600 lines following this)
+
+
+    Replacing 
+
+    `boost::shared_ptr<urdf::JointMimic>`
+
+    with
+
+    `urdf::JointMimicSharedPtr`
+
+
+    fixes this error.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - bug
+- url: 'https://github.com/ros/robot_state_publisher/issues/58'
+  title: Mandatory dependency on rostest
+  body: >
+    Hi,
+
+
+    I have noticed that the dependency on rostest is always there. In other
+    packages ([TF
+    example](https://github.com/ros/geometry/blob/indigo-devel/tf/CMakeLists.txt#L51))
+    rostest is only find-packaged if `CATKIN_ENABLE_TESTING` is true. [Reference
+    issue](https://github.com/ros/rosdistro/issues/3010)
+
+
+    I wonder whether there is a reason for not doing the same in this package.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/issues/22'
+  title: Error building on Mac OS 10.10 (Yosemite)
+  body: >
+    While building (based on
+    http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source), using Mac OS
+    X.10 and home-brew, after running:
+
+
+    ```
+
+    ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
+
+    ```
+
+
+    I get this error:
+
+
+    ```
+
+    Scanning dependencies of target state_publisher
+
+    Scanning dependencies of target robot_state_publisher
+
+    [ 75%] [100%] Building CXX object
+    CMakeFiles/state_publisher.dir/src/joint_state_listener.cpp.o
+
+    Building CXX object
+    CMakeFiles/robot_state_publisher.dir/src/joint_state_listener.cpp.o
+
+    Linking CXX executable
+    /Users/michael/ROS/ros_catkin_ws/devel_isolated/robot_state_publisher/lib/robot_state_publisher/state_publisher
+
+    Linking CXX executable
+    /Users/michael/ROS/ros_catkin_ws/devel_isolated/robot_state_publisher/lib/robot_state_publisher/robot_state_publisher
+
+    ld: library not found for -llog4cxx
+
+    ld: library not found for -llog4cxx
+
+    clang: error: linker command failed with exit code 1 (use -v to see
+    invocation)
+
+    clang: error: linker command failed with exit code 1 (use -v to see
+    invocation)
+
+    make[2]: make[2]: ***
+    [/Users/michael/ROS/ros_catkin_ws/devel_isolated/robot_state_publisher/lib/robot_state_publisher/robot_state_publisher]
+    Error 1***
+    [/Users/michael/ROS/ros_catkin_ws/devel_isolated/robot_state_publisher/lib/robot_state_publisher/state_publisher]
+    Error 1
+
+
+    make[1]: *** [CMakeFiles/robot_state_publisher.dir/all] Error 2
+
+    make[1]: *** Waiting for unfinished jobs....
+
+    make[1]: *** [CMakeFiles/state_publisher.dir/all] Error 2
+
+    make: *** [all] Error 2
+
+    <== Failed to process package 'robot_state_publisher':
+      Command '/Users/michael/ROS/ros_catkin_ws/install_isolated/env.sh make -j8 -l8' returned non-zero exit status 2
+
+    Reproduce this error by running:
+
+    ==> cd /Users/michael/ROS/ros_catkin_ws/build_isolated/robot_state_publisher
+    && /Users/michael/ROS/ros_catkin_ws/install_isolated/env.sh make -j8 -l8
+
+
+    Command failed, exiting.
+
+    ```
+
+
+    Note that log4cxx is installed:
+
+
+    ```
+
+    ros_catkin_ws| brew install log4cxx
+
+    Warning: log4cxx-0.10.0 already installed
+
+    ```
+
+
+    Not sure, but might be related to this:
+    https://github.com/ros-perception/image_common/issues/28
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/pull/21'
+  title: issue_16_removelegacy
+  body: |
+    Removes a seemingly old dependancy
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/pull/20'
+  title: Issue19 floating joints
+  body: >
+    Addresses issue #19 and part of #3.  This PR depends upon
+    ros/robot_model#87.
+
+
+    <EDIT>
+
+    PR is against `hydro-devel` (I need it in hydro), let me know if you want me
+    to issue a PR against `indigo-devel` as well.
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/robot_state_publisher/issues/16'
+  title: log4cxx missing
+  body: >
+    I am compiling ROS Hydro desktop for my operating system with catkin.
+
+
+    When I attempt to compile robot_state_publisher I get the following error:
+
+
+    ```
+
+    ld: cannot find -llog4cxx
+
+    ```
+
+
+    In the CMakeLists.txt file the log4cxx library is simply added to
+    target_link_libraries without searching for it:
+
+
+    ```
+
+    target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_solver log4cxx
+    ${orocos_kdl_LIBRARIES})
+
+    ```
+
+
+    I have compiled the log4cxx library for my operating system. How do you pick
+    up the right binary during compilation? Is there any way of making this
+    cross plattform, for example by using the package config file log4cxx
+    supplies during compilation?
+  repo: 'https://api.github.com/repos/ros/robot_state_publisher'
+  labels:
+    - bug

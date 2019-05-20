@@ -1,0 +1,32 @@
+- url: 'https://github.com/ros-planning/moveit_msgs/issues/39'
+  title: Move some other *_msgs packages into moveit_msgs repo
+  body: "[household_objects_database_msgs](https://github.com/ros-interactive-manipulation/household_objects_database_msgs) and [manipulation_msgs](https://github.com/ros-interactive-manipulation/manipulation_msgs) are dependended by MoveIt! AFAIK. Both of those packages are maintained in a separate repo as a unary package, which duplicated the effort upon making a release. Since the primary usage of those packages *might* be MoveIt! these days, it makes sense to move them into MoveIt!-related repo and combine the maintenance effort.\r\n\r\nCaveat is, all packages in a single repo needs to align the same version AFAIK. We can adjust to the highest available version as 0.9.x without any issue IMO.\r\n- 0.1.2 household_objects_database_msgs\r\n- 0.2.1 manipulation_msgs\r\n- 0.9.1 (kinetic-devel) moveit_msgs\r\n"
+  repo: 'https://api.github.com/repos/ros-planning/moveit_msgs'
+  labels:
+    - enhancement
+    - wontfix
+- url: 'https://github.com/ros-planning/moveit_msgs/issues/2'
+  title: TrajectoryConstraints message needs better documentation
+  body: >
+    The TrajectoryConstraints message, and the trajectory_constraints field in
+    the MotionPlanRequest message need better documentation. I was unsure about
+    how it is different from path_constraints, why it has an array of
+    constraints within it, and what a motion planner should be doing with such
+    constraints.
+  repo: 'https://api.github.com/repos/ros-planning/moveit_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/ros-planning/moveit_msgs/issues/1'
+  title: moveit_msgs depends on common_msgs which is a metapackage
+  body: >
+    Catkin packages cannot depend on metapackages. This causes rosmake to fail
+    when building dry packages which depend on moveit_msgs.
+
+
+    I've been hacking these things to work in my setup, so if I figure it out
+    soon I'll submit a pull request.
+
+
+    See also: https://github.com/ros-planning/geometric_shapes/issues/1
+  repo: 'https://api.github.com/repos/ros-planning/moveit_msgs'
+  labels: []

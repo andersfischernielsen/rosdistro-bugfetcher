@@ -1,0 +1,21 @@
+- url: 'https://github.com/ros-controls/ros_control/issues/344'
+  title: ros_control build issue using find_package()
+  body: "Hello, trying to build my package which depends heavily on ros_control stack tends to fail even though I created my project using \"catkin_make my_project controller_manager other_packages\". And I installed ros_control using \"sudo apt-get install ros-kinetic-ros-control\"\r\n\r\nThe error always points to any syntax that looks like this;\r\nfind_package(catkin REQUIRED COMPONENTS\r\n  controller_manager)\r\n\r\nHowever, the package builds successfully if I remove the \"controller_manager\" from my CMakeLists.txt;\r\nfind_package(catkin REQUIRED COMPONENTS)\r\n\r\nLooks like we may have a bug of sorts."
+  repo: 'https://api.github.com/repos/ros-controls/ros_control'
+  labels:
+    - question
+- url: 'https://github.com/ros-controls/ros_control/issues/333'
+  title: '#define in system header netdb.h conflicts with transmission loader enum'
+  body: "For some context, i'm trying to use boost asio in conjunction with the ros control RobotHw and there are of course transmissions involved. In trying to use both `transmission_interface` and `boost::asio`(via the `#include <boost/asio.hpp>` header), I have discovered a conflict between a `#define` in `netdb.h` which is used by boost and an enum defined in `transmission_loader.h`. Long story short if you have Boost installed there'll be a dependence on `netdb.h` and in that file is the following line,\r\n```\r\n# define NO_DATA\t4\t/* Valid name, no data record of requested`\r\n```\r\nand in `transmission_loader.h` there's this enum defined,\r\n```\r\nenum ParseStatus\r\n  {\r\n    SUCCESS,\r\n    NO_DATA,\r\n    BAD_TYPE\r\n  };\r\n```\r\nwhich is a collision and you can't compile. "
+  repo: 'https://api.github.com/repos/ros-controls/ros_control'
+  labels: []
+- url: 'https://github.com/ros-controls/ros_control/issues/320'
+  title: realtime_tools are dependencies but not actually used
+  body: >-
+    This is in the kinetic release tag
+    release/kinetic/controller_manager/0.13.1-0 (and probably earlier as well). 
+    The dependencies show up in CMakeLists.txt, package.xml and
+    controller_manager.h in controller_manager and then also in
+    ros_control/package.xml.
+  repo: 'https://api.github.com/repos/ros-controls/ros_control'
+  labels: []

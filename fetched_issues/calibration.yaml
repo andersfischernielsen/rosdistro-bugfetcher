@@ -1,0 +1,203 @@
+- url: 'https://github.com/ros-perception/calibration/issues/26'
+  title: Groovy devel job is failing
+  body: >
+    The repository must not name branches and tags with the same name. Jenkins
+    is not able to checkout the correct code:
+    http://jenkins.ros.org/job/devel-groovy-calibration/1301/
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/calibration/pull/24'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    These packages don't have any binaries in them, so they can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/issues/22'
+  title: there is a tag and branch named groovy
+  body: >
+    The devel builds are failing due to checking out the tag instead of the
+    branch. 
+
+
+    Failure: 
+
+
+    ```
+
+    Using devel distro file to download repositories
+
+    rosinstall file for all repositories: 
+     - git: {local-name: calibration, uri: 'http://github.com/ros-perception/calibration.git',
+        version: groovy}
+
+    Install repo list from source
+
+    Executing command 'rosinstall /tmp/test_repositories/src_repository
+    /home/rosbuild/hudson/workspace/devel-groovy-calibration/ARCH_PARAM/amd64/UBUNTU_PARAM/precise/label/devel/repo.rosinstall
+    --catkin'
+
+    rosinstall operating on /tmp/test_repositories/src_repository from
+    specifications in rosinstall files 
+    /home/rosbuild/hudson/workspace/devel-groovy-calibration/ARCH_PARAM/amd64/UBUNTU_PARAM/precise/label/devel/repo.rosinstall
+
+    (Over-)Writing /tmp/test_repositories/src_repository/.rosinstall
+
+    Cloning into '/tmp/test_repositories/src_repository/calibration'...
+
+    [calibration] Fetching http://github.com/ros-perception/calibration.git
+    (version groovy) to /tmp/test_repositories/src_repository/calibration
+
+    [calibration] Done.
+
+
+    rosinstall update complete.
+
+    Get build dependencies of repo list
+
+    Get the dependencies of source folder /tmp/test_repositories/src_repository
+
+    Found no packages in folder /tmp/test_repositories/src_repository. Are you
+    sure your packages have a packages.xml file?
+
+    ```
+
+
+    rosinstall prefers the tag when using the rosinstall snippet above. 
+
+
+    ```
+
+    $ git branch
+
+    * (no branch)
+      hydro
+    ```
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/calibration/issues/20'
+  title: capture_exec fails at runtime due to missing urdf_python.urdf
+  body: >
+    The following happens when running capture_exec:
+
+
+    <pre>
+
+    Traceback (most recent call last):
+      File "/opt/ros/hydro/lib/calibration_launch/capture_exec.py", line 54, in 
+        from urdf_python.urdf import *
+    ImportError: No module named urdf_python.urdf
+
+    </pre>
+
+
+    Already posted in #19 but probably indeed deserves own issue. Already have
+    ros-hydro-urdfdom-py installed, so this apparently does not fix things.
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/pull/19'
+  title: Build failure on Hydro
+  body: >
+    On the farm
+    (http://jenkins.ros.org/view/HbinP32/job/ros-hydro-calibration-estimation_binarydeb_precise_i386/14/console):
+
+
+    ```
+
+    copying src/calibration_estimation/sensors/multi_sensor.py ->
+    /tmp/buildd/ros-hydro-calibration-estimation-0.10.1-0precise-20130830-0631/obj-i686-linux-gnu/lib.linux-x86_64-2.7/calibration_estimation/sensors
+
+    error: package directory 'src/urdf_python' does not exist
+
+    CMake Error at catkin_generated/safe_execute_install.cmake:4 (message):
+
+      execute_process(/tmp/buildd/ros-hydro-calibration-estimation-0.10.1-0precise-20130830-0631/obj-i686-linux-gnu/catkin_generated/python_distutils_install.sh)
+      returned error code
+    Call Stack (most recent call first):
+      cmake_install.cmake:51 (INCLUDE)
+
+
+    make[1]: *** [install] Error 1
+
+    make[1]: Leaving directory
+    `/tmp/buildd/ros-hydro-calibration-estimation-0.10.1-0precise-20130830-0631/obj-i686-linux-gnu'
+
+    dh_auto_install: make -j1 install
+    DESTDIR=/tmp/buildd/ros-hydro-calibration-estimation-0.10.1-0precise-20130830-0631/debian/ros-hydro-calibration-estimation
+    returned exit code 2
+
+    make: *** [binary] Error 29
+
+    dpkg-buildpackage: error: fakeroot debian/rules binary gave error exit
+    status 2
+
+    ```
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/calibration/pull/18'
+  title: Feature/urdf parser py
+  body: >
+    From [this issue thread in
+    robot_model_py](https://github.com/laas/robot_model_py/issues/4#issuecomment-20947614)
+    - These changes incorporate urdf_parser_py, including newer features in the
+    'master' branch (currently supporting groovy / hyrdo).
+
+
+    I have run the unittests in calibration_estimation (the only package that
+    seems to have depended on urdf_parser) and verified that there are no
+    differences in running with these changes: [unittest
+    comparison](https://github.com/eacousineau/calibration/blob/c619998fb3e5ae20a4c193884b949e69c4518a13/calibration_estimation/urdf_parser_py-unittests.txt)
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/pull/16'
+  title: 'calibration: buidtool_depend on catkin'
+  body: |
+    catkin complains about this.
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/pull/6'
+  title: Remove redundant depend
+  body: ''
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/issues/5'
+  title: kinect_pipeline should be updated to new-style topic names
+  body: >
+    Still uses the old openni_camera names, doesn't account for depth_registered
+    stuff.
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/calibration/pull/4'
+  title: adding dependency on calibration_msgs_gencpp to all targets that need it
+  body: |
+    This way everything compiles in the first run.
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []
+- url: 'https://github.com/ros-perception/calibration/pull/1'
+  title: Add python-tk dependency for viewing plots.
+  body: ''
+  repo: 'https://api.github.com/repos/ros-perception/calibration'
+  labels: []

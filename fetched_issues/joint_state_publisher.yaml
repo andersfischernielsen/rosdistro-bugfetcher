@@ -1,0 +1,26 @@
+- url: 'https://github.com/ros/joint_state_publisher/pull/16'
+  title: Declare parameters at node initialization
+  body: >-
+    Also drop `dependent_joints` and `zeros` parameters for now. ROS 2 does not
+    support Map parameters right now, so these can't be set to anything without
+    breaking the node.
+  repo: 'https://api.github.com/repos/ros/joint_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/joint_state_publisher/issues/12'
+  title: Use dynamic reconfigure instead of standalone gui?
+  body: "The dynamic reconfigure option could use https://github.com/pal-robotics/ddynamic_reconfigure_python (`ros-kinetic-ddynamic-reconfigure-python`).\r\n\r\nIf the user wanted a standalone gui they could use https://github.com/lucasw/dynamic_reconfigure_tools/tree/master/rqt_dr_single (which I could split out into a standalone repo and actually release it, or maybe merge it with dynamic_reconfigure).\r\n\r\nThe use_gui flag could either be eliminated and the user would have to independently run a dynamic reconfigure client (which means I don't need to move sooner on releasing rqt_dr_single)- or an instance of rqt_dr_single could be launched programmatically?\r\n\r\nRandomize and Center would become bool_t and would uncheck themselves after being checked.\r\n\r\nSome of the gui configurability would be lost but this repo would be simplified, the qt dependency eliminated.\r\n\r\nAnother option would be to convert this to an rqt plugin and preserve the existing ui exactly, but have it be able to be embedded within a larger rqt panel or launched standalone.  Like the dynamic reconfigure case would be simpler to get rid of the use_gui flag than preserve it."
+  repo: 'https://api.github.com/repos/ros/joint_state_publisher'
+  labels: []
+- url: 'https://github.com/ros/joint_state_publisher/pull/5'
+  title: Races in GUI thread during joint state update
+  body: "This problem occurs when GUI is running and `source_list` topic is used to update joint state. Pose is updated only partially for long JointState messages.\r\n\r\n`source_cb()` callback emits `sliderUpdateTrigger` signal. But it seems during sliders' values update in [`update_sliders()`](https://github.com/ros/joint_state_publisher/blob/f4305f7895ba74f39b46e1357ac4ca0931990e23/joint_state_publisher/joint_state_publisher/joint_state_publisher#L397) somehow [`onValueChange()`](https://github.com/ros/joint_state_publisher/blob/f4305f7895ba74f39b46e1357ac4ca0931990e23/joint_state_publisher/joint_state_publisher/joint_state_publisher#L385) is called. So pose is updated only partially: half of the pose comes from received `source_list` message and other half comes from the old sliders' state.\r\n\r\nI added lock to `onValueChange()` and `updateSliders()`  to prevent races."
+  repo: 'https://api.github.com/repos/ros/joint_state_publisher'
+  labels:
+    - bug
+- url: 'https://github.com/ros/joint_state_publisher/issues/4'
+  title: Races in GUI thread during joint state update
+  body: "This problem occurs when GUI is running and `source_list` topic is used to update joint state. Pose is updated only partially for long JointState messages.\r\n\r\n`source_cb()` callback emits `sliderUpdateTrigger` signal. But it seems during sliders' values update in [`update_sliders()`](https://github.com/ros/joint_state_publisher/blob/f4305f7895ba74f39b46e1357ac4ca0931990e23/joint_state_publisher/joint_state_publisher/joint_state_publisher#L397) somehow [`onValueChange()`](https://github.com/ros/joint_state_publisher/blob/f4305f7895ba74f39b46e1357ac4ca0931990e23/joint_state_publisher/joint_state_publisher/joint_state_publisher#L385) is called. So pose is updated only partially: half of the pose comes from received `source_list` message and other half comes from the old sliders' state.\r\n\r\nAttached patch adds a lock and solves this problem.\r\n[joint_state_publisher.patch.txt](https://github.com/ros/joint_state_publisher/files/1398164/joint_state_publisher.patch.txt)\r\n\r\n\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros/joint_state_publisher'
+  labels:
+    - bug
+    - question

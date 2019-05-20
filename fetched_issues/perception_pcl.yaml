@@ -1,0 +1,138 @@
+- url: 'https://github.com/ros-perception/perception_pcl/pull/229'
+  title: ROS2 port perception_pcl
+  body: "WIP\r\n\r\nWanted to keep it transparent so will start a draft PR. Doing the velodyne package which depends on this one.\r\n\r\nStill not compiling, and will probably be working with a bit smaller feature-set before it's fully featured and working."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels: []
+- url: 'https://github.com/ros-perception/perception_pcl/issues/217'
+  title: '[indigo] cmake error "The property "IMPORTED_LOCATION" is not allowed"'
+  body: "It happens when I tried to build [ros-indigo-pcl-ros](https://aur.archlinux.org/packages/ros-indigo-pcl-ros) pacakge on Arch Linux. The cmake failed with this message.\r\n\r\n```\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/catkin_libraries.cmake:134 (get_target_property):\r\n  INTERFACE_LIBRARY targets may only have whitelisted properties.  The\r\n  property \"IMPORTED_LOCATION\" is not allowed.\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:247 (catkin_replace_imported_library_targets)\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)\r\n  CMakeLists.txt:54 (catkin_package)\r\n\r\n\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/catkin_libraries.cmake:140 (get_target_property):\r\n  INTERFACE_LIBRARY targets may only have whitelisted properties.  The\r\n  property \"IMPORTED_LOCATION_vtkm_imported_configurations-NOTFOUND\" is not\r\n  allowed.\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:247 (catkin_replace_imported_library_targets)\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)\r\n  CMakeLists.txt:54 (catkin_package)\r\n\r\n\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/catkin_libraries.cmake:134 (get_target_property):\r\n  INTERFACE_LIBRARY targets may only have whitelisted properties.  The\r\n  property \"IMPORTED_LOCATION\" is not allowed.\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:247 (catkin_replace_imported_library_targets)\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)\r\n  CMakeLists.txt:54 (catkin_package)\r\n\r\n\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/catkin_libraries.cmake:140 (get_target_property):\r\n  INTERFACE_LIBRARY targets may only have whitelisted properties.  The\r\n  property \"IMPORTED_LOCATION_vtkm_imported_configurations-NOTFOUND\" is not\r\n  allowed.\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:247 (catkin_replace_imported_library_targets)\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)\r\n  CMakeLists.txt:54 (catkin_package)\r\n\r\n\r\nCMake Warning at /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:409 (message):\r\n  catkin_package() include dir\r\n  '/home/jerry73204/arch-ros-stacks/indigo/pcl_ros/wtf/build/devel/include'\r\n  should be placed in the devel space instead of the build space\r\nCall Stack (most recent call first):\r\n  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:98 (_catkin_package)\r\n  CMakeLists.txt:54 (catkin_package)\r\n```\r\nA temporary fix can be done by commenting out [this line](https://github.com/ros-perception/perception_pcl/blob/7768363565eaabbe9fce2d0ed6ec8a196db5fe38/pcl_ros/CMakeLists.txt#L74). My findings it that the catkin script enumerates all dependent libraries of PCL, one of which is `vtkm`. Later it requests IMPORTED\\_LOCATION property of vtkm [here](        get_target_property(${lib}_imported_location ${lib} IMPORTED_LOCATION)) and causes the error."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels: []
+- url: 'https://github.com/ros-perception/perception_pcl/pull/214'
+  title: Wait for transform in transformPointCloud().
+  body: >-
+    Just wanted to add this myself, but found this fork by @shuntaraw adding a
+    wait for transform in transformPointCloud(). The fact that there is no wait
+    for transform so far means that it depends on sheer luck (and some factors
+    like system load etc.) wether data can be transformed or not when another
+    input frame is selected for the incoming cloud. It's kind of fascinating
+    that no one ran into this in the last 6 years :)
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels: []
+- url: 'https://github.com/ros-perception/perception_pcl/pull/209'
+  title: 'pcl_ros: fix exported includes in Ubuntu Artful'
+  body: "pcl_ros needs the same fix as pcl_conversions\r\n\r\nThis blocks building packages depending on pcl_ros for melodic on Ubuntu Artful. The same fix is already in pcl_conversions. pcl_ros needs new release for melodic.\r\n\r\n#207 fixed this issue for kinetic, maybe we should do the same for lunar too."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/207'
+  title: Filter include dirs that does not exist
+  body: |-
+    Close https://github.com/ros-perception/perception_pcl/issues/172
+    Close https://github.com/ros-perception/perception_pcl/issues/206
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/issues/206'
+  title: '"project include dir problem" '
+  body: "CMake Error at /opt/ros/kinetic/share/pcl_ros/cmake/pcl_rosConfig.cmake:113 (message):\r\n[Project 'pcl_ros' specifies '/usr/include/hdf5/openmpi' as an include dir,\r\n  which is not found.  It does neither exist as an absolute directory nor in\r\n  '/opt/ros/kinetic//usr/include/hdf5/openmpi'. ]"
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/196'
+  title: Fix a bug building on artful.
+  body: "This should fix the errors encountered [here](http://build.ros.org/view/Mbin_uA64/job/Mbin_uA64__pcl_ros__ubuntu_artful_amd64__binary/5/consoleFull).  The comment explains it in more detail.  While we are at it, fix the link in the README.rst to point to the right repository.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>"
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/194'
+  title: Fixup pcl_conversions test
+  body: >-
+    Moved this out of the industrial_ci PR
+    (https://github.com/ros-perception/perception_pcl/pull/192) since we need to
+    fix devel builds.
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/187'
+  title: Refactor CMakeLists.txt and package.xml
+  body: "Close https://github.com/ros-perception/perception_pcl/issues/173\r\n\r\n- Remove dependency on genmsg\r\n- Fix missing find_package of message_filters\r\n\r\n\r\n**Before**\r\n\r\n```\r\n% catkin lint .\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_features.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_filters.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_io.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_segmentation.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_surface.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: unconfigured build_depend on 'message_filters'\r\ncatkin_lint: checked 1 packages and found 6 problems\r\ncatkin_lint: 40 notices have been ignored. Use -W2 to see them\r\n```\r\n\r\n**After**\r\n\r\n```\r\n% catkin lint .\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_features.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_filters.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_io.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_segmentation.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\npcl_ros: error: nodelet plugin file 'plugins/nodelet/libpcl_ros_surface.xml' is not installed to ${CATKIN_PACKAGE_SHARE_DESTINATION}\r\ncatkin_lint: checked 1 packages and found 5 problems\r\ncatkin_lint: 40 notices have been ignored. Use -W2 to see them\r\n```"
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-perception/perception_pcl/issues/186'
+  title: Wiki shows wrong time assignment
+  body: "Hi! \r\nI stumbled across an error at [the wiki page](http://wiki.ros.org/pcl_ros#CA-bcc883441139b09a09cf15205453910ae46b3635_21). At the given line the time is taken as `ros::Time::now::toNSec()` , whereas PCL treats the stamp as microseconds, which is even noted [here](https://github.com/ros-perception/pcl_conversions/blob/indigo-devel/include/pcl_conversions/pcl_conversions.h#L79-L89). I ask for updating the wiki, as this error is really not obvious to track down."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/issues/173'
+  title: Unnecessary dependency on genmsg
+  body: "pcl_ros unnecessarily depends on genmsg. My local version builds without it.\r\nIs the dep there for a reason I am missing? If not I can make a pull request. "
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-perception/perception_pcl/issues/172'
+  title: ros-kinetic-pcl-ros cross-compilation fails due to freetype2 header missing
+  body: "Please excuse my ignorance on reporting issues in GitHub. This is my first time.\r\n\r\nI received the following error why trying to crosscompile my application on and amd64 Ubuntu xenial for aarch64 (arm64) platform:\r\n\r\n> CMake Error at /opt/ros/aarch64-linux-gnu/kinetic/share/pcl_ros/cmake/pcl_rosConfig.cmake:113 (message):\r\n  Project 'pcl_ros' specifies '/usr/include/aarch64-linux-gnu/freetype2' as\r\n  an include dir, which is not found.  It does neither exist as an absolute\r\n  directory nor in\r\n  '/opt/ros/kinetic//usr/include/aarch64-linux-gnu/freetype2'.  Check the\r\n  issue tracker 'https://github.com/ros-perception/perception_pcl/issues' and\r\n  consider creating a ticket if the problem has not been reported yet.\r\nCall Stack (most recent call first):\r\n  /opt/ros/aarch64-linux-gnu/kinetic/share/catkin/cmake/catkinConfig.cmake:76 (find_package)\r\n  cv/freespace_lidar/CMakeLists.txt:10 (find_package) \r\n\r\nThe version of the installed ros-kinetic-pcl-ros is ros-kinetic-pcl-ros/xenial,now 1.4.1-0xenial-20180126-022704-0800 arm64 [installed,automatic].\r\n\r\nThe version of the installed freetype pacakge is libfreetype6-dev/xenial-updates,xenial-security,now 2.6.1-0.1ubuntu2.3 arm64 [installed].\r\n\r\nMy analysis led me to believe that the CMAKE_FIND_ROOT_PATH is not enforced for some reason, and the .cmake looks into the wrong place."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/167'
+  title: 'Drop yakkety from CI: Yakkety went EOL in July'
+  body: >-
+    Close https://github.com/ros-perception/perception_pcl/issues/166
+
+
+    https://discourse.ros.org/t/suspension-of-debian-packaging-for-eol-ubuntu-yakkety/2444
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/issues/166'
+  title: Build fail on yakkety
+  body: "https://travis-ci.org/ros-perception/perception_pcl/jobs/283075014\r\n```\r\n\e[31m\e[1mCMake Error\e[0m at /home/travis/catkin_ws/src/perception_pcl/pcl_ros/CMakeLists.txt:5 (find_package):\r\n  By not providing \"Findcmake_modules.cmake\" in CMAKE_MODULE_PATH this\r\n  project has asked CMake to find a package configuration file provided by\r\n  \"cmake_modules\", but CMake did not find one.\r\n\r\n  Could not find a package configuration file provided by \"cmake_modules\"\r\n  with any of the following names:\r\n\r\n    cmake_modulesConfig.cmake\r\n    cmake_modules-config.cmake\r\n\r\n  Add the installation prefix of \"cmake_modules\" to CMAKE_PREFIX_PATH or set\r\n  \"cmake_modules_DIR\" to a directory containing one of the above files.  If\r\n  \"cmake_modules\" provides a separate development package or SDK, be sure it\r\n  has been installed.\r\n```"
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/162'
+  title: Fix config path of sample_voxel_grid.launch
+  body: null
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/151'
+  title: Qt5 dependency
+  body: "@wkentaro @paulbovbel I'm opening this for visibility and share my findings when looking into the Qt dependency issue and am open to discussion to reduce the scope or close it if it's not considered of interest.\r\nThis is an alternative to https://github.com/ros-perception/perception_pcl/pull/146\r\n\r\nI looked a bit more into this issue #139:\r\nto answer the [comment](https://github.com/ros-perception/perception_pcl/pull/142#issuecomment-298602081):\r\n> I still don't understand why pcl_ros depends on qt..\r\n\r\nIt is because PCL depends on vtk6 rendering tools including the Qt ones. Given that `pcl_ros` finds **all** PCL_LIBRARIES, as a result, `pcl_ros` libraries link against all vtk libraries used by PCL, including the ones depending on Qt.\r\nTo avoid depending and linking against libraries you don't use, it is good practice to `find_package()` only the components that you use. See the [first commit](https://github.com/mikaelarguedas/perception_pcl/commit/f968425079a292c3fc64829150c583bea9af2411) of this PR for a suggestion.\r\n\r\nThis change would **not** allow to get rid of the Qt5Widgets dependency though because the PCL `io` module exports dependencies on Qt5::Widgets (not sure why :confused:)\r\nLooking a bit further into the libraries reported by the PCL IO module, it looks like several of them use Qt: see https://github.com/mikaelarguedas/perception_pcl/commit/54d94db9ae739f8bc8b81abde1f89b22490ad69a for a list.\r\n\r\nAs Far A I Understand, Ubuntu knows it is a problem and decided to make `libpcl-dev` [depend on](https://packages.ubuntu.com/zesty/libpcl-dev) `libvtk6-qt-dev` rather than fixing the root of the problem. That is why this problem doesn't appear on Ubuntu but only on debian Stretch ([no dependency on](https://packages.debian.org/stretch/libpcl-dev) `libvtk6-qt-dev`).\r\n\r\nPossible solutions: \r\n - keep the Qt5Widgets import workaround adding an unused dependency\r\n - merge this PR that allows to get rid of the dependency on Qt but make the CMake code a bit more complex.\r\n\r\nIn the meantime, I'll try to find out why even the io module depends on Qt and where to report the issue to get it fixed upstream"
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-perception/perception_pcl/pull/146'
+  title: Remove dependency on qt5
+  body: 'Following #145'
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-perception/perception_pcl/pull/145'
+  title: Remove dependency on vtk/libproj-dev
+  body: |-
+    > These dependencies were introduced in #124 to temporarily fix
+    > missing / wrong dependencies in upstream vtk. This hack is no longer
+    > necessary, since fixed vtk packages have been uploaded to
+    > packages.ros.org (see #124 and ros-infrastructure/reprepro-updater#32).
+
+    Close #126
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-perception/perception_pcl/pull/141'
+  title: Add dependency on qtbase5-dev for find_package(Qt5Widgets)
+  body: "Testing at https://github.com/ros-perception/perception_pcl/pull/117\r\n\r\nSee https://github.com/ros-perception/perception_pcl/pull/117#issuecomment-298158272 for detail."
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/perception_pcl/pull/140'
+  title: 'Find Qt5Widgets to fix -lQt5::Widgets error'
+  body: 'Fix #139 '
+  repo: 'https://api.github.com/repos/ros-perception/perception_pcl'
+  labels:
+    - bug

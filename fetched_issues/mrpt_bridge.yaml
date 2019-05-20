@@ -1,0 +1,5 @@
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_bridge/pull/2'
+  title: Fix deb stretch
+  body: "There are 2 commits in here:\r\n\r\n1.  The first one makes it so things should compile properly on Debian Stretch, by force adding a Qt5Widgets dependency.\r\n1.  The second one cleans up some build warnings while I was in here."
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_bridge'
+  labels: []

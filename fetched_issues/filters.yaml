@@ -1,0 +1,17 @@
+- url: 'https://github.com/ros/filters/issues/21'
+  title: ROS2 port
+  body: "We are working on laser assembler porting to ROS2 but its dependent on Filters package.\r\nSo we have taken up this package for porting.\r\n"
+  repo: 'https://api.github.com/repos/ros/filters'
+  labels: []
+- url: 'https://github.com/ros/filters/issues/20'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this are available in Melodic, so
+    it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros/filters'
+  labels: []
+- url: 'https://github.com/ros/filters/pull/3'
+  title: Export pluginlib as dependency
+  body: ''
+  repo: 'https://api.github.com/repos/ros/filters'
+  labels: []

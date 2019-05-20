@@ -1,0 +1,155 @@
+- url: 'https://github.com/DLu/roscompile/pull/52'
+  title: Grab Bag of New Features/Bug Fixes
+  body: "# Bug Fixes\r\n * Install misc files with the correct relative path\r\n * Fix msg/srv generator patterns to include some missing corner cases\r\n * Parse CMake commands with parens in them\r\n * Track whether the package.xml has changed and only write when it does. Avoids needless internal whitespace changes with unrelated commands\r\n * Fix overlapping depend/build_depend/exec_depend tags\r\n\r\n# New Features\r\n * Move handling of external Python dependencies to its own command `check_python_dependencies` (previously was part of `check_manifest_dependencies`)\r\n * Improved variable resolution logic\r\n * Improved exception handling (instead of `exit(0)`)\r\n * Internal white space changes are now fixed with their own rule `misc_xml_formatting`\r\n * New command `fix_double_directory_installs`\r\n * Make sure roslint_python includes all the python code\r\n * Misc other changes\r\n"
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels: []
+- url: 'https://github.com/DLu/roscompile/issues/46'
+  title: roscompile does not work with symlinked directories
+  body: "Steps to reproduce:\r\n\r\n```bash\r\nhttps://github.com/ros/std_msgs\r\nmv std_msgs other_name\r\ncd catkin_ws\r\nln -s ~/other_name std_msgs\r\ncd std_msgs\r\nroscompile\r\n```\r\n\r\nNow std_msgs is added as its own dependency. Probably because it is checking against the actual dir name? Instead of the symlinked dir name?\r\n\r\nThe rest of the ROS toolings works fine for symlinked packages by the way."
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels: []
+- url: 'https://github.com/DLu/roscompile/pull/39'
+  title: Bugfix/roslaunch and more
+  body: "This fixes a few bugs I ran into when using roscompile with all options enabled. \r\n\r\nI would recommend adding unit tests using some example data to avoid regressions. This would have probably avoided the first 2 of these bugs.\r\n\r\nStore roslaunch files as strings too to avoid crashes further-up in code\r\n======================================\r\n\r\nIn case you enable `check_misc_installs`, you would run into issue. It is assumed in the code that all values in the `data` dict are strings. However, it seems someone wanted to do more fancy things with roslaunch files and stored it as a launch object instead. This causes other code to crash with certain options (like `check_misc_installs`) enabled. I've chosen to keep everything in the `data` dict as strings again, and only shortly turn those files into launch objects when needed. \r\n\r\nRemoving dumb comments crashed\r\n================================\r\n\r\nThe options `remove_dumb_cmake_comments`, and `remove_dumb_package_comments` both caused crashes. In `src/roscompile/util.py`, the `get(fn)` (from `from resource_retriever import get`) call in `def get_ignore_data_helper(basename)` returns a string immediately, so there is no need to have a `read` call on it. I changed that, and it turned out that (commented) the try/catch would also never be needed, so I removed that too.\r\n\r\nDealing with invalid XMLs\r\n======================\r\n\r\nWhen reading an 'invalid' xml file, the whole roscompile pkg would crash. I fixed this ine \"src/roscompile/launch.py\". We had files that repeatedly used the same block, without using attributes like `name=...` to make the blocks unique. Apparently these are considered invalid by the used xml library, raising an exception and crashing all of roscompile. That exception is now caught and it returns an launch object static that it is not a valid roslaunch xml.\r\n\r\nThis is an example 'invalid' xml file, which would make roscompile crash:\r\n\r\n```xml\r\n<foo>\r\n   <bar>hello</bar>\r\n</foo>\r\n<foo>\r\n  <bar2>bye</bar2>\r\n</foo>\r\n```\r\n"
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels: []
+- url: 'https://github.com/DLu/roscompile/issues/24'
+  title: Double check gencfg
+  body: |
+    -  amcl_gencfg
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/22'
+  title: Plugins Logic Remove RQT Plugins
+  body: ''
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/21'
+  title: 'Adding Messages etc. Does not add message_generation to package.xml '
+  body: ''
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/20'
+  title: Adding a service does not add the generate_messages command
+  body: ''
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/17'
+  title: Default-content 'plugins.xml' file created for MoveIt IKFast plugin pkg
+  body: >
+    With `roscompile` at 90b9fde5.
+
+
+    I have several (IKFast plugin) pkgs that have a `plugins.xml` (but with a
+    different name) in some subdirectory under the root. Running `roscompile` on
+    those pkgs results in a `plugins.xml` file with default content being
+    created in the root of those packages, and an additional `kinematics`
+    element being appended to the `export` section of the `package.xml` file.
+
+
+    As follows (formatting verbatim):
+
+
+    ``` xml
+      <export>
+        <moveit_core plugin="${prefix}/sub_dir/plugins.xml"/>
+      <kinematics plugin="${prefix}/plugins.xml"/></export>
+    ```
+
+
+    As this is a MoveIt plugin, I expect the `moveit_core` export to be correct.
+    Why is `roscompile` adding a `kinematics` entry here?
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/16'
+  title: encoding attribute is stripped from xml pre-amble/prolog
+  body: >
+    With `roscompile` at 90b9fde5.
+
+
+    `roscompile` seems to remove the `encoding` attribute from the xml
+    pre-amble/prolog when updating an xml file.
+
+
+    Before:
+
+
+    ``` xml
+
+    <?xml version='1.0' encoding='ASCII'?>
+
+    ```
+
+
+    After:
+
+
+    ``` xml
+
+    <?xml version="1.0"?>
+
+    ```
+
+
+    The default encoding (when none is specified) would be `utf-8`, but it
+    doesn't seem too nice to strip it off without warning / notice.
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/15'
+  title: foreach() body is moved outside foreach()
+  body: |
+    With `roscompile` at 90b9fde5.
+
+    In a `CMakeLists.txt` with something like the following:
+
+    ``` cmake
+    foreach(dir a b c d)
+      install(
+        DIRECTORY ${dir}/
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
+    endforeach()
+    ```
+
+    Running `roscompile` reorders things and we end up with:
+
+    ``` cmake
+    install(
+      DIRECTORY ${dir}/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir}
+    )
+
+    foreach(dir a b c d)
+    endforeach()
+    ```
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/pull/8'
+  title: Add support for finding rosrun deps in launch files.
+  body: >
+    I've been working on nearly the same tool you have. Here's an additional
+    regex check that finds runtime dependencies in launchfiles that use rosrun
+    to load parameters.
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels: []
+- url: 'https://github.com/DLu/roscompile/issues/2'
+  title: Separate Test Depends
+  body: >
+    Currently does not support test functionality, nor dependencies that are
+    only used in tests. 
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - bug
+- url: 'https://github.com/DLu/roscompile/issues/1'
+  title: Alert for Circular Dependencies
+  body: >
+    Adding dependencies based on launch files/code can sometimes highlight
+    circular dependencies, and therefore break code. 
+  repo: 'https://api.github.com/repos/DLu/roscompile'
+  labels:
+    - enhancement

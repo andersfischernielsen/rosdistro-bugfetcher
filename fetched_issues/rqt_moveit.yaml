@@ -1,0 +1,77 @@
+- url: 'https://github.com/ros-visualization/rqt_moveit/issues/4'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get it released there.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_moveit'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_moveit/issues/2'
+  title: 'rqt_moveit: exception occurs upon rospy.has_param'
+  body: >-
+    _From @130s on April 25, 2013 1:26_
+
+
+    `rospy.has_param` fails to catch an exception that occurs from
+    `/usr/lib/python2.7/httplib.py`. But since I've only seen so far this issue
+    with very specific situation using `rqt_moveit`, i'm reporting it as
+    rqt_moveit issue for now.
+
+
+    Stacktrace:
+
+
+    ```
+
+    [INFO] [WallTime: 1366848119.366552] PluginContainerWidget; 
+
+    Exception in thread Thread-4:
+
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+        self.run()
+      File "/usr/lib/python2.7/threading.py", line 505, in run
+        self.__target(*self.__args, **self.__kwargs)
+      File "/home/user/catkin_ws/src/rqt_robot_plugins/rqt_moveit/src/rqt_moveit/moveit_widget.py", line 228, in _check_params_alive
+        has_param = rospy.has_param(param)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/rospy/client.py", line 536, in has_param
+        return param_name in _param_server #MasterProxy does all the magic for us
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/rospy/msproxy.py", line 184, in __contains__
+        code, msg, value = self.target.hasParam(rospy.names.get_caller_id(), rospy.names.resolve_name(key))
+      File "/usr/lib/python2.7/xmlrpclib.py", line 1224, in __call__
+        return self.__send(self.__name, args)
+      File "/usr/lib/python2.7/xmlrpclib.py", line 1578, in __request
+        verbose=self.__verbose
+      File "/usr/lib/python2.7/xmlrpclib.py", line 1264, in request
+        return self.single_request(host, handler, request_body, verbose)
+      File "/usr/lib/python2.7/xmlrpclib.py", line 1294, in single_request
+        response = h.getresponse(buffering=True)
+      File "/usr/lib/python2.7/httplib.py", line 1022, in getresponse
+        raise ResponseNotReady()
+    ResponseNotReady
+
+    ```
+
+
+    Reproduction steps:
+
+    1. Run `Moveit!` on PR2 (here I don't describ how to do so)
+
+    2. Run `rqt_moveit` on your machine
+
+    3. Once it starts showing the monitored topics, toggle monitor some of the
+    topics, then expand the tree for some of them. Repeat this until you see the
+    error.
+
+
+    `has_param` throws `ROSException`, which is [handled like
+    this](https://github.com/ros-visualization/rqt_robot_plugins/blob/7604936b849e6e3b2cf5e2d6c3577a04b5964fc2/rqt_moveit/src/rqt_moveit/moveit_widget.py#L230).
+
+
+    rqt_robot_plugins SHA 7604936b849e6e3b2cf5e2d6c3577a04b5964fc2
+
+
+
+    _Copied from original issue: ros-visualization/rqt_robot_plugins#23_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_moveit'
+  labels:
+    - bug

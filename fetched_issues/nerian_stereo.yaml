@@ -1,0 +1,10 @@
+- url: 'https://github.com/nerian-vision/nerian_stereo/issues/9'
+  title: 'NameError: global name ''StereoCameraInfo'' is not defined'
+  body: "I can't get the camera info through a ROS node since the message seems to be not defined. Do we need to include `nerian_stereo` as a dependency into our ROS packages? If yes, does adding these lines  to any `package.xml` suffice? Or do we need to do  more?\r\n\r\n```\r\n<build_depend>nerian_stereo</build_depend>\r\n<exec_depend>nerian_stereo</exec_depend>\r\n<build_export_depend>nerian_stereo</build_export_depend>\r\n\r\n```\r\n\r\nBecause right now, `from nerian_stereo import *` is not recognized, and hence `NameError: global name 'StereoCameraInfo' is not defined` is thrown."
+  repo: 'https://api.github.com/repos/nerian-vision/nerian_stereo'
+  labels: []
+- url: 'https://github.com/nerian-vision/nerian_stereo/issues/5'
+  title: Missing `curl` dependencies in shell scripts
+  body: "It seems that `curl` is missing as a dependency in `package.xml` for `nerian_stereo`. \r\nI get `command not found` errors in the following scripts: \r\n\r\nhttps://github.com/nerian-vision/nerian_stereo/blob/70b8b3bb1d81c6ed1b381702574f2569ab80bdc2/scripts/config_device_passthru.sh#L7\r\n\r\nhttps://github.com/nerian-vision/nerian_stereo/blob/70b8b3bb1d81c6ed1b381702574f2569ab80bdc2/scripts/config_device_rectify.sh#L7\r\n\r\nhttps://github.com/nerian-vision/nerian_stereo/blob/70b8b3bb1d81c6ed1b381702574f2569ab80bdc2/scripts/config_device_stereo.sh#L7\r\n\r\nhttps://github.com/nerian-vision/nerian_stereo/blob/70b8b3bb1d81c6ed1b381702574f2569ab80bdc2/scripts/download_calibration.sh#L7\r\n\r\n"
+  repo: 'https://api.github.com/repos/nerian-vision/nerian_stereo'
+  labels: []

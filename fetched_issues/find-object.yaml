@@ -1,0 +1,51 @@
+- url: 'https://github.com/introlab/find-object/issues/83'
+  title: buildtool depend on genmsg?
+  body: "Looking at the package manifest of this package I noticed that it expresses a `buildtool_depend` on `genmsg` ([here](https://github.com/introlab/find-object/blob/2cb9120f7424d2fba13932dc8755b57acb2814a7/package.xml#L13)).\r\n\r\nThe build script doesn't seem to do anything special wrt messages/services or actions, so I'm wondering whether that dependency is really needed. If it was added to be able to build messages, it should not be needed (`message_runtime` and `message_generation` are responsible pulling in the required dependencies).\r\n"
+  repo: 'https://api.github.com/repos/introlab/find-object'
+  labels: []
+- url: 'https://github.com/introlab/find-object/issues/81'
+  title: Unknown interpolation method in function resize
+  body: "Hi,\r\n\r\nFirst, I want to thank you your work and contribution to the ros community. Second, here are some questions I have regarding the installation of find-object package.\r\n\r\nI installed ros-melodic apt and some other packages from source located in my catkin_ws, like find-object. As far as I undestand, opencv3 is a standard on melodic and the library will be automatically installed as specified on http://wiki.ros.org/melodic/Migration#opencv\r\n\r\nThe problem is, I guess, that I also have another opencv version installed (3.4) in /usr/local, which is built with CUDA. Therefore, I see some warning during compilation time:\r\n\r\n> /usr/bin/ld: warning: libopencv_core.so.3.4, needed by /home/nvidia/catkin_ws/devel/lib/libfind_object_2d.so, may conflict with libopencv_core.so.3.2\r\n\r\nAnyway, building find-package from source is so far ok, but as soon as I try to read an image with find_object_2d I'm getting the following error:\r\n\r\n> OpenCV Error: Bad argument (Unknown interpolation method) in resize, file /build/opencv-XDqSFW/opencv-3.2.0+dfsg/modules/imgproc/src/imgwarp.cpp, line 3367\r\n> terminate called after throwing an instance of 'cv::Exception'\r\n>   what():  /build/opencv-XDqSFW/opencv-3.2.0+dfsg/modules/imgproc/src/imgwarp.cpp:3367: error: (-5) Unknown interpolation method in function resize\r\n\r\nIf I install find-object binaries with apt everything is working fine, so I guess there are some conflicts between libraries during compilation from source, isn't it?\r\n\r\nHow should I proceed If I want to be able to build find_object_2d from source but using my own opencv version? Shoudl I uninstall libopencv-dev and rebuild cv_bridge and all its dependencies using opencv 3.4?\r\n\r\n"
+  repo: 'https://api.github.com/repos/introlab/find-object'
+  labels: []
+- url: 'https://github.com/introlab/find-object/issues/55'
+  title: 'consuming more ram while running '
+  body: "![screenshot from 2018-06-07 18-39-56](https://user-images.githubusercontent.com/13959132/41101689-761d4816-6a82-11e8-8400-2f8f7ac5d861.png)\r\ni'm trying out for 3d object detection, i'm getting tf, pose everything correctly, but while running the program for a long time, lot of memory getting consumed and eventually causing system to slow down"
+  repo: 'https://api.github.com/repos/introlab/find-object'
+  labels:
+    - bug
+- url: 'https://github.com/introlab/find-object/issues/29'
+  title: find_object crashes after adding object to scene or adding object by files
+  body: "Hi, I'm having trouble running find-object as it keeps crashing and I keep getting the following error:\r\n\r\n```\r\nOpenCV Error: Unsupported format or combination of formats (type=0\r\n) in buildIndex_, file /home/user/opencv-2.4.13/modules/flann/src/miniflann.cpp, line 315\r\nterminate called after throwing an instance of 'cv::Exception'\r\n  what():  /home/user/opencv-2.4.13/modules/flann/src/miniflann.cpp:315: error: (-210) type=0\r\n in function buildIndex_\r\n\r\n[find_object_3d-1] process has died [pid 4635, exit code -6, \r\ncmd /home/user/catkin_ws/devel/lib/find_object_2d/find_object_2d rgb/image_rect_color:=/kinect2/qhd/image_color_rect depth_registered/image_raw:=/kinect2/qhd/image_depth_rect \r\ndepth_registered/camera_info:=/kinect2/qhd/camera_info __name:=find_object_3d __log:=/home/user/.ros/log/e0a800d0-f234-11e6-91b5-e82aeaab80ce/find_object_3d-1.log].\r\nlog file: /home/user/.ros/log/e0a800d0-f234-11e6-91b5-e82aeaab80ce/find_object_3d-1*.log\r\n\r\n```\r\n\r\nThis happens whenever I import my object or use the take picture option to add an object. I tried the suggestions at the following [link](https://github.com/introlab/find-object/issues/27) and this is what my setup currently looks like:\r\n![image](https://cloud.githubusercontent.com/assets/8877826/22905162/220d46be-f237-11e6-90c9-4546cd7f32b8.png)\r\n\r\nCould you please kindly help?\r\n"
+  repo: 'https://api.github.com/repos/introlab/find-object'
+  labels: []
+- url: 'https://github.com/introlab/find-object/issues/21'
+  title: Color independent object detection
+  body: >
+    Hi!
+
+    Your Repo is awesome, i learned a lot about object detection by reading your
+    code.
+
+
+    I am wondering if all descriptors are color dependent. While the logo with
+    brown background is getting detected, the one with a black background is
+    not: 
+
+    ![color dependent
+    detection](https://cloud.githubusercontent.com/assets/17978263/15985394/c9dad9a6-2feb-11e6-95bc-a418cd02fadc.png)
+
+
+    I rather want to detect the shape of my logo, than the color contrasts so I
+    can detect it in any combination with different backgrounds.
+
+
+    Is that possible with the detection algorithms used by find-object or will I
+    have to use haar cascades for that?
+
+
+    Thanks,
+
+    manu
+  repo: 'https://api.github.com/repos/introlab/find-object'
+  labels: []

@@ -1,0 +1,16 @@
+- url: 'https://github.com/ros/genlisp/issues/9'
+  title: Missing dependencies when generating services
+  body: >
+    There seems to be a bug related to the asd-file generation. When you
+    generate multiple services that depend on different message-packages, only
+    the dependencies of the last compiled service is added to the asd-file.
+
+
+    You can see this bug in action in this repository:
+    https://github.com/phyrog/genlisp_bug
+
+    Just catkin_make it and inspect the generated asd-file. "geometry_msgs" and
+    "std_msgs" should both be listed as dependencies, but only one is listed,
+    depending on which service was generated last.
+  repo: 'https://api.github.com/repos/ros/genlisp'
+  labels: []

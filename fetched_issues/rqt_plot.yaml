@@ -1,0 +1,145 @@
+- url: 'https://github.com/ros-visualization/rqt_plot/pull/30'
+  title: Python 3 fixes
+  body: Removed 3 minor Python 2-isms.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_plot/pull/29'
+  title: 'plot_widget: remove kwarg from str.find in parse_type(..)'
+  body: "As per subject.\r\n\r\nAt least up to Python 3.7 `find(..)` only takes positional arguments ([docs](https://docs.python.org/3.7/library/stdtypes.html#str.find)).\r\n\r\nTriggered by [ros2 crystal rqt_plot error: find() takes no keyword arguments](https://answers.ros.org/question/323177) on ROS Answers.\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_plot/pull/26'
+  title: avoid crash for unknown message types
+  body: 'Fixes #25.'
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_plot/issues/25'
+  title: >-
+    rqt_plot crashes with AttributeError: NoneType object has no attribute
+    __slots__ when typing in name of unknown message class
+  body: "When the message class of the topic typed in to be plotted does not exit, rqt_plot crashes with the following error:\r\n\r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/melodic/lib/python2.7/dist-packages/rqt_plot/plot_widget.py\", line 210, in on_topic_edit_textChanged\r\n    plottable, message = is_plottable(topic_name)\r\n  File \"/opt/ros/melodic/lib/python2.7/dist-packages/rqt_plot/plot_widget.py\", line 110, in is_plottable\r\n    fields, message = get_plot_fields(topic_name)\r\n  File \"/opt/ros/melodic/lib/python2.7/dist-packages/rqt_plot/plot_widget.py\", line 93, in get_plot_fields\r\n    for i, slot in enumerate(field_class.__slots__):\r\nAttributeError: 'NoneType' object has no attribute '__slots__'\r\nAborted (core dumped)\r\n```\r\n\r\nI would expect a warning or message here instead of an abort."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_plot/pull/13'
+  title: 'pyqtgraph < 0.10 fail to run `from pyqtgraph import __version__ `, us…'
+  body: "…e pkg_resources\r\n\r\n@dirk-thomas 's fix at https://github.com/ros-visualization/rqt_common_plugins/pull/415 failing on default kinetic enviroment whcih uses 0.9.10 of python-pyqtgraph https://packages.ubuntu.com/xenial/python-pyqtgraph\r\n\r\n\r\n```\r\n$ rqt_plot /joint_state/position[0]\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/bin/rqt_plot\", line 6, in <module>\r\n    from rqt_plot.plot import Plot\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_plot/plot.py\", line 43, in <module>\r\n    from .data_plot import DataPlot\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_plot/data_plot/__init__.py\", line 44, in <module>\r\n    from .pyqtgraph_data_plot import PyQtGraphDataPlot\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_plot/data_plot/pyqtgraph_data_plot.py\", line 46, in <module>\r\n    from pyqtgraph import __version__ as pyqtgraph_version\r\n  File \"/usr/lib/python2.7/dist-packages/pyqtgraph/__init__.py\", line 13, in <module>\r\n    from .Qt import QtGui\r\n  File \"/usr/lib/python2.7/dist-packages/pyqtgraph/Qt.py\", line 104, in <module>\r\n    from PyQt4 import QtGui, QtCore, uic\r\nRuntimeError: the PyQt4.QtCore and PyQt5.QtCore modules both wrap the QObject class\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_plot/issues/11'
+  title: plot export TypeError
+  body: "I use rqt_plot in ROS Kinetic to plot an angular velocity:\r\n`rqt_plot /rovio/odometry/twist/twist/angular/y`\r\n\r\nThen I get a nice plot, which I want to export. So I get the dropdown menu using the right mouse button and select export. Then I select in the pop-up menu: \r\n- Item to export: Entire Scene > Plot > Viewbox\r\n- Export format: Image File (PNG, TIF, JPG, ...)\r\n- Export options: params (default values):\r\n    * width: 678\r\n    * height: 312\r\n    * antialias: true\r\n    * background: white (= #ffffff)\r\n\r\nWhen I then press \"export\", I get a browser to specify the location of the image to be created, and when I enter a name and save the image in a .png format, I get the following error message in the terminal and the image is not created:\r\n\r\n`Traceback (most recent call last):\r\n  File \"/usr/lib/python2.7/dist-packages/pyqtgraph/exporters/Exporter.py\", line 77, in fileSaveFinished\r\n    self.export(fileName=fileName, **self.fileDialog.opts)\r\n  File \"/usr/lib/python2.7/dist-packages/pyqtgraph/exporters/ImageExporter.py\", line 70, in export\r\n    bg = np.empty((self.params['width'], self.params['height'], 4), dtype=np.ubyte)\r\nTypeError: 'float' object cannot be interpreted as an index` \r\n\r\nAny idea what goes wrong here?"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_plot/issues/7'
+  title: topic syntax is ambiguous "Invalid topic spec"
+  body: >-
+    _From @sloretz on October 20, 2016 1:30_
+
+
+    rqt_plot uses slashes to specify the value in a published message that
+    should be plotted. This syntax leads to the error "PlotWidget.update_plot():
+    error in rosplot: Invalid topic spec [...]" in cases like the following
+
+
+    To reproduce
+
+    1. save the following as simple_pub.py and make it executable with chmod
+       
+       ```
+       #!/usr/bin/env python
+       
+       import rospy
+       import std_msgs
+       import sys
+       import random
+       rospy.init_node("simple_pub", anonymous=True)
+       pub = rospy.Publisher(sys.argv[1], std_msgs.msg.Float32, queue_size=10)
+       r = rospy.Rate(10)
+       while not rospy.is_shutdown():
+           r.sleep()
+           msg = std_msgs.msg.Float32()
+           msg.data = random.random()
+           pub.publish(msg)
+       ```
+    2. open 4 terminals, one with each command
+       - roscore
+       - ./simple_pub.py imu/data
+       - ./simple_pub.py imu/data/processed
+       - rqt_plot
+    3. Type the following into the topic box and press the green + to add them
+    to the plot
+       1. /imu/data/data
+       2. /imu/data/processed/data
+    4. rqt_plot will correctly plot the first topic, /imu/data/data. The second
+    topic will not be plotted, and the terminal from which rqt_plot was started
+    will spam
+       
+       ```
+       PlotWidget.update_plot(): error in rosplot: Invalid topic spec [/imu/data/processed/data]: 'Float32' object has no attribute 'processed'
+       ```
+
+    This can be fixed by changing the character used to separate message fields.
+    I think the ':' character is a good choice
+
+    - /imu/data:data
+
+    - /imu/data/processed:data
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#402_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_plot/issues/1'
+  title: >-
+    (matplot only) shows strange output after running for ~5 minutes
+    (progressively gets worse)
+  body: >-
+    _From @ablasdel on January 28, 2013 22:30_
+
+
+    Migrated from https://github.com/ros-visualization/rqt/issues/48
+
+
+    ---
+
+
+    The
+    issue:![snapshot14](https://f.cloud.github.com/assets/2374428/4739/ca0814d2-431f-11e2-84a6-a7f1dfe59dc4.png)
+
+
+    steps to duplicate
+
+    execute the UnderstandingTopics tutorial
+    (http://www.ros.org/wiki/ROS/Tutorials/UnderstandingTopics)
+
+    leave the rqt_plot open for an extended period of time.
+
+    You will see the following:
+
+    ![after](https://f.cloud.github.com/assets/2374428/4776/df579af4-4321-11e2-997d-bc8c5d1fda9f.png)
+
+
+    It should look like the following (it starts this way and progressively gets
+    worse:
+
+    ![before1](https://f.cloud.github.com/assets/2374428/4782/33dcb488-4322-11e2-966d-a1a430b8ac7f.png)
+
+
+    groovy
+
+    using rqt 1.5
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#19_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_plot'
+  labels:
+    - bug

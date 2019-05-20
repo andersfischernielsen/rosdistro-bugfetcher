@@ -1,0 +1,25 @@
+- url: 'https://github.com/ipa320/cob_common/issues/265'
+  title: '[cob_drive_wheel] fix physics for gazebo - base drifting'
+  body: "as mentioned and observed by @ipa-pfs both `cob` and `raw` are spinning when simulated in gazebo although no command is sent, i.e .they start spinning right after being spawned\r\n\r\nthis seems to be a physics (inertia, friction) problem of the base, most likely the `drive_wheel` model, as it can be observed that:\r\n - no command is sent by `cob_omni_drive_controller`\r\n - wheels are not oriented towards the observed motion\r\n - not all wheels are rotating/moving (check frames in rviz and gazebo in wireframe view)"
+  repo: 'https://api.github.com/repos/ipa320/cob_common'
+  labels:
+    - bug
+    - sw
+- url: 'https://github.com/ipa320/cob_common/issues/251'
+  title: '[FDM] wrong wheel radius'
+  body: "currently used: 0.08m radius (=0.16m diameter)\r\ncorrect is: 0.0782 radius (=0.1564m diameter)\r\n\r\ndefined in https://github.com/ipa320/cob_common/blob/indigo_dev/cob_description/urdf/cob4_base/base.urdf.xacro#L12"
+  repo: 'https://api.github.com/repos/ipa320/cob_common'
+  labels:
+    - bug
+    - sw
+- url: 'https://github.com/ipa320/cob_common/pull/227'
+  title: copy cob4_arm description
+  body: "this PR copies `schunk_lwa4p_extended` description from `schunk_description` to `cob4_arm` in `cob_description`\r\n\r\nthis allows `cob_robots` to get rid of the dependency to `schunk_description`.\r\n`schunk_lwa4p_extended` isn't a schunk product anyway...it's cob4-specific\r\n\r\nI decided to keep `schunk_lwa4p_extended` in `schunk_description` as it is used in `schunk_robots`, e.g. by @ipa-bfb "
+  repo: 'https://api.github.com/repos/ipa320/cob_common'
+  labels: []
+- url: 'https://github.com/ipa320/cob_common/pull/172'
+  title: 'cob_srvs: Adding SetOperationMode and Trigger services'
+  body: |2
+     Adding SetOperationMode and Trigger services from older branches. Required dependency for ipa_canopen_ros package
+  repo: 'https://api.github.com/repos/ipa320/cob_common'
+  labels: []

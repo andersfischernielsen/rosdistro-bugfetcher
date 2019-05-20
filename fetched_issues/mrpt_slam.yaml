@@ -1,0 +1,34 @@
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_slam/issues/57'
+  title: Missing csl_common dependency found in .launch
+  body: "I'm currently doing some research on static analysis of ROS packages at the IT University of Copenhagen, more specifically dependency checking of `.launch` files in ROS packages.\r\n\r\nThere seems to be a `$(find csl_common)` in\r\n\r\n- `mrpt_slam/mrpt_graphslam_2d/launch/setup_robot_for_mr_demo.launch`\r\nthat's not declared in `mrpt_slam/mrpt_graphslam_2d`\r\n\r\nInstalling `mrpt_slam` without having `csl_common` installed would make `roslaunch` fail on this `.launch` file, right?\r\n\r\nI'm unsure whether this is a dependency bug, since it is only in one specific demo configuration. Nonetheless, `roslaunch` would fail, right?"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_slam'
+  labels:
+    - wontfix
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_slam/issues/45'
+  title: 'TO-DO: cannot release to ROS melodic'
+  body: "Due a missing dep: multimaster_msgs_fkie\r\n\r\nTo do: either,\r\n- Remove the dependency\r\n- Contribute a release to melodic of that pkg."
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_slam'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_slam/pull/20'
+  title: Fixes and cleanups for config files
+  body: "This PR \r\n* fixes #19 \r\n* adds tests for launch files\r\n* improves description and adds missing dependencies to package.xml"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_slam'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_slam/pull/6'
+  title: Adding mrpt navigation travis
+  body: >
+    This PR adds mrpt_navigation dependency in travis and increases the number
+    of catking_make parallel jobs. It should make build of the PR
+    https://github.com/mrpt-ros-pkg/mrpt_slam/pull/5 successful in travis.
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_slam'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_slam/pull/2'
+  title: Cleanup of the CMakeLists files
+  body: >
+    Now this repo should have a clean build.
+
+
+    I removed dependency from `mrpt_libs`, because I couldn't find anything like
+    it. I am not sure about this change.
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_slam'
+  labels: []

@@ -1,0 +1,11 @@
+- url: 'https://github.com/ros-visualization/rqt_publisher/pull/6'
+  title: Cleaning up publisher on shutdown
+  body: This adds logic to shutdown to cleanup the plugin's publishers.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_publisher'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_publisher/pull/2'
+  title: Port to ROS2
+  body: "This ports rqt_publisher to ROS2. It depends on on the following PRs.\r\n\r\nEdit: Now depends on\r\nhttps://github.com/ros-visualization/rqt/pull/161\r\nhttps://github.com/ros-visualization/rqt/pull/162\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_publisher'
+  labels: []

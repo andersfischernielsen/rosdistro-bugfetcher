@@ -1,0 +1,7 @@
+- url: 'https://github.com/ros-controls/realtime_tools/pull/9'
+  title: Cleaned up CMake and removed unnecessary dependencies
+  body: >
+    Very simple cleanup per ROS standards and catkin_lint. This PR is for the
+    indigo branch.
+  repo: 'https://api.github.com/repos/ros-controls/realtime_tools'
+  labels: []

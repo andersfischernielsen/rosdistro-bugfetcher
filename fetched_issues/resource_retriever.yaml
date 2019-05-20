@@ -1,0 +1,57 @@
+- url: 'https://github.com/ros/resource_retriever/pull/25'
+  title: 'depend on curl (libcurl-dev, curl) for packaging'
+  body: "Defining the dependency on `curl` allows us to not build it from source but just depend on the upstream version.\r\nCopied from: https://github.com/ros2-gbp/resource_retriever-release/tree/5597bf018cfe1bcf3e323c50801bb89c946e9061/ubuntu/libcurl_vendor\r\n\r\nThe key resolves to `libcurl-dev` and `curl`: \r\nhttps://github.com/ros/rosdistro/blob/f236f31615f7eb1667e94cba66f212ddcb80829b/rosdep/base.yaml#L524\r\n\r\n@nuclearsandwich @wjwwood @clalancette FYI"
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels: []
+- url: 'https://github.com/ros/resource_retriever/issues/21'
+  title: 'ROS 2: find_package doesn''t populate the INCLUDE_DIRS variable as expected'
+  body: "In RViz2, we're using resource_retriever as a dependency. When doing a `find_package(resource_retriever REQUIRED)` I would have expected the variable `resource_retriever_INCLUDE_DIRS` to contain the path to the include files of resource retriever and its dependencies.\r\n\r\nHowever, it only contains the paths to the includes of its dependencies (in an isolated build, e.g. ` <path_to_ros2>/install_isolated/ament_index_cpp/include;/usr/include/x86_64-linux-gnu`). Is this expected behaviour? If yes, how do I get the correct include paths for building static and object libraries? \r\n\r\nBackground: When building all rviz2 libraries dynamically, everything works fine (I don't quite understand how, but `ament_export_interfaces` seems to play a role), but in order to have tests for its default plugins, I want to build a static library of `rviz_default_plugins` as well - at that point, ament can't find the correct includes of `resource_retriever` anymore. "
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels: []
+- url: 'https://github.com/ros/resource_retriever/pull/20'
+  title: 'add missing dependency on pkg-config (#19)'
+  body: Cherry picked from the `ros2` branch.
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels: []
+- url: 'https://github.com/ros/resource_retriever/pull/19'
+  title: add missing dependency on pkg-config
+  body: >-
+    After being merged this patch needs to be cherry-picked into the `ardent`
+    branch and a new patch release has to be made.
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels:
+    - bug
+- url: 'https://github.com/ros/resource_retriever/issues/15'
+  title: resource_retriever fails when trying to cross-compile with aarch64-linux-gnu
+  body: "When trying to cross-compile using the instructions at: https://github.com/ros2/ros2/tree/master/arm_crosscompilation\r\n\r\nIt fails with the following:\r\n\r\n\r\nProcess package 'resource_retriever' with context:\r\n--------------------------------------------------------------------------------\r\n source_space => /home/amar/ros2_ws/src/ros/resource_retriever/resource_retriever\r\n  build_space => /home/amar/ros2_ws/build/resource_retriever\r\ninstall_space => /home/amar/ros2_ws/install\r\n   make_flags => -j4, -l4\r\n  build_tests => False\r\n--------------------------------------------------------------------------------\r\n+++ Building 'resource_retriever'\r\n==> '. /home/amar/ros2_ws/build/resource_retriever/cmake__build.sh && /usr/bin/cmake /home/amar/ros2_ws/src/ros/resource_retriever/resource_retriever -DBUILD_TESTING=0 -DCMAKE_TOOLCHAIN_FILE=/home/amar/ros2_ws/aarch64_toolchainfile.cmake -DTHIRDPARTY=ON -DCMAKE_INSTALL_PREFIX=/home/amar/ros2_ws/install' in '/home/amar/ros2_ws/build/resource_retriever'\r\n/usr/bin/cmake: /home/amar/ros2_ws/install/opt/libcurl_vendor/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\r\n-- Found ament_cmake_ros: 0.4.0 (/home/amar/ros2_ws/install/share/ament_cmake_ros/cmake)\r\n-- Using PYTHON_EXECUTABLE: /usr/bin/python3\r\n-- Found ament_index_cpp: 0.4.0 (/home/amar/ros2_ws/install/share/ament_index_cpp/cmake)\r\n-- Found libcurl_vendor: 2.0.0 (/home/amar/ros2_ws/install/share/libcurl_vendor/cmake)\r\n-- Checking for one of the modules 'libcurl'\r\n-- CURL_FOUND: 1\r\n-- CURL_LIBRARIES: curl\r\n-- CURL_LIBRARY_DIRS: /home/amar/ros2_ws/build/libcurl_vendor/libcurl_install/lib\r\n-- CURL_INCLUDE_DIRS: /home/amar/ros2_ws/build/libcurl_vendor/libcurl_install/include\r\n-- library: curl\r\nCMake Error: The following variables are used in this project, but they are set to NOTFOUND.\r\nPlease set them or make sure they are set and tested correctly in the CMake files:\r\nlibrary_abs\r\n    linked by target \"resource_retriever\" in directory /home/amar/ros2_ws/src/ros/resource_retriever/resource_retriever\r\n\r\n-- Configuring incomplete, errors occurred!\r\nSee also \"/home/amar/ros2_ws/build/resource_retriever/CMakeFiles/CMakeOutput.log\".\r\n<== Command '. /home/amar/ros2_ws/build/resource_retriever/cmake__build.sh && /usr/bin/cmake /home/amar/ros2_ws/src/ros/resource_retriever/resource_retriever -DBUILD_TESTING=0 -DCMAKE_TOOLCHAIN_FILE=/home/amar/ros2_ws/aarch64_toolchainfile.cmake -DTHIRDPARTY=ON -DCMAKE_INSTALL_PREFIX=/home/amar/ros2_ws/install' failed in '/home/amar/ros2_ws/build/resource_retriever' with exit code '1'\r\n\r\n<== Command '. /home/amar/ros2_ws/build/resource_retriever/cmake__build.sh && /usr/bin/cmake /home/amar/ros2_ws/src/ros/resource_retriever/resource_retriever -DBUILD_TESTING=0 -DCMAKE_TOOLCHAIN_FILE=/home/amar/ros2_ws/aarch64_toolchainfile.cmake -DTHIRDPARTY=ON -DCMAKE_INSTALL_PREFIX=/home/amar/ros2_ws/install' failed in '/home/amar/ros2_ws/build/resource_retriever' with exit code '1'\r\n"
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels:
+    - bug
+- url: 'https://github.com/ros/resource_retriever/pull/13'
+  title: add visibility control and fix dependencies exports
+  body: "Connects to ros/pluginlib#90\r\n\r\nready for review (no labels yet)"
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels: []
+- url: 'https://github.com/ros/resource_retriever/pull/7'
+  title: Gracefully degrade to private undefined copy constructor for C++03.
+  body: >
+    This PR degrades to using a private declared-but-not-defined copy
+    constructor for compilers pre-C++11. I'm not necessarily of the opinion this
+    should be merged, but it is worth consideration.
+
+
+    `rviz` for example is compiling with a warning because it is not enabling
+    C++11 support while it is including `retriever.h`. The fact that this is a
+    warning and not an error is actually a bit surprising to me, but basically
+    `resource_retriever` has two choices: either require everything depending on
+    it to compile with C++11 support (or later), or be pragmatic and avoid C++11
+    features in the public header.
+
+
+    Another question is: if `resource_retriever` requires C++11 support to use,
+    should this be communicated somehow? Forcing compiler flags using
+    catkin/cmake seems like a bad idea. The warning currently generated by gcc
+    might already be sufficient I suppose, in which case no action is required
+    at all and this can be closed :)
+  repo: 'https://api.github.com/repos/ros/resource_retriever'
+  labels: []

@@ -1,0 +1,13 @@
+- url: 'https://github.com/ros-drivers/omron/pull/7'
+  title: Require at least Boost 1.47
+  body: >
+    I realise `indigo-devel` implies certain minimum versions of dependencies,
+    but I always prefer making things explicit.
+
+
+    Proposed change makes the configuration phase error out if Boost is not >=
+    1.47.0, which is required by the eip library code (according to
+    [boost/asio/doc/history.qbk](https://github.com/boostorg/asio/blob/ccb7292b2d48803f8f47f709b5758219fef12715/doc/history.qbk#L434-L435),
+    `asio::buffer_copy(..)` was introduced in 1.47.0).
+  repo: 'https://api.github.com/repos/ros-drivers/omron'
+  labels: []

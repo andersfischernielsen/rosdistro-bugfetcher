@@ -1,0 +1,150 @@
+- url: 'https://github.com/ros/cmake_modules/issues/48'
+  title: FindUUID module causes linking errors
+  body: "In ROS Melodic the `FindUUID` module causes addition of an obviously invalid `-lUUID::UUID` flag to linker options when `cmake_modules` is added as a `<build_depend>` (even if `libuuid` itself is not used at all in the code).\r\n\r\nCompilation/linking error looks like this:\r\n```\r\n/usr/bin/ld: cannot find -lUUID::UUID\r\n```\r\n\r\nIn our case simple removal of the file (`/opt/ros/melodic/share/cmake_modules/cmake/Modules/FindUUID.cmake`) solved the problem, but I'm not sure if it's a solution or a workaround."
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels:
+    - bug
+    - needs more information
+- url: 'https://github.com/ros/cmake_modules/issues/41'
+  title: Depending on FindEigen3.cmake is not portable
+  body: >
+    It was decided to deprecate the `FindEigen.cmake` provided in this package
+    in favor of the "upstream" `FindEigen3.cmake`. However, there is no real
+    upstream `FindEigen3.cmake`. It was added tot he Eigen source tree as an
+    example, or something developers can copy for their own project. It was
+    never meant to be installed system wide [1].
+
+
+    For some reason the Ubuntu packagers are installing the file in a system
+    wide path. However, depending on that is far from portable. This guideline
+    of depending on `FindEigen3.cmake` breaks at least on Arch and Gentoo, and
+    undoubtedly more distributions.
+
+
+    [1] http://eigen.tuxfamily.org/bz/show_bug.cgi?id=1219
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels: []
+- url: 'https://github.com/ros/cmake_modules/issues/27'
+  title: Problem using GSL
+  body: >
+    Hi,
+
+
+    I stumbled upon this catkin package while trying to use GSL library in my
+    ros node in Hydro. I did the following:
+
+    1. Downloaded the package to catkin src/ folder
+
+    2. Added <build_depend>cmake_modules</build_depend> in package.xml in the
+    node in which I want to use GSL
+
+    3. Added find_package(catkin REQUIRED COMPONENTS ... cmake_modules ...) in
+    CMakeLists.txt
+
+    4. Added find_package(GSL REQUIRED) in CMakeLists.txt
+
+
+    When I do catkin_make I get the following error
+
+     PKGCONFIG() indicates that gsl is not installed (install the package which contains gsl.pc if you want to support this feature)
+    FindGSL.cmake: gsl-config/pkg-config gsl not found. Please set it manually.
+    GSL_CONFIG=GSL_CONFIG-NOTFOUND
+
+    CMake Error at cmake_modules/cmake/Modules/FindGSL.cmake:173 (MESSAGE):
+      GSL required, please specify it's location.
+
+    Is GSL not included in this package ? What am I missing. Sorry if the
+    question is very basic.
+
+
+    Thanks.
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels: []
+- url: 'https://github.com/ros/cmake_modules/issues/21'
+  title: Prepend vs. Append of CMAKE_MODULE_PATH
+  body: >
+    In both
+
+    https://github.com/ros/cmake_modules/blob/0.3-devel/cmake/cmake_modules-extras.cmake.develspace.in#L2
+
+    and
+
+    https://github.com/ros/cmake_modules/blob/0.3-devel/cmake/cmake_modules-extras.cmake.installspace.in#L2
+
+    you prepend your own modules to the CMAKE_MODULE_PATH. This has the
+    disadvantage that I cannot prepend my own FindPACKAGE.cmake paths and
+    thereby replace your FindPACKAGE.cmake files with my own. I need to replace
+    your FindPACKAGE.cmake files by my own because the customization via
+    PACKAGE_ROOT_DIR is not enough as I have my libraries in architecture (32/64
+    bit) dependent subdirectories. Additionally this solution would safe me the
+    work of specifying each PACKAGE_ROOT_DIR manually.
+
+
+    What would be the disadvantages of appending your modules to the
+    CMAKE_MODULE_PATH? As I see it all the provided find scripts are for
+    libraries which are not included in standard cmake anyways. 
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels: []
+- url: 'https://github.com/ros/cmake_modules/pull/18'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels: []
+- url: 'https://github.com/ros/cmake_modules/issues/4'
+  title: Update all ROS packages to use this copy of FindTinyXML.cmake
+  body: >
+    These are the ROS packages which need touching (all I could find):
+
+    - [x] `rospack` https://github.com/ros/rospack/issues/24 @dirk-thomas
+
+    - [x] `pluginlib` https://github.com/ros/pluginlib/issues/18 @mirzashah
+    @esteve
+
+    - [x] `collada_urdf` https://github.com/ros/robot_model/issues/30 @isucan
+
+    - [x] `kdl_parser` https://github.com/ros/robot_model/issues/30 @isucan
+
+    - [x] `urdf` https://github.com/ros/robot_model/issues/30 @isucan
+
+    - [x] `srdfdom` https://github.com/ros-planning/srdfdom/issues/4 @isucan
+
+    - [x] `ros_control` https://github.com/ros-controls/ros_control/issues/98
+    @davetcoleman
+
+    - [x] `urdfdom` This is not a catkin package, so it will not depend on this
+    package.
+
+
+    You can see how to use this package:
+
+
+    https://github.com/ros/cmake_modules/blob/master/README.md#usage
+
+
+    And an example package:
+
+
+    https://github.com/ros/cmake_modules/tree/master/tests/test_find_tinyxml
+  repo: 'https://api.github.com/repos/ros/cmake_modules'
+  labels: []

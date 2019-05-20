@@ -1,0 +1,57 @@
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/24'
+  title: Bad UTM Transformation
+  body: "Comparing the geodesy and pygeodesy modules:\r\n```\r\nfrom pygeodesy import utm as pyutm\r\nfrom geodesy import utm\r\nlatlon=(-41.0,147.0)\r\npyutm.toUtm(latlon[0],latlon[1]) # [Z:55, H:S, E:500000, N:5461243]\r\nutm.fromLatLong(latlon[0],latlon[1]).toPoint() # x: 500000.0 y: -4538757.06191 z: 0.0\r\n```\r\nEasting seems to be fine, Northing is the problem:\r\n```\r\nlatlon=(-40.0,146.0)\r\npyutm.toUtm(latlon[0],latlon[1]) # [Z:55, H:S, E:414640, N:5571764]\r\nutm.fromLatLong(latlon[0],latlon[1]).toPoint() # x: 414639.538157 y: -4428236.06463 z: 0.0\r\n```\r\nConfirmed that the pygeodesy module is giving correct UTMs according to [geoplaner](https://www.geoplaner.com/). Am I missing an important aspect of the geodesy.py namespace?"
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/15'
+  title: Jade release?
+  body: |
+    Geodesy is a dependency of `novatel_span_driver`.
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/geographic_info/pull/13'
+  title: add missing dependency to catkin_package()
+  body: >
+    Message generation depends on geometry_msgs, thus this dependency must be
+    propagated in catkin_package().
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/10'
+  title: 'geographic_info: metapackage deprecation warning is misleading'
+  body: >
+    The metapackage `<description>` says:
+
+
+    > Geographic information metapackage. DEPRECATED for wet packages, use only
+    to resolve dry stack dependencies.
+
+
+    Although intended only to describe the metapackage itself, this appears to
+    deprecate the entire repository, which is confusing. 
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/9'
+  title: ROS Hydro header file installation bug
+  body: >
+    The geodesy headers are installed to
+    `/opt/ros/hydro/include/geodesy/include/geodesy/*.h` instead of
+    `/opt/ros/hydro/include/geodesy/*.h`.
+
+
+    Thus the headers are not found if you try to build a dependent package.
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels: []
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/6'
+  title: 'geodesy: remove unnecessary dependencies on roscpp and rospy'
+  body: |
+    Only the catkin version needs to be fixed.
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-geographic-info/geographic_info/issues/3'
+  title: convert to catkin for Hydro
+  body: |
+    Needed so wet packages can depend on these interfaces.
+  repo: 'https://api.github.com/repos/ros-geographic-info/geographic_info'
+  labels:
+    - enhancement

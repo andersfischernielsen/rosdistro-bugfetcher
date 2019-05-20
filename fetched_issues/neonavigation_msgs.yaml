@@ -1,0 +1,10 @@
+- url: 'https://github.com/at-wat/neonavigation_msgs/pull/5'
+  title: Fix package dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/at-wat/neonavigation_msgs'
+  labels: []
+- url: 'https://github.com/at-wat/neonavigation_msgs/pull/2'
+  title: Fix package dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/at-wat/neonavigation_msgs'
+  labels: []

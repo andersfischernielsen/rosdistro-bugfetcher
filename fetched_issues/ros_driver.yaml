@@ -1,0 +1,10 @@
+- url: 'https://github.com/ensenso/ros_driver/issues/3'
+  title: Consider adding a xacro macro of supported cameras
+  body: "@gavanderhoorn in https://github.com/ensenso/ros_driver/issues/2#issuecomment-344509305:\r\n> would you consider providing a `ensenso_description` (or `ensenso_support`, depending on how many products you intend to support) in combination with the driver?\r\n> \r\n> That would allow you to standardise these frame/link names easily in a urdf, and remove the burden of modelling the camera from your users.\r\n"
+  repo: 'https://api.github.com/repos/ensenso/ros_driver'
+  labels: []
+- url: 'https://github.com/ensenso/ros_driver/issues/2'
+  title: Consider not using 'map' as the default frame
+  body: "`map` is really more typically used with mobile robots to provide a reference for a global frame that associated with a map. See also [REP-105: Coordinate Frames for Mobile Platforms - map](http://www.ros.org/reps/rep-0105.html#map).\r\n\r\nIt *is* the default frame that RViz starts with, but this is typically worked around by either providing a custom RViz config file that already uses a different frame, or by documenting the steps needed to change the *Fixed Frame*. Another option is to use the `-f` or `--fixed-frame` command line option, which should allow you to specificy a frame while starting RViz.\r\n\r\nTo be more in-line with other ROS camera drivers, perhaps `${prefix}_rgb_optical_frame` and `${prefix}_(ir|depth)_optical_frame` (as needed) might be more appropriate for the sensor locations, and `camera_link` for the base frame of the entire camera (this of course depends on the frames that are actually needed for the different parts of the physical device).\r\n"
+  repo: 'https://api.github.com/repos/ensenso/ros_driver'
+  labels: []

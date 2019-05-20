@@ -1,0 +1,7 @@
+- url: 'https://github.com/ros-drivers/four_wheel_steering_msgs/issues/3'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies of four_wheel_steering_msgs are available in
+    Melodic, so it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-drivers/four_wheel_steering_msgs'
+  labels: []

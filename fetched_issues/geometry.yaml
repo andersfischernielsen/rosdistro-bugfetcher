@@ -1,0 +1,237 @@
+- url: 'https://github.com/ros/geometry/issues/189'
+  title: Drop graphviz dependency from tf
+  body: "It would be nice to split `view_frames` into a new package `tf_tools` or similar to get rid of the graphviz dependency on headless systems.\r\n\r\n(Similar to https://github.com/ros/actionlib/issues/129)"
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros/geometry/issues/188'
+  title: 'tf2_ros::threading_error screen flood'
+  body: "This morning at 3 am I watched my computer screen get flooded with this error message. There is no documentation about what this really means or the actual solution. More importantly it is not an appropriate response to just flood the message on the output. \r\n\r\n`\r\ntf2_ros::threading_error\_= \"Do not\_call\_canTransform or lookupTransform with a timeout unless you are using another thread for populating data. Without a dedicated thread it will always timeout. If you have a seperate thread servicing tf messages,\_call\_setUsingDedicatedThread(true) on your Buffer instance.\"\r\n--\r\n`\r\nBeen working on this code for weeks (Ariac competition) to control UR10 arms. Only worked with one arm up until this morning when I added the ability to work with both arms. I don't need threading since the code runs much faster than the arms handle the movement. I can send a command to one arm, calculate what needs doing on the other one to send it command, and then wait. Never saw this message until I started calling the code alternating between the arms. The code is not reentrant since each arm has its own instance of the C++ objects. \r\n\r\nWhy a separate thread? I thought that was what ros::spinner is supposed to handle. \r\n\r\nWhat is the solution? Create a thread with just tf2_ros::Buffer and tf2_ros::TransformListener? Then use that buffer instance when calling transforms? \r\n\r\nGot just over 24 hours to figure this out and a lot more to do for the competition so don't have time to experiment. "
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/166'
+  title: 'Does tf::MessageFilter exist for rospy?'
+  body: "Greetings,\r\n\r\nI'm learning ROS with a colleague who's more experienced and as a way to learn quickly, I'm translating some of his code into python. This is also a way to see if there are any deficiencies of python overall for ROS development (he's advocating I learn C++, and I'd hope to stick with a language I already know).\r\n\r\nI came across his use of `tf::MessageFilter` and wondered what the official stance is on using it via `rospy`. I saw this on the [C++ api page](http://docs.ros.org/melodic/api/tf/html/c++/):\r\n\r\n> The tf::MessageFilter is the recommended method for receiving almost any sensor data from ROS.\r\n\r\nI also found [this question](https://answers.ros.org/question/49069/is-there-a-tfmessagefilter-in-the-tf-python-api/) from 2012 suggesting it might not exist for python. It's 6yrs later, so I thought I might just ask at the source.\r\n\r\nThe quote from the C++ api implies it's pretty important. If it doesn't exist for rospy, is there a desire to have it implemented? Or is the official recommendation to use something like the answer at that question (i.e. roll one's own python implementation)? I would be happy to try contributing, either to code porting or putting a DIY example somewhere on the wiki for reference for other python users."
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/pull/157'
+  title: Remove dependency on cmake_modules
+  body: This is not needed anymore with the move from Eigen to Eigen3 in 707eb41.
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/152'
+  title: >-
+    `getFrameStrings()` fails if it called just after `rospy.init_node()` from
+    tf 1.11.9
+  body: "I have travous on tf 1.11.9, where `getFrameStrings()` fails if it called just after `rospy.init_node()`\r\n```\r\n$ ./hoge.py \r\nTraceback (most recent call last):\r\n  File \"./hoge.py\", line 8, in <module>\r\n    print tflistener.getFrameStrings()\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/tf/listener.py\", line 98, in getFrameStrings\r\n    return [p for p, _ in data.items()]\r\n```\r\nthe code is\r\n```\r\n$ cat hoge.py \r\n#!/usr/bin/env python\r\n\r\nimport rospy\r\nimport tf\r\nimport time\r\nrospy.init_node('test_tf')\r\ntflistener = tf.TransformListener()\r\n#time.sleep(1)\r\nprint tflistener.getFrameStrings()\r\n```\r\nand if we comment in `time.sleep()` then it works ok.This does not happens on 1.11.8, so maybe because of #149.\r\nI do not well understand how `tflistener.getFrameStrings` called on 1.11.8, but for example, we can avoid this problem by.\r\n```\r\n    def getFrameStrings(self):\r\n        \"\"\" Not a recommended API, only here for backwards compatibility \"\"\"\r\n        data = yaml.load(self._buffer.all_frames_as_yaml())\r\n        return data and [p for p, _ in data.items()]\r\n```"
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/146'
+  title: >-
+    tf: `transform_listener.cpp` includes boost/ublas, which fails with Boost
+    1.64
+  body: "When updating to the current Boost version 1.64, compiling tf fails in `transform_listener.cpp` with:\r\n```\r\n| [ 39%] Building CXX object CMakeFiles/tf.dir/src/transform_listener.cpp.o\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot-native/usr/bin/i586-oe-linux/i586-oe-linux-g++   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"tf\\\" -Dtf_EXPORTS -I/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/build/devel/include -I/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include -I/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/opt/ros/indigo/include -I/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/geometry-1.11.8/tf/include  -m32 -march=i586  --sysroot=/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot  -O2 -pipe -g -feliminate-unused-debug-types -fdebug-prefix-map=/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0=/usr/src/debug/tf/1.11.8-r0 -fdebug-prefix-map=/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot-native= -fdebug-prefix-map=/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot=  -fvisibility-inlines-hidden  -m32 -march=i586  --sysroot=/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot -fPIC   -o CMakeFiles/tf.dir/src/transform_listener.cpp.o -c /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/geometry-1.11.8/tf/src/transform_listener.cpp\r\n| In file included from /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/vector.hpp:21:0,\r\n|                  from /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/matrix.hpp:18,\r\n|                  from /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/geometry-1.11.8/tf/src/transform_listener.cpp:34:\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/storage.hpp: In member function 'void boost::numeric::ublas::unbounded_array<T, ALLOC>::serialize(Archive&, unsigned int)':\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/storage.hpp:299:18: error: 'make_array' is not a member of 'boost::serialization'\r\n|              ar & serialization::make_array(data_, s);\r\n|                   ^~~~~~~~~~~~~\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/storage.hpp: In member function 'void boost::numeric::ublas::bounded_array<T, N, ALLOC>::serialize(Archive&, unsigned int)':\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/storage.hpp:494:18: error: 'make_array' is not a member of 'boost::serialization'\r\n|              ar & serialization::make_array(data_, s);\r\n|                   ^~~~~~~~~~~~~\r\n| In file included from /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/geometry-1.11.8/tf/src/transform_listener.cpp:34:0:\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/matrix.hpp: In member function 'void boost::numeric::ublas::c_matrix<T, M, N>::serialize(Archive&, unsigned int)':\r\n| /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/recipe-sysroot/usr/include/boost/numeric/ublas/matrix.hpp:5977:18: error: 'make_array' is not a member of 'boost::serialization'\r\n|              ar & serialization::make_array(data_, N);\r\n|                   ^~~~~~~~~~~~~\r\n| make[2]: *** [CMakeFiles/tf.dir/src/transform_listener.cpp.o] Error 1\r\n| make[2]: Leaving directory `/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/build'\r\n| make[1]: *** [CMakeFiles/tf.dir/all] Error 2\r\n| make[1]: Leaving directory `/home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/build'\r\n| make: *** [all] Error 2\r\n| ERROR: Function failed: do_compile (log file is located at /home/lukas/work/repositories/openembedded.org/openembedded-core/build/tmp-glibc/work/i586-oe-linux/tf/1.11.8-r0/temp/log.do_compile.27917)\r\n```\r\n\r\nIt does not directly fail in `transform_listener.cpp`, but `transform_listener.cpp` includes `<boost/numeric/ublas/matrix.hpp>` in line 34 [1], which then causes the failure.\r\nThere was a related discussion on the boost mailing list [2, 3], which encountered the problem during development. In my understanding, it seems that the authors considered the issue fixed with some patches they refer in their discussion. Furthermore, they seem to assume that boost users would not import ublas, but only Boost.Geometry.\r\n\r\nI have not looked into the issue further than that: possibly one could patch ublas in Boost 1.64, or one  could change tf to not use ublas, but to use another equivalent in boost.\r\n\r\nThe issue was identified in the OpenEmbedded ROS layer, meta-ros, as the OpenEmbedded-Core layer updated from boost 1.63 to boost 1.64 [4]. The OpenEmbedded-Core layer sometimes moves faster to updated versions than the Debian/Ubuntu distribution, hence the issue is identified in meta-ros earlier, but it probably will also appear in a Debian/Ubuntu system.\r\nI hope there is a easy way to re-produce this issue in a local development setup with Boost 1.64; otherwise, I can run and test suggested changes in the meta-ros setup.\r\n\r\n[1] https://github.com/ros/geometry/blob/4421e22243a38ba6a130494698b33117d2995a18/tf/src/transform_listener.cpp#L34\r\n[2] https://lists.boost.org/Archives/boost/2016/11/index.php (search for: `failures in serialization causing regressions`)\r\n[3] https://lists.boost.org/Archives/boost/2016/12/231863.php\r\n[4] http://cgit.openembedded.org/openembedded-core/commit/?id=9ba71dc40dd782d192504b0827ca91f0fe180abe"
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/141'
+  title: >-
+    `tf.transformations.rotation_from_matrix` - Does not handle rotation
+    matrix-only case
+  body: "It appears that there may be an out of index bug with `rotation_from_matrix` ([L319](https://github.com/ros/geometry/blob/indigo-devel/tf/src/tf/transformations.py#L319)):\r\n\r\n```\r\n>>> import tf.transformations as tform\r\n>>> import numpy.matlib as nm\r\n>>> R = nm.eye(3)\r\n>>> angle, direction, point = tform.rotation_from_matrix(R)\r\nTraceback (most recent call last):\r\n  File \"test.py\", line 9, in <module>\r\n    angle, direction, point = tform.rotation_from_matrix(R)\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/tf/transformations.py\", line 346, in rotation_from_matrix\r\n    point /= point[3]\r\nIndexError: index out of bounds\r\n```\r\n\r\n<s>The fix is to change the offending line to:\r\n```\r\npoint /= point[-1]\r\n```\r\n</s>\r\n\r\nThat being said, it isn't really clear as to:\r\n\r\n1. <s>What is special about `direction` versus `point` when `R` itself is  a 3x3 rotation matrix. It also is not clear as to why a larger matrix is permitted.</s>\r\n2. <s>Why it is dividing by the last element. I'm a little rusty on linear algebra, but I believe this should be normalized with `numpy.linalg.norm`, but even that seems redundant.</s>\r\n\r\n<s>Should this code be trimmed?</s>\r\n\r\nTried `git blame`, but it appears that this code hunk hasn't been touched since it's first relevant commit back in 2009 (`cf65bfc`).\r\n\r\nEDIT:\r\nJust looked at the example and at `rotation_matrix`, and it shows that this is a homogeneous matrix, oops lol :P\r\n"
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/119'
+  title: Import/Install issues with Python
+  body: >
+    Trying to run the basic tf/odom python ros tutorials and I can't seem to
+    even import tf
+
+
+    I've done the following
+
+
+    ```
+     sudo apt-get install ros-indigo-geometry-experimental ros-indigo-geometry ros-indigo-geometry-msgs
+    ```
+
+
+    Before cloning the git repo and running 
+
+
+    ```
+
+    python setup.py install
+
+    ```
+
+
+    ```
+
+    Python 2.7.6 (default, Jun 22 2015, 17:58:13)
+
+    [GCC 4.8.2] on linux2
+
+    Type "help", "copyright", "credits" or "license" for more information.
+
+    >>> import tf
+
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    ImportError: No module named tf
+
+    ```
+
+
+    And after 
+
+
+    ```
+
+    vagrant@vagrant-ubuntu-trusty-64:~/ros_workspace$ python
+
+    Python 2.7.6 (default, Jun 22 2015, 17:58:13)
+
+    [GCC 4.8.2] on linux2
+
+    Type "help", "copyright", "credits" or "license" for more information.
+
+    >>> import tf
+
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/usr/local/lib/python2.7/dist-packages/tf/__init__.py", line 28, in <module>
+        from _tf import *
+    ImportError: No module named _tf
+
+    ```
+
+
+    What am I doing wrong?
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/117'
+  title: The tf python api is not compatible with tf2's /tf_static
+  body: >
+    The python tf api on Jade cannot lookup transforms published on /tf_static.
+
+    Section 1.8 on the [tf2 migration page](http://wiki.ros.org/tf2/Migration)
+    says 
+
+
+    > the tf implementation has been removed and replaced with calls to tf2
+    under the hood. This will mean that all users will be compatible with tf2
+
+
+    I would expect that to mean the tf api would be aware of /tf_static
+    transforms.
+
+
+    How to reproduce:
+
+    1. Start roscore and publish a static transform
+       
+       `rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 parent_frame child_frame`
+    2. Start python and run the following code using the tf api
+       
+       ```
+       import tf
+       import rospy
+       rospy.init_node("quick_test")
+       listener = tf.TransformListener()
+       listener.lookupTransform("parent_frame", "child_frame", rospy.Time())
+       # Traceback (most recent call last):
+       #  File "<stdin>", line 1, in <module>
+       # tf.LookupException: "parent_frame" passed to lookupTransform argument target_frame does not exist. 
+       ```
+    3. Start another instance of python and run the equivalent code on the tf2
+    api
+       
+       ```
+       import tf2_ros
+       import rospy
+       rospy.init_node("quick_test2")
+       tfBuffer = tf2_ros.Buffer()
+       listener = tf2_ros.TransformListener(tfBuffer)
+       tfBuffer.lookup_transform("parent_frame", "child_frame", rospy.Time())
+       # header: 
+       #   seq: 0
+       #   stamp: 
+       #     secs: 0
+       #     nsecs: 0
+       #   frame_id: parent_frame
+       # child_frame_id: child_frame
+       # transform: 
+       #   translation: 
+       #     x: 0.0
+       #     y: 0.0
+       #     z: 0.0
+       #   rotation: 
+       #     x: 0.0
+       #     y: 0.0
+       #     z: 0.0
+       #     w: 1.0
+       ```
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/109'
+  title: >-
+    `euler_from_quaternion` doesn't play nicely with
+    `geometry_msgs.msg.Quaternion`
+  body: >
+    I'm happy to try and write a patch if this is unexpected.
+
+
+    ``` python
+
+    In [1]: from tf.transformations import euler_from_quaternion
+
+    In [2]: from geometry_msgs.msg import Quaternion
+
+    In [3]: euler_from_quaternion(Quaternion(0, 0, 0, 1))
+
+    ---------------------------------------------------------------------------
+
+    TypeError                                 Traceback (most recent call last)
+
+    <ipython-input-3-0e8833944c57> in <module>()
+
+    ----> 1 euler_from_quaternion(Quaternion(0, 0, 0, 1))
+
+
+    /opt/ros/indigo/lib/python2.7/dist-packages/tf/transformations.pyc in
+    euler_from_quaternion(quaternion, axes)
+       1095 
+       1096     """
+    -> 1097     return euler_from_matrix(quaternion_matrix(quaternion), axes)
+       1098 
+       1099 
+
+    /opt/ros/indigo/lib/python2.7/dist-packages/tf/transformations.pyc in
+    quaternion_matrix(quaternion)
+       1180 
+       1181     """
+    -> 1182     q = numpy.array(quaternion[:4], dtype=numpy.float64, copy=True)
+       1183     nq = numpy.dot(q, q)
+       1184     if nq < _EPS:
+
+    TypeError: 'Quaternion' object has no attribute '__getitem__'
+
+    ```
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels:
+    - wontfix
+- url: 'https://github.com/ros/geometry/pull/105'
+  title: Remove outdated manifest loading in python files
+  body: >
+    Resolves #104.
+
+
+    I removed all instances of `load_manifest` I could find, as well as the
+    `roslib` imports.
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []
+- url: 'https://github.com/ros/geometry/issues/103'
+  title: TransformerROS.setTransform fails silently with invalid quaternion.
+  body: "I ran into this trying to test some basic tf stuff without thinking too much about creating valid quaternions. tf.TransformerROS.setTransform will fail silently when passed a transform object with an invalid rotation field. The failure is reasonable, but it should raise an exception. Trying to use one of the nonexistent frames later will throw a LookupException, since those frames do not exist, but this does not help track down the root issue.\r\n\r\n```\r\nimport rospy\r\nimport tf\r\nfrom geometry_msgs.msg import *\r\nrospy.init_node(\"foo\")\r\ntr = tf.TransformerROS()\r\np = TransformStamped()\r\np.header.frame_id = 'world'\r\np.child_frame_id = 'p'\r\np.transform.rotation.w = 1    # a basic, valid quaternion (0,0,0,1)\r\ntr.setTransform(p)\r\nprint tr.getFrameStrings()    # prints ['q', 'world']\r\n\r\nq = TransformStamped()\r\nq.header.frame_id = 'world'\r\nq.child_frame_id = 'q'\r\n# q has rotation = (0,0,0,0), _not_ a valid quaternion, this will not create the q frame but fails silently\r\n\r\ntr.setTransform(q)\r\nprint tr.getFrameStrings()    # still prints ['q', 'world']\r\n```\r\n"
+  repo: 'https://api.github.com/repos/ros/geometry'
+  labels: []

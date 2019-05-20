@@ -1,0 +1,26 @@
+- url: 'https://github.com/ros-drivers/wifi_ddwrt/pull/7'
+  title: '[wifi_ddwrt] fix typo'
+  body: |
+    This fix includes:
+    - add missing `.msg` on import module
+    - use array module to clarify variable `data` as bytearray
+    - fix typo `macattr` -> `macaddr`
+  repo: 'https://api.github.com/repos/ros-drivers/wifi_ddwrt'
+  labels: []
+- url: 'https://github.com/ros-drivers/wifi_ddwrt/issues/2'
+  title: 'ImportError: No module named pr2 msgs.msg'
+  body: >
+    Hi,
+
+
+    I tried running the ddwrt.py node after catkin_make the package. However I
+    keep getting  
+
+    "Traceback (most recent call last):
+      File "/home/mig-ly/catkin_ws/src/wifi_ddwrt-hydro-devel/nodes/ddwrt.py", line 41, in <module>
+        from pr2_msgs.msg import AccessPoint
+    ImportError: No module named pr2_msgs.msg".
+
+     I have tried running the analysis, ddwrt_sim.py,  and monitor node as well and the same error popped up. I am at the end of my wits. Help will be greatly appreciated.
+  repo: 'https://api.github.com/repos/ros-drivers/wifi_ddwrt'
+  labels: []

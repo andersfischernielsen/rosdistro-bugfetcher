@@ -1,0 +1,20 @@
+- url: 'https://github.com/openspur/ypspur_ros/pull/42'
+  title: Fix test dependencies and update manifest
+  body: 'fix #41 '
+  repo: 'https://api.github.com/repos/openspur/ypspur_ros'
+  labels: []
+- url: 'https://github.com/openspur/ypspur_ros/issues/41'
+  title: fix test dependencies
+  body: don't find_package rostest and roslint without test
+  repo: 'https://api.github.com/repos/openspur/ypspur_ros'
+  labels: []
+- url: 'https://github.com/openspur/ypspur_ros/pull/24'
+  title: Fix build dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/openspur/ypspur_ros'
+  labels: []
+- url: 'https://github.com/openspur/ypspur_ros/pull/10'
+  title: Use CMake version of ypspur.
+  body: 'Also, fix dummy dependency to system_lib.'
+  repo: 'https://api.github.com/repos/openspur/ypspur_ros'
+  labels: []

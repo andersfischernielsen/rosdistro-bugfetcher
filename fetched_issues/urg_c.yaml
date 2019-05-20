@@ -1,0 +1,8 @@
+- url: 'https://github.com/ros-drivers/urg_c/pull/7'
+  title: Adding new maintainer.
+  body: >-
+    See https://github.com/ros/rosdistro/pull/18540 for discussion of adding
+    myself as a maintainer. Currently, I maintain `urg_node` which depends on
+    this.
+  repo: 'https://api.github.com/repos/ros-drivers/urg_c'
+  labels: []

@@ -1,0 +1,18 @@
+- url: 'https://github.com/Kukanani/vision_msgs/issues/15'
+  title: Some questions about vision_msgs project
+  body: "@Kukanani \r\nBased on your kindly suggestion [here](https://github.com/intel/ros2_object_msgs/issues/1), we are now evaluating the efforts and benefits of moving current [object_msgs ](https://github.com/intel/ros2_object_msgs) to vision_msgs. This migration may influence some existing projects(like [ros2_intel_movidius_ncs ](https://github.com/intel/ros2_intel_movidius_ncs), [ros2_object_analytics](https://github.com/intel/ros2_object_analytics), etc.) and most future projects.  We still need your help for some questions before we could make final decision:\r\n\r\n1. We found that [vision_msgs](http://wiki.ros.org/vision_msgs) is already available for ROS. Is there any schedule to merge this message type to ROS2 core, since most of current projects we are working on are for ROS2?\r\n\r\n2. Is the debian package of this project available in the future? Some of our projects are being integrated into ROS2 core and the message project is one of the dependencies. Since OSRF only accepts debian package dependencies in ROS2 core project, we'd like to know your plan about this. \r\n\r\nVision_msgs is really a valuable project to help unify the interface of computer vision and object detection tasks. Thanks very much for working it out and hope we have more chances to co-work on CV and ROS/ROS2 :)"
+  repo: 'https://api.github.com/repos/Kukanani/vision_msgs'
+  labels: []
+- url: 'https://github.com/Kukanani/vision_msgs/pull/14'
+  title: Fix dependency of unit test
+  body: "This PR fixes the unit test, making it able to run tests with `catkin_make run_tests` directly, without running `catkin_make` first. [1]\r\n\r\n[1] http://wiki.ros.org/catkin/CMakeLists.txt#Important_Prerequisites.2BAC8-Constraints"
+  repo: 'https://api.github.com/repos/Kukanani/vision_msgs'
+  labels: []
+- url: 'https://github.com/Kukanani/vision_msgs/issues/11'
+  title: Remove unnecessary dependencies
+  body: >-
+    As pointed out by @mikaelarguedas, Use of the `<depend>` tag is overkill for
+    some dependencies and would result in unecessary installations for dependent
+    packages.
+  repo: 'https://api.github.com/repos/Kukanani/vision_msgs'
+  labels: []

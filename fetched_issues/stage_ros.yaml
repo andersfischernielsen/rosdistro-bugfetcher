@@ -1,0 +1,90 @@
+- url: 'https://github.com/ros-simulation/stage_ros/issues/44'
+  title: Lunar release
+  body: "Hi `stage_ros` maintainers!\r\n\r\nAs you may know the next ROS release Lunar Loggerhead is around the corner :tada:\r\n\r\nAll dependencies of `stage_ros` are now released into Lunar! Please consider making a Lunar release soon, `stage_ros` is part of desktop_full, it is a requirement for the release of ROS Lunar.\r\n\r\nThanks!"
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels: []
+- url: 'https://github.com/ros-simulation/stage_ros/issues/21'
+  title: 'stage_ros malloc(): memory corruption'
+  body: >
+    Hi,
+
+
+    I'm trying to run `stage_ros` with the example worlds but I'm getting
+    `malloc(): memory corruption` error.
+
+    I'm running on ubuntu 14.04 with ros indigo.
+
+
+    When I do: `rosrun stage_ros stageros -g  willow-erratic.world` It works
+    fine.
+
+
+    But when I do: `rosrun stage_ros stageros willow-erratic.world` It gives me
+    an error:
+
+
+    ```
+
+    malloc(): memory corruption
+
+    ```
+
+
+    Any ideas of the problem?
+
+
+    Thank you very much
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels:
+    - bug
+- url: 'https://github.com/ros-simulation/stage_ros/issues/14'
+  title: Un-needed run_depend on fluid
+  body: >
+    I don't think stage_ros needs the run-depend on fluid.  fluid is a UI design
+    package like qt designer and qt uic, and none of code in stage or stage_ros
+    uses it.  It should be safe to remove.
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels: []
+- url: 'https://github.com/ros-simulation/stage_ros/issues/13'
+  title: exported libary doesn't exist
+  body: >
+    Where is the library `stage_ros` supposed to come from 
+    (https://github.com/ros-simulation/stage_ros/blob/7062bd54c142de2d25219525bbdf23dd1109d730/CMakeLists.txt#L34)?
+
+
+    I would guess it needs to be removed from the catkin_package() call.
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels:
+    - bug
+- url: 'https://github.com/ros-simulation/stage_ros/pull/9'
+  title: Remove runtime dependency on fltk
+  body: |
+    It's a lib and will be pulled in by dh_shlibdeps automatically.
+
+    This solves a dependeny issue with libfltk1.1-dev/libfltk1.3-dev
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels: []
+- url: 'https://github.com/ros-simulation/stage_ros/issues/6'
+  title: compiling on saucy is missing dlopen link flags
+  body: >
+    I'm not sure what changed, but my hydro compile on saucy required adding dl
+    to the target_link_libraries list of libraries. This should be done in a
+    cleaner method calling find_package for dlopen. 
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels:
+    - bug
+- url: 'https://github.com/ros-simulation/stage_ros/issues/1'
+  title: stageros does not publish velocities in the odometry
+  body: >
+    When converting to Stage v4.1.1 the GetGlobalVelocity function was lost for
+    "models", which prevents us from publishing velocities into ROS using the
+    odometry message.
+
+
+    See:
+
+
+    https://github.com/ros-simulation/stage_ros/blob/master/src/stageros.cpp#L378
+  repo: 'https://api.github.com/repos/ros-simulation/stage_ros'
+  labels:
+    - bug

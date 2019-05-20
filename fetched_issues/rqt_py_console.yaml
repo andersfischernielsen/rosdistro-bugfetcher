@@ -1,0 +1,14 @@
+- url: 'https://github.com/ros-visualization/rqt_py_console/issues/6'
+  title: 1.0.0 tag is not part of crystal-devel branch (or any other branch)
+  body: >-
+    The `1.0.0` tag that was released with Crystal doesn't appear in any
+    branches. At present, it should be part of `crystal-devel`, but that branch
+    appears to have the same commit at HEAD with a different commit ID.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_py_console'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_py_console/pull/5'
+  title: spyderlib -> spyder
+  body: "spyderlib should be spyder\r\n\r\nNote: `from spyder.utils.module_completion import moduleCompletion` always fails as moduleCompletion does not exist in the spyder project in either 2.7 or 3.x. Removing the moduleCompletion code crashes with `QWidget: Must construct a QApplication before a QPaintDevice`\r\n \r\n@dirk-thomas Any ideas what this method was trying to accomplish? \r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_py_console'
+  labels: []

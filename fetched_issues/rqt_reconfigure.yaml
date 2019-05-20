@@ -1,0 +1,102 @@
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/25'
+  title: 'ApplyGroup with subgroups: uncaught exception on any update'
+  body: "With a configuration where an apply group has a subgroup, cfg example:\r\n\r\n```\r\nmygroup = gen.add_group(\"MyGroup\", type=\"apply\")\r\nmygroup.add(\"my_double_param\", double_t, 0, \"Some double param\", 100,  0, 200)\r\n\r\nsubgroup = mygroup.add_group(\"MySubGroup\")\r\nsubgroup.add(\"zzz_in_subgroup\", int_t, 0, \"some zzz key\", 100,  0, 200)\r\n\r\n```\r\nThen with rqt_reconfigure gui launched:\r\nWhen editing any parameter in the group or subgroup, the updater fails with an exception:\r\n\r\n```\r\nTraceback (most recent call last):\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_editors.py\", line 354, in _text_changed\r\n    self._update_paramserver(float(self._paramval_lineEdit.text()))\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_editors.py\", line 99, in _update_paramserver\r\n    self.update_configuration(value)\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_editors.py\", line 115, in update_configuration\r\n    self._updater.update({self.param_name: value})\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_groups.py\", line 331, in update\r\n    self.loopback(config)\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_groups.py\", line 244, in update_group\r\n    widget.update_group(cfg)\r\n  File \"xxx/rqt_reconfigure/src/rqt_reconfigure/param_groups.py\", line 228, in update_group\r\n    if 'state' in config:\r\nTypeError: argument of type 'NoneType' is not iterable\r\n\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/22'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get it released there.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/pull/21'
+  title: Fix to use English locale in QDoubleValidator
+  body: ''
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/12'
+  title: '[enhancement] rqt_reconfigure : setting decimal value to double parameters'
+  body: "Hello, \r\n\r\nI believe that there is a non desired behavior when trying to set decimal values for doubles. \r\n\r\nLet's say that i have a double which range is [0,1], i believe we should be able to set it's value to anything in [0,1] in a few different ways: \r\n1/ using the cursor with a interval_length/100 step\r\n2/ directly writing the number ex : 0.123\r\n3/ copying another value in the gui then pasting it there\r\n4/ writing the number in scientific manner ex : 123e-3\r\n\r\nOn those 4 ways to set the value, 2/ is what's seem the most commonly used but does not work at the moment. I cannot directly write for example \"0.123\" which is quite unexpected I must say and which is probably a non desired behavior. \r\n\r\nLooking a little bit at different responses of the gui, I think what doesn't work is to add any \".\" in the value. For example this makes that it is impossible to copy/paste a value from another double parameter ( /3 ), \r\n\r\nSince nearly all symbol are not allowed in the box, my guess is that you are checking the value in the box with something like a regEx and that there is a little mistake in its rules. I believe there is a mistake because \",\" is accepted in the box but when with something  validated, the gui crash with the following error : \r\nme@laptop-293:~$ rosrun rqt_reconfigure rqt_reconfigure \r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_reconfigure/param_editors.py\", line 354, in _text_changed\r\n    self._update_paramserver(float(self._paramval_lineEdit.text()))\r\nValueError: invalid literal for float(): 0,1\r\nSo to me the issue is that \",\" is accepted instead of \".\" in the box. \r\n\r\nI tried to use /4 and it actually works so this issue isn't really important ( but it remains that it's probably an undesired behavior ).\r\n \r\nI must add that i'm a french user and that most of the time my keybaord is in \"azerty\" configuration. But i tried to put it into qwerty and i still had the same issue.  I also tried it from 2 different PCs and that I had the exact same behavior. \r\n\r\nI'm curious to know if I'm the only one experimenting this issue. \r\nAnd thanks a lot to the one who will have the skill and the time to correct it !"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/3'
+  title: 'rqt_reconfigure: the layout is pretty broken'
+  body: >-
+    _From @dirk-thomas on August 16, 2013 22:10_
+
+
+    - [x] left column takes all the space, right column has only minimum width,
+    should be the other way around
+
+    - [x] the configuration block per node and vertically spread, should have
+    spacing at the bottom
+
+    - [x] each edit row is horizontally spread, should make use of the full
+    width instead
+
+    - [ ] the row label is overlapping with the controls when the window is
+    small
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#150_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/2'
+  title: rqt_reconfigure) to be capable of showing only certain parameters
+  body: >-
+    _From @130s on March 19, 2013 7:29_
+
+
+    In the cases where the users know that the parameters they need to interact
+    with, loading the parameters of all available nodes might just drop the
+    usability. Either or all of the following is useful:
+
+    1. [ ] Save the nodes selected in the previous run.
+
+    2. [ ] Allow the developers who make `rqt` plugin that depends on
+    `rqt_reconfigure` to pre-select certain nodes
+
+
+    Particularly, I now start having an impression that the majority of the
+    `reconfigure` users might already know which nodes & parameters they need.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#49_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-visualization/rqt_reconfigure/issues/1'
+  title: >-
+    rqt_reconfigure: After filtering, node selection gets reset even though some
+    nodes were selected
+  body: >-
+    _From @130s on January 27, 2013 20:22_
+
+
+    **Possible bad situation**: node boxes are shown on right-hand side but
+    their item on left-hand is not selected. When user selects a node on LH, the
+    corresponding box disappears from RH.
+
+
+    ---
+
+
+    I described the problematic [phenomenon in the question on
+    stackoverflow](http://stackoverflow.com/questions/14551580/not-qitemselectionmodel-selectionchanged-called-when-using-qsortfilterproxymodel)
+    (satisfactory responses from there can help solving this issue too).
+
+
+    Related to issue #17. 
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#18_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_reconfigure'
+  labels:
+    - bug

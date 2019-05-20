@@ -1,0 +1,31 @@
+- url: 'https://github.com/ros-planning/moveit_resources/pull/22'
+  title: 'Revert "Added panda to moveit resources (#19)"'
+  body: "@davetcoleman As you moved `panda_moveit_config` into its own repo, https://github.com/ros-planning/panda_moveit_config, we should remove it from `moveit_resources`. \r\nHowever, it is already used in one unit test (MSA). **Needs to be checked, whether this can be replaced by fanuc or pr2.** Maybe, there are some references in the tutorials as well?\r\nHowever, it definitely doesn't make sense to maintain these packages in two separate repos.\r\nI propose to `run_depend` `moveit_resources` from `panda_moveit_config` and `franka_description`, which will pull in those packages together with `moveit_resources`.\r\n\r\nThis reverts commit 5c71455fb7c0164597eeb8301b04f223c12add00."
+  repo: 'https://api.github.com/repos/ros-planning/moveit_resources'
+  labels: []
+- url: 'https://github.com/ros-planning/moveit_resources/pull/14'
+  title: 'Add missing run depends for [robot|joint]_state_publisher'
+  body: >
+    In https://github.com/ros-planning/moveit/pull/214 I switched our CI to
+    build off of `ros-base` instead of `ros-desktop-full`. This means many ROS
+    packages are not installed by default, which uncovered missing dependencies
+    in the python move_group test causing travis to
+    [fail](https://travis-ci.org/ros-planning/moveit/jobs/159809406):
+
+
+    ```
+
+    FAILURE: Test Fixture Nodes ['joint_state_publisher',
+    'robot_state_publisher'] failed to launch
+      File "/usr/lib/python2.7/unittest/case.py", line 329, in run
+        testMethod()
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rostest/runner.py", line 121, in fn
+        self.assert_(not failed, "Test Fixture Nodes %s failed to launch"%failed)
+      File "/usr/lib/python2.7/unittest/case.py", line 422, in assertTrue
+        raise self.failureException(msg)
+    ```
+
+
+    Should fix https://github.com/ros-planning/moveit/pull/209
+  repo: 'https://api.github.com/repos/ros-planning/moveit_resources'
+  labels: []

@@ -1,0 +1,10 @@
+- url: 'https://github.com/Terabee/teraranger/pull/9'
+  title: Revert "Correct rosserial dependency"
+  body: 'Reverts Terabee/teraranger#7'
+  repo: 'https://api.github.com/repos/Terabee/teraranger'
+  labels: []
+- url: 'https://github.com/Terabee/teraranger/pull/7'
+  title: Correct rosserial dependency
+  body: ''
+  repo: 'https://api.github.com/repos/Terabee/teraranger'
+  labels: []

@@ -1,0 +1,48 @@
+- url: 'https://github.com/uos/rospy_message_converter/issues/25'
+  title: Cannot import roslib.message
+  body: "```\r\nPython 2.7.15rc1 (default, Nov 12 2018, 14:31:15) \r\n[GCC 7.3.0] on linux2\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> from rospy_message_converter import message_converter\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"/home/pablo/src/freedomrobotics/freedom_python/env/local/lib/python2.7/site-packages/rospy_message_converter/message_converter.py\", line 34, in <module>\r\n    import roslib.message\r\nImportError: No module named roslib.message\r\n```\r\n\r\nI just created a simple virtualenv and installed the library with `pip`.\r\n\r\nIs there anyother package that should be installed for running this? It would be nice to add it to the README."
+  repo: 'https://api.github.com/repos/uos/rospy_message_converter'
+  labels: []
+- url: 'https://github.com/uos/rospy_message_converter/pull/18'
+  title: Remove dependency on ROS master
+  body: "None of the tests in this library _really_ require a ROS node with a ROS master, as the tests are self-contained to statically-compiled ROS messages. We essentially have unit tests here.\r\n\r\nBy changing the calls to `rospy.Time.now()` to ` rospy.Time(time.time())`, we remove the need for `rospy.init_node`, remove the imports of `rostest`, and change the tests to be unit tests (runs faster because not a ROS node, smaller footprint).\r\n\r\nThis is done at the _meager_ cost of losing the hypothetical benefit of fiddling with ROS' Clock independently of the Wall clock."
+  repo: 'https://api.github.com/repos/uos/rospy_message_converter'
+  labels: []
+- url: 'https://github.com/uos/rospy_message_converter/issues/6'
+  title: >-
+    API question: Why use message names instead of passing message class
+    directly?
+  body: >
+    First, this is really awesome. I think it should be merged into ros_comm and
+    work implicitly with the rospy publisher.
+
+
+    In `convert_dictionary_to_ros_message()`, the API accepts a string name of a
+    message
+    [here](https://github.com/baalexander/rospy_message_converter/blob/hydro-devel/src/rospy_message_converter/message_converter.py#L73),
+    then the classtype is retrieved from `roslib`. Is there any reason why the
+    API doesn't just take the message type directly?
+
+
+    For example, instead of the current API, why not:
+
+
+    ``` python
+
+    from rospy_message_converter import message_converter
+
+    from std_msgs.msg import String
+
+    dictionary = { 'data': 'Howdy' }
+
+    message = message_converter.convert_dictionary_to_ros_message(String,
+    dictionary)
+
+    ```
+  repo: 'https://api.github.com/repos/uos/rospy_message_converter'
+  labels: []
+- url: 'https://github.com/uos/rospy_message_converter/pull/3'
+  title: remove extra dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/uos/rospy_message_converter'
+  labels: []

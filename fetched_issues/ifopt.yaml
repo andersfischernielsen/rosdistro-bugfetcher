@@ -1,0 +1,23 @@
+- url: 'https://github.com/ethz-adrl/ifopt/issues/39'
+  title: Generic version of IPOPT
+  body: "Hello \r\nIPOPT comes with a number of interfaces to linear solvers (MUMPS, LAPACK, HSL) and others. \r\nI tried to create a dll of ipopt with none of these solvers in order to focus o Eigen. \r\nthe build fails because it looks for these libs. \r\nIs there a clean version of IPOPT ? i.e., one that does not depend on any solver a priori ?\r\nthen the build of IPOPT+EIGEN could be much cleaner and simpler.\r\nbest\r\njac\r\n\r\n"
+  repo: 'https://api.github.com/repos/ethz-adrl/ifopt'
+  labels: []
+- url: 'https://github.com/ethz-adrl/ifopt/pull/26'
+  title: Implemented more efficient method for building constraint jacobian
+  body: "_coeffRef_ is in comparison to _setFromTriplets_ a quite costly operation.\r\n\r\nTests showed a reduction of computation time with this solution of 30 up to over 50 percent depending on the problem size.\r\n \r\n_setFromTriplets_ also considers multiple entries for the same indices and adds them up, so there is no issue that += in line 137 of composite.cc was used earlier.\r\nFurther details can be found here:\r\nhttps://eigen.tuxfamily.org/dox/group__TutorialSparse.html#TutorialSparseFilling"
+  repo: 'https://api.github.com/repos/ethz-adrl/ifopt'
+  labels: []
+- url: 'https://github.com/ethz-adrl/ifopt/pull/17'
+  title: Remove catkin build dependency and improve cmake build
+  body: >-
+    Resolves #13 and probably #12. See
+    [CHANGELOG.rst](https://github.com/ethz-adrl/ifopt/blob/master/CHANGELOG.rst)
+    v2.0.0 for details.
+  repo: 'https://api.github.com/repos/ethz-adrl/ifopt'
+  labels: []
+- url: 'https://github.com/ethz-adrl/ifopt/pull/9'
+  title: Fix typo indenpendent -> independent
+  body: ''
+  repo: 'https://api.github.com/repos/ethz-adrl/ifopt'
+  labels: []

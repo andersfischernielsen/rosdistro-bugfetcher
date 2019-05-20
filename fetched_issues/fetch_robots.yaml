@@ -1,0 +1,30 @@
+- url: 'https://github.com/fetchrobotics/fetch_robots/issues/39'
+  title: fetch-melodic-config.deb instructions needed
+  body: "Instructions are missing in the docs.fetchrobotics.com for installing fetch-melodic-config.deb\r\n\r\nWhen trying to install it, it says:\r\n\r\n    depends on chrony however chrony is not installed\r\n    depends on ros-melodic-fetch-bringup is not installed"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_robots/issues/35'
+  title: 'TODO: switch to official SICK drivers'
+  body: "We depend on `ros-melodic-sick-tim` package from https://github.com/uos/sick_tim/ which for the purpose of the upcoming release to melodic fetchrobotics/fetch_ros#63 is fine.\r\n\r\nBut we should switch over to the official drivers: https://github.com/SICKAG/sick_scan which is `ros-melodic-sick-scan` at some point in the future.\r\n\r\nThis won't be for the initial ros-melodic release, because we want that to get out with the next melodic sync and won't have time for the additional tests.\r\n\r\n@chadrockey are you aware of any major differences?"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_robots/pull/32'
+  title: 'Add depend urdfdom, and switch to <depend>'
+  body: "These were <exec_depend> because this doesn't compile the drivers.\r\nBut we will use <depend> and clean things up later.\r\n\r\nBut the jenkins job failed after:\r\nhttps://github.com/ros/rosdistro/pull/20327\r\nFix #31 (or work around it until the next issue)"
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_robots/pull/29'
+  title: '[fetch_drivers] exec_depend -> build_depend'
+  body: I left find_package in the CMakeLists.txt for these dependencies.
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_robots/pull/26'
+  title: Add ps3joy dependency
+  body: And update to package.xml 2.0 format
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []
+- url: 'https://github.com/fetchrobotics/fetch_robots/pull/24'
+  title: sixad depend not needed anymore on bionic
+  body: ''
+  repo: 'https://api.github.com/repos/fetchrobotics/fetch_robots'
+  labels: []

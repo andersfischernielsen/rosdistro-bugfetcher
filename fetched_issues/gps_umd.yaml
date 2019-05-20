@@ -1,0 +1,13 @@
+- url: 'https://github.com/swri-robotics/gps_umd/pull/18'
+  title: 'INS Odometry '
+  body: "Calculates odometry besed on INS messages, the generated odometry contains twist, and orientation. \r\n\r\nThis package depends on novatel_msgs. "
+  repo: 'https://api.github.com/repos/swri-robotics/gps_umd'
+  labels: []
+- url: 'https://github.com/swri-robotics/gps_umd/issues/1'
+  title: Compile on Ubuntu 16.04
+  body: >-
+    Currently the `gpsd_client` package doesn't compile on Ubuntu 16.04 due to
+    API changes in libgps-dev.  Should be an easy matter to fix it.
+  repo: 'https://api.github.com/repos/swri-robotics/gps_umd'
+  labels:
+    - bug

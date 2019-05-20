@@ -1,0 +1,284 @@
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/110'
+  title: Missing mvsim dependency found in .launch
+  body: "I'm currently doing some research on static analysis of ROS packages at the IT University of Copenhagen, more specifically dependency checking of `.launch` files in ROS packages. \r\n\r\nThere seems to be a `$(find mvsim)` in  \r\n- `mrpt_navigation/mrpt_local_obstacles/launch/demo_with_mvsim.launch` \r\n    - that's not declared in `mrpt_local_obstacles/package.xml`\r\n- `mrpt_navigation/mrpt_reactivenav2d/launch/reactive_nav_demo_with_mvsim.launch` \r\n    - that's not declared in `mrpt_reactivenav2d/package.xml`\r\n\r\nInstalling `mrpt_navigation` without having `mvsim` installed would make `roslaunch` fail on these two `.launch` files, right? \r\n\r\nI'm unsure whether this is a dependency bug, since there are only two specific launch configurations using `mvsim` and not the entire package(s). \r\nNonetheless, `roslaunch` would fail, no? "
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels:
+    - wontfix
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/100'
+  title: Cannot release with bloom to ROS melodic
+  body: "Apparently, melodic is still missing some other deps: \r\n\r\n```\r\nPre-verifying Debian dependency keys...\r\nRunning 'rosdep update'...\r\nCould not resolve rosdep key 'cv_bridge'\r\nFailed to resolve cv_bridge on ubuntu:artful with: Error running generator: Failed to resolve rosdep key 'cv_bridge', aborting.\r\ncv_bridge is depended on by these packages: ['mrpt_bridge']\r\n<== Failed\r\nCould not resolve rosdep key 'cv_bridge'\r\nFailed to resolve cv_bridge on ubuntu:bionic with: Error running generator: Failed to resolve rosdep key 'cv_bridge', aborting.\r\ncv_bridge is depended on by these packages: ['mrpt_bridge']\r\n<== Failed\r\nCould not resolve rosdep key 'marker_msgs'\r\nFailed to resolve marker_msgs on ubuntu:artful with: Error running generator: Failed to resolve rosdep key 'marker_msgs', aborting.\r\nmarker_msgs is depended on by these packages: ['mrpt_bridge', 'mrpt_rawlog']\r\n<== Failed\r\nCould not resolve rosdep key 'marker_msgs'\r\nFailed to resolve marker_msgs on ubuntu:bionic with: Error running generator: Failed to resolve rosdep key 'marker_msgs', aborting.\r\nmarker_msgs is depended on by these packages: ['mrpt_bridge', 'mrpt_rawlog']\r\n<== Failed\r\nCould not resolve rosdep key 'pcl_conversions'\r\nFailed to resolve pcl_conversions on ubuntu:artful with: Error running generator: Failed to resolve rosdep key 'pcl_conversions', aborting.\r\npcl_conversions is depended on by these packages: ['mrpt_bridge']\r\n<== Failed\r\nCould not resolve rosdep key 'pcl_conversions'\r\nFailed to resolve pcl_conversions on ubuntu:bionic with: Error running generator: Failed to resolve rosdep key 'pcl_conversions', aborting.\r\npcl_conversions is depended on by these packages: ['mrpt_bridge']\r\n<== Failed\r\nCould not resolve rosdep key 'pose_cov_ops'\r\nFailed to resolve pose_cov_ops on ubuntu:artful with: Error running generator: Failed to resolve rosdep key 'pose_cov_ops', aborting.\r\npose_cov_ops is depended on by these packages: ['mrpt_localization']\r\n<== Failed\r\nCould not resolve rosdep key 'pose_cov_ops'\r\nFailed to resolve pose_cov_ops on ubuntu:bionic with: Error running generator: Failed to resolve rosdep key 'pose_cov_ops', aborting.\r\npose_cov_ops is depended on by these packages: ['mrpt_localization']\r\n<== Failed\r\nCould not resolve rosdep key 'teleop_twist_keyboard'\r\nFailed to resolve teleop_twist_keyboard on ubuntu:artful with: Error running generator: Failed to resolve rosdep key 'teleop_twist_keyboard', aborting.\r\nteleop_twist_keyboard is depended on by these packages: ['mrpt_tutorials']\r\n<== Failed\r\nCould not resolve rosdep key 'teleop_twist_keyboard'\r\nFailed to resolve teleop_twist_keyboard on ubuntu:bionic with: Error running generator: Failed to resolve rosdep key 'teleop_twist_keyboard', aborting.\r\nteleop_twist_keyboard is depended on by these packages: ['mrpt_tutorials']\r\n```\r\n\r\npose_cov_ops is ours. For the rest, I guess we should wait."
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/98'
+  title: mrpt_reactivenav2d does not generate velocity commands
+  body: "Hi,\r\n\r\nI have been trying to launch [mrpt_reactivenav2d](https://github.com/mrpt-ros-pkg/mrpt_navigation/tree/master/mrpt_reactivenav2d) using [stage_ros](https://github.com/ros-gbp/stage-release/tree/release/kinetic/stage) + fake_navigation + map_server. (The reason being, mvsim does not seem to be compatible with MRPT 1.9.9 >= yet) \r\n\r\nSo, every node starts ok, but when I send a goal to the navigator (from a point clicked in rviz) I get an error and navigation is cancelled due to a timeout.\r\n\r\nThese are the tag nodes I think are relevant. My guess is the problem lies in the \".ini\" files in the package itself since stage responds normally to my keyboard commands and the vehicle shape is received by the reactive node without trouble. Note that I am using the config files it provides the repository. Or maybe mvsim plays a role that I am not accounting for.\r\n```xml\r\n\r\n\r\n<node name=\"map_server\" pkg=\"map_server\" type=\"map_server\" args=\"$(arg map_file)\" launch-prefix=\"$(arg launch_prefix)\" />\r\n\r\n<node pkg=\"fake_localization\" type=\"fake_localization\" name=\"fake_localization\" output=\"screen\">\t    \r\n\t    <param name=\"odom_frame_id\" value=\"odom\"/>\r\n\t    <param name=\"global_frame_id\" value=\"/map\"/>\r\n\t    <param name=\"base_frame_id\" value=\"base_link\"/>\r\n</node>\r\n\r\n<node pkg=\"stage_ros\" type=\"stageros\" name=\"stage_ros\" respawn=\"false\" output=\"screen\" args=\"$(arg world_file)\" >\r\n    <param name=\"laser_scan_topic\" value=\"/laser_scan\"/>\r\n    <param name=\"laser_frame_id\" value=\"/laser_stage\" />\r\n    <param name=\"disable_odometry\" value=\"$(arg disable_odometry)\" />  #if true, no topic, neither tf transform are published for odometry\r\n    <param name=\"odom_topic\" value=\"/odom\"/>\r\n    <param name=\"odom_frame_id\" value=\"/odom\" />\r\n</node> \r\n\r\n<node pkg=\"mrpt_local_obstacles\" type=\"mrpt_local_obstacles_node\" name=\"mrpt_local_obstacles_node\" output=\"screen\">\r\n\t\t<param name=\"source_topics_2dscan\" value=\"laser_scan\"/>\r\n\t\t<param name=\"show_gui\" value=\"false\"/>\r\n\t\t<param name=\"time_window\" value=\"60\"/>\r\n</node>\r\n\r\n<!-- \r\nI'm publishing the robot shape in a very simple node found here:\r\nhttps://github.com/MariotoA/shape_publisher\r\n-->\r\n<node pkg=\"shape_publisher\" type=\"shape_publisher\" name=\"shape_publisher\" output=\"screen\" launch-prefix=\"xterm -e\"/>\r\n\r\n<node pkg=\"mrpt_reactivenav2d\" type=\"mrpt_reactivenav2d_node\" name=\"mrpt_reactivenav2d_node\" output=\"screen\">\r\n<!-- *Important*: This external config file holds the most important navigation settings --> \r\n\t<param name=\"cfg_file_reactive\" value=\"$(find mrpt_reactivenav2d)/tutorial/reactive2d_config.ini\"/> \r\n\t<!-- This is to allow the reactive responsive to RVIZ GUI commands -->\r\n\t<remap from=\"reactive_nav_goal\" to=\"/move_base_simple/goal\" />\r\n\t<!-- Enable logs to ~/.ros/reactivenav.logs , use navlog-viewer to open them -->\r\n\t<!--<param name=\"save_nav_log\" value=\"true\"/> -->\r\n\t<param name=\"topic_robot_shape\" value=\"/chassis_polygon\" /> \r\n</node>\r\n\r\n<node name=\"rviz_player\" pkg=\"rviz\" type=\"rviz\" args=\"-d $(find tfg_reactive_pkg)/rviz/simbot_reactive_only.rviz\"/>\r\n\r\n```\r\n\r\nThis is the error trace itself:\r\n\r\n[ INFO] [1524665257.040733976, 7.600000000]: Nav target received via topic sub: (2.555,1.869, -23.832deg) [frame_id=/map]\r\n[ INFO] [1524665257.041667984, 7.600000000]: [navigateTo] Starting navigation to [2.554826 1.868601 -23.831614]\r\n[MRPT_navigator|INFO |16:07:37.0436] [CAbstractNavigator::navigationStep()] Starting Navigation. Watchdog initiated...\r\n**[MRPT_navigator|DEBUG|16:07:37.0441] [CAbstractNavigator::navigationStep()] Navigation Params:\r\nnavparams. Single target:\r\ntarget_coords = (0.000,0.000,0.000 deg)\r\ntarget_frame_id = \"map\"\r\ntargetAllowedDistance = 0.500\r\ntargetIsRelative = NO\r\ntargetIsIntermediaryWaypoint = NO\r\ntargetDesiredRelSpeed = 0.05\r\nmultiple_targets:\r\ntarget[0]:\r\ntarget_coords = (2.555,1.869,0.000 deg)\r\ntarget_frame_id = \"map\"\r\ntargetAllowedDistance = 0.400\r\ntargetIsRelative = NO\r\ntargetIsIntermediaryWaypoint = NO\r\ntargetDesiredRelSpeed = 0.05\r\nrestrict_PTG_indices: []**\r\n\r\n[MRPT_navigator|DEBUG|16:07:37.0530] CWaypointsNavigator::checkHasReachedTarget() called with targetDist=3.60555 return=0 **waypoint: wps.timestamp_nav_started=INVALID_TIMESTAMP**\r\n[MRPT_navigator|INFO |16:07:37.0566] [CReactiveNavigationSystem::STEP1_InitPTGs] Initializing PTG#0 (`CPTG_DiffDrive_C,K=1`)...\r\n\r\n[CPTG_DiffDrive_CollisionGridBased::initialize] Starting... *** THIS MAY TAKE A WHILE, BUT MUST BE COMPUTED ONLY ONCE!! **\r\nInitializing PTG './ReacNavGrid_000.dat.gz'...loaded from file OK\r\n[MRPT_navigator|INFO |16:07:41.0283] Done!\r\n[MRPT_navigator|INFO |16:07:41.0287] [CReactiveNavigationSystem::STEP1_InitPTGs] Initializing PTG#1 (`CPTG_DiffDrive_alpha,av=57deg,aw=57deg`)...\r\n\r\n[CPTG_DiffDrive_CollisionGridBased::initialize] Starting... *** THIS MAY TAKE A WHILE, BUT MUST BE COMPUTED ONLY ONCE!! **\r\nInitializing PTG './ReacNavGrid_001.dat.gz'...loaded from file OK\r\n[MRPT_navigator|INFO |16:07:50.2053] Done!\r\n[MRPT_navigator|INFO |16:07:50.2057] [CReactiveNavigationSystem::STEP1_InitPTGs] Initializing PTG#2 (`CPTG_DiffDrive_C,K=-1`)...\r\n\r\n[CPTG_DiffDrive_CollisionGridBased::initialize] Starting... *** THIS MAY TAKE A WHILE, BUT MUST BE COMPUTED ONLY ONCE!! **\r\nInitializing PTG './ReacNavGrid_002.dat.gz'...loaded from file OK\r\n[MRPT_navigator|INFO |16:07:54.4521] Done!\r\n[MRPT_navigator|ERROR|16:08:32.6288] [CAbstractPTGBasedReactive::performNavigationStep] Stopping robot and finishing navigation due to exception:\r\n\r\n\r\n =============== MRPT EXCEPTION =============\r\nvoid mrpt::expr::CRuntimeCompiledExpression::compile(const string&, const std::map<std::__cxx11::basic_string<char>, double>&, const string&), line 71:\r\nError compiling expression (name=`score: collision_free_distance`): `var effective_trg_d_norm := max(0,target_d_norm-move_cur_d); \tif (collision_free_distance>(effective_trg_d_norm+0.05), \t\t1.0, \t\tcollision_free_distance)`. Error: `ERR186 - Undefined symbol: 'target_d_norm'`:\r\n[MRPT_navigator|DEBUG|16:08:32.8244] CWaypointsNavigator::checkHasReachedTarget() called with targetDist=3.60555 return=0 waypoint: wps.timestamp_nav_started=INVALID_TIMESTAMP\r\n[MRPT_navigator|WARN |16:08:32.8289] Timeout approaching the target. Aborting navigation.\r\n[MRPT_navigator|ERROR|16:08:33.0357] [CAbstractNavigator::navigationStep()] Stopping Navigation due to a NAV_ERROR state!\r\n\r\n--------------------------------------------------------------------------------------------------------\r\n\r\nI am currently using xubuntu-16.04, MRPT 1.9.9 (I think. I followed [this](https://www.mrpt.org/MRPT_in_GNU/Linux_repositories) and mrpt/utils does not exist for example) and ros-kinetic. \r\n\r\nAlso, I noticed just now this is the same bug as [this one](https://www.bountysource.com/issues/49772103-mrpt-exception-at-mrpt-math-cruntimecompiledexpression-compile), but I get two navparams for some reason, one being, I assume, the robot pose and the other the goal I send.\r\n\r\nI've emphasized in bold text the parts of the trace that seem suspicious to me. I did not include any map files since I believe the problem does not come from there, but maybe i'm mistaken, just ask if you need them.\r\n\r\nAny idea? By the way, newbie here, so insights or explanations are well appreciated. Thanks a lot.\r\n\r\nBest regards.\r\n\r\n-------------------------------------------------------------------------------------------------------------------\r\n**Update**:\r\nI've tried changing a couple of things myself.\r\n\r\nFirst, I've modified my shape_publisher to stop sending the shape to the reactive node after five seconds, that way the shape is most likely set at the start without continuously changing it. You can find it [here](https://github.com/MariotoA/shape_publisher/tree/timer).\r\nThen I get a similar exception but with **Expression name `collision_free_distance`** instead.\r\n\r\n[MRPT_navigator|ERROR|19:06:34.2202] [CAbstractPTGBasedReactive::performNavigationStep] Stopping robot and finishing navigation due to exception:\r\n\r\n\r\n =============== MRPT EXCEPTION =============\r\nint mrpt::nav::CMultiObjectiveMotionOptimizerBase::decide(const std::vector<mrpt::nav::TCandidateMovementPTG>&, mrpt::nav::CMultiObjectiveMotionOptimizerBase::TResultInfo&), line 80:\r\nError: Expression name `collision_free_distance` already exists as an input variable.:\r\n[MRPT_navigator|DEBUG|19:06:34.8490] CWaypointsNavigator::checkHasReachedTarget() called with targetDist=3.60555 return=0 waypoint: wps.timestamp_nav_started=INVALID_TIMESTAMP\r\n[MRPT_navigator|WARN |19:06:34.8686] Timeout approaching the target. Aborting navigation.\r\n[MRPT_navigator|ERROR|19:06:34.8754] [CAbstractNavigator::navigationStep()] Stopping Navigation due to a NAV_ERROR state!\r\n\r\nI've also got 2 messages in my cmd_vel topic:\r\nlinear: \r\n  x: 0.0\r\n  y: 0.0\r\n  z: 0.0\r\nangular: \r\n  x: 0.0\r\n  y: 0.0\r\n  z: 0.0\r\n\r\nlinear: \r\n  x: 0.0\r\n  y: 0.0\r\n  z: 0.0\r\nangular: \r\n  x: 0.0\r\n  y: 0.0\r\n  z: 0.0\r\n\r\n\r\n-----------------------------------------------------------------------------------------------------------------\r\n\r\nAfter that, I've tried launching with this [file](https://github.com/MRPT/mrpt/blob/master/share/mrpt/config_files/navigation-ptgs/reactive2d_config.ini). Using this config, surprisingly, navigation seems to take place, but is soon stopped due to a timeout.\r\n\r\n[MRPT_navigator|INFO |18:15:27.8040] Done!\r\n[MRPT_navigator|WARN |18:17:51.5740] Timing warning: Suspicious executionPeriod=191968.602 ms is far above the average of 100.000 ms\r\n[MRPT_navigator|DEBUG|18:17:51.5783] CMD: (lin_vel=1.000 ang_vel=-0.814 ) speedScale=1.0000 T=57660.6ms Exec:43178.7ms|49003.9ms PTG#0\r\n[MRPT_navigator|DEBUG|18:17:52.0406] CWaypointsNavigator::checkHasReachedTarget() called with targetDist=3.60555 return=0 waypoint: wps.timestamp_nav_started=INVALID_TIMESTAMP\r\n[MRPT_navigator|WARN |18:28:54.2376] Timing warning: Suspicious executionPeriod=662659.381 ms is far above the average of 57660.581 ms\r\n[MRPT_navigator|DEBUG|18:28:54.2381] CMD: (lin_vel=1.000 ang_vel=-0.814 ) speedScale=1.0000 T=239160.2ms Exec:228777.7ms|232960.8ms PTG#0\r\n[MRPT_navigator|DEBUG|18:28:54.5894] CWaypointsNavigator::checkHasReachedTarget() called with targetDist=3.71347 return=0 waypoint: wps.timestamp_nav_started=INVALID_TIMESTAMP\r\n[MRPT_navigator|WARN |18:28:54.5920] Timeout approaching the target. Aborting navigation.\r\n[MRPT_navigator|ERROR|18:28:54.5954] [CAbstractNavigator::navigationStep()] Stopping Navigation due to a NAV_ERROR state!\r\n\r\nMaybe I should edit this issue's title since velocity commands seem to be generating, just in an weird way."
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/90'
+  title: >-
+    line 89 in mrpt_bridge/CMakeLists.txt makes Problems: no ${MRPT_LIBS} as
+    Dependency
+  body: "get Error:\r\n```\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-base\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-graphs\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-maps\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-obs\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-opengl\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-slam\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-tfest\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\nThe dependency target \"mrpt-vision\" of target \"test_Bridge\" does not exist.\r\n```\r\nsolved it with edit line 89 in CMakeLists.txt of mrpt_bridge\r\nand removed ${MRPT_LIBS} as dependency\r\nimo it makes no sense to put libraries there. \r\n"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/87'
+  title: Version don't match report
+  body: "I install the MRPT master from source on debian 9 stretch.\r\n$ mkdir build  \r\n$ cd build \r\n$ cmake ..  \r\n$ make j4\r\n$ sudo make install\r\n\r\nAnd then I clone the mrpt_navigation-master:\r\n$ cd ~/catkin_ws/src\r\n$ git clone https://github.com/mrpt-ros-pkg/mrpt_navigation\r\n$ cd ..\r\n$ catkin_make\r\n\r\n**Output:**\r\n`-- ==> add_subdirectory(mrpt_navigation-master/mrpt_reactivenav2d)\r\n-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy\r\n-- MRPT_VERSION: 1.9.9\r\n-- MRPT_INCLUDE_DIRS: /usr/include/eigen3;/opt/ros/lunar/include;/usr/local/include/mrpt/mrpt-config/;/usr/include/suitesparse;/usr/local/include/mrpt/base/include;/usr/local/include/mrpt/graphs/include;/usr/local/include/mrpt/maps/include;/usr/local/include/mrpt/kinematics/include;/usr/local/include/mrpt/obs/include;/usr/local/include/mrpt/opengl/include;/usr/local/include/mrpt/nav/include\r\n-- +++ processing catkin package: 'pose_cov_ops'\r\n-- ==> add_subdirectory(pose_cov_ops-master)\r\n-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy\r\nCMake Warning at /opt/ros/lunar/share/catkin/cmake/catkin_package.cmake:166 (message):\r\n  catkin_package() DEPENDS on 'mrpt' but neither 'mrpt_INCLUDE_DIRS' nor\r\n  'mrpt_LIBRARIES' is defined.\r\nCall Stack (most recent call first):\r\n  /opt/ros/lunar/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  pose_cov_ops-master/CMakeLists.txt:85 (catkin_package)\r\n\r\n\r\n-- +++ processing catkin package: 'mrpt_localization'\r\n-- ==> add_subdirectory(mrpt_navigation-master/mrpt_localization)\r\n-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy\r\n-- Configuring done\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-base\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-graphs\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-maps\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-obs\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-opengl\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-slam\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-tfest\" of target \"test_Bridge\" does not exist.\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-vision\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\n-- Generating done\r\n-- Build files have been written to: /home/lvchaoshun/catkin_ws/build\r\nInvoking \"cmake\" failed`\r\n\r\n**I think the mrpt master version don't match the mrpt_navigation master version.**\r\n\r\n**So, anyone can help me? \r\nBest regards!** \r\n\r\n"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/85'
+  title: catkin_make Error
+  body: "I installed mrpt 1.5.3 from source on my Debian 9 stretch , and I execute \" sudo make install \".\r\n\r\nThere is some error when i compile the mrpt-ros-pkg/mrpt_navigation package use catkin_make .\r\n\r\n-- +++ processing catkin package: 'mrpt_localization'\r\n-- ==> add_subdirectory(mrpt_navigation-master/mrpt_localization)\r\n-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy\r\n-- Configuring done\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-base\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-graphs\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-maps\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-obs\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-opengl\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-slam\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-tfest\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\nCMake Error at mrpt_navigation-master/mrpt_bridge/CMakeLists.txt:89 (add_dependencies):\r\n  The dependency target \"mrpt-vision\" of target \"test_Bridge\" does not exist.\r\n\r\n\r\n-- Generating done\r\n-- Build files have been written to: /home/lvchaoshun/catkin_ws/build\r\nInvoking \"cmake\" failed\r\n\r\nAnyone can help me, thanks!\r\n"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/pull/70'
+  title: '[mrpt_rawlog] Fix missing rosbag dependency in package.xml.'
+  body: ''
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/pull/66'
+  title: '[mrpt_rawlog] Fix missing rosbag dependency in package.xml.'
+  body: "That dependency was indicated by doing \r\n`roslaunch-deps -w mrpt_navigation/mrpt_rawlog/launch/demo_rosbag.launch`"
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/pull/56'
+  title: Fix bug in MRPT->ROS pose conversion
+  body: "@jlblancoc I am sending this PR independent of the multi-robot SLAM algorithm developement as I found a bug in the CPosePDFGaussian => geometry_msgs::PoseWithCovariance conversion.\r\n\r\nAs you can see in [this](https://github.com/mrpt-ros-pkg/mrpt_navigation/commit/5c037b7d8b45ee70795f59b69b5a6a1d9b499b57) commit when the [x,y,yaw] covariance was transformed into the row-based 3D covariance representation of geometry_msgs/PoseWithCovariance msg, the angle components (elements that had index > 2) were overwritten and the resulting yaw  (element with index 35) was always 0."
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/39'
+  title: Build error in ros-indigo
+  body: >
+    My os : Ubuntu 14.04 and ros-indigo
+
+
+    Today I update mrpt_navigation code then rebuild that provide error
+
+
+    > /usr/include/mrpt/base/include/mrpt/math/CMatrixTemplate.h: In constructor
+    ‘mrpt::math::CMatrixTemplate<T>::CMatrixTemplate(std::size_t, std::size_t, V
+    (&)[N])’:
+
+    > /usr/include/mrpt/base/include/mrpt/utils/mrpt_macros.h:257:83: error:
+    there are no arguments to ‘static_assert’ that depend on a template
+    parameter, so a declaration of ‘static_assert’ must be available
+    [-fpermissive]
+
+    >   #define MRPT_COMPILE_TIME_ASSERT(expression)
+    static_assert(expression,#expression);
+
+    >                                                                                   
+    ^
+
+    > /usr/include/mrpt/base/include/mrpt/math/CMatrixTemplate.h:160:5: note: in
+    expansion of macro ‘MRPT_COMPILE_TIME_ASSERT’
+
+    >      MRPT_COMPILE_TIME_ASSERT(N!=0)
+
+    >      ^
+
+    > /usr/include/mrpt/base/include/mrpt/utils/mrpt_macros.h:257:83: note: (if
+    you use ‘-fpermissive’, G++ will accept your code, but allowing the use of
+    an undeclared name is deprecated)
+
+    >   #define MRPT_COMPILE_TIME_ASSERT(expression)
+    static_assert(expression,#expression);
+
+    >                                                                                   
+    ^
+
+    > /usr/include/mrpt/base/include/mrpt/math/CMatrixTemplate.h:160:5: note: in
+    expansion of macro ‘MRPT_COMPILE_TIME_ASSERT’
+
+    >      MRPT_COMPILE_TIME_ASSERT(N!=0)
+
+
+    how I fix it ? Thanks.
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/35'
+  title: mrpt_reactivenav2d compilation fails after latest mrpt commits
+  body: >
+    Latest mrpt commits seem to be braking the mrpt_reactivenav2d ROS package. 
+
+
+    For starters, the mrpt-kinematics library should be included in find_package
+    call of the CMakeLists.txt file.
+
+    Below, the error message prior to this is  given below:
+
+    [mrpt_navigation_bug.txt](https://github.com/mrpt-ros-pkg/mrpt_navigation/files/498191/mrpt_navigation_bug.txt)
+
+
+    ```
+
+    [ 80%] Built target mrpt_bridge
+
+    Scanning dependencies of target mrpt_reactivenav2d_node
+
+    [ 80%] Building CXX object
+    mrpt_navigation/mrpt_reactivenav2d/CMakeFiles/mrpt_reactivenav2d_node.dir/src/mrpt_reactivenav2d_node.cpp.o
+
+    In file included from
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CAbstractNavigator.h:11:0,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CWaypointsNavigator.h:11,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CAbstractPTGBasedReactive.h:12,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CReactiveNavigationSystem.h:12,
+                     from /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:42:
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CRobot2NavInterface.h:17:44:
+    fatal error: mrpt/kinematics/CVehicleVelCmd.h: No such file or directory
+     #include <mrpt/kinematics/CVehicleVelCmd.h>
+    [mrpt_navigation_bug.txt](https://github.com/mrpt-ros-pkg/mrpt_navigation/files/498191/mrpt_navigation_bug.txt)
+
+
+    ```
+
+
+    After this addition, the error message is given below:
+
+
+    ```
+
+    [ 80%] Built target mrpt_bridge
+
+    [ 80%] Building CXX object
+    mrpt_navigation/mrpt_reactivenav2d/CMakeFiles/mrpt_reactivenav2d_node.dir/src/mrpt_reactivenav2d_node.cpp.o
+
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:237:23:
+    error: cannot declare field ‘ReactiveNav2DNode::m_reactive_if’ to be of
+    abstract type ‘ReactiveNav2DNode::MyReactiveInterface’
+      MyReactiveInterface  m_reactive_if;
+                           ^
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:107:9:
+    note:   because the following virtual functions are pure within
+    ‘ReactiveNav2DNode::MyReactiveInterface’:
+      struct MyReactiveInterface :
+             ^
+    In file included from
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CAbstractNavigator.h:11:0,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CWaypointsNavigator.h:11,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CAbstractPTGBasedReactive.h:12,
+                     from /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CReactiveNavigationSystem.h:12,
+                     from /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:42:
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CRobot2NavInterface.h:58:16:
+    note:  virtual bool
+    mrpt::nav::CRobot2NavInterface::getCurrentPoseAndSpeeds(mrpt::math::TPose2D&,
+    mrpt::math::TTwist2D&, mrpt::system::TTimeStamp&)
+       virtual bool getCurrentPoseAndSpeeds(mrpt::math::TPose2D &curPose, mrpt::math::TTwist2D &curVel, mrpt::system::TTimeStamp &timestamp ) = 0;
+                    ^
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CRobot2NavInterface.h:65:16:
+    note:  virtual bool mrpt::nav::CRobot2NavInterface::changeSpeeds(const
+    mrpt::kinematics::CVehicleVelCmd&)
+       virtual bool changeSpeeds(const mrpt::kinematics::CVehicleVelCmd &vel_cmd) = 0;
+                    ^
+    /home/nick/sharedWros/codes/various/mrpt/libs/nav/include/mrpt/nav/reactive/CRobot2NavInterface.h:91:16:
+    note:  virtual bool
+    mrpt::nav::CRobot2NavInterface::senseObstacles(mrpt::maps::CSimplePointsMap&,
+    mrpt::system::TTimeStamp&)
+       virtual bool senseObstacles( mrpt::maps::CSimplePointsMap &obstacles, mrpt::system::TTimeStamp &timestamp) = 0;
+                    ^
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:
+    In member function ‘bool
+    ReactiveNav2DNode::MyReactiveInterface::getCurrentPoseAndSpeeds(mrpt::math::TPose2D&,
+    mrpt::math::TTwist2D&)’:
+
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:153:58:
+    note: #pragma message: TODO: Retrieve current speeds from odometry
+        MRPT_TODO("Retrieve current speeds from odometry");
+                                                              ^
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:
+    In member function ‘virtual bool
+    ReactiveNav2DNode::MyReactiveInterface::senseObstacles(mrpt::maps::CSimplePointsMap&)’:
+
+    /home/nick/sharedWros/ros/stacks/src/mrpt_navigation/mrpt_reactivenav2d/src/mrpt_reactivenav2d_node.cpp:215:50:
+    note: #pragma message: TODO: TODO: Check age of obstacles!
+        MRPT_TODO("TODO: Check age of obstacles!");
+                                                      ^
+    make[2]: ***
+    [mrpt_navigation/mrpt_reactivenav2d/CMakeFiles/mrpt_reactivenav2d_node.dir/src/mrpt_reactivenav2d_node.cpp.o]
+    Error 1
+
+    make[1]: ***
+    [mrpt_navigation/mrpt_reactivenav2d/CMakeFiles/mrpt_reactivenav2d_node.dir/all]
+    Error 2
+
+    make: *** [all] Error 2
+
+    Base path: /home/nick/sharedWros/ros/stacks
+
+    Source space: /home/nick/sharedWros/ros/stacks/src
+
+    Build space: /home/nick/sharedWros/ros/stacks/build
+
+    Devel space: /home/nick/sharedWros/ros/stacks/devel
+
+    Install space: /home/nick/sharedWros/ros/stacks/install
+
+    ####
+
+    #### Running command: "make cmake_check_build_system" in
+    "/home/nick/sharedWros/ros/stacks/build"
+
+    ####
+
+    ####
+
+    #### Running command: "make -j1 -l1" in
+    "/home/nick/sharedWros/ros/stacks/build/mrpt_navigation/mrpt_reactivenav2d"
+
+    ####
+
+    Invoking "make -j1 -l1" failed
+
+    ```
+
+
+    [mrpt_navigation_bug2.txt](https://github.com/mrpt-ros-pkg/mrpt_navigation/files/498189/mrpt_navigation_bug2.txt)
+
+
+    MRPT version is 1.5.0, system information is also given
+    [here](https://github.com/mrpt-ros-pkg/mrpt_navigation/files/498181/system_info.txt)
+
+
+    ```
+
+    DISTRIB_ID=Ubuntu
+
+    DISTRIB_RELEASE=14.04
+
+    DISTRIB_CODENAME=trusty
+
+    DISTRIB_DESCRIPTION="Ubuntu 14.04.5 LTS"
+
+    NAME="Ubuntu"
+
+    VERSION="14.04.5 LTS, Trusty Tahr"
+
+    ID=ubuntu
+
+    ID_LIKE=debian
+
+    PRETTY_NAME="Ubuntu 14.04.5 LTS"
+
+    VERSION_ID="14.04"
+
+    HOME_URL="http://www.ubuntu.com/"
+
+    SUPPORT_URL="http://help.ubuntu.com/"
+
+    BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+
+    ```
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []
+- url: 'https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/25'
+  title: 'librawlog_play.so: cannot open shared object file'
+  body: >
+    When launching `roslaunch mrpt_localization demo_ro.launch` I get the error
+    `librawlog_play.so: cannot open shared object file`.
+
+
+    There must be a dependency missing. Which package provides
+    `librawlog_play.so` under Ubuntu 14.04 with Indigo?
+  repo: 'https://api.github.com/repos/mrpt-ros-pkg/mrpt_navigation'
+  labels: []

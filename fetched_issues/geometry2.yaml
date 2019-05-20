@@ -1,0 +1,72 @@
+- url: 'https://github.com/ros/geometry2/issues/381'
+  title: >-
+    canTransform() with timeout while unloading nodelet with paused time ->
+    freeze
+  body: "I have a nodelet which periodically calls `canTransform()` with timeout in a separate thread on a TF2 ROS buffer.\r\n\r\nWhen I'm replaying a bag file and pause it, the `canTransform()` call (correctly) hangs until I unpause the playback. However, if I want to unload the nodelet while the bag is paused, it never unloads because the `canTransform()` call is still hanged.\r\n\r\nFor nodes, this was already solved in https://github.com/ros/geometry2/issues/26 . However, in nodelet case, there is nothing like `ros:ok()` to check for shutdown requests.\r\n\r\nWhat can I do to mitigate this behavior? \r\n\r\nUntil this is resolved, I think I'll write my own helper `Nodelet::canTransform()` doing the waiting loop itself and checking for some unload/stop flag."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels:
+    - bug
+- url: 'https://github.com/ros/geometry2/issues/359'
+  title: Unused parameters in message_filter.h
+  body: "When compiling my node which depends on the tf2_ros message filter I get the following warning.\r\n\r\n```make\r\n/home/tim/robo_guide_ws/src/robo_guide/src/nodelets/tracker_nodelet.cpp:56:50:   required from here\r\n/opt/ros/melodic/include/tf2_ros/message_filter.h:455:89: warning: unused parameter ‘target_frame’ [-Wunused-parameter]\r\n   void transformable(tf2::TransformableRequestHandle request_handle, const std::string& target_frame, const std::string& source_frame,\r\n                                                                                         ^~~~~~~~~~~~\r\n/opt/ros/melodic/include/tf2_ros/message_filter.h:455:122: warning: unused parameter ‘source_frame’ [-Wunused-parameter]\r\n   void transformable(tf2::TransformableRequestHandle request_handle, const std::string& target_frame, const std::string& source_frame,\r\n                                                                                                                          ^~~~~~~~~~~~\r\n/opt/ros/melodic/include/tf2_ros/message_filter.h:456:32: warning: unused parameter ‘time’ [-Wunused-parameter]\r\n                      ros::Time time, tf2::TransformableResult result)\r\n                                ^~~~\r\n```\r\n\r\nAs the message_fitler works as expected I assume that the parameters of the function can be deleted to avoid the warning."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []
+- url: 'https://github.com/ros/geometry2/pull/357'
+  title: 'Move tf2::impl::toQuaternion to tf2_geometry_msgs'
+  body: |-
+    Closes: #275
+
+    This breaks the cycle between tf2 and tf2_geometry_msgs.
+    I didn't add deprecated attributes for functions having
+    tf2_geometry_msgs in the method signature, as they would need to have
+    the right header imported anyhow.
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []
+- url: 'https://github.com/ros/geometry2/pull/343'
+  title: Fix python3 import error
+  body: >-
+    In python3, relative imports are only allowed using the dot-syntax. The
+    change is compatible to python2, too.
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []
+- url: 'https://github.com/ros/geometry2/issues/341'
+  title: Multiple TF publishers can clear TF buffer in rospy kinetic
+  body: "I recently had a problem with TFs clearing with a message similar to \"Detected jump back in time of 0.000130s. Clearing TF buffer.\", wich caused all of the nodes relying on TF information to break.\r\nLooking at the code, it seems this pull request https://github.com/ros/geometry2/pull/329 was a fault, with the backport in https://github.com/ros/geometry2/pull/336 to Kinetic.\r\n\r\nTo confirm the issue, I tested with a simple package with multiple TF broadcasters and a single TF listener in python.\r\nThe package is available here: https://github.com/redstorm45/poc-tf-kinetic\r\nI was able to reproduce the behavior, but testing on melodic showed no error.\r\nI suspect a change in the way subscribers are handled between the two versions.\r\n\r\nI was able to stop the problem from happening by adding a lock to the whole check_for_reset function here: https://github.com/ros/geometry2/blob/764804d8f489730c110e7d28dde682e8d1be3375/tf2_ros/src/tf2_ros/transform_listener.py#L67-L72\r\nTherefore, I think the last_update time is updated while another thread is checking against it, causing a buffer reset (which is not needed in that case).\r\n\r\nI don't think this is the right solution, but the bug needs to be addressed in Kinetic."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels:
+    - bug
+- url: 'https://github.com/ros/geometry2/issues/332'
+  title: tf2_ros - Realtime-safe TransformBroadcaster
+  body: "tf2_ros's `TransformBroadcaster::sendTransform` uses standard `ros::Publisher`s to publish transformations. This is fine when using tools like [robot_state_publisher](https://github.com/ros/robot_state_publisher), which spin up independant nodes to handle publishing transformations, but it makes it difficult to safely publish a transformation tree from within your main robot HW node (eg. RobotHW in ros_control). Perhaps the safest way to publish your transformations is in a dedicated node, but I believe there are cases where it may be prefered to publish the transformations from your realtime controller.\r\n\r\nI'm proposing adding a `realtime_tools::RealtimePublisher` to the class, and creating accompanying `sendTransformRT` functions that provide the same functionality as their existing non-RT counterparts, but using the RT publisher instead. Alternatively, the existing ros::Publisher could be _replaced_ with the RealtimePublisher, and the existing functions adapted accordingly, although I'm more inclined to add behaviour than mess with existing, reliable behaviour.\r\n\r\nOne thing to note about my proposal is that the parity between C++ and Python would be lost, as [realtime_tools](https://github.com/ros-controls/realtime_tools) doesn't have Python libraries, it is a C++ only library package. This is understandable though, as Python is not a good candidate for realtime applications anyways (Neither is C++ really, but it is much more reasonable than Python). \r\n\r\nNote that due to the nature of `StaticTransformBroadcaster`, we likely don't need realtime safety here, hence my proposal to only add a RealtimePublisher to the non-static TransformBroadcaster. If desired, though, it is trivial to also add the RT version here.\r\n\r\nIf this feature is deemed acceptable I will submit a PR with the changes."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []
+- url: 'https://github.com/ros/geometry2/issues/304'
+  title: transforming PoseStamped in Python eats RAM
+  body: "We noticed that doing many transformations of a PoseStamped in Python eats up RAM. Minimum working example:\r\n\r\n\r\n    import genpy\r\n    import tf2_ros\r\n    import tf2_geometry_msgs\r\n    import geometry_msgs.msg\r\n\r\n\r\n    def main():\r\n        p = geometry_msgs.msg.PoseStamped()\r\n        p.header.frame_id = 'map'\r\n\r\n        t = geometry_msgs.msg.TransformStamped()\r\n        t.header.frame_id = 'map'\r\n        t.child_frame_id = 'base_link'\r\n        t.transform.rotation.w = 1.0\r\n\r\n        tf_buffer = tf2_ros.Buffer(debug=False)\r\n        tf_buffer.set_transform_static(t, 'test')\r\n\r\n        do_transform = tf_buffer.registration.get(type(p))\r\n        transform = tf_buffer.lookup_transform('map', 'base_link', genpy.Time(0))\r\n        while True:\r\n            do_transform(p, transform)\r\n\r\n\r\n    if __name__ == '__main__':\r\n        main()\r\n\r\n\r\nLet this run for a few seconds and you can see that RAM is eaten up. PR will follow in a bit."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels:
+    - bug
+- url: 'https://github.com/ros/geometry2/issues/299'
+  title: invalid test dependency
+  body: >-
+    The test launch file `test_tf2_bullet.launch` tries to use a test executable
+    from the `test_tf2`
+    (https://github.com/ros/geometry2/blob/6eed82a013fa2f575f12fca92e5fd105518a1441/test_tf2/test/test_tf2_bullet.launch#L2)
+    which is neither depended on nor is that binary being installed. Maybe it is
+    supposed to use the local executable instead
+    (https://github.com/ros/geometry2/blob/6eed82a013fa2f575f12fca92e5fd105518a1441/test_tf2/CMakeLists.txt#L47-L48)?
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels:
+    - bug
+- url: 'https://github.com/ros/geometry2/issues/293'
+  title: python3 can't import tf
+  body: "Refer to [#259](https://github.com/ros/geometry2/issues/259)\r\nFollow by @randoms , I start from scratch\r\n```\r\nmkdir catkin_ws\r\ncd catkin_ws\r\nmkdir src\r\ncd src \r\ngit clone https://github.com/ros/geometry\r\ngit clone https://github.com/ros/geometry2\r\ncd ..\r\nvirtualenv -p /usr/bin/python3 venv\r\nsource venv/bin/activate\r\npip install catkin_pkg pyyaml empy rospkg numpy\r\ncatkin_make\r\nsource devel/setup.bash\r\n```\r\nHowever:\r\n**1)** It clones from `melodic-devel` and I ran into some build errors:\r\n```\r\n[ 75%] [ 77%] [ 79%] Building CXX object geometry2/tf2/CMakeFiles/tf2.dir/src/cache.cpp.o\r\nBuilding CXX object geometry2/tf2/CMakeFiles/tf2.dir/src/buffer_core.cpp.o\r\nBuilding CXX object geometry2/tf2/CMakeFiles/tf2.dir/src/static_cache.cpp.o\r\n/home/acmece/test/src/geometry2/tf2/src/buffer_core.cpp: In member function ‘bool tf2::BufferCore::warnFrameId(const char*, const string&) const’:\r\n/home/acmece/test/src/geometry2/tf2/src/buffer_core.cpp:126:49: error: ‘CONSOLE_BRIDGE_logWarn’ was not declared in this scope\r\n     CONSOLE_BRIDGE_logWarn(\"%s\",ss.str().c_str());\r\n........\r\n.......\r\nmake[2]: *** [geometry2/tf2/CMakeFiles/tf2.dir/src/buffer_core.cpp.o] Error 1\r\nmake[1]: *** [geometry2/tf2/CMakeFiles/tf2.dir/all] Error 2\r\nmake: *** [all] Error 2\r\nInvoking \"make -j4 -l4\" failed\r\n```\r\n(actually, I change to clone `indigo-devel` and it can be successfully built)\r\n\r\n**2)** Alough I built `indigo-devel` and set up an python3 virtual environment, I still cannot import tf with python3\r\n```\r\n-- Found PythonInterp: /home/acmece/catkin_ws/venv/bin/python (found version \"3.4.3\") \r\n-- Using PYTHON_EXECUTABLE: /home/acmece/catkin_ws/venv/bin/python\r\n......\r\n......\r\n-- +++ processing catkin package: 'tf2_py'\r\n-- ==> add_subdirectory(geometry2/tf2_py)\r\n-- Using these message generators: gencpp;genlisp;genpy\r\n-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython2.7.so (found suitable version \"2.7.6\", minimum required is \"2\") \r\n```\r\nIt seem that I have to use `/opt/ros/indigo/lib/python2.7` as long as I source `/opt/ros/indigo/setup.bash` in order to use `catkin_make`\r\n\r\nI am a freshman of this feild. Any help will be greatly appreciated."
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []
+- url: 'https://github.com/ros/geometry2/issues/288'
+  title: >-
+    Subscribing to tf topics using the rospy.AnyMsg type prevents transform
+    lookups
+  body: "Minimal example using the turtlebot tutorial:\r\n```python\r\n#!/usr/bin/env python\r\nimport rospy\r\nimport tf2_ros\r\n\r\ndef callback(data):\r\n    rospy.loginfo(rospy.get_caller_id() + \"I heard something...AnyThing?\")\r\n    \r\ndef topic_subscriber():\r\n    rospy.Subscriber(\"/tf\", rospy.AnyMsg, callback)\r\n\r\ndef transform_listener():\r\n    tf2_buffer = tf2_ros.Buffer()\r\n    tf2_listener = tf2_ros.TransformListener(tf2_buffer)\r\n          \r\n    while not (tf2_buffer.can_transform('turtle1', 'world', rospy.Time.now())):\r\n        pass\r\n    \r\n    transform = tf2_buffer.lookup_transform('turtle1', 'world', rospy.Time.now())\r\n\r\n    print('I will not get this transform: {}'.format(transform))\r\n\r\nif __name__ == '__main__':\r\n    rospy.init_node('tf2_test', anonymous=True)\r\n    topic_subscriber()\r\n    transform_listener()\r\n    rospy.spin()\r\n```\r\n\r\nThis results in:\r\n```bash\r\n[INFO] [1521201113.590437, 0.000000]: /tf2_test_18929_1521201110605I heard something...AnyThing?\r\n[INFO] [1521201113.590978, 0.000000]: /tf2_test_18929_1521201110605I heard something...AnyThing?\r\n[ERROR] [1521201113.591844, 0.000000]: bad callback: <bound method TransformListener.callback of <tf2_ros.transform_listener.TransformListener instance at 0x7f721a1341b8>>\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/topics.py\", line 750, in _invoke_callback\r\n    cb(msg)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/tf2_ros/transform_listener.py\", line 68, in callback\r\n    for transform in data.transforms:\r\nAttributeError: 'AnyMsg' object has no attribute 'transforms'\r\n\r\n[ERROR] [1521201113.592305, 0.000000]: bad callback: <bound method TransformListener.callback of <tf2_ros.transform_listener.TransformListener instance at 0x7f721a1341b8>>\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/topics.py\", line 750, in _invoke_callback\r\n    cb(msg)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/tf2_ros/transform_listener.py\", line 68, in callback\r\n    for transform in data.transforms:\r\nAttributeError: 'AnyMsg' object has no attribute 'transforms'\r\n```"
+  repo: 'https://api.github.com/repos/ros/geometry2'
+  labels: []

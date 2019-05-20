@@ -1,0 +1,18 @@
+- url: 'https://github.com/OctoMap/octomap_mapping/pull/54'
+  title: 'Update maintainer email, add Travis badges, change DEPENDS to OCTOMAP'
+  body: "- Updates maintainer email such that I will receive future ROS buildfarm messages\r\n- Adds Travis badges (requires Travis to be activated for the repository)\r\n- Changes the dependency from `octomap` to `OCTOMAP` as it otherwise creates warnings on Kinetic/Melodic"
+  repo: 'https://api.github.com/repos/OctoMap/octomap_mapping'
+  labels: []
+- url: 'https://github.com/OctoMap/octomap_mapping/issues/1'
+  title: 'Nodelet version of octomap_server '
+  body: >
+    Apparently there is a problem with the nodelet version of octomap_server,
+    first introduced in this Issue:
+
+    http://code.google.com/p/alufr-ros-pkg/issues/detail?id=7
+
+
+    Original report (@jihoonl @bit-pirate) in OctoMap/octomap#33
+  repo: 'https://api.github.com/repos/OctoMap/octomap_mapping'
+  labels:
+    - bug

@@ -1,0 +1,5 @@
+- url: 'https://github.com/DLu/navigation_layers/issues/46'
+  title: '[range_sensor_layer] symbol lookup error in Melodic'
+  body: "Hello,\r\nFirst of all, thanks a lot for releasing to Melodic, I just got the binary from the last sync.\r\nUsing a Kinetic working configuration, move_base crash when using a range_sensor_layer (and launch successfully when not):\r\n\r\n> /opt/ros/melodic/lib/move_base/move_base: symbol lookup error: /opt/ros/melodic/lib//librange_sensor_layer.so: undefined symbol: _ZN3tf212getTimestampIN13geometry_msgs13PointStamped_ISaIvEEEEERKN3ros4TimeERKT_\r\n> [move_base-5] process has died [pid 11782, exit code 127, cmd /opt/ros/melodic/lib/move_base/move_base /cmd_vel:=/navigation_stack/cmd_vel __name:=move_base __log:=/home/keylo/.ros/log/9b3bf342-bfda-11e8-b44c-a0c5898dc1ce/move_base-5.log].\r\n> log file: /home/keylo/.ros/log/9b3bf342-bfda-11e8-b44c-a0c5898dc1ce/move_base-5*.log\r\n> \r\n\r\nAny idea where it is coming from? Maybe a dependency ? I installed ros-melodic-tf* and ros-melodic-geometry* to be sure"
+  repo: 'https://api.github.com/repos/DLu/navigation_layers'
+  labels: []

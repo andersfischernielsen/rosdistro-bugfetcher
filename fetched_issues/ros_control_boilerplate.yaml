@@ -1,0 +1,5 @@
+- url: 'https://github.com/PickNikRobotics/ros_control_boilerplate/pull/27'
+  title: Make rrbot demo an independent package
+  body: "This PR makes the rrbot demo install an independent package that can be referenced from other packages.  My use case is to reuse rrbot files in the [`hal_ros_control`][1] rrbot demo:  that hardware interface subclasses this one, and that demo reuses launch and configuration files from this one.\r\n\r\nThis PR tweaks a few other things:  fixes `catkin lint` warnings, updates URLs in `package.xml` files, drops the redundant `FindGflags.cmake` script.\r\n\r\n[1]: https://github.com/zultron/hal_ros_control/tree/rrbot-pr\r\n"
+  repo: 'https://api.github.com/repos/PickNikRobotics/ros_control_boilerplate'
+  labels: []

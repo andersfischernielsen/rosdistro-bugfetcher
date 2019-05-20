@@ -1,0 +1,44 @@
+- url: 'https://github.com/swri-robotics/novatel_gps_driver/pull/29'
+  title: dependency declaration for novatel_msgs
+  body: 'This ensures the driver is built after the messages. '
+  repo: 'https://api.github.com/repos/swri-robotics/novatel_gps_driver'
+  labels: []
+- url: 'https://github.com/swri-robotics/novatel_gps_driver/pull/24'
+  title: Feature select serial baud rate
+  body: "For the serial connections one may want to connect to the device in a baud rate other than 115200. This PR adds an option for the user to set the desired serial baud rate.\r\n\r\nI had to add the `NovatelGps::SetSerialBaud(...)` method to allow setting the baud rate without changing the signature of `NovatelGps::Connect(...)`.\r\n\r\nThis is only important when connecting through the device serial ports. It seems to be irrelevant if you're using the device USB port, that emulates a serial connection behind the scenes but apparently handles the baud rate for you.\r\n\r\nTested with a OEM6 GPS."
+  repo: 'https://api.github.com/repos/swri-robotics/novatel_gps_driver'
+  labels: []
+- url: 'https://github.com/swri-robotics/novatel_gps_driver/issues/6'
+  title: Insufficient data rate is logged for GPS rates lower than 20 Hz
+  body: >-
+    A user reported seeing this message logged when using an OEM718D device that
+    was running at 5 Hz.  Looking at the code, I suspect that this warning will
+    be logged any time GPS messages are received at a rate of less than 20 Hz,
+    even if the `polling_period` is configured differently.
+  repo: 'https://api.github.com/repos/swri-robotics/novatel_gps_driver'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/novatel_gps_driver/issues/4'
+  title: Binary BESTPOS log with a Position Type of "74" causes a crash
+  body: >-
+    One of the unit tests is crashing because it's trying to parse a binary
+    BESTPOS log that has a position type of "74".  That's out of bounds of the
+    POSITION_TYPES array; judging from the documentation here, the array in the
+    driver needs to be updated:
+    http://docs.novatel.com/OEM7/Content/Logs/BESTPOS.htm#Position_VelocityType
+  repo: 'https://api.github.com/repos/swri-robotics/novatel_gps_driver'
+  labels:
+    - bug
+- url: 'https://github.com/swri-robotics/novatel_gps_driver/issues/2'
+  title: >-
+    GPS stops publishing if bestpos messages are too far behind GPGGA and GPRMC
+    messages
+  body: >-
+    The novatel driver tries to sync messages of our 3 selected message types
+    (GPGGA, GPRMC and BESTPOS), before outputting a current /localization/gps
+    measurement. However, if the BESTPOS is 1 or more seconds older than the
+    other two messages, no gps will be output because the buffer is only 1
+    second long.
+  repo: 'https://api.github.com/repos/swri-robotics/novatel_gps_driver'
+  labels:
+    - bug

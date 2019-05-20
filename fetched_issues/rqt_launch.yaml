@@ -1,0 +1,468 @@
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/18'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies of this package are available in
+    Melodic, so it would be great to get it released.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/13'
+  title: 'rqt_launch: ignores machine attribute'
+  body: >-
+    _From @dirk-thomas on November 26, 2013 21:17_
+
+
+    Moved from ros-visualization/rqt#93 filled by @jgdo.
+
+
+    I have some launch files where nodes are supposed to be started on a certain
+    machine using the "machine" attribute. Using roslaunch works fine, but when
+    starting the launch file using the rqt launch plugin, the machine attribute
+    seems to be ignored and the node starts on the local computer.
+
+
+    Is there a way to fix this with some setting or something?
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#203_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/12'
+  title: >-
+    rqt_launch) rosmaster for nodes point to local no matter what URI is set on
+    rqt_gui
+  body: >-
+    _From @130s on May 8, 2013 11:16_
+
+
+    Even though `rqt_gui` runs with the arbitrary `URI` set, the nodes that are
+    started from `rqt_launch` point to `hostname` value.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#83_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/11'
+  title: rqt_launch) GUI hangs while starting / stopping a node is taking time
+  body: >-
+    _From @130s on May 8, 2013 10:55_
+
+
+    Currently a single thread handles multiple nodes, and if there's a node that
+    becomes less responsive, that single thread waits so that GUI hangs. 
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#82_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/10'
+  title: rqt_launch) some processes not stopped by stop button
+  body: >-
+    _From @130s on May 1, 2013 6:57_
+
+
+    To reproduce, open `demo.launch` in `pr2_moveit_config` pkg on `rqt_launch`.
+    Then open another arbitrary .launch file and open back to `demo.launch`
+    (these are due to issue #53). Click `Start All`. Then click stop buttons for
+    all nodes. Not all but some processes still remain.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#79_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/8'
+  title: rqt_launch) Errors happening in roslaunch are not taken care of
+  body: >-
+    _From @130s on April 16, 2013 17:44_
+
+
+    Similar to Issue #53 but the phenomenon is different. Thus opened as a
+    separate issue.
+
+
+    On `rqt_launch` when I open `demo.launch` from `pr2_moveit_config` pkg, no
+    nodes are shown, nothing happens on GUI and I only see this on commandline:
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/launch_widget.py", line 120, in _load_launchfile_slot
+        self._port_roscore)
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/launch_widget.py", line 156, in _create_launchconfig
+        port_roscore)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/config.py", line 428, in load_config_default
+        loader.load(f, config, verbose=verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 694, in load
+        self._load_launch(launch, ros_config, is_core=core, filename=filename, argv=argv, verbose=verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 666, in _load_launch
+        self._recurse_load(ros_config, launch.childNodes, self.root_context, None, is_core, verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 630, in _recurse_load
+        val = self._include_tag(tag, context, ros_config, default_machine, is_core, verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 95, in call
+        return f(*args, **kwds)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 571, in _include_tag
+        default_machine, is_core, verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 610, in _recurse_load
+        self._param_tag(tag, context, ros_config, verbose=verbose)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 95, in call
+        return f(*args, **kwds)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 236, in _param_tag
+        value = self.param_value(verbose, name, ptype, *vals)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/loader.py", line 453, in param_value
+        with open(textfile, 'r') as f:
+    ```
+
+
+    When opening `moveit_group.launch`, error gets different:
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/launch_widget.py", line 137, in _load_launchfile_slot
+        self._create_widgets_for_launchfile(_config)
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/launch_widget.py", line 183, in _create_widgets_for_launchfile
+        proxy = NodeProxy(self._run_id, self._config.master.uri, node)
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/node_proxy.py", line 69, in __init__
+        self._process = self.recreate_process()
+      File "/home/user/ros/rqt_common_plugins/rqt_launch/src/rqt_launch/node_proxy.py", line 95, in recreate_process
+        self._run_id, self.config, self.master_uri)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/nodeprocess.py", line 131, in create_node_process
+        args = create_local_process_args(node, machine)
+      File "/opt/ros/groovy/lib/python2.7/dist-packages/roslaunch/node_args.py", line 239, in create_local_process_args
+        raise NodeParamsException("can't locate node [%s] in package [%s]"%(node.type, node.package))
+    roslaunch.node_args.NodeParamsException: can't locate node [move_group] in
+    package [moveit_ros_move_group]
+
+    ```
+
+
+    Both of these just indicate that `roslaunch` cannot open certain `.launch`
+    files. So `rqt_launch` has to be able to handle them, notify them to the
+    users.
+
+
+    `rqt_launch` 6238299e7b036b88f42979829ad3c0aea895aae6
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#72_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/6'
+  title: (rqt launch) highlighted text is unviewable
+  body: >-
+    _From @acornacorn on March 22, 2013 21:55_
+
+
+    In the launch panel, clicking on one of the nodes causes it to be highlighed
+    dark blue which makes it impossible to see the text on that line.  There
+    seems to be no way to UNhilight a line except by clicking on another line
+    (which makes that line unviewable)
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#55_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/4'
+  title: (rqt launch) nodes do not show up (at first)
+  body: >-
+    _From @acornacorn on March 22, 2013 21:43_
+
+
+    When I first start the RQT launch plugin, no nodes show up.  I see the
+    dotted tree lines on the left where the 2 nodes should be, but no
+    information about the nodes.  If I click on a different launch file and then
+    click back to the original launch file then eventually I see the information
+    about the nodes.
+
+
+    With some launch files, only some of the nodes show up.  For example, run
+    rqt, add the launch plugin, and set the package to pr2_moveit_config.  The
+    first launch file is demo.launch.  I see slots (dotted lines) for 5 nodes,
+    but only the first 2 (static transform publisher and joint state publisher)
+    show up.  Click on a different launch file (same problem).  Then click on
+    demo.launch again.  Now all 5 nodes show up. 
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#53_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_launch/issues/1'
+  title: 'pyside, rqt_launch) segfault upon boot'
+  body: >-
+    _From @130s on March 2, 2013 5:39_
+
+
+    This doesn't occur with `PyQt`. Ubuntu Quantal, `python-pyside` 1.1.1-3.
+    rqt_common_plugins 8416fd525113b96660ff799164dd0c695b5c6743
+
+
+    ```
+
+    Program received signal SIGSEGV, Segmentation fault.
+
+    0x00000000004c79b0 in ?? ()
+
+    (gdb) bt
+
+    #0  0x00000000004c79b0 in ?? ()
+
+    #1  0x00000000004c7719 in ?? ()
+
+    #2  0x00000000004a1f66 in ?? ()
+
+    #3  0x0000000000498e3d in PyType_GenericAlloc ()
+
+    #4  0x0000000000495cbc in ?? ()
+
+    #5  0x00000000004aaba8 in ?? ()
+
+    #6  0x000000000049629d in PyEval_CallObjectWithKeywords ()
+
+    #7  0x0000000000488c81 in PyErr_NormalizeException ()
+
+    #8  0x00000000004637f0 in PyEval_EvalFrameEx ()
+
+    #9  0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #10 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #11 0x00000000004a9fea in ?? ()
+
+    #12 0x000000000048249d in ?? ()
+
+    #13 0x000000000049629d in PyEval_CallObjectWithKeywords ()
+
+    #14 0x00007ffff63a0ed5 in ?? () from
+    /usr/lib/python2.7/lib-dynload/pyexpat.so
+
+    #15 0x00007ffff639e090 in ?? () from
+    /usr/lib/python2.7/lib-dynload/pyexpat.so
+
+    #16 0x00007ffff615630b in ?? () from /lib/x86_64-linux-gnu/libexpat.so.1
+
+    #17 0x00007ffff615754e in ?? () from /lib/x86_64-linux-gnu/libexpat.so.1
+
+    #18 0x00007ffff615906e in ?? () from /lib/x86_64-linux-gnu/libexpat.so.1
+
+    #19 0x00007ffff615981b in ?? () from /lib/x86_64-linux-gnu/libexpat.so.1
+
+    #20 0x00007ffff615b85d in XML_ParseBuffer () from
+    /lib/x86_64-linux-gnu/libexpat.so.1
+
+    #21 0x00007ffff639d2fc in ?? () from
+    /usr/lib/python2.7/lib-dynload/pyexpat.so
+
+    #22 0x000000000045f912 in PyEval_EvalFrameEx ()
+
+    #23 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #24 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #25 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #26 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #27 0x00000000004a9fea in ?? ()
+
+    #28 0x000000000048249d in ?? ()
+
+    #29 0x0000000000491bb4 in ?? ()
+
+    #30 0x00000000004aac6e in ?? ()
+
+    #31 0x00000000004600be in PyEval_EvalFrameEx ()
+
+    #32 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #33 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #34 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #35 0x00000000004a9adf in ?? ()
+
+    #36 0x000000000045fdca in PyEval_EvalFrameEx ()
+
+    #37 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #38 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #39 0x00000000004a9fea in ?? ()
+
+    #40 0x000000000048249d in ?? ()
+
+    #41 0x0000000000491bb4 in ?? ()
+
+    #42 0x00000000004aac6e in ?? ()
+
+    #43 0x00000000004600be in PyEval_EvalFrameEx ()
+
+    #44 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #45 0x00000000004a9fea in ?? ()
+
+    #46 0x000000000048249d in ?? ()
+
+    ---Type <return> to continue, or q <return> to quit---
+
+    #47 0x0000000000491bb4 in ?? ()
+
+    #48 0x00000000004aac6e in ?? ()
+
+    #49 0x00000000004600be in PyEval_EvalFrameEx ()
+
+    #50 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #51 0x00000000004a9fea in ?? ()
+
+    #52 0x000000000048249d in ?? ()
+
+    #53 0x0000000000491bb4 in ?? ()
+
+    #54 0x00000000004aac6e in ?? ()
+
+    #55 0x00000000004600be in PyEval_EvalFrameEx ()
+
+    #56 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #57 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #58 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #59 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #60 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #61 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #62 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #63 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #64 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #65 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #66 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #67 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #68 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #69 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #70 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #71 0x00000000004602b7 in PyEval_EvalFrameEx ()
+
+    #72 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #73 0x00000000004a9fea in ?? ()
+
+    #74 0x000000000048249d in ?? ()
+
+    #75 0x000000000049629d in PyEval_CallObjectWithKeywords ()
+
+    #76 0x00007ffff3b1a51a in
+    PySide::SignalManager::callPythonMetaMethod(QMetaMethod const&, void**,
+    _object*, bool) ()
+       from /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+    #77 0x00007ffff3b1a97a in PySide::SignalManager::qt_metacall(QObject*,
+    QMetaObject::Call, int, void**) ()
+       from /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+    #78 0x00007ffff309b123 in QMetaObject::activate(QObject*, QMetaObject
+    const*, int, void**) ()
+       from /usr/lib/x86_64-linux-gnu/libQtCore.so.4
+    #79 0x00007ffff3b1aaf8 in PySide::SignalManager::qt_metacall(QObject*,
+    QMetaObject::Call, int, void**) ()
+       from /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+    #80 0x00007ffff3b22a02 in ?? () from
+    /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+
+    #81 0x00007ffff3b1a4c0 in PySide::SignalManager::emitSignal(QObject*, char
+    const*, _object*) ()
+       from /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+    #82 0x00007ffff3e42470 in ?? () from
+    /usr/lib/python2.7/dist-packages/PySide/QtCore.so
+
+    #83 0x000000000049629d in PyEval_CallObjectWithKeywords ()
+
+    #84 0x00007ffff3b23484 in ?? () from
+    /usr/lib/x86_64-linux-gnu/libpyside-python2.7.so.1.1
+
+    #85 0x000000000045f912 in PyEval_EvalFrameEx ()
+
+    #86 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #87 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #88 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    ---Type <return> to continue, or q <return> to quit---
+
+    #89 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #90 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #91 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #92 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #93 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #94 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #95 0x000000000045ff77 in PyEval_EvalFrameEx ()
+
+    #96 0x0000000000467209 in PyEval_EvalCodeEx ()
+
+    #97 0x00000000004d0242 in PyEval_EvalCode ()
+
+    #98 0x00000000005102bb in ?? ()
+
+    #99 0x000000000044a466 in PyRun_FileExFlags ()
+
+    #100 0x000000000044a97a in PyRun_SimpleFileExFlags ()
+
+    #101 0x000000000044b6bc in Py_Main ()
+
+    #102 0x00007ffff6f0576d in __libc_start_main () from
+    /lib/x86_64-linux-gnu/libc.so.6
+
+    #103 0x00000000004ce0ad in _start ()
+
+    (gdb) info threads
+      Id   Target Id         Frame 
+      7    Thread 0x7fffc9b3f700 (LWP 28660) "python" 0x00007ffff7bcc04d in accept ()
+       from /lib/x86_64-linux-gnu/libpthread.so.0
+      6    Thread 0x7fffca340700 (LWP 28657) "python" 0x00007ffff6fd1023 in select () from /lib/x86_64-linux-gnu/libc.so.6
+      5    Thread 0x7fffcab41700 (LWP 28656) "python" 0x00007ffff6fd1023 in select () from /lib/x86_64-linux-gnu/libc.so.6
+      4    Thread 0x7fffde169700 (LWP 28599) "pool" 0x00007ffff7bc90fe in pthread_cond_timedwait@@GLIBC_2.3.2 ()
+       from /lib/x86_64-linux-gnu/libpthread.so.0
+      3    Thread 0x7fffdef9e700 (LWP 28598) "gdbus" 0x00007ffff6fcc303 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+      2    Thread 0x7fffdf79f700 (LWP 28597) "dconf worker" 0x00007ffff6fcc303 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+    * 1    Thread 0x7ffff6ccc700 (LWP 28596) "python" 0x00000000004c79b0 in ??
+    ()
+
+    ```
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#46_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_launch'
+  labels:
+    - bug

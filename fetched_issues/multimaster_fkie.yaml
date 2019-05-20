@@ -1,0 +1,200 @@
+- url: 'https://github.com/fkie/multimaster_fkie/issues/76'
+  title: Release for Melodic
+  body: "Hi, and thanks for this package!\r\n\r\nWe use it as a dependency, and it not being bloom-release'd for Melodic prevents us to the same. \r\nCould you please release it?\r\n\r\nThanks"
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/issues/70'
+  title: General Question
+  body: "Hello,\r\n\r\nI am currently trying to understand the functionallity of this package to reduce the network comnunication. \r\n\r\nI an having 3 robots and one server. Each robot has its own namespace and all of them publishes the same topics. The Server is subscribing a few important topics. Each of thems starts a master discovery and sync node. \r\n\r\nMy aim is, that all robots ignore all nodes of the other robots. Therefore i use \"ignore_nodes\". The Server uses \"ignore_topics / services\" to receive only necessary information.\r\n\r\nIn case of ignoring e. G.  a topic, does this mean, corresponding tcp data packages are not sent to the network and stay on the local master?  \r\n\r\nChecking the comnunication with wireshark, the robots still send a heap of packages into the network to each robot. But using ignoring nodes of this package they shouldn't, as far as I understand. The amount of meassured packages is nearly the same between Standard multimaster and multimaster using ignore Parameters. \r\n\r\nCan you help me with this thread? Its hard to explain but I hope you can understand my general question behind this issue. \r\n\r\nThanks in advance! "
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/pull/56'
+  title: restore Qt5 compatibility
+  body: "this restores Qt5 compatibility, short function test with Xubuntu 16.04, ROS Kinetic, PyQt5 and Xubuntu 14.04, ROS Indigo, PyQt4.\r\n\r\nThere is still a problem. Most (all?) Icons are missing. Problem [gui_resources.py](https://github.com/fkie/multimaster_fkie/blob/master/node_manager_fkie/src/node_manager_fkie/gui_resources.py) imports QtCore over PySide, should be QtCore over python_qt_binding, because gui_resources.py is auto generated I don't know where too change this in a proper way.\r\n\r\nThanks in advance."
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/issues/55'
+  title: '"Hub clients" can discover Hub but not vice versa'
+  body: "Hi,\r\n\r\nSo we're attempting to setup a hub toplogy using the new listen_mcast and send_mcast settings.  Our hub clients have listen_mcast set to True and send_mcast set to False.  The hub itself has listen_mcast and send_mcast set to True.\r\n\r\nWhen we run in this type of configuration our clients can see the hub just fine (and not each other which is great!) but unfortunately the hub can't see the clients since the client never sends out anything as part of its heartbeat.  We actually need them to see each other as there is topics and services that must be synchronized between the two.\r\n\r\nA simple change that would allow a client to see a hub and vice versa would be to modify the send_heartbeat() to send the master discovery current state to each address in self._address if listen_mcast is True but send_mcast is False:\r\n```\r\n# New method for sending out current state just to addresses that have been detected\r\n def _send_current_state2addresses(self):\r\n        try:\r\n            if not self._send_mcast and self._listen_mcast:\r\n                msg = self._create_current_state_msg()\r\n                if msg is not None:\r\n                    for addr in self._address:\r\n                      rospy.logdebug('Send current state to address %s' % addr)\r\n                      self.socket.send2addr(msg, addr)\r\n        except Exception as e:\r\n            rospy.logwarn('Send current state to addresses failed: %s\\n' % e)\r\n            self._init_socket()\r\n\r\n def send_heartbeat(self):\r\n      with self.__lock:\r\n            try:\r\n                self._timer_heartbeat.cancel()\r\n            except:\r\n                pass\r\n            invalid_uri = (self.master_monitor.getMasteruri() is None)\r\n            invalid_state = (self.master_monitor.getCurrentState() is None)\r\n            if not (invalid_uri or invalid_state or rospy.is_shutdown() or self.do_finish):\r\n              if self._send_mcast:\r\n                self._send_current_state2group()\r\n             elif self._listen_mcast:\r\n               # So in the case where send_mcast is disabled but not listen_mcast, we allow sending\r\n               # of our state to known addresses (the hubs basically)\r\n               self._send_current_state2addresses()\r\n```\r\n\r\nI'm not sure what you think of this.\r\n\r\nThanks.\r\n\r\n"
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels:
+    - bug
+- url: 'https://github.com/fkie/multimaster_fkie/issues/43'
+  title: '"cannot import name QApplication" on ROS kinetic & Ubuntu 16.04'
+  body: >
+    I can't run node_manager on Ubuntu 16.04 with ROS kinetic. I'm getting:
+
+
+    ```
+
+    kistner@mrt-pc123:~$ rosrun node_manager_fkie node_manager
+
+    cannot import name QApplication
+
+    ```
+
+
+    I have installed all PySide1 and all PyQt5 packages, and due too some
+    dependency's some PySide2 and most PyQt4 packages.
+
+
+    In a normal shell this works fine:
+
+
+    ```
+
+    kistner@mrt-pc123:~$ python
+
+    Python 2.7.12 (default, Jul  1 2016, 15:12:24) 
+
+    [GCC 5.4.0 20160609] on linux2
+
+    Type "help", "copyright", "credits" or "license" for more information.
+
+    >>> from python_qt_binding.QtWidgets import QApplication
+
+    ```
+
+
+    also all of these imports work:
+
+    `from PyQt4.QtGui import QApplication` 
+
+    `from PySide.QtGui import QApplication`
+
+    `from PyQt5.QtWidgets import QApplication`
+
+    `from PySide2.QtWidgets import QApplication`
+
+
+    python_qt_binding uses PyQt5 bindings maybe this is a problem?
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/issues/40'
+  title: >-
+    Crash on ros Kinetic when prompted for a dialog box to input a username and
+    password
+  body: >
+    I am currently using node_manager with ros kinetic
+
+
+    When I am prompted for a username / password during the starting of a
+    master_discovery host, Node Manager crashes giving the error:
+
+
+    ```
+
+    [INFO] [WallTime: 1470733744.360508] Run remote on auk: rosrun
+    node_manager_fkie remote_nm.py --package master_discovery_fkie --node_type
+    master_discovery --node_name /master_discovery _mcast_port:=11511
+    _mcast_group:=226.0.0.0 _robot_hosts:=[] _heartbeat_hz:=0.5
+    __name:=master_discovery
+
+    Traceback (most recent call last):
+      File "/home/z/catkin_ws/src/multimaster_fkie/node_manager_fkie/src/node_manager_fkie/progress_queue.py", line 210, in _on_request_interact
+        res, user, pw = nm.ssh()._requestPW(req.request.user, req.request.host)
+      File "/home/z/catkin_ws/src/multimaster_fkie/node_manager_fkie/src/node_manager_fkie/ssh_handler.py", line 249, in _requestPW
+        pwInput = QtGui.QDialog()
+    AttributeError: 'module' object has no attribute 'QDialog'
+
+    Aborted (core dumped)
+
+
+    ```
+
+
+    The issue seems to be due to the function _requestPW in ssh_handler.py using
+    the old Qt4 way of accessing a dialog. Starting on line 246 changing
+
+
+    ```
+            from python_qt_binding import QtGui
+            result = False
+            pw = None
+            pwInput = QtGui.QDialog()
+    ```
+
+
+    to
+
+
+    ```
+            from python_qt_binding import QtWidgets
+            result = False
+            pw = None
+            pwInput = QtWidgets.QDialog()
+    ```
+
+
+    appears to fix the issue
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/issues/39'
+  title: node_manager on Ubuntu 16.04 and ROS Kinetic
+  body: >
+    Hi,
+
+    I checked out the kinetic-devel branch and built it successfully within my
+    catkin workspace. 
+
+
+    On startup the node_manager crashes. Maybe due to the change from qt4 to qt5
+    in ROS kinetic? Here is the error message I get:
+
+
+    > Traceback (most recent call last):
+
+    >   File "/home/rikba/catkin_ws/devel/bin/node_manager", line 6, in <module>
+
+    >     exec(fh.read())
+
+    >   File "<string>", line 4, in <module>
+
+    >   File
+    "/home/rikba/catkin_ws/devel/lib/python2.7/dist-packages/node_manager_fkie/**init**.py",
+    line 35, in <module>
+
+    >     exec(__fh.read())
+
+    >   File "<string>", line 46, in <module>
+
+    >   File
+    "/home/rikba/catkin_ws/src/node_manager/node_manager_fkie/src/node_manager_fkie/master_view_proxy.py",
+    line 54, in <module>
+
+    >     from node_manager_fkie.detailed_msg_box import WarningMessageBox,
+    DetailedError
+
+    >   File
+    "/home/rikba/catkin_ws/src/node_manager/node_manager_fkie/src/node_manager_fkie/detailed_msg_box.py",
+    line 48, in <module>
+
+    >     class WarningMessageBox(QtGui.QMessageBox):
+
+    > AttributeError: 'module' object has no attribute 'QMessageBox'
+
+
+    Is there any update to be expected soon?
+
+
+    Thanks.
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []
+- url: 'https://github.com/fkie/multimaster_fkie/issues/22'
+  title: Dependency on python-qt
+  body: >
+    Hi, 
+
+    When we start to discover the master on remote host we get python error
+    stating that the python-qt-buinding module is not existing. However we have
+    limited storage on the robot and we want to avoid installing python-qt. Is
+    the dependency on python-qt necessary even on the robot?
+
+    We tried to start only master-discovery on the robot and the node_manager
+    discovered the robot, but same issue happens when we start a node for
+    instance.
+
+
+    Thank you 
+  repo: 'https://api.github.com/repos/fkie/multimaster_fkie'
+  labels: []

@@ -1,0 +1,26 @@
+- url: 'https://github.com/ros-visualization/rqt_logger_level/pull/5'
+  title: 'WIP: Ros2 port'
+  body: "This initial port of RQT logger level depends on PR's to rclpy and rcl_interfaces which will be opened soon. \r\n\r\nDepends on: https://github.com/ros2/rclpy/pull/254 and https://github.com/ros2/rcl_interfaces/pull/56"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_logger_level'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_logger_level/issues/3'
+  title: takes too long to start up / refresh
+  body: >-
+    _From @tkruse on August 16, 2013 10:10_
+
+
+    On my machine, with a reasonable number of nodes running on a remote PR2,
+    rxloggerlevel takes about 6 seconds too start, rqt_logger_level about 12.
+    Similarly a refresh in rxloggerlevel takes 3 secs, rqt_loggerlevel 12 again.
+
+
+    Since they do roughly the same, I assume that is a bug in rqt_loggerlevel.
+    Probably you won't notice if the nodes are running locally or just a few
+    nodes.
+
+
+
+    _Copied from original issue: ros-visualization/rqt_common_plugins#147_
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_logger_level'
+  labels:
+    - bug

@@ -1,0 +1,10 @@
+- url: 'https://github.com/roboception/rc_genicam_api/pull/11'
+  title: CMake full modern IMPORTED architecture
+  body: "In the current implementation, compilation definition are not stored in the target. Additionally, Genicam dependencies are stored as a library filename that requires the use of a global `link_directories` which complicates the use of the library in dependent projects. Similarly, the includes were not stored in the installed target, therefore, the dependent projects also had to use the global `include_directories`. \r\n\r\nIn the proposed implementation, one can simple use `target_link_library(myTarget PUBLIC rc_genicam_api)` and all includes, definitions and dependent libraries and their compilation and includes are passed automatically. "
+  repo: 'https://api.github.com/repos/roboception/rc_genicam_api'
+  labels: []
+- url: 'https://github.com/roboception/rc_genicam_api/issues/7'
+  title: Linker Error
+  body: "I would like to use the roboception image data in my own C++ program. I have downloaded the binaries (rc_genicam_api, v1.3.6 for Win64).\r\nWhen I try to compile a program which is quite similar to your example gc_pointcloud.cc. I am getting a linker error:\r\nLINK : fatal error LNK1104: Cannot open file \"GCBase_MDd__v3_0.lib\"\r\n\r\nI am using visual studio 2015 (v140) compiler. I added the additional library directory (path to rc_genicam_api-win64-vc14-v1.3.6\\lib) to the linker properties and added as additional dependencies GCBase_MD_VC120_v3_0.lib;GenApi_MD_VC120_v3_0.lib;rc_genicam_api.lib.\r\n\r\nWhere is my fault? Thanks in advance.\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/roboception/rc_genicam_api'
+  labels: []

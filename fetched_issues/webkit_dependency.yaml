@@ -1,0 +1,6 @@
+- url: 'https://github.com/ros-visualization/webkit_dependency/issues/1'
+  title: Purpose of this package
+  body: "I'm curious to the purpose of this package. I just encountered this a a dependency for `rqt_web`. Don't we have rosdep to find the right system dependencies for a given platform + ros distro?\r\n\r\nWhy should there be a package which in practise does nothing more than delegate to a rosdep key?"
+  repo: 'https://api.github.com/repos/ros-visualization/webkit_dependency'
+  labels:
+    - question

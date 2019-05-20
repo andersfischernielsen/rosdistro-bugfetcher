@@ -1,0 +1,12 @@
+- url: 'https://github.com/ros-visualization/rqt_topic/pull/10'
+  title: fix dictionary changed size during iteration
+  body: 'Fixes #8.'
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_topic'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_topic/issues/8'
+  title: rqt_topic crashes when cleaning up old topics.
+  body: "```\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/melodic/lib/python3.7/site-packages/rqt_topic/topic_widget.py\", line 183, in refresh_topics\r\n    for topic_name in self._topics.keys():\r\nRuntimeError: dictionary changed size during iteration\r\n```\r\n\r\nSimply removing line [197 of topic_widget](https://github.com/ros-visualization/rqt_topic/blob/master/src/rqt_topic/topic_widget.py#L197) fixes the issue. I'm not sure why the old topic was being deleted from the dict, since the next line of code overwrites the _topics dict with the new one. Is there some reason self._topics needs to be empty before it's overwritten?"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_topic'
+  labels:
+    - bug

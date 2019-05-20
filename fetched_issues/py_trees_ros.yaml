@@ -1,0 +1,165 @@
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/90'
+  title: '[watchers] bugfix dot to string functionality'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:programs'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/89'
+  title: '[conversions] handle the child in msg_to_behaviour for decorators'
+  body: "Since we don't permit delayed setting of the child for a decorator\r\n(deliberately so to avoid zombie decorators), just fill it in with\r\na dummy child so that the proper entity can be passed in later."
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:conversions'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/88'
+  title: '[blackboard] disable watcher destroy_publisher calls'
+  body: "See #87 for more information.\r\n\r\nAlso:\r\n\r\n* Latched Echo is now just Echo with an option for latched\r\n* A multi-talker experiment to test destroy_publisher calls\r\n* Robustified the utilities.find_service method with a timeout\r\n* Watcher topics on a hidden namespace now (`_watcher_<unique number>`)"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:blackboard'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/87'
+  title: Blackboard watcher publishers spawn without end
+  body: "Currently have the appropriate (?) `node.destroy_publisher()` call in `BlackboardView.shutdown()` commented out which induces the spawning without end of blackboard publishers.\r\n\r\nIf I don't have it commented though, subsequent executions of the blackboard watcher frequently create a subscriber that fails to have it's callbacks triggered. Note: frequently, not all the time.\r\n\r\n* The very first watcher connection *always* works\r\n* A separate echo of the topic *always* works\r\n* Sleeps/spins between opening the connection and creating the subscription does naught\r\n\r\nTested against rclpy `0.6.4` (crystal).\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:blackboard'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/86'
+  title: Continuous Integration
+  body: "Might be useful to put the devel branch under CircleCI, depending on how clever the build farm hooks are.\r\n\r\nOstensibly, I'd like to be able to trigger the build on a PR for any of the `py_trees_ros*` repositories alongside `devel` or an equivalently named PR branch for `py_trees`, `py_trees_ros_interfaces`, `py_trees_ros` and `py_trees_ros_tutorials`.\r\n\r\n* Old post about caching apt-get on CircleCI [here](https://discuss.circleci.com/t/caching-apt-get-packages/9076)\r\n* [Rolling Images for CircleCI](https://circleci.com/docs/2.0/custom-images/) - the recommended way for CircleCI 2.0\r\n* Adding SSH Key to a project so it can clone other projects - [Forum Question](https://discuss.circleci.com/t/cloning-another-private-repo-in-the-build/25505/6), [Circle CI Docs](https://circleci.com/docs/2.0/gh-bb-integration/#enable-your-project-to-check-out-additional-private-repositories)\r\n* Use the [OSRF/ros2](https://hub.docker.com/r/osrf/ros2/) docker container\r\n  * Note that you can't force it to cache parts, it will try to automate that to some extent itself, see [here](https://support.circleci.com/hc/en-us/articles/360000372428-Why-isn-t-Docker-Layer-Caching-speeding-up-my-spin-up-time-?flash_digest=8c958a60ad95f2998ac2cfc3e7f45ad9dd9312b2#)"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:infra'
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/74'
+  title: '[tests] fix exchange test'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:tests'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/67'
+  title: '[tests] readme instructions and configured in setup.py'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:tests'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/62'
+  title: Resolve kinetic-melodic branches
+  body: >-
+    Really ought to have put them on the same `release/0.5.x` branch back when.
+    They now seem to have gotten out of sync (I'd stopped working on kinetic,
+    but turns out there are quite a few users still).
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/61'
+  title: '[actions] remove redundant print'
+  body: 'This resolves #60.'
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:behaviours'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/60'
+  title: ActionClient Behavior is not silent
+  body: "When running an Behavior of type ActionClient it always prints the goal that was send because of this line: \r\nhttps://github.com/stonier/py_trees_ros/blob/release/0.5-kinetic/py_trees_ros/actions.py#L92\r\n\r\nTo me, it would be desirable to disable this print out. I pollutes my console a bit.\r\n\r\nIf you agree, I could provide a pull request with a fix. I'd use a call such as ```self.logger.debug(\"{}\".format(self.action_goal))```. Also, to which branch would you like to receive such a pull request?"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:behaviours'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/59'
+  title: '[melodic] py_trees_ros broken after last binary update'
+  body: "After updating last binary package in melodic (0.5.16-0bionic.20190204.215333), py_trees_ros seems broken. All my applications give me the same error:  `AttributeError: 'module' object has no attribute 'decorators'`\r\n\r\nEven the first tutorial, here is the console output:\r\n\r\n> Traceback (most recent call last):\r\n>   File \"/opt/ros/melodic/lib/py_trees_ros/tutorial_tree\", line 44, in <module>\r\n>     main_itself()\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees_ros/tutorials/one.py\", line 139, in main\r\n>     behaviour_tree.tick_tock(500)\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees/trees.py\", line 259, in tick_tock\r\n>     self.tick(pre_tick_handler, post_tick_handler)\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees/trees.py\", line 233, in tick\r\n>     node.visit(visitor)\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees/behaviour.py\", line 220, in visit\r\n>     visitor.run(self)\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees_ros/visitors.py\", line 108, in run\r\n>     self.tree.behaviours.append(conversions.behaviour_to_msg(behaviour))\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees_ros/conversions.py\", line 122, in behaviour_to_msg\r\n>     msg.type = behaviour_type_to_msg_constant(behaviour)\r\n>   File \"/opt/ros/melodic/lib/python2.7/dist-packages/py_trees_ros/conversions.py\", line 49, in behaviour_type_to_msg_constant\r\n>     elif isinstance(behaviour, py_trees.decorators.Decorator):\r\n> AttributeError: 'module' object has no attribute 'decorators'\r\n> [tree-10] process has died [pid 23311, exit code 1, cmd /opt/ros/melodic/lib/py_trees_ros/tutorial_tree one __name:=tree __log:=/home/**/.ros/log/6fd2029c-2f8c-11e9-949f-f0d5bfb298e1/tree-10.log].\r\n\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:infra'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/57'
+  title: Standard output/error for launchers not showing
+  body: "Reproduce:\r\n\r\n```\r\nshell one $ ros2 launch py_trees_ros mock-robot.launch.py\r\nshell two $ ros2 topic pub /led_strip/command std_msgs/String \"data: 'blue'\"\r\nshell one $ ctrl-c\r\n```\r\n\r\nWorkarounds:\r\n\r\n* Standard Output: consume it after ctrl-c\r\n* Standard Error: launch everything manually with `ros2 run`\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'result:wontfix'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/56'
+  title: Launch files not installing with symlinks
+  body: "Reproduce:\r\n\r\nNote, package.xml is symlinked, python files are not.\r\n\r\n```\r\n$ make all\r\n$ ls -l install/py_trees_ros/share/py_trees_ros\r\n$ ls -l install/py_trees_ros/share/py_trees_ros/launch\r\n```\r\n\r\nWorkaround: \r\n\r\n* manually build after every modification to a `launch/<name>.launch.py` file"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'result:wontfix'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/55'
+  title: Dashboard doesn't shutdown via the gui
+  body: Doesn't shutdown when the gui 'x' is clicked.
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/52'
+  title: '[mock] drop termcolor dependency'
+  body: And some pep8 fixes.
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/43'
+  title: ROS2 task list
+  body: "Get the fundamentals up and running:\r\n\r\n**Infra**\r\n\r\n* [x] install ros2 master version and build against that\r\n* [x] Package specific executables &rarr; PR #45\r\n* [x] Shebangs and encodings &rarr; PR #47 \r\n* [x] LICENSE -> splintered-reality &rarr; PR #66\r\n\r\n**PyTrees ROS**\r\n\r\n* [x] Exchange &rarr; PR #45\r\n* [x] Exchange updates for 1.0 (node usage, count) &rarr; PR #66\r\n* [x] Exchange tests &rarr; PR #66\r\n* [x] Blackboard Watchers &rarr; PR #45\r\n* [x] Exchange/Blackboard Watcher unit test / ~~system test~~ &rarr; PR #66\r\n* [x] An MVP ROS2 behaviour tree and test &rarr; #26\r\n* [x] ROS2 behaviour tree watcher (or better ros2 string formatting)\r\n\r\n**3rd Party**\r\n\r\n* [x] `unique_identifier_msgs`: dependency for colcon\r\n\r\n\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:behaviours'
+    - 'component:blackboard'
+    - 'component:trees'
+    - 'type:enhancement'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/33'
+  title: Check parent name with _ for meta class
+  body: >-
+    Since the `Battery Emergency` is wrapped inside Imposter, the name would be
+    `_Battery Emergency`. 
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/26'
+  title: Error when running the tutorials installed from the ROS repo
+  body: "When installing the py_trees suite from the ROS repo and going through the tutorials I get the error:\r\n```\r\nERROR: cannot launch node of type [py_trees_ros/mock_safety_sensors]: can't locate node [mock_safety_sensors] in package [py_trees_ros]\r\n```\r\nFixed by #25 . Until pushed to the ROS repo the script can be manually put in:\r\n> /opt/ros/kinetic/lib/py_trees_ros\r\n\r\nand give it execution permission"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:demos'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/25'
+  title: Installs mock_safety_sensors in the BIN destination folder too
+  body: "When running the tutorials when installed from the ROS repo, it complains that the program mock_safety_sensors does not exist. This is actually true (good job ROS!) and I realized that that script is not installed with the rest. I don't know if there is a mysterious reason for that but if not, here is the fix.\r\n\r\nError: \r\n```\r\nERROR: cannot launch node of type [py_trees_ros/mock_safety_sensors]: can't locate node [mock_safety_sensors] in package [py_trees_ros]\r\n```"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:demos'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/23'
+  title: '[test] subscriber_check: root.status -> root.count '
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:tests'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/pull/22'
+  title: '[tutorials] eight - fix typo'
+  body: ''
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/21'
+  title: Subscriber tick tock test broken
+  body: "```\r\n06:59:37 [ROSTEST]-----------------------------------------------------------------------\r\n06:59:37 \r\n06:59:37 [py_trees_ros.rosunit-test_subscriber_check/test_tick_tock][ERROR]--------------\r\n06:59:37 unorderable types: Status() < int()\r\n06:59:37   File \"/usr/lib/python2.7/unittest/case.py\", line 329, in run\r\n06:59:37     testMethod()\r\n06:59:37   File \"/tmp/catkin_workspace/src/py_trees_ros/tests/rostests/subscriber_check/test_subscriber_check.py\", line 101, in test_tick_tock\r\n06:59:37     self.runner.tick_tock(number_of_iterations=50)\r\n06:59:37   File \"/tmp/catkin_workspace/src/py_trees_ros/tests/rostests/subscriber_check/test_subscriber_check.py\", line 72, in tick_tock\r\n06:59:37     while not rospy.is_shutdown() and self.root.status < number_of_iterations:\r\n06:59:37   File \"/usr/lib/python2.7/dist-packages/enum/__init__.py\", line 719, in __lt__\r\n06:59:37     raise TypeError(\"unorderable types: %s() < %s()\" % (self.__class__.__name__, other.__class__.__name__))\r\n```"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:tests'
+    - 'type:bug'
+- url: 'https://github.com/splintered-reality/py_trees_ros/issues/15'
+  title: Tutorials on RTD
+  body: "Should be feasible to put them there as you should not need all the dependencies to build docs.\r\n\r\n* Use a `doc-requirements.txt` and point rtd at that for installing sphinx and other sphinx modules.\r\n* Use `autodoc_mock_imports` for any imports that aren't available at build time\r\n"
+  repo: 'https://api.github.com/repos/splintered-reality/py_trees_ros'
+  labels:
+    - 'component:infra'
+    - 'result:wontfix'
+    - 'type:documentation'

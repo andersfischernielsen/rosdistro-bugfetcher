@@ -1,0 +1,15 @@
+- url: 'https://github.com/ros-drivers/urg_node/pull/46'
+  title: Ros2 devel
+  body: "Here is a ROS 2 Bouncy port of the urg_node including the parameters reconfiguration.\r\n\r\nThere is still some work to do, mainly on the dependencies which are being ported by other people, so I'm waiting on these \"official\" ports to use them.\r\n\r\nYou can check a status of the port [here](https://docs.google.com/spreadsheets/d/1_0kXQhPuvQx3-LFibtIpJFCw35aMaCnop9416IAVZ4U/edit?usp=sharing). "
+  repo: 'https://api.github.com/repos/ros-drivers/urg_node'
+  labels: []
+- url: 'https://github.com/ros-drivers/urg_node/pull/27'
+  title: Updating depend and roslint.
+  body: "Fixing some roslint error after moving a header name.\r\nAdditionally fixing the gencfg to be on the lib and not the node."
+  repo: 'https://api.github.com/repos/ros-drivers/urg_node'
+  labels: []
+- url: 'https://github.com/ros-drivers/urg_node/pull/26'
+  title: Adding missing std_srvs depend.
+  body: Adding missing std_srvs depend to package.xml and CMakelists.txt
+  repo: 'https://api.github.com/repos/ros-drivers/urg_node'
+  labels: []

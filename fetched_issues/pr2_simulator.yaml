@@ -1,0 +1,1433 @@
+- url: 'https://github.com/PR2/pr2_simulator/pull/146'
+  title: remove gazebo depends
+  body: >-
+    since gazebo_plugins already depend on gazebo via gazebo_dev and this solves
+    build farm error on stretch
+    http://build.ros.org/job/Mbin_dsv8_dSv8__pr2_gazebo_plugins__debian_stretch_arm64__binary/
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/pull/145'
+  title: enable test code in pr2_simulator
+  body: >-
+    - hztest_pr2_mechanism.launch : hztopic is around 80hz, update hzerror
+
+    - update pointcloud topic name from points to points2
+
+    - update launch file to use empty_world.launch to pass gui and headless 
+    arguments
+
+    -  check_pose.py: ignore BASE_Z
+
+    - test_scan.py: update target range and intensities, range: 10.0->inf,
+    intensities 101.0->0.0
+
+    - test_base.py: twist.angular has x,y,z, not vx,vy,vz
+
+    - mechanism_controllers/test*.py, reduce target velocity from 0.5 to 0.25
+
+    - test_arm.py: fix P3D message
+
+    - convert old gazebo format to sdf
+
+    - Media/models/slide_endbin.stl: open stl file in meshlab and save it, to
+    enable shading.
+    https://answers.ros.org/question/12704/activating-shading-for-a-stl-based-environment-in-gazebo/
+
+    - pr2_no_controllers.launch: remove deprecated --ros_namespace /gazebo. This
+    is not used long time, but using argparse cache this error.
+    https://github.com/ros-simulation/gazebo_ros_pkgs/commit/46ac000ea34d006d9f37a2392c2146bbd9e6d1be
+
+    - package.xml: add more run_depend and test_depend, also export
+    gazebo_model_path
+
+    - CMakeLists.txt: add CATKIN_ENABLE_TESTING
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/pull/137'
+  title: Config build depends
+  body: 'Alternative to #136 '
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/pull/136'
+  title: add build and run depend to pr2_gazebo
+  body: >-
+    to fix
+    http://build.ros.org/job/Kbin_uX64__pr2_controller_configuration_gazebo__ubuntu_xenial_amd64__binary/2/console
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/pull/135'
+  title: fix more cmake warnings
+  body: "```\r\nCMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:166 (message):\r\n  catkin_package() DEPENDS on 'gazebo' but neither 'gazebo_INCLUDE_DIRS' nor\r\n  'gazebo_LIBRARIES' is defined.\r\nCall Stack (most recent call first):\r\n  /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  CMakeLists.txt:74 (catkin_package)\r\n\r\n\r\nCMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:166 (message):\r\n  catkin_package() DEPENDS on 'SDF' but neither 'SDF_INCLUDE_DIRS' nor\r\n  'SDF_LIBRARIES' is defined.\r\nCall Stack (most recent call first):\r\n  /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)\r\n  CMakeLists.txt:74 (catkin_package)\r\n```\r\n```\r\nThe dependency target \"pr2_gazebo_plugins_gencfg\" of target\r\n  \"gazebo_ros_controller_manager\" does not exist.\r\nThis warning is for project developers.  Use -Wno-dev to suppress it.\r\n\r\n```"
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/pull/130'
+  title: pr2_gazebo_plugins is no longer depend on driver_base
+  body: null
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels: []
+- url: 'https://github.com/PR2/pr2_simulator/issues/108'
+  title: Missing dependency on PCL
+  body: >
+    The CMakeLists.txt requires PCL
+    (https://github.com/PR2/pr2_simulator/blob/d41a9c603c4e07359daa60de01a1f78448d1372b/pr2_gazebo_plugins/CMakeLists.txt#L96)
+    but the package.xml file does not list it as a dependency.
+
+
+    http://54.183.26.131:8080/job/Ibin_uT64__pr2_gazebo_plugins__ubuntu_trusty_amd64__binary/1/console
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+- url: 'https://github.com/PR2/pr2_simulator/issues/97'
+  title: PR2 Grippers not visible in simulation.
+  body: >
+    It looks like the frames for the PR2 grippers are not being published in
+    simulation; in particular I'm seeing TF frame errors for both grippers and
+    both fingers on the _finger_link, _finger_tip_frame, _finger_tip_link,
+    _motor_screw_link and _motor_slider_link frames.
+
+
+    I've just merged
+    https://github.com/PR2/pr2_mechanism/commit/c3d77a0fe80cabeb6faecc23c9bde4b0e6ad6fc0,
+    so that may or may not be responsible.
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+- url: 'https://github.com/PR2/pr2_simulator/issues/92'
+  title: 'ConnectWorldUpdateStart is deprecated  (ros ticket #5219)'
+  body: >
+    Should be ConnectWorldUpdateBegin. See patch:
+
+    https://github.com/danepowell/pr2_simulator/commit/90ebfcfac63dd7ef94a94f59d18012dba47b0919
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **danepowell**
+
+    - Reported at: **Wed Aug 14 15:15:43 2013**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5219
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/91'
+  title: >-
+    pr2 gazebo simulator crashes looking for /tmp/buildd files  (ros ticket
+    #5216)
+  body: >
+    The newest debs seem to be looking for files in /tmp/buildd/... when
+    launching pr2_empty_world.launch, which causes gazebo to crash and burn. I
+    verified this on two different computers, including a clean re-install of
+    ros.
+
+
+    auto-starting new master[[BR]]
+
+    process[master]: started with pid [14251][[BR]]
+
+    ROS_MASTER_URI=http://localhost:11311[[BR]]
+
+
+    setting /run_id to a50682ec-60d2-11e2-897d-6c626ded1cf6[[BR]]
+
+    process[rosout-1]: started with pid [14264][[BR]]
+
+    started core service [/rosout][[BR]]
+
+    process[gazebo-2]: started with pid [14278][[BR]]
+
+    process[gazebo_gui-3]: started with pid [14284][[BR]]
+
+    find:
+    `/tmp/buildd/ros-groovy-simulator-gazebo-1.7.7/debian/ros-groovy-simulator-gazebo/opt/ros/groovy/stacks/simulator_gazebo/gazebo/gazebo/share':
+    No such file or directory [[BR]]
+
+    ERROR: Couldn't find a Gazebo setup.sh in
+    /tmp/buildd/ros-groovy-simulator-gazebo-1.7.7/debian/ros-groovy-simulator-gazebo/opt/ros/groovy/stacks/simulator_gazebo/gazebo/gazebo/share
+
+    [[BR]]
+
+    [gazebo-2] process has died [pid 14278, exit code 1, cmd
+    /opt/ros/groovy/stacks/simulator_gazebo/gazebo/scripts/gazebo -u
+    /opt/ros/groovy/stacks/simulator_gazebo/gazebo_worlds/worlds/empty.world
+    __name:=gazebo
+    __log:=/u/aleeper/.ros/log/a50682ec-60d2-11e2-897d-6c626ded1cf6/gazebo-2.log].
+
+    [[BR]]
+
+    log file:
+    /u/aleeper/.ros/log/a50682ec-60d2-11e2-897d-6c626ded1cf6/gazebo-2*.log
+
+    [[BR]]
+
+    find:`/tmp/buildd/ros-groovy-simulator-gazebo-1.7.7/debian/ros-groovy-simulator-gazebo/opt/ros/groovy/stacks/simulator_gazebo/gazebo/gazebo/share':
+    No such file or directory
+
+    [[BR]]
+
+    ERROR: Couldn't find a Gazebo setup.sh in
+    /tmp/buildd/ros-groovy-simulator-gazebo-1.7.7/debian/ros-groovy-simulator-gazebo/opt/ros/groovy/stacks/simulator_gazebo/gazebo/gazebo/share
+
+    [[BR]]
+
+    process[spawn_pr2_model-4]: started with pid [14296]
+
+    [[BR]]
+
+    process[robot_state_publisher-5]: started with pid [14297]
+
+    [[BR]]
+
+    process[pr2_mechanism_diagnostics-6]: started with pid [14298]
+
+    [[BR]]
+
+    [gazebo_gui-3] process has died [pid 14284, exit code 1, cmd
+    /opt/ros/groovy/stacks/simulator_gazebo/gazebo/scripts/gui
+    __name:=gazebo_gui
+    __log:=/u/aleeper/.ros/log/a50682ec-60d2-11e2-897d-6c626ded1cf6/gazebo_gui-3.log].
+
+    [[BR]]
+
+    log file:
+    /u/aleeper/.ros/log/a50682ec-60d2-11e2-897d-6c626ded1cf6/gazebo_gui-3*.log
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **aleeper**
+
+    - Reported at: **Thu Jan 17 10:36:23 2013**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5216
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_simulator/issues/90'
+  title: >-
+    Change default rayCount/rangeCount parameters in URDF, allow
+    parameterization  (ros ticket #5025)
+  body: >
+    The hokuyo sensors in the PR2 gazebo setup use 640 rays for both the base
+    and tilt lasers. This value is too high for the default PR2 settings, and it
+    slows down the laser data generation.
+
+
+    These values should be lowered by default to between 180 and 350, and
+    parameterized in their xacro macros. Ticket #5024 is to allow dynamic
+    reconfiguration of these parameters.
+
+
+    trac data:
+
+    - Owner: **natepak**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Feb 16 14:31:32 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5025
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/89'
+  title: >-
+    Create hokuyo gazebo plugin capable of dynamically reconfiguring rate and
+    resolution  (ros ticket #5024)
+  body: >
+    Running both the base and tilt lasers on the PR2 drains a lot of CPU because
+    of the ray tracing that is done using ODE. 
+
+
+    The gazebo_ros_laser plugin should be extended to allow some parameters of
+    the laser to be reconfigured:
+
+    - rayCount
+
+    - rangeCount
+
+    - minAngle
+
+    - maxAngle
+
+    - minRange
+
+    - maxRange
+
+    - updateRate
+
+    - gaussianNoise
+
+    - frameName
+
+    - topicName
+
+
+    The rayCount and rangeCount numbers should have a sanity check, so if
+    rayCount > rangeCount, it only generates the minimum number of needed rays.
+
+
+    trac data:
+
+    - Owner: **natepak**
+
+    - Reporter: **watts**
+
+    - Reported at: **Wed Feb 16 14:26:15 2011**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/5024
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/88'
+  title: 'Gazebo Tests Delete Workspace Every Run  (ros ticket #3793)'
+  body: >
+    For some strange and annoying reason, hudson deletes its workspace every
+    time it builds the test.
+
+
+    {{{
+
+    At revision 27633
+
+    Fetching 'https://code.ros.org/svn/ros-pkg/stacks/sound_drivers/tags/latest'
+    at -1 into
+    '/home/wgsim/hudson/workspace/gazebo-milestone-tests/ros-pkg/sound_drivers'
+
+    At revision 27633
+
+    Fetching 'https://code.ros.org/svn/ros-pkg/stacks/imu_drivers/tags/latest'
+    at -1 into
+    '/home/wgsim/hudson/workspace/gazebo-milestone-tests/ros-pkg/imu_drivers'
+
+    At revision 27633
+
+    At revision 27633
+
+    Updating https://code.ros.org/svn/wg-ros-pkg/trunk
+
+    svn: Failed to add directory 'stacks/executive_trex/trex': an unversioned
+    directory of the same name already exists
+
+    Updated failed due to local files. Getting a fresh workspace
+
+    Checking out https://code.ros.org/svn/ros/stacks/ros/tags/rc
+
+    A         test
+
+    A         test/test_roswtf
+
+    A         test/test_roswtf/test
+
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **pratkanis**
+
+    - Reporter: **pratkanis**
+
+    - Reported at: **Tue Feb  2 22:32:04 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3793
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_simulator/issues/87'
+  title: >-
+    Large Amounts of Spam from Unidentified Python Program During Gazebo Arm
+    Test  (ros ticket #3792)
+  body: |
+    Spam:
+
+    {{{
+    Traceback (most recent call last):
+      File "/usr/lib/python2.6/logging/**init**.py", line 792, in emit
+        self.flush()
+      File "/usr/lib/python2.6/logging/**init**.py", line 754, in flush
+        self.stream.flush()
+    IOError: [Errno 116] Stale NFS file handle
+    Traceback (most recent call last):
+      File "/usr/lib/python2.6/logging/**init**.py", line 792, in emit
+        self.flush()
+      File "/usr/lib/python2.6/logging/**init**.py", line 754, in flush
+        self.stream.flush()
+    IOError: [Errno 116] Stale NFS file handle
+    }}}
+
+    Over and over again for 40+ pages.
+
+    trac data:
+    - Owner: **pratkanis**
+    - Reporter: **pratkanis**
+    - Reported at: **Tue Feb  2 22:29:47 2010**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3792
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/86'
+  title: 'trigger assimp rebuild  (ros ticket #3746)'
+  body: >
+    r30078 and r30089 did not trigger a rebuild, causing `gazebo` build to fail,
+    e.g.:
+
+
+    {{{
+      [ 51%] Built target gazebo_physics_bullet
+      [ 57%] Built target gazebo_gui
+      make[3]: Entering directory `/home/wgsim/hudson/workspace/2dnav_gazebo-hardy-gazebo2-branch/simulator_gazebo/gazebo/gazebo-svn/build'
+      [ 58%] [ 58%] Building CXX object server/CMakeFiles/gazebo_server.dir/MeshManager.o
+      Building CXX object server/CMakeFiles/gazebo_server.dir/AssimpLoader.o
+      In file included from /home/wgsim/hudson/workspace/2dnav_gazebo-hardy-gazebo2-branch/simulator_gazebo/gazebo/gazebo-svn/server/AssimpLoader.cc:5:
+      /home/wgsim/hudson/workspace/2dnav_gazebo-hardy-gazebo2-branch/simulator_gazebo/gazebo/gazebo-svn/server/AssimpLoader.hh:6:29: error: assimp/assimp.hpp: No such file or directory
+      /home/wgsim/hudson/workspace/2dnav_gazebo-hardy-gazebo2-branch/simulator_gazebo/gazebo/gazebo-svn/server/AssimpLoader.hh:7:28: error: assimp/aiScene.h: No such file or directory
+    }}}
+
+
+    http://build.willowgarage.com/job/2dnav_gazebo-hardy-gazebo2-branch/339/
+
+
+    trac data:
+
+    - Owner: **natepak**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Tue Jan 26 19:33:29 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3746
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/85'
+  title: 'Add gripper accelerometers to the simulated robot  (ros ticket #3724)'
+  body: >
+    The PR2 has accelerometers in the gripper, available in the hardware
+    interface and published on a topic.  The simulated PR2 does not have these.
+
+
+    trac data:
+
+    - Owner: **natepak**
+
+    - Reporter: **sglaser**
+
+    - Reported at: **Mon Jan 25 11:37:33 2010**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/3724
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/82'
+  title: >-
+    Willow map extrusion is too coarse, hall ways are too small for PR2
+    navigation  (ros ticket #550)
+  body: >
+    such as the hall way by the printer, which the robot should pass through
+    comfortably.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Wed Nov  5 15:04:05 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/550
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/80'
+  title: 'Odometry (or something) seems very wrong in gazebo  (ros ticket #529)'
+  body: >
+    Not sure who this should go to, but the position/orientation of the robot in
+    the world seems to be very off from what gazebo shows it to be.  The
+    attached screenshot shows it well (this is after only running for 20 or 30
+    seconds)
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **jfaust**
+
+    - Reported at: **Thu Oct 30 16:49:44 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/529
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/79'
+  title: >-
+    when robot decelerates suddenly in angular velocity, odometry appears
+    spurious.  (ros ticket #521)
+  body: >
+    this phenomenon can be seen in simulation when assigning a goal that
+    requires the robot to turn around.  Upon reaching the desired heading the
+    projected base laser scans in nav_view can be seen to jump around randomly.
+
+
+    trac data:
+
+    - Owner: **sachinc**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Thu Oct 30 06:47:38 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/521
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_simulator/issues/78'
+  title: 'remove old pr2_gazebo  (ros ticket #511)'
+  body: >
+    the old pr2_gazebo tree in robot_control_loops is still lying around -- it
+    really needs to be removed as it can cause rospack blowup
+
+
+    trac data:
+
+    - Owner: **sachinc**
+
+    - Reporter: **kwc**
+
+    - Reported at: **Wed Oct 29 12:12:02 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/511
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/77'
+  title: 'full_cloud message is filled out incorrectly in gazebo  (ros ticket #468)'
+  body: >
+    The full_cloud message has # channels equal to the number of points, with
+    each channel having a single value in it.  It should instead have a single
+    channel with N values in it (where N is equal to the number of points).
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **jfaust**
+
+    - Reported at: **Tue Oct 21 11:49:52 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/468
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/76'
+  title: 'Code to read params from param server looks questionable  (ros ticket #413)'
+  body: >
+    The following code checks if a strings c_str() is NULL, which I don't
+    believe to be a valid check.  Also, it appears to be allocating memory for
+    the string and leaking it.  Is the leak on purpose?
+
+
+    {{{
+      std::string tmp_param_string;
+      this->rosnode_->get_param("robotdesc/pr2",tmp_param_string);
+
+      // wait for robotdesc/pr2 on param server
+      while(tmp_param_string.c_str()==NULL)
+      {
+        std::cout << "WARNING: gazebo mechanism control plugin is waiting for robotdesc/pr2 in param server.  run merge/roslaunch send.xml or similar." << std::endl;
+        this->rosnode_->get_param("robotdesc/pr2",tmp_param_string);
+        usleep(100000);
+      }
+
+      std::cout << "gazebo mechanism control got pr2.xml from param server, parsing it..." << std::endl;
+      //std::cout << tmp_param_string << std::endl;
+      std::string\* pr2_xml_content = new std::string(tmp_param_string.c_str());;
+
+      // initialize TiXmlDocument doc with a string
+      TiXmlDocument doc;
+      if (!doc.Parse(pr2_xml_content->c_str()))
+      {
+        fprintf(stderr, "Error: Could not load the gazebo mechanism_control plugin's configuration file: %s\n",
+                pr2_xml_content->c_str());
+        abort();
+      }
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **wheeler**
+
+    - Reported at: **Mon Oct 13 19:46:10 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/413
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_simulator/issues/73'
+  title: 'Control.py not working correctly in launch  (ros ticket #376)'
+  body: >
+    Here is the launch script. Seems to not be waiting for mechanism state.
+
+
+    ```
+
+    <!-- use mech.py to spawn all controllers listed in controllers.xml -->
+
+    <node pkg="mechanism_control" type="mech.py" args="sp $(find
+    wg_robot_description)/pr2/controllers.xml" respawn="false" output="screen"
+    />
+
+    <!-- start tilting Hokuyo laser by sending it a preset code of 46, this
+    means sawtooth profile sweep.
+         for details of the profile, rates, see controller::LaserScannerControllerNode. -->
+    <node pkg="robot_mechanism_controllers" type="control.py" args="set
+    tilt_laser_controller 46" respawn="false" output="screen" />
+
+    ```
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **mcgann**
+
+    - Reported at: **Thu Oct  2 12:32:02 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/376
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_simulator/issues/70'
+  title: 'rostest 2dnav-gazebo.xml returns and Ogre error  (ros ticket #357)'
+  body: >
+    result:
+
+    {{{
+
+    [ROSTEST]-----------------------------------------------------------------------
+
+
+    [gazebo_plugin_testslide1/testslide][passed]
+
+    [gazebo_plugin_testslide10/testslide][passed]
+
+    [gazebo_plugin_testslide11/testslide][passed]
+
+    [gazebo_plugin_testslide12/testslide][passed]
+
+    [gazebo_plugin_testslide13/testslide][passed]
+
+    [gazebo_plugin_testslide14/testslide][passed]
+
+    [gazebo_plugin_testslide15/testslide][passed]
+
+    [gazebo_plugin_testslide16/testslide][passed]
+
+    [gazebo_plugin_testslide17/testslide][passed]
+
+    [gazebo_plugin_testslide18/testslide][passed]
+
+    [gazebo_plugin_testslide19/testslide][passed]
+
+    [gazebo_plugin_testslide2/testslide][passed]
+
+    [gazebo_plugin_testslide20/testslide][passed]
+
+    [gazebo_plugin_testslide21/testslide][passed]
+
+    [gazebo_plugin_testslide22/testslide][passed]
+
+    [gazebo_plugin_testslide23/testslide][passed]
+
+    [gazebo_plugin_testslide24/testslide][passed]
+
+    [gazebo_plugin_testslide25/testslide][passed]
+
+    [gazebo_plugin_testslide26/testslide][passed]
+
+    [gazebo_plugin_testslide27/testslide][passed]
+
+    [gazebo_plugin_testslide28/testslide][passed]
+
+    [gazebo_plugin_testslide29/testslide][passed]
+
+    [gazebo_plugin_testslide3/testslide][passed]
+
+    [gazebo_plugin_testslide30/testslide][passed]
+
+    [gazebo_plugin_testslide4/testslide][passed]
+
+    [gazebo_plugin_testslide5/testslide][passed]
+
+    [gazebo_plugin_testslide6/testslide][FAILURE]-----------------------------------
+
+    File "unittest.py", line 260, in run
+        testMethod()
+      File "/u/johnhsu/projects/pr2/drivers/simulator/gazebo_plugin/test/testslide.py", line 105, in testslide
+        self.assert_(self.success)
+      File "unittest.py", line 309, in failUnless
+    ##     if not expr: raise self.failureException, msg
+
+
+    [gazebo_plugin_testslide7/testslide][passed]
+
+    [gazebo_plugin_testslide8/testslide][passed]
+
+    [gazebo_plugin_testslide9/testslide][passed]
+
+
+    SUMMARY
+
+    - RESULT: FAIL
+
+    - TESTS: 30
+
+    - ERRORS: 0
+
+    - FAILURES: 1
+      }}}
+
+    the one error out of 30 runs:
+
+    {{{
+
+    Spawned gripper_right_controller
+
+    Spawned head_pan_controller
+
+    Spawned head_tilt_controller
+
+    Spawned tilt_laser_controller
+
+    ... logging to  /u/johnhsu/projects/ros/log/control.py-20893.log
+
+    46.0
+
+    gazebo: ../../OgreMain/include/OgreAxisAlignedBox.h:239: void
+    Ogre::AxisAlignedBox::setExtents(const Ogre::Vector3&, const
+    Ogre::Vector3&): Assertion `(min.x <= max.x && min.y <= max.y && min.z <=
+    max.z) && "The minimum corner of the box must be less than or equal to
+    maximum corner"' failed.
+
+    Spawning tilt_laser_controller: 08f0bc4c
+
+    Gazebo multi-robot simulator, version 0.8-pre3
+
+    }}}
+
+
+    found a [http://www.iris2.de/index.php/FAQ link with the same issue]:
+
+    {{{
+     assertion in OgreAxisAlignedBox.h
+
+    ../../OgreMain/include/OgreAxisAlignedBox.h:239: void
+    Ogre::AxisAlignedBox::setExtents(const Ogre::Vector3&, const
+    Ogre::Vector3&): Assertion `(min.x <= max.x && min.y <= max.y && min.z <=
+    max.z) && "The minimum corner of the box must be less than or equal to
+    maximum corner"' failed.
+
+
+    seems to be caused by a bug in the ogre particle system on linux. to solve
+    this, compile ogre with "CPPFLAGS=-DNDEBUG", e.g. :
+
+     ./configure --with-gui=gtk CPPFLAGS=-DNDEBUG
+
+    [edit]
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Thu Sep 25 19:42:34 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/357
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_simulator/issues/69'
+  title: 'Gazebo loading fails intermittently  (ros ticket #351)'
+  body: >
+    When running some executive trex test cases, I get intermittent failures
+    starting gazebo. To repeat:
+
+    rosmake executive_trex_pr2
+
+    roscd executive_trex_pr2/arm.0
+
+
+    The final step may have to be repeated a number of times:
+
+
+    roslaunch launch.xml
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **mcgann**
+
+    - Reported at: **Wed Sep 24 08:52:24 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/351
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - critical
+- url: 'https://github.com/PR2/pr2_simulator/issues/68'
+  title: 'P3D build broken (no TransformWithRateStamped)  (ros ticket #349)'
+  body: >
+    making gazebo_plugin fails:
+
+
+    {{{
+
+    [ 46%] Building CXX object CMakeFiles/P3D.dir/src/P3D.cc.o
+
+    In file included from
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:38:
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/include/gazebo_plugin/P3D.hh:35:47:
+    error: std_msgs/TransformWithRateStamped.h: No such file or directory
+
+    In file included from
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:38:
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/include/gazebo_plugin/P3D.hh:98:
+    error: ‘TransformWithRateStamped’ in namespace ‘std_msgs’ does not name a
+    type
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc: In member
+    function ‘virtual void gazebo::P3D::LoadChild(gazebo::XMLConfigNode*)’:
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:92: error:
+    ‘TransformWithRateStamped’ is not a member of ‘std_msgs’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:92: error:
+    ‘TransformWithRateStamped’ is not a member of ‘std_msgs’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:92: error:
+    no matching function for call to ‘ros::node::advertise(std::string&, int)’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc: In member
+    function ‘virtual void gazebo::P3D::UpdateChild()’:
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:136:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:137:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:138:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:138:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:140:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:141:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:142:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:144:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:145:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:146:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:147:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:149:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:150:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:151:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:153:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:154:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:155:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:156:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+    /u/sglaser/ros/ros-pkg/drivers/simulator/gazebo_plugin/src/P3D.cc:159:
+    error: ‘class gazebo::P3D’ has no member named ‘transformMsg’
+
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **sglaser**
+
+    - Reported at: **Tue Sep 23 18:12:51 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/349
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/67'
+  title: 'pr2_arm_test.xml startup error  (ros ticket #347)'
+  body: >
+    mech.py and control.py does not get called as they are suppose to wait for
+    service to come up and take effect in a nominal run.
+
+
+    {{{
+
+    bos:~/projects/pr2/robot_descriptions/gazebo_robot_description> roslaunch
+    pr2_arm_test.xml
+
+    ... logging to  /u/johnhsu/projects/ros/log/roslaunch-32739.log
+
+    ... loading XML file [pr2_arm_test.xml]
+
+    ... loading XML file
+    [/u/johnhsu/projects/pr2/robot_descriptions/wg_robot_description/send_arm_test.xml]
+
+    ... executing command param
+    [/u/johnhsu/projects/pr2/robot_descriptions/wg_robot_description_parser/merge
+    "/u/johnhsu/projects/pr2/robot_descriptions/wg_robot_description/pr2_arm_test/pr2_arm.xml"]
+
+    ... done importing include file
+    [/u/johnhsu/projects/pr2/robot_descriptions/wg_robot_description/send_arm_test.xml]
+
+    Added node of type [gazebo/gazebo] in namespace [/]
+
+    Added node of type [mechanism_control/mech.py] in namespace [/]
+
+    Added node of type [robot_mechanism_controllers/control.py] in namespace [/]
+
+    Added parameter [/robotdesc/pr2]
+
+    # SUMMARY
+
+
+    PARAMETERS
+
+    - /robotdesc/pr2
+
+
+    MACHINES
+
+
+    NODES
+      /
+        gazebo/gazebo
+        mechanism_control/mech.py
+        robot_mechanism_controllers/control.py
+
+    setting parameter [/robotdesc/pr2]
+
+    Creating process monitor thread
+
+    process[gazebo-1]: started with pid [32761]
+
+    process[mech.py-2]: started with pid [32765]
+
+    Gazebo multi-robot simulator, version 0.8-pre3
+
+
+    Part of the Player/Stage Project [http://playerstage.sourceforge.net].
+
+    Copyright (C) 2003 Nate Koenig, Andrew Howard, and contributors.
+
+    Released under the GNU General Public License.
+
+
+    process[control.py-3]: started with pid [301]
+
+    creating /tmp/gazebo-johnhsu-0
+
+    found a pid file: pid=32555
+
+    The gazebo process is not alive.
+
+    creating /tmp/gazebo-johnhsu-0/simulation.default 112 144496
+
+    ... logging to  /u/johnhsu/projects/ros/log/mech.py-32765.log
+
+    Traceback (most recent call last):
+      File "/u/johnhsu/projects/pr2/mechanism/mechanism_control/scripts/mech.py", line 35, in <module>
+        mechanism.spawn_controller(xml)
+      File "/u/johnhsu/ros/ros-pkg/mechanism/mechanism_control/src/mechanism_control/mechanism.py", line 28, in spawn_controller
+        resp = s.call(SpawnControllerRequest(xml))
+      File "/u/johnhsu/projects/ros/core/rospy/src/rospy/service.py", line 146, in call
+        c.connect((dest_addr, dest_port))
+      File "<string>", line 1, in connect
+    socket.error: (111, 'Connection refused')
+
+    -------------------- starting node in P3D 
+
+    creating /tmp/gazebo-johnhsu-0/position.p3d_object_position 112 228
+
+    Error Loading Controller[p3d_object_controller]
+
+    server/XMLConfig.cc:484 : Exception: unable to find required string
+    attribute[topicName] in world file node[P3D]
+
+
+    deleting /tmp/gazebo-johnhsu-0/position.p3d_object_position
+
+    setting gravity to zero for: shoulder_pan_left
+
+    setting gravity to zero for: shoulder_pitch_left
+
+    setting gravity to zero for: upperarm_roll_left
+
+    setting gravity to zero for: elbow_flex_left
+
+    setting gravity to zero for: forearm_roll_left
+
+    creating /tmp/gazebo-johnhsu-0/camera.forearm_cam_left_iface 112 3145884
+
+    ================= image_forearm_left
+
+    Unable to read value with key[imageSize]
+
+    Unable to read value with key[imageSize]
+
+    setting gravity to zero for: forearm_camera_left
+
+    setting gravity to zero for: wrist_flex_left
+
+    setting gravity to zero for: gripper_roll_left
+
+    setting gravity to zero for: finger_l_left
+
+    setting gravity to zero for: finger_tip_l_left
+
+    setting gravity to zero for: finger_r_left
+
+    setting gravity to zero for: finger_tip_r_left
+
+    creating /tmp/gazebo-johnhsu-0/camera.wrist_cam_left_iface 112 3145884
+
+    ================= image_wrist_left
+
+    Unable to read value with key[imageSize]
+
+    Unable to read value with key[imageSize]
+
+    setting gravity to zero for: wrist_camera_left
+
+    [mech.py-2] process has died
+
+    creating /tmp/gazebo-johnhsu-0/audio.dummy_ros_time_iface_should_not_be_here
+    112 420
+
+    creating /tmp/gazebo-johnhsu-0/position.p3d_left_wrist_position 112 228
+
+    ==== topic name for P3D ======== gripper_roll_left_pose
+
+    creating /tmp/gazebo-johnhsu-0/audio.gazebo_actuators_dummy_iface 112 420
+
+    Loading
+    /u/johnhsu/projects/pr2/robot_descriptions/gazebo_robot_description/world/pr2_arm.xml
+
+    Loading
+    /u/johnhsu/projects/pr2/robot_descriptions/gazebo_robot_description/world/gazebo_joints_arm.xml
+
+    Gazebo does not know about a joint named "base_joint"
+
+    ... logging to  /u/johnhsu/projects/ros/log/control.py-301.log
+
+    Traceback (most recent call last):
+      File "/u/johnhsu/projects/pr2/controllers/robot_mechanism_controllers/scripts/control.py", line 31, in <module>
+        controllers.set_controller(sys.argv[2], float(sys.argv[3]))
+      File "/u/johnhsu/projects/pr2/controllers/robot_mechanism_controllers/src/robot_mechanism_controllers/controllers.py", line 22, in set_controller
+        resp = s.call(SetCommandRequest(command))
+      File "/u/johnhsu/projects/ros/core/rospy/src/rospy/service.py", line 146, in call
+        c.connect((dest_addr, dest_port))
+      File "<string>", line 1, in connect
+    socket.error: (111, 'Connection refused')
+
+    [control.py-3] process has died
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Tue Sep 23 17:02:32 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/347
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/66'
+  title: >-
+    Base Controller Odometry Slippage Test - setup rostest for stray laser
+    scans  (ros ticket #344)
+  body: >
+    - setup rostest with robot spinning and make sure that laser scans do not
+    deviate from ground truth.  Eitan reports stray laser scans but I thinks
+    this might be fixed due to odometry updates.  A rostest will prevent future
+    recurrences of this deviation.
+
+
+    trac data:
+
+    - Owner: **sachinc**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Mon Sep 22 19:37:58 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/344
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/64'
+  title: 'compiling on amd64 machines need -fPIC flags  (ros ticket #331)'
+  body: >
+    as of r4542, the patch below works on an amd64 machine running 64bit ubuntu
+    8.04.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Sun Sep 21 02:05:17 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/331
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_simulator/issues/63'
+  title: 'on gazebo startup wait for pr2.xml on param server  (ros ticket #330)'
+  body: |
+    currently gazebo crashes rather than waits
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Sat Sep 20 21:24:27 2008**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/330
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/61'
+  title: >-
+    startup problem for controllers using mech.py and gazebo_actuators in
+    roslaunch.  (ros ticket #310)
+  body: >
+    roslaunch sometimes segfaults Gazebo or does not load controllers.
+
+    this usually happens when roslaunch follows another roslaunch of a different
+    file.
+
+
+    {{{
+
+    <launch>
+      <group name="wg">
+        <include file="$(find wg_robot_description)/send.xml"/>
+        <node pkg="gazebo" type="gazebo" args="-n $(find gazebo_robot_description)/world/robot.world" respawn="false" output="screen">
+          <env name="LD_LIBRARY_PATH" value="$(find gazebo_plugin)/lib:$(find gazebo)/gazebo/lib:$(find Cg)/Cg/lib:$LD_LIBRARY_PATH" />
+          <env name="GAZEBO_RESOURCE_PATH" value="$(find gazebo_robot_description)/world" />
+          <env name="OGRE_RESOURCE_PATH" value="$(find ogre)/ogre/lib/OGRE" />
+          <env name="MC_RESOURCE_PATH" value="$(find gazebo_robot_description)/world" />
+        </node>
+        <node pkg="mechanism_control" type="mech.py" args="sp $(find wg_robot_description)/pr2/controllers.xml" respawn="false" output="screen" />
+      </group>
+    </launch>
+
+    }}}
+
+
+    trac data:
+
+    - Owner: **sglaser**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Tue Sep 16 16:40:56 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/310
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/59'
+  title: >-
+    wg_robot_description: roslaunch send.xml python error (urlp has no attribute
+    'port')  (ros ticket #299)
+  body: >
+    - on Debian4.0/ppc, following kinematic planning test procedure
+    http://pr.willowgarage.com/wiki/Kinematic_motion_planning?highlight=%28planning%29%7C%28kinematic%29#head-d30bb328d94c992ae3c9d8ac431bf913457ca710
+      - botherder started without problem
+      - roscd wg_robot_description && roslaunch send.xml fails like this:
+        {{{
+        ... logging to  /home/rolo/ros/ros/log/roslaunch-21903.log
+        ... resolving localhost master URI to http://127.0.1.1:11311/
+        ... loading XML file [send.xml]
+        ... executing command param [/home/rolo/ros/ros-pkg/robot_descriptions/wg_robot_
+        description_parser/merge "/home/rolo/ros/ros-pkg/robot_descriptions/wg_robot_des
+        cription/pr2/pr2.xml"]
+        Added parameter [/robotdesc/pr2]
+    # SUMMARY
+
+
+    PARAMETERS
+
+    - /robotdesc/pr2
+
+
+    MACHINES
+
+
+    NODES
+
+
+    Traceback (most recent call last):
+      File "/home/rolo/ros/ros/tools/roslaunch/src/roslaunch/**init**.py", line 127,
+     in main
+        rl.prelaunch_check()
+      File "/home/rolo/ros/ros/tools/roslaunch/src/roslaunch/launch.py", line 154, i
+    n prelaunch_check
+        self._prelaunch_check_master()
+      File "/home/rolo/ros/ros/tools/roslaunch/src/roslaunch/launch.py", line 109, i
+    n _prelaunch_check_master
+        if not urlp.port:
+    AttributeError: 'tuple' object has no attribute 'port'
+
+    }}}
+
+    - contents of /home/rolo/ros/ros/log/roslaunch-21903.log:
+      {{{
+      2008-09-16 13:02:09,951 rospy.topics INFO topicmanager initialized
+      2008-09-16 13:02:10,143 roslaunch DEBUG add_param[/robotdesc/pr2]: type [<type '
+      str'>]
+      2008-09-16 13:02:10,211 rospy.core DEBUG signalShutdown start, reason [atexit]
+      2008-09-16 13:02:10,212 rospy.core DEBUG signalShutdown: invoking shutdown hooks
+      2008-09-16 13:02:10,212 rospy.core DEBUG signalShutdown: invoking <bound method 
+      _TopicManager.shutdown of <rospy.topics._TopicManager object at 0x3030ecd0>>
+      2008-09-16 13:02:10,212 rospy.core DEBUG signalShutdown done
+      2008-09-16 13:02:10,313 process DEBUG pmon_shutdown: no pmons
+      }}}
+
+    trac data:
+
+    - Owner: **sachinc**
+
+    - Reporter: **roland**
+
+    - Reported at: **Tue Sep 16 13:21:02 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/299
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/56'
+  title: 'deprecate saturationTorque tags in gazebo  (ros ticket #279)'
+  body: |
+    should use <limit effort=""> tag rather than <saturationTorque>.
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Wed Sep 10 07:00:31 2008**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/279
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - minor
+- url: 'https://github.com/PR2/pr2_simulator/issues/55'
+  title: 'deprecate left_pr2arm_pos and right_pr2arm_pos messages  (ros ticket #278)'
+  body: >
+    deprecate dependency on left_pr2arm_pos and right_pr2arm_pos messages by
+    mechanism state messages.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Wed Sep 10 06:59:17 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/278
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/54'
+  title: >-
+    test_actuator: migreate arm control messages to arm controller  (ros ticket
+    #277)
+  body: >
+    Upgrade arm control message from cmd_leftarmconfig and cmd_rightarmconfig,
+    remove this subscription in test_actuators (possibly in arm controllers).
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Wed Sep 10 06:57:56 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/277
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/53'
+  title: 'Artificial Damping  (ros ticket #276)'
+  body: |
+    Decide where to put artificial damping.  Options are:
+    1. migrate to gazebo_actuators
+    2. add damping in ode as a patch
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Wed Sep 10 06:52:40 2008**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/276
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/52'
+  title: 'test_actuators - base controller subscribes cmd_vel  (ros ticket #275)'
+  body: >
+    Base Controller should subscribe directly to cmd_vel message for 2dnav-nav
+    stack.  Once this is working, the functionality can be removed from
+    test_actuators.
+
+
+    trac data:
+
+    - Owner: **hsu**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Wed Sep 10 06:49:28 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/275
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/51'
+  title: 'PR2 Battery Simulation  (ros ticket #274)'
+  body: |
+    Time based decay to simulate batteries in PR2.
+    Should also depend on activities.
+
+    trac data:
+    - Owner: **tfield**
+    - Reporter: **hsu**
+    - Reported at: **Wed Sep 10 05:56:33 2008**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/274
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - major
+    - task
+- url: 'https://github.com/PR2/pr2_simulator/issues/49'
+  title: 'Tactile sensing for finger tips  (ros ticket #272)'
+  body: |
+    Implement tactile sensor feedback for the finger tips (as a plugin?).
+
+    trac data:
+    - Owner: **hsu**
+    - Reporter: **hsu**
+    - Reported at: **Wed Sep 10 05:53:50 2008**
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/272
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major
+- url: 'https://github.com/PR2/pr2_simulator/issues/47'
+  title: 'Accurate Robot Mass - Obtain from Function Engineering  (ros ticket #270)'
+  body: >
+    This is needed for further controller tuning.  Allows controller gains to
+    match up closer to the hardware counter parts.
+
+
+    Base odometry from BaseControllerNode is off due to mass/controller
+    discrepancies.
+
+
+    trac data:
+
+    - Owner: **berger**
+
+    - Reporter: **hsu**
+
+    - Reported at: **Wed Sep 10 05:50:56 2008**
+
+    - URL: https://code.ros.org/trac/wg-ros-pkg/ticket/270
+  repo: 'https://api.github.com/repos/PR2/pr2_simulator'
+  labels:
+    - bug
+    - major

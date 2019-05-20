@@ -1,0 +1,72 @@
+- url: 'https://github.com/ethz-asl/mav_comm/issues/75'
+  title: 'Replace `#include <Eigen/Eigen>` by `#include <Eigen/Core>`'
+  body: >-
+    On most places it should be sufficient to just include `Eigen/Core` instead
+    of the entire Eigen project. This could improve compile times (also for
+    depending projects).
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels:
+    - enhancement
+- url: 'https://github.com/ethz-asl/mav_comm/pull/71'
+  title: Fix/eigen dependency
+  body: "- Makes eigen dependency [backward compatible](http://wiki.ros.org/jade/Migration#Eigen_CMake_Module_in_cmake_modules) again.\r\n- Prepares release 3.3.2\r\n\r\nBloom prerelease:\r\npassed indigo on 16.04 local machine\r\npassed indigo on 14.04 virtual machine\r\npassed kinetic on 16.04 local machine\r\npassed ~~in progress~~ lunar on 16.04 local machine\r\npassed ~~in progress~~ melodic on 16.04 local machine"
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/69'
+  title: Fix/include dirs
+  body: "Allows packages that depend on mav_msgs to include its files again.\r\n\r\nTested building [rotors_simulator](https://github.com/ethz-asl/rotors_simulator) before this (fail) and after this (succeed)."
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/68'
+  title: Revert "Fix ROS release dependencies."
+  body: 'Reverts ethz-asl/mav_comm#67'
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/67'
+  title: Fix ROS release dependencies.
+  body: "This should fix the following ROS buildfarm error and potential other missing dependencies. Could not reproduce the error in  [prerelease](http://wiki.ros.org/regression_tests#How_do_I_setup_my_system_to_run_a_prerelease.3F) or on my machine.\r\n\r\n```\r\nCMake Warning at /opt/ros/indigo/share/catkin/cmake/catkinConfig.cmake:76 (find_package):\r\n  Could not find a package configuration file provided by \"cmake_modules\"\r\n  with any of the following names:\r\n\r\n    cmake_modulesConfig.cmake\r\n    cmake_modules-config.cmake\r\n\r\n  Add the installation prefix of \"cmake_modules\" to CMAKE_PREFIX_PATH or set\r\n  \"cmake_modules_DIR\" to a directory containing one of the above files.  If\r\n  \"cmake_modules\" provides a separate development package or SDK, be sure it\r\n  has been installed.\r\nCall Stack (most recent call first):\r\n  CMakeLists.txt:4 (find_package)\r\n\r\n\r\n-- Could not find the required component 'cmake_modules'. The following CMake error indicates that you either need to install the package with the same name or change your environment so that it can be found.\r\nCMake Error at /opt/ros/indigo/share/catkin/cmake/catkinConfig.cmake:83 (find_package):\r\n  Could not find a package configuration file provided by \"cmake_modules\"\r\n  with any of the following names:\r\n\r\n    cmake_modulesConfig.cmake\r\n    cmake_modules-config.cmake\r\n\r\n  Add the installation prefix of \"cmake_modules\" to CMAKE_PREFIX_PATH or set\r\n  \"cmake_modules_DIR\" to a directory containing one of the above files.  If\r\n  \"cmake_modules\" provides a separate development package or SDK, be sure it\r\n  has been installed.\r\nCall Stack (most recent call first):\r\n  CMakeLists.txt:4 (find_package)\r\n``` "
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/issues/52'
+  title: Indigo release breaking rotors_simulator
+  body: "The indigo build of  gazebo_rotors_plugins is failing after the last 3.2.0 release. \r\nhttp://build.ros.org/view/Ibin_uT64/job/Ibin_uT64__rotors_gazebo_plugins__ubuntu_trusty_amd64__binary/39/console\r\n\r\nThe console output suggests there may be a CMake error with the wrong path. \r\n\r\n```\r\n23:48:41 -- Gazebo version is less than 5, not building gazebo_lidar_plugin.cpp.\r\n23:48:41 -- BUILD_MAVLINK_INTERFACE_PLUGIN = FALSE, NOT adding mavros dependency and NOT building mavlink_interface_plugin.\r\n23:48:41 -- Gazebo version is less than 5, not building liftdrag_plugin.cpp.\r\n23:48:41 -- CMAKE_INSTALL_PREFIX = /opt/ros/indigo\r\n23:48:56 CMake Error at CMakeLists.txt:459 (file):\r\n23:48:56   file COPY cannot set permissions on\r\n23:48:56   \"/tmp/binarydeb/ros-indigo-rotors-gazebo-plugins-2.1.0/obj-x86_64-linux-gnu/devel/include//devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/devel/include/gtest/CMakeFiles\"\r\n23:48:56 \r\n23:48:56 \r\n```"
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/issues/38'
+  title: Missing message in CMakeLists.txt (in tag 3.0.0)
+  body: >
+    I don't know if i should create an issue for this but i was having problems
+    compiling PX4 firmware (https://github.com/PX4/Firmware) using ROS command
+    "catkin_make". One of the dependencies was mav_comm/mav_msgs. Using
+    rosinstall_generator, i downloaded mav_comm 3.0.0 version. When i was
+    compiling it, i got an error saying "CommandMotorSpeed.h" was not found.
+
+
+    After checking CMakeLists.txt from mav_msgs i found that
+    CommandMotorSpeed.msg was missing from add_message_files. So, when running
+    catkin_make the files needed to use CommandMotorSpeed message wasn't created
+    and PX4 build fail with the error above.
+
+
+    I added CommandMotorSpeed.msg to CMakeLists.txt and everything worked fine.
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/20'
+  title: eigen dependency fix
+  body: ''
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/19'
+  title: fix eigen dependendency
+  body: >
+    Don't know if this solves the build issue on http://jenkins.ros.org/, but
+    we'll see.
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []
+- url: 'https://github.com/ethz-asl/mav_comm/pull/9'
+  title: 'mav_msgs: updated the messages according to discussion'
+  body: |
+    If this gets merged all packages depending on mav_msgs should be
+    adjusted.
+  repo: 'https://api.github.com/repos/ethz-asl/mav_comm'
+  labels: []

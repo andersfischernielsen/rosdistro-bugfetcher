@@ -1,0 +1,54 @@
+- url: 'https://github.com/MRPT/mrpt/issues/913'
+  title: >-
+    this project has asked CMake to find a package configuration file provided
+    by "mrpt-base", but CMake did not find one.
+  body: "Hi guys,\r\n\r\nI am trying to compile this project here https://github.com/raluca-scona/staticfusion which has as a dependency the mrpt library. I have installed the mrpt lib based on your instructions and by adding the corresponding repository:\r\n\r\n```\r\n    sudo add-apt-repository ppa:joseluisblancoc/mrpt\r\n    sudo apt-get update\r\n    sudo apt-get install libmrpt-dev mrpt-apps\r\n```\r\nthen I had the problem that it couldn't locate the `libmrpt-base` which I solved by installing the `libmrpt-base1.9` package. However, now I am getting the following error:\r\n```\r\n\r\ncmake ..\r\n-- The C compiler identification is GNU 4.9.3\r\n-- The CXX compiler identification is GNU 4.9.3\r\n-- Check for working C compiler: /usr/bin/cc\r\n-- Check for working C compiler: /usr/bin/cc -- works\r\n-- Detecting C compiler ABI info\r\n-- Detecting C compiler ABI info - done\r\n-- Detecting C compile features\r\n-- Detecting C compile features - done\r\n-- Check for working CXX compiler: /usr/bin/c++\r\n-- Check for working CXX compiler: /usr/bin/c++ -- works\r\n-- Detecting CXX compiler ABI info\r\n-- Detecting CXX compiler ABI info - done\r\n-- Detecting CXX compile features\r\n-- Detecting CXX compile features - done\r\n-- CMAKE_MODULE_PATH:   /home/ciates-dev07/theo/staticfusion/cmake_modules\r\nCMake Error at /usr/share/cmake-3.5/Modules/CMakeFindDependencyMacro.cmake:65 (find_package):\r\n  By not providing \"Findmrpt-base.cmake\" in CMAKE_MODULE_PATH this project\r\n  has asked CMake to find a package configuration file provided by\r\n  \"mrpt-base\", but CMake did not find one.\r\n\r\n  Could not find a package configuration file provided by \"mrpt-base\" with\r\n  any of the following names:\r\n\r\n    mrpt-baseConfig.cmake\r\n    mrpt-base-config.cmake\r\n\r\n  Add the installation prefix of \"mrpt-base\" to CMAKE_PREFIX_PATH or set\r\n  \"mrpt-base_DIR\" to a directory containing one of the above files.  If\r\n  \"mrpt-base\" provides a separate development package or SDK, be sure it has\r\n  been installed.\r\nCall Stack (most recent call first):\r\n  /usr/share/mrpt/mrpt-config.cmake:26 (find_dependency)\r\n  CMakeLists.txt:16 (find_package)\r\n\r\n\r\n-- Configuring incomplete, errors occurred!\r\nSee also \"/home/ciates-dev07/theo/staticfusion/build/CMakeFiles/CMakeOutput.log\".\r\n```\r\n\r\nwhere it tries to find the `mrpt-baseConfig.cmake` or `mrpt-base-config.cmake` files but these files are not installed anywhere. Thus, any hints how to solve this? I believe that it is mrpt related issue that's why I ask here but please correct me if I am wrong.\r\n\r\nMy system is ubuntu 16.04.\r\n\r\nThanks."
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels: []
+- url: 'https://github.com/MRPT/mrpt/issues/900'
+  title: Potential memory leak in particle filter (in mrpt or ros-mrpt?)
+  body: "Just to have it here too: [original report](https://github.com/mrpt-ros-pkg/mrpt_navigation/issues/107). \r\nIt happens with mrpt-1.5 + ros wrappers. \r\nTo-do: \r\n* try to reproduce the leak. \r\n* investigate it with valgrind, or just inspecting the code of the ros package in the search for a potential error. \r\n* using valgrind on pf-localization we could quickly discard that the problem lies on the mrpt lib side (I think it's not, just just to be sure). \r\n\r\nMarking this as \"help wanted\", since I'm overloaded and any helping hand will be appreciated ;-)\r\n"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels:
+    - bug
+    - help wanted
+- url: 'https://github.com/MRPT/mrpt/issues/894'
+  title: Import feature from mrpt-1.5 branch
+  body: "To do: \r\nimport (\"manual cherry-pick\"): \r\n* [x]  cb4be3f95adf1443f6a2939ad7083b72e4dceb2e\r\n* [x]  db01af47917a78802f2cedfb24e0fb02db548170\r\n* [x]  4779d77627b2e908de303faf2cc1881af121028f  (added 2019-Jan-28)\r\n\r\n"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels: []
+- url: 'https://github.com/MRPT/mrpt/pull/891'
+  title: Use cmake namespace names in mrpt libraries
+  body: "Now, all imported libraries are named `mrpt::${module}` instead of the \r\nold `mrpt-module`. \r\nThis is consistent with \"modern cmake\".\r\n\r\nOTOH, I added a MRPT-1.5 backwards-compatible `mrpt-config.cmake` which \r\nallows old cmake scripts to transparently continue working, by setting \r\nthe new `mrpt::xxx` imported targets in the returned variable  \r\n`MRPT_LIBRARIES`.\r\n\r\n"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels: []
+- url: 'https://github.com/MRPT/mrpt/pull/890'
+  title: Image SIMD functions work w/o aligned memory
+  body: "## Changed apps/libraries\r\n\r\n* mrpt-img\r\n* mrpt-vision\r\n\r\n## PR Description\r\n\r\nIt turned out OpenCV **requires** continuous memory for some important functions, so I have to undo the addition of the special cv::Mat memory allocator (sigh...). OTOH, with!=16*k is now supported in the special SSE* functions.\r\n"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels: []
+- url: 'https://github.com/MRPT/mrpt/issues/870'
+  title: CMake ERROR "mrpt-core" references to file not found
+  body: "After updating the find_package(MRPT modules) to the new find_package(mrpt-module1) as described in #859 , I get the CMake error:\r\n\r\n**CMake Error** at /usr/share/mrpt-core/mrpt-core-targets.cmake:66 (message):\r\n  The imported target \"mrpt-core\" references the file:\r\n\r\n     \"/build/mrpt-4oAlri/mrpt-1.9.9~snapshot20181128-1105-git-68311865-xenial/debian/libmrpt-core1.9/usr/lib/x86_64-linux-gnu/libmrpt-core.so.1.9.9\"\r\n\r\n**but this file does not exist.** \r\n\r\n\r\nThe MRPT part in my CMakeLists.txt reads:\r\n\r\nfind_package(mrpt-obs)\r\nfind_package(mrpt-maps)\r\nfind_package(mrpt-slam)\r\nfind_package(mrpt-poses)\r\n#find_package(mrpt-core)\r\n...\r\n...\r\ntarget_link_libraries(node_name\r\n   mrpt::mrpt-obs\r\n   mrpt::mrpt-maps\r\n   mrpt::mrpt-slam\r\n   mrpt::mrpt-poses\r\n   #mrpt::mrpt-core\r\n)"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels: []
+- url: 'https://github.com/MRPT/mrpt/issues/862'
+  title: Corrupt particles with RBPF after resampling
+  body: "When running the rbpf-slam application with `gridmapping_optimal_sampling.ini` as config file and `2006-01ENE-21-SENA_Telecom Faculty_one_loop_only.rawlog` as dataset, when changing the particle filter algorithm to one that includes resampling (pfStandardProposal or pfOptimalProposal), after the resampling step, a memory access exception is thrown.\r\n\r\nMany particles in `CMultiMetricMapPDF::m_particles` seem to have corrupt data.\r\n\r\nReproducing this is very consistent, especially if you increase BETA enough so that resampling happens.\r\n\r\n**Version**\r\nThis is with latest master compiled on MSVC 15.8.7"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels:
+    - bug
+- url: 'https://github.com/MRPT/mrpt/issues/858'
+  title: run error
+  body: >-
+    (MRPT:12213): Gtk-ERROR **: GTK+ 2.x symbols detected. Using GTK+ 2.x and
+    GTK+ 3 in the same process is not supported
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels:
+    - bug
+- url: 'https://github.com/MRPT/mrpt/issues/850'
+  title: 'reactive nav: fix potential "call to pure virtual method" at dtor'
+  body: "Description: \r\nAt least it happens once at `CReactiveNavigationSystem::~CReactiveNavigationSystem()`, where it ends up calling the virtual method `stop()`. \r\n\r\nThis breaks Scott Meyers' \"Effective C++\": \r\n```\r\nItem 9: Never call virtual functions during construction or destruction\r\n```\r\n\r\nTo-do: \r\n* [x] fix in mrpt-1.5 (adding issue to next 1.5 milestone)\r\n* [x] fix into master. \r\n\r\nPS: Does anyone know about any clang/gcc flag to automatically detect these issues? It seems GCC's `-Weffc++` doesn't include \"item 9\"...  (cc: @jolting )"
+  repo: 'https://api.github.com/repos/MRPT/mrpt'
+  labels:
+    - bug

@@ -1,0 +1,67 @@
+- url: 'https://github.com/ros-visualization/interactive_markers/pull/39'
+  title: Fix install location on Windows.
+  body: >-
+    On Windows, the runtime destination is required to decide where the shared
+    library (DLL) goes. Otherwise, only the imported library is getting copied.
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels: []
+- url: 'https://github.com/ros-visualization/interactive_markers/issues/37'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies of this are available in Melodic, so
+    it would be great to get this released.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels: []
+- url: 'https://github.com/ros-visualization/interactive_markers/pull/36'
+  title: fix crash when updates arrives/is processed while shutdown is called
+  body: "SingleClient is stored in a shared pointer, but this shared pointer was actually never shared\r\nwith anybody. So clearing the map will simply delete all instances of SingleClient even if used\r\nin a process/update call\r\n\r\nOne possible further enhancement would be to add a boolean or extra flag for signaling shutdown and then not handling incoming updates at all"
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels:
+    - bug
+    - enhancement
+- url: 'https://github.com/ros-visualization/interactive_markers/issues/35'
+  title: Marker contains invalid quaternions (length not equal to 1)!
+  body: "ROS Kinetic | Ubuntu 16.04\r\nI have some problem with markers visualization. When I used indigo everything was fine. But after migration to kinetic, every marker which uses TF return \"Marker contains invalid quaternions (length not equal to 1)!\" in corresponding r-viz field.\r\nCan I get some help with it?\r\n\r\nThanks for your time.\r\n\r\n![screenshot from 2018-01-04 20-31-08](https://user-images.githubusercontent.com/14163708/34576283-6b8471d0-f18e-11e7-914f-be7e6efb4191.png)\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/interactive_markers/issues/34'
+  title: >-
+    Interactive marker doesn't appear if timestamp is set if rviz fixed frame is
+    on different frame
+  body: "If an interactive marker stamp is set then the marker doesn't appear, unless rviz fixed frame is on the same frame (moving_frame in the example below).\r\n\r\n```\r\ndef makeMovingMarker(position):\r\n    int_marker = InteractiveMarker()\r\n    int_marker.header.frame_id = \"moving_frame\"\r\n    int_marker.header.stamp = rospy.Time.now()\r\n...\r\n```\r\nhttps://github.com/ros-visualization/visualization_tutorials/blob/kinetic-devel/interactive_marker_tutorials/scripts/basic_controls.py#L394\r\n\r\nhttp://answers.ros.org/question/262866/interactive-marker-attached-to-a-moving-frame/"
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels:
+    - backlog
+    - bug
+- url: 'https://github.com/ros-visualization/interactive_markers/issues/33'
+  title: Rviz segfaults when using IMs
+  body: "We've found that when the always_visible() flag is set on markers, and you have attached a mesh to the marker, that Ubuntu nvidia drivers will end up crashing rviz when you are using the controller to change the pose of the marker..  Backtrace of gdb probiced below.  This happens on 304--367 Nvidia drivers in Kinetic, but if nouveau is used we don't see it.\r\n\r\n```\r\nThread 1 \"rviz\" received signal SIGSEGV, Segmentation fault.\r\n0x00000000400a1c6e in ?? ()\r\n(gdb) bt\r\n#0  0x00000000400a1c6e in ?? ()\r\n#1  0x00007fffab46d079 in ?? () from /usr/lib/nvidia-367/libnvidia-glcore.so.367.57\r\n#2  0x00007fffab473b44 in ?? () from /usr/lib/nvidia-367/libnvidia-glcore.so.367.57\r\n#3  0x00007fffab05a5a9 in ?? () from /usr/lib/nvidia-367/libnvidia-glcore.so.367.57\r\n#4  0x00007fffb81a89c5 in Ogre::GLRenderSystem::_render(Ogre::RenderOperation const&) ()\r\n   from /usr/lib/x86_64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so.1.9.0\r\n#5  0x00007ffff3b937f7 in Ogre::SceneManager::renderSingleObject(Ogre::Renderable*, Ogre::Pass const*, bool, bool, Ogre::HashedVector<Ogre::Light*> const*) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#6  0x00007ffff3bbdfb9 in Ogre::QueuedRenderableCollection::acceptVisitorGrouped(Ogre::QueuedRenderableVisitor*) const () from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#7  0x00007ffff3bbe095 in Ogre::QueuedRenderableCollection::acceptVisitor(Ogre::QueuedRenderableVisitor*, Ogre::QueuedRenderableCollection::OrganisationMode) const ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#8  0x00007ffff3b7c8df in Ogre::SceneManager::renderBasicQueueGroupObjects(Ogre::RenderQueueGroup*, Ogre::QueuedRenderableCollection::OrganisationMode) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#9  0x00007ffff3b7c757 in Ogre::SceneManager::renderVisibleObjectsDefaultSequence() ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#10 0x00007ffff3b92474 in Ogre::SceneManager::_renderScene(Ogre::Camera*, Ogre::Viewport*, bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#11 0x00007ffff3bcef51 in Ogre::Camera::_renderScene(Ogre::Viewport*, bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#12 0x00007ffff3b7377a in Ogre::RenderTarget::_updateViewport(Ogre::Viewport*, bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#13 0x00007ffff3b735cb in Ogre::RenderTarget::_updateAutoUpdatedViewports(bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#14 0x00007ffff3b7311e in Ogre::RenderTarget::updateImpl() ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#15 0x00007ffff3b73ac4 in Ogre::RenderTarget::update(bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#16 0x00007ffff3c23e5f in Ogre::RenderSystem::_updateAllRenderTargets(bool) ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#17 0x00007ffff3d3a4ba in Ogre::Root::_updateAllRenderTargets() ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#18 0x00007ffff3d3a5a0 in Ogre::Root::renderOneFrame() ()\r\n   from /usr/lib/x86_64-linux-gnu/libOgreMain.so.1.9.0\r\n#19 0x00007ffff7b4d3ce in rviz::VisualizationManager::onUpdate() ()\r\n   from /opt/ros/kinetic/lib/librviz.so\r\n#20 0x00007ffff2193d2a in QMetaObject::activate(QObject*, int, int, void**) ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#21 0x00007ffff21a05c8 in QTimer::timerEvent(QTimerEvent*) ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#22 0x00007ffff2194bb3 in QObject::event(QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#23 0x00007ffff746a05c in QApplicationPrivate::notify_helper(QObject*, QEvent*) ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5\r\n#24 0x00007ffff746f516 in QApplication::notify(QObject*, QEvent*) ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5\r\n#25 0x00007ffff216538b in QCoreApplication::notifyInternal(QObject*, QEvent*) ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#26 0x00007ffff21ba5ed in QTimerInfoList::activateTimers() ()\r\n   from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#27 0x00007ffff21baaf1 in ?? () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5\r\n#28 0x00007ffff16bc197 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0\r\n#29 0x00007ffff16bc3f0 in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so.0\r\n#30 0x00007ffff16bc49c in g_main_context_iteration () from /lib/x86_64-linux-gnu/libglib-2.0.so.0\r\n#31 0x00007ffff21bb7cf in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>)\r\n---Type <return> to continue, or q <return> to quit---q\r\n (Quit\r\n(gdb) q\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/interactive_markers/issues/28'
+  title: Impossible to see the "1 second has passed. Re-initializing." error
+  body: >
+    I've been trying to debug why my `InteractiveMarker`s are not rendering in
+    RViz and noticed the topic is briefly flashing red, then turning back to
+    black. The message says "1 second has passed. Re-initializing.", but it is
+    impossible to read because it is almost instantaneously replaced with
+    "Initialization: Waiting for first update/keep-alive message." As far as I
+    can tell, this error isn't logged elsewhere.
+
+
+    I was only able to read the message by recording RViz in
+    `gtk-recordmydesktop` and stepping through the video frame-by-frame. I
+    suggest either: (1) removing the message if it is redundant, (2) changing
+    the logic so it is not instantly overwritten, and/or (3) logging it using
+    `ROS_ERROR`.
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels:
+    - backlog
+    - bug
+- url: 'https://github.com/ros-visualization/interactive_markers/pull/13'
+  title: remove useless dependencies
+  body: ''
+  repo: 'https://api.github.com/repos/ros-visualization/interactive_markers'
+  labels: []

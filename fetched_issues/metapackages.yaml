@@ -1,0 +1,41 @@
+- url: 'https://github.com/ros/metapackages/issues/13'
+  title: Indigo Desktop has regressed on armhf due to an injected gazebo dependency
+  body: "urdf_tutorials now depends on gazebo_ros which depends on gazebo which is not available on indigo armhf. And the simulator is not supposed to be part of desktop. \r\n\r\n@sloretz Is this related to the urdf repo restructuring?\r\n\r\n@ros/ros_team FYI"
+  repo: 'https://api.github.com/repos/ros/metapackages'
+  labels: []
+- url: 'https://github.com/ros/metapackages/pull/9'
+  title: Remove superfluous dependencies (already in viz)
+  body: >
+    The ros-desktop metapackage now only contains tutorials and roslint (which
+    should probably go somewhere like core or base). So in principal we could
+    rename this to ros-tutorials and ros-desktop-full to ros-desktop, but that's
+    probably to late in the game...
+  repo: 'https://api.github.com/repos/ros/metapackages'
+  labels: []
+- url: 'https://github.com/ros/metapackages/pull/8'
+  title: Moving `ros_tutorials` and `common_tutorials` run_depends
+  body: |
+    into `desktop` metapackage to remove X11 dependencies for security.
+    Needed for creating official docker repo and tags for:
+    - ros_core
+    - ros_base
+    - robot
+    - perception
+  repo: 'https://api.github.com/repos/ros/metapackages'
+  labels: []
+- url: 'https://github.com/ros/metapackages/issues/3'
+  title: '"robot" variant depends on deprecated driver_common'
+  body: >
+    Noticed this during an audit of our package install. Should probably be
+    removed for Indigo.
+  repo: 'https://api.github.com/repos/ros/metapackages'
+  labels: []
+- url: 'https://github.com/ros/metapackages/pull/1'
+  title: Add robot_state_publisher to robot metapackage
+  body: >
+    In groovy, robot_model included robot_state_publisher as a run_depend, but
+    it has been broken out to a separate repository in hydro. Currently, no
+    hydro metapackage includes robot_state_publisher, a key component to pretty
+    much all robots.
+  repo: 'https://api.github.com/repos/ros/metapackages'
+  labels: []

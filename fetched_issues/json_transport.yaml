@@ -1,0 +1,5 @@
+- url: 'https://github.com/locusrobotics/json_transport/pull/7'
+  title: Move nlohmann/json.hpp include
+  body: Fixes install directory for the vendorized nlohmann/json.hpp dependency.
+  repo: 'https://api.github.com/repos/locusrobotics/json_transport'
+  labels: []

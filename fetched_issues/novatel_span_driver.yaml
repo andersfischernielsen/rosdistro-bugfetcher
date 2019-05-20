@@ -1,0 +1,16 @@
+- url: 'https://github.com/ros-drivers/novatel_span_driver/issues/37'
+  title: Missing covariance for the position estimate
+  body: "Hi,\r\n\r\nthanks for providing this driver. I was testing this driver with a PwrPak7D and I noticed that covariance for x, y and z is zero all the time. As it turns out the covariance is read from the GNSS message but not written into the navsat/odom msg (see inspvax_handler() in [novatel_span_driver/src/novatel_span_driver/publisher.py](https://github.com/ros-drivers/novatel_span_driver/blob/master/novatel_span_driver/src/novatel_span_driver/publisher.py) line 185-214).\r\n\r\nBasically we need only to add something like:\r\n`odom.pose.covariance[0] = pow(inspvax.latitude_std, 2)` --> x covariance\r\n`odom.pose.covariance[7] = pow(inspvax.longitude_std, 2)` --> y covariance\r\n`odom.pose.covariance[14] = pow(inspvax.altitude_std, 2)` --> z covariance\r\nbefore publishing odom.\r\n        \r\nSince UTM coordinates (as far as I understand) have an associated distortion (which depends on x,y), I do not know if we can straight forward convert the standard deviation given in long, lat and altitude into UTM x,y,z.\r\n\r\nDoes anyone know how to handle this correctly?\r\n\r\n"
+  repo: 'https://api.github.com/repos/ros-drivers/novatel_span_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/novatel_span_driver/issues/21'
+  title: Euler to Quaternion conversion is incorrect.
+  body: "In the publisher here, https://github.com/ros-drivers/novatel_span_driver/blob/master/novatel_span_driver/src/novatel_span_driver/publisher.py#L196\r\n\r\neulers are given to the conversion function in a pitch, roll, yaw ordering. It should be roll, pitch, yaw. (see https://github.com/ros/geometry/blob/hydro-devel/tf/src/tf/transformations.py#L1100).\r\n\r\nAlso, tacking height onto a UTM position to produce a local position may not be correct depending on the application."
+  repo: 'https://api.github.com/repos/ros-drivers/novatel_span_driver'
+  labels: []
+- url: 'https://github.com/ros-drivers/novatel_span_driver/pull/9'
+  title: Update diagnostics.py
+  body: |
+    diagnostic_msgs has not been imported, must use DiagnosticStatus directly.
+  repo: 'https://api.github.com/repos/ros-drivers/novatel_span_driver'
+  labels: []

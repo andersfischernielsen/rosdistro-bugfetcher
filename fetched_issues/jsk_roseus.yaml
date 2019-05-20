@@ -1,0 +1,74 @@
+- url: 'https://github.com/jsk-ros-pkg/jsk_roseus/pull/613'
+  title: '[roseus_tutorials] Remove unused hsi_color_filter.launch'
+  body: "Fix #611 \r\n\r\n`hsi_color_filter.launch` is not used or included in any program in `roseus_tutorials`, and also the package should not depend on `jsk_pcl_ros`.\r\nSo I removed this launch file."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_roseus'
+  labels:
+    - bug
+- url: 'https://github.com/jsk-ros-pkg/jsk_roseus/issues/611'
+  title: 'Undeclared jsk_pcl_ros, openni_launch dependencies in roseus_tutorials'
+  body: "I'm currently doing some research on static analysis of ROS packages at the IT University of Copenhagen, more specifically dependency checking of `.launch` files in ROS packages.\r\n\r\nThere seems to be a `$(find jsk_pcl_ros)` and a `$(find openni_launch)` in\r\n\r\n- `jsk_roseus/roseus_tutorials/launch/hsi_color_filter.launch`\r\nthat's not declared in `jsk_roseus/roseus_tutorials/package.xml`.\r\n\r\nThis would make `roslaunch` fail on this file, right?\r\n\r\nI'm unsure whether this is a dependency bug since I don't know what the role of the `.launch` file is. If it's just a \"demo type\" file to show what the package is capable of, then it could be classified as being not a bug, but I'm unsure. "
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_roseus'
+  labels:
+    - bug
+- url: 'https://github.com/jsk-ros-pkg/jsk_roseus/issues/579'
+  title: Segmentation fault from subscriber defined in dotimes
+  body: "I want to define multiple subscribers by `dotimes`, but that trial failed with segmentation fault.\r\nHere is the simple sample code:\r\n```\r\n(ros::roseus \"test\" :anonymous nil)\r\n(ros::roseus-add-msgs \"std_msgs\")\r\n\r\n(setq test-list (list 1 2))\r\n(setq topics (list \"~test1\" \"~test2\"))\r\n(dotimes (i (length test-list))\r\n  (ros::subscribe (elt topics i) std_msgs::Bool\r\n                  #'(lambda (a msg) (print (elt test-list a))) i 1))\r\n(ros::spin)\r\n```\r\nWhen I published to `/test/test1` or `/test/test2`, segmentation fault occurs.\r\nDebugging with @Affonso-Gui found the following code also occurs segmentation fault:\r\n```\r\n(ros::roseus \"test\" :anonymous nil)\r\n(ros::roseus-add-msgs \"std_msgs\")\r\n\r\n(setq var 0)\r\n(let (b)\r\n  (ros::subscribe \"~test\" std_msgs::Bool\r\n                  #'(lambda (msg) (print var))))\r\n(ros::spin)\r\n```\r\nWhen we erase local variable `b`, add one more argument to `lambda` fuction, or don't use global variable `var`, segmentation fault doesn't occur."
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_roseus'
+  labels:
+    - bug
+- url: 'https://github.com/jsk-ros-pkg/jsk_roseus/pull/533'
+  title: 'add test for ros::get-namesapce'
+  body: >-
+    roscpp returns non-sanitized namespace, see
+    https://github.com/ros/ros_comm/issues/1094
+
+
+    python case
+
+
+    ```
+
+    $ python
+
+    >>> import rospy
+
+    >>> rospy.get_namespace()
+
+    '/'
+
+    $ ROS_NAMESPACE= python
+
+    >>> import rospy
+
+    >>> rospy.get_namespace()
+
+    '/'
+
+    $ ROS_NAMESPACE=ns python
+
+    >>> import rospy
+
+    >>> rospy.get_namespace()
+
+    '/ns/'
+
+    $ ROS_NAMESPACE= python
+
+    >>> import rospy
+
+    >>> rospy.get_namespace()
+
+    '/'
+
+    $ ROS_NAMESPACE=/ns python
+
+    >>> import rospy
+
+    >>> rospy.get_namespace()
+
+    '/ns/'
+
+
+    ```
+  repo: 'https://api.github.com/repos/jsk-ros-pkg/jsk_roseus'
+  labels: []

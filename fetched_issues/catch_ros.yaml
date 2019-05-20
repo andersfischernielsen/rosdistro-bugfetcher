@@ -1,0 +1,5 @@
+- url: 'https://github.com/AIS-Bonn/catch_ros/pull/9'
+  title: 'cmake: catch_add_rostest() add new target as dependency of ''tests'' target'
+  body: "This matches the behavior of `add_rostest_gtest()`. This way, users are not required to register\r\ndependencies of their rostests on the individual test nodes.\r\n\r\nIssue: #8."
+  repo: 'https://api.github.com/repos/AIS-Bonn/catch_ros'
+  labels: []

@@ -1,0 +1,159 @@
+- url: 'https://github.com/ros/ros_tutorials/pull/50'
+  title: add missing dependency for tests
+  body: >-
+    E.g. for
+    https://github.com/ros/ros_tutorials/blob/2b1de43ba413bf59bbb7eb0578bf79e1721049de/rospy_tutorials/test/test-talker-listener-with-roscpp.launch#L2
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/pull/45'
+  title: 'Handle angle wrapping to address #43'
+  body: "Shouldn't depend on \"angles\" package because it is not part of ROS core\r\nmetapackage so we don't want that dependency in tutorials. However, I figured\r\nthat the relevant methods are well-tested and stable to it made sense to use\r\nthem."
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels: []
+- url: 'https://github.com/ros/ros_tutorials/issues/43'
+  title: Angle wrapping in draw_square.cpp
+  body: "Now that [this commit](https://github.com/ros/ros_tutorials/commit/b1f84c4902a1263381b83f7c41cca5cdc3f918dc) has been merged, the turtlesim is guaranteed for its pose to always be in [-pi, pi). However, when [checking if the turtle has reached its goal](https://github.com/ros/ros_tutorials/blob/821a8ae33c6da1a70e21453392f6980380f670f8/turtlesim/tutorials/draw_square.cpp#L29-L32), a simple `fabs` is used. This results in the turtle never being able to complete its square as reported in [this answers.ros.org question](https://answers.ros.org/question/292653/turtlesims-draw_square-only-draws-34-of-the-square-like-_-and-then-it-spins-forever/).\r\n\r\nA very easy fix was to include [angles](http://wiki.ros.org/angles) as a dependency and then use `angles::shortest_angular_distance`. If we are okay with modifying dependencies for this package, then I'd happily open a PR from [my fork](https://github.com/jarvisschultz/ros_tutorials/commit/9e6575fdaae59b637b4b44678d52964ae865b8da). We could, of course, also write a similar function inline if we didn't want to modify dependencies."
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/issues/24'
+  title: Turtlesim /spawn service uses different coordinate system
+  body: >
+    The numbers used when spawning a turtle via the `/spawn` service are sent
+    directly to the `turtlesim::Turtle` constructor in Qt coordinates. All other
+    numbers used in the various topics and services are in a different
+    coordinate system; e.g., `/turtleX/pose` topics and
+    `/turtleX/teleport_absolute` services. What this means is that teleporting a
+    turtle to a given (x,y) and spawning a turtle at the same (x,y) will result
+    in turtles at two different locations.
+
+
+    See [this answers.ros.org
+    question](http://answers.ros.org/question/211156/question-on-frame-transform/?answer=211208).
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/issues/12'
+  title: turtlesim does not install .svg images
+  body: >
+    Turtlesim uses both .png and .svg images for turtles (currently the only
+    .svg image is "hydro.svg"), but the cmake file only installs the .png
+    images. The result of this is that occasionally a spawned turtle will not
+    appear on screen.
+
+
+    In  turtlesim/CMakeLists.txt, the lines
+
+
+    ``` cmake
+
+    install(DIRECTORY images
+      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+      FILES_MATCHING PATTERN "*.png")
+    ```
+
+
+    should be changed to 
+
+
+    ``` cmake
+
+    install(DIRECTORY images
+      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+      FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")
+    ```
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/issues/11'
+  title: Release of version 0.4.0 is missing some commits from groovy-devel
+  body: >
+    Probably due to some branch confusion, some commits from 0.3.13 were dropped
+    in version 0.4.0. I believe that the commits
+
+
+    66bd5c8dcb35c50612b5bd26d82e9c1113dae544
+
+    1e559b3f811a6cf3daac59088d6d86ca1d31b261
+
+    d75909cfceac2a78d27aac240ed759220abaccd2
+
+    a7de3a75f4df0433186639f113dcd13f45f542f6
+
+
+    from Dirk Thomas should be rebased to hydro-devel and a new version with
+    these commits should be released.
+
+
+    Especially, commit "check for CATKIN_ENABLE_TESTING" is important for the
+    OpenEmbedded integration with meta-ros (github.vom/bmwcarit/meta-ros).
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels: []
+- url: 'https://github.com/ros/ros_tutorials/issues/8'
+  title: removal of velocity breaks all the downstream tutorial packages
+  body: >
+    403d4e792f6799c6c34f3d85548e441d1360c1e5  such as geometry_tutorials and
+    common_tutorials. @jihoonl
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/issues/3'
+  title: turtlesim does not shut down correctly
+  body: >
+    For this tutorial:
+
+    http://www.ros.org/wiki/ROS/Tutorials/UnderstandingNodes
+
+
+    Turtlesim doesn't seem to ctrl-c correctly and unassociate from the master,
+    producing an error later on in the tutorial:
+
+
+    rosnode list
+                    /my_turtle
+                    /rosout
+                    /turtlesim
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug
+- url: 'https://github.com/ros/ros_tutorials/issues/2'
+  title: bad node names in rospy tutorials launch
+  body: >
+    rospy_tutorials/003_listener_with_user_data$ roslaunch
+    listener_with_user_data.launch
+
+
+    ```
+
+    WARNING: WARN: illegal <node> name 'talker-1'.
+
+    http://ros.org/wiki/Names
+
+    This will likely cause problems with other ROS tools.
+
+    Node xml is <node args="chatter:=chatter1" name="talker-1"
+    pkg="rospy_tutorials" type="talker"/>
+
+    WARNING: WARN: illegal <node> name 'talker-2'.
+
+    http://ros.org/wiki/Names
+
+    This will likely cause problems with other ROS tools.
+
+    Node xml is <node args="chatter:=chatter2" name="talker-2"
+    pkg="rospy_tutorials" type="talker"/>
+
+    WARNING: WARN: illegal <node> name 'talker-3'.
+
+    http://ros.org/wiki/Names
+
+    This will likely cause problems with other ROS tools.
+
+    Node xml is <node args="chatter:=chatter3" name="talker-3"
+    pkg="rospy_tutorials" type="talker"/>
+
+    ```
+  repo: 'https://api.github.com/repos/ros/ros_tutorials'
+  labels:
+    - bug

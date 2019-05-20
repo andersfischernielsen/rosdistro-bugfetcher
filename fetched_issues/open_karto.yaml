@@ -1,0 +1,14 @@
+- url: 'https://github.com/ros-perception/open_karto/pull/13'
+  title: Indigo feature
+  body: "features added for sensors with limited opening angle by using odometry in dependence of covariance of matched scan\r\nadded new parameters:\r\n * OdometryCovarianceDistance: Estimated covariance for odometry (translational part)\r\n * OdometryCovarianceAngular: Estimated covariance for odometry (rotational part)\r\n\r\nfixed bugs regarding:\r\n * inverse of matrix failed\r\n * parameter passing mixed up"
+  repo: 'https://api.github.com/repos/ros-perception/open_karto'
+  labels: []
+- url: 'https://github.com/ros-perception/open_karto/pull/6'
+  title: Added proper Boost dep export
+  body: >
+    Without using a ROS handle, linking fails for the karto library since karto
+    requires Boost and has been depending on roscpp to provide the needed linker
+    flags. Adding a proper Boost export allows it to be compiled against in
+    programs that does not instantiate ROS handle objects.
+  repo: 'https://api.github.com/repos/ros-perception/open_karto'
+  labels: []

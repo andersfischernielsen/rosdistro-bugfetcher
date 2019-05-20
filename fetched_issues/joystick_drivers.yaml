@@ -1,0 +1,280 @@
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/129'
+  title: Segmentation Fault
+  body: >-
+    Hello, I have a question. When I launch Rosrun joy joy_node immediately
+    display the error: **Segmentation Fault.** I've installed all dependencies
+    and driver but don't work. The joystick is a PS3 and this joystick is
+    connected by Bluetooth and work, the dev is /js0. Just the Ros node doesn't
+    work.
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/119'
+  title: Release for Melodic
+  body: >-
+    It looks like all of the dependencies are available in Melodic, so it would
+    be great to get this released. Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/114'
+  title: ps3joy overlaps my mouse behavior
+  body: "Hi,\r\nI've recently installed this package and I'm facing this problem: once my PS3 joystick is connected (through the node `ps3joy_node.py` or `ps3joy.py`) my mouse stops to listen any click (I can't close or select windows or anything) and joystick's analog left acts like mouse' scroller.\r\nThe topic `/joy` however publish correctly what the joystick does, so I can control my robot i.e. in Gazebo, but while controlling it, the camera moves (like it's been dragged by the mouse).\r\nAnyone experiencing this issue?  Sorry if it's a well known argument, but i haven't found anything in this issue-tracker.\r\n\r\nUsing Ubuntu 16.04 LTS and ROS Lunar, original PS3 controller."
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/102'
+  title: 'Read block '
+  body: "`read(joy_fd, &event, sizeof(js_event)) == -1 && errno != EAGAIN)`\r\n\r\nthe joy_fd is blocking, when we call function read, our process may blocking，and the errno EAGAIN can only be used  for non-blocking fd. "
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/pull/94'
+  title: Update dependencies to remove warnings
+  body: "Recent updates in Kinetic cause build warning. \r\nUpdated dependencies to work for both Indigo and Kinetic without build warnings."
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/pull/87'
+  title: C++ Implementation of Wiimote Controller Node
+  body: |
+    Rewrite of the Wiimote node in C++ using the existing Python node
+    as the requirements. The C++ implementation was designed with focus
+    on reduced resource consumption.
+
+    Using C++ cut the memory consumption by 50-60%, and the reduced the
+    number of cpu-clock cycles used 20x-30x depending upon the use case.
+
+    Differences from Python implementation:
+    - Both "/wiimote/nunchuk" and "/wiimote/classic" topics are only
+      published if the Nunchuk or Classic Controller are connected to
+      the wiimote respectively.
+    - Wiimote data is only polled from the controller if the data is
+      required to publish for a topic which has at least one subscriber.
+
+    See Issue: 
+    https://github.com/ros-drivers/joystick_drivers/issues/85
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/85'
+  title: Wiimote_node Performance on resource constrained systems
+  body: >
+    I've been using the Wiimote package for manually controlling a couple of
+    robots which are running on constrained, embedded system. The performance
+    for Python in general isn't that great on these platforms which results in
+    the Wiimote node consuming about 25% of the CPU resources.
+
+
+    To meet the performance I needed, did a rewrite of the Wiimote node in C++
+    using the existing Python node as the requirements. Using C++ cut the memory
+    consumption by 50-60%, and the reduced the number of cpu-clock cycles used
+    significantly; 20x-30x depending upon the use case.
+
+
+    ![image](https://cloud.githubusercontent.com/assets/12535259/12625462/cc005404-c4e8-11e5-9ec2-b6afe2d65aab.png)
+
+
+    I'd like to contribute this C++ version upstream and hopefully it will be
+    useful to others.
+
+
+    Currently integrating my C++ code into the existing repo to ensure it can
+    coexist with the Python version.
+
+
+    For validation, i have been comparing the published data for various use
+    cases between the Python and C++ versions, using the node for controlling a
+    few different bots, and verify the calibration process. Is there any other
+    validation or test suite I should be using?
+
+
+    On a related topic, I created a fairly generic teleop_wiimote node for
+    controlling a few bots I've been testing. You can using the D-pad on the
+    Wiimote or the Nunchuk for velocity control. It may not be perfect for all
+    use cases, but at a minimum it provides a starting point for anyone wanting
+    to customize it more.
+
+    Would it be reasonable to include a 'teleop_wiimote' node in the wiimote
+    package? Or should it be upstreamed to
+    https://github.com/ros-drivers/joystick_drivers_tutorials ?
+
+
+    Thank you for your consideration.
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/83'
+  title: 'Suggestion  add README file '
+  body: |
+    Suggestion 
+    add README file 
+    for: 
+    fix dependence 
+    sudo apt-get install libusb-dev
+    sudo apt-get install libspnav-dev
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/72'
+  title: Jade Release
+  body: >
+    I wanted to go ahead and start the Jade discussion here, since we are
+    probably not going to import `qtsixa` for Utopic and Vivid, see:
+    https://github.com/ros/rosdistro/issues/6435#issuecomment-70165912
+
+
+    Is this going to be an issue or has this package moved on from using
+    `qtsixa`? The only reason it is on our radar is that we were importing it
+    for other Ubuntu distros in the past.
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/70'
+  title: Make more cross-platform
+  body: >
+    The dependence on `linux/joystick.h` sucks. Would we entertain a
+    reimplementation of joy_node based on SDL or something else that's
+    cross-platform?
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/pull/66'
+  title: Remove stray architechture_independent flags
+  body: >
+    This flag should be used for packages which do not contain
+    architecture-specific files. Compiled binaries are such a file, and these
+    packages contain them.
+
+
+    Please backport this patch to `groovy-devel` as well, and a release bump
+    would be appreciated.
+
+
+    Thanks!
+
+
+    See:
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels: []
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/59'
+  title: Wiki issues link is wrong
+  body: |
+    The link to issue tracker here points to the wrong github org:
+
+    http://wiki.ros.org/ps3joy
+
+    https://github.com/ros/joystick_drivers/issues
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/52'
+  title: wiimote src directory is missing __init__.py
+  body: >
+    This causes messages to not be found by genpy/roslib (discovered when
+    tracking down https://github.com/ros-drivers/rosserial/issues/32)
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/49'
+  title: Problem with joystick drivers wiimote package install
+  body: |
+    http://answers.ros.org/question/56125/connect-a-wiimote/
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/47'
+  title: joy migration tests depend on deprecated rosbagmigration package
+  body: ''
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/46'
+  title: Bad test_depend in package.xml
+  body: >
+    The joystick_drivers package.xml contains test_depends that are redundant
+    with its build_depends, and produces warnings whenever the package.xml is
+    parsed by the current tools:
+
+
+    WARNING(s) in None:
+
+    - The test dependency on "geometry_msgs" is redundant with: build_depend,
+    run_depend
+
+    - The test dependency on "sensor_msgs" is redundant with: build_depend,
+    run_depend
+
+    - The test dependency on "std_msgs" is redundant with: build_depend,
+    run_depend
+
+    - The test dependency on "std_srvs" is redundant with: build_depend,
+    run_depend
+
+    - The test dependency on "rospy" is redundant with: build_depend, run_depend
+
+    - The test dependency on "roslib" is redundant with: build_depend,
+    run_depend
+
+    - The test dependency on "python-numpy" is redundant with: build_depend,
+    run_depend, run_depend
+
+    - The test dependency on "python-cwiid" is redundant with: build_depend,
+    run_depend, run_depend
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/45'
+  title: >-
+    Apply patch to allow continuous output stream from ps3joy  (ros-pkg ticket
+    #5559)
+  body: >
+    The ps3joy to joy toolchain will not output new joy messages unless some of
+    the values have changed.  With steady hands and an unchanging command, the
+    joy values will trigger command timeouts on many platforms.
+
+
+    One easy way to accomplish continuous outputs is to always output whenever
+    one of the accelerometers or gyroscopes changes by even one increment.  In
+    joystick jargon, this would mean to set the axis fuzz and axis flat
+    parameters both to zero.  This change would also produce better results when
+    using the controller as a motion measurement device, since you rarely want a
+    deadband in the center of an accelerometer output.
+
+
+    I've attached a patch that adds a new option: '--continuous-output' that
+    will output continuous motion sensor streams, and as a side effect of
+    continuous output, no longer leaves long periods of no messages on the /joy
+    topic.
+
+
+    Once this patch is applied, the documentation should be updated.  This patch
+    might even work several ros releases back since the ps3joy.py file is
+    independent of ROS.
+
+
+    trac data:
+
+    - Owner: **mwise**
+
+    - Reporter: **chadrockey**
+
+    - Reported at: **Fri Sep 14 11:08:53 2012**
+
+    - URL: https://code.ros.org/trac/ros-pkg/joystick_drivers/ticket/5559
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - enhancement
+    - major
+- url: 'https://github.com/ros-drivers/joystick_drivers/issues/43'
+  title: >-
+    joystick_drivers not building on oneiric unstable pre-fuerte  (ros-pkg
+    ticket #5317)
+  body: |
+    Just bumping from 1.6.2 to the 1.6.4 tag as used in electric should fix it.
+
+    trac data:
+    - Owner: **mwise**
+    - Reporter: **vrabaud**
+    - Reported at: **Fri Dec 23 21:11:35 2011**
+    - URL: https://code.ros.org/trac/ros-pkg/joystick_drivers/ticket/5317
+  repo: 'https://api.github.com/repos/ros-drivers/joystick_drivers'
+  labels:
+    - blocker
+    - bug

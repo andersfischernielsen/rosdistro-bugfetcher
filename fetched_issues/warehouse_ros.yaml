@@ -1,0 +1,200 @@
+- url: 'https://github.com/ros-planning/warehouse_ros/issues/35'
+  title: Python code for warehouse_ros
+  body: "Hello,\r\nThe application world_canvas_server in world_canvas_server ROS package for kinetic distro depends on the python version of warehouse_ros to work, which was removed in jade-devel branch. Is there a reason for this removal? Will it be supported again sometime?"
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/issues/34'
+  title: mongo_ros dependency
+  body: >
+    The indigo-devel branch requires the mongo_ros package which is deprecated
+    since groovy, the source of mongo_ros is already unavailable for quite long
+    time. 
+
+
+    related to this I've PR at moveit_ros (indigo-devel) at
+    https://github.com/ros-planning/moveit_ros/pull/720 which uses warehouse_ros
+    for jade-devel, not sure if this should be update here or at the moveit_ros
+    repo. 
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/pull/26'
+  title: Enable tests for Jade
+  body: >
+    To address an existing issue like
+    https://github.com/ros-planning/warehouse_ros/pull/22#issuecomment-179368708
+
+
+    As noted in-file already, [mongo hack is already implemented in the depended
+    script](https://github.com/ros-industrial/industrial_ci/blob/9d08a556e873a6481076ead6534a996ff06050fa/travis.sh#L97-L102).
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/issues/25'
+  title: cmake failed
+  body: >
+    I am trying to gather tools for moveit and when collecting the warehouse_ros
+    dependency I came across this error while invoking catkin_make
+
+
+    CMake Error: The following variables are used in this project, but they are
+    set to NOTFOUND.
+
+    Please set them or make sure they are set and tested correctly in the CMake
+    files:
+
+    MongoDB_INCLUDE_DIR (ADVANCED)
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+       used as include directory in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+    MongoDB_LIBRARIES (ADVANCED)
+        linked by target "warehouse_ros" in directory /home/suryaprakaz/Documents/ROS/Robots/src/warehouse_ros
+
+    -- Configuring incomplete, errors occurred!
+
+    See also
+    "/home/suryaprakaz/Documents/ROS/Robots/build/CMakeFiles/CMakeOutput.log".
+
+    See also
+    "/home/suryaprakaz/Documents/ROS/Robots/build/CMakeFiles/CMakeError.log".
+
+
+    I am unsure about this and haven't found a solution yet.
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/pull/15'
+  title: only export MongoDB dependency for shared mongodb-library
+  body: >
+    libmongoclient.a uses quite a number of other libs and the exact
+    requirements
+
+    can't be read from a cmake/pc file. Therefore it makes more sense to keep
+    the
+
+    dependency hidden from ROS when we use the static lib. libwarehouse_ros then
+
+    provides all required functions.
+
+    ... This is a bit like creating a libmongoclient.so, but the whole problem 
+
+    exists because debian/ubuntu don't provide this one, right?
+
+
+    The shared library can - and has to - be exported as a dependency to ROS.
+
+
+    This pull-request should cleanup the problem @tfoote noticed in #14.
+
+
+    Please have a look @isucan.
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/pull/14'
+  title: Export libmongoclient library to dependent modules
+  body: >
+    This change fixes the build of dependent modules with libmongoclient.so
+
+
+    Ubuntu/Debian's package of mongodb is pretty much non-standard.
+
+    E.g. for some reason they decided to provide libmongoclient only as a static
+    library.
+
+    Granted, there were problems with building the shared object in the past,
+
+    but it worked perfectly fine for the last year or so and different
+    distributions
+
+    use it (Arch, Lunar-Linux, etc...).
+
+
+    Because the warehouse_ros headers include mongo/\* headers,
+
+    functions provided by the client library can be (and indirectly are) used
+
+    by ros-modules which depend on warehouse_ros.
+
+
+    As long as warehouse_ros links the static libmongoclient library everything
+
+    is fine, because the mongodb functions used in dependent projects
+
+    now are provided by libwarehouse_ros.so.
+
+
+    However, this is no longer the case when the shared client library is used.
+
+    In this case dependent modules use functions which are provided by
+    libmongoclient.so
+
+    but don't link to them because warehouse_ros doesn't specify the
+    lib-dependency.
+
+
+    catkin_package's DEPENDS makes all local MongoDB_\* variables directly
+    available
+
+    to dependent modules via find_package(warehouse_ros) as part of the
+    warehouse_ros_\* variables.
+
+    Therefore those modules don't have to find_package MongoDB on their own.
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/pull/13'
+  title: 'Issue #11: Add a Python library'
+  body: >
+    I have being using it for more than two months and all seems to work fine.
+    And should not bother the C++ one, so I cannot see any reason for not
+    reincorporating the python client to the mongodb.
+
+
+    There's a bunch of commits but none touch existing code except adding
+    python-pymongo and mongodb (instead of mongodb-dev) as run dependencies and
+    declare the package as a python one.
+
+
+    Tell me if you need any additional information or changes before merging, or
+    if you prefer that I do in a new branch.
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/issues/12'
+  title: 'mongo_wrapper_ros.py missing dependency '
+  body: >
+    mongo_wrapper_ros.py explicitly calls: `cmd = "mongod"` which requires
+    mongodb-server in order to run. mongodb-dev is listed as a dependency,
+    however, mongodb-server is not. 
+
+
+    I came across this issue while bug fixing the map_nav rapp for android on
+    indigo which calls mongodb:
+
+
+    `<!-- *************************** Maps *************************** -->
+
+    <param name="warehouse_host" value="localhost"/>
+
+    <param name="warehouse_port" value="27018"/> <!-- 27017 is default, use a
+    private one to avoid error 48 conflicts -->
+
+    <node name="mongo" type="mongo_wrapper_ros.py" pkg="warehouse_ros"
+    output="log">
+        <param name="db_path"        value="warehouse_data"/>
+        <param name="overwrite"      value="false"/>
+    </node>`
+
+
+    Installing mongodb-server fixes the error, but how was this able to run
+    previously? Is there something that changed between hydro and indigo that
+    dropped the mongodb-server install or was it not required previously? 
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []
+- url: 'https://github.com/ros-planning/warehouse_ros/pull/8'
+  title: Add libssl-dev to build and run depends
+  body: >
+    OpenSSL is used at CMakeLists.txt#L11 and is in rosdistro at
+    https://github.com/ros/rosdistro/blob/master/rosdep/base.yaml#L1643
+  repo: 'https://api.github.com/repos/ros-planning/warehouse_ros'
+  labels: []

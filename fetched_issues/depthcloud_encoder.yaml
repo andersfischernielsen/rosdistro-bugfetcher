@@ -1,0 +1,17 @@
+- url: 'https://github.com/RobotWebTools/depthcloud_encoder/pull/14'
+  title: Add dynamic reconfigure gen in cmake dependency chain
+  body: "To fix https://github.com/ros/rosdistro/pull/20774#issuecomment-479668130\r\n\r\nhttp://build.ros.org/view/Mbin_uB64/job/Mbin_uB64__depthcloud_encoder__ubuntu_bionic_amd64__binary/2/console"
+  repo: 'https://api.github.com/repos/RobotWebTools/depthcloud_encoder'
+  labels: []
+- url: 'https://github.com/RobotWebTools/depthcloud_encoder/pull/5'
+  title: Develop closecloud encoding
+  body: >
+    This pull request adds two features: encoding a pointcloud instead of just
+    depth images and improving the resolution by factor 6 by shrinking the range
+    to 0-2m and using the RGB channels separately to encode depth.
+
+
+    The ros3djs pull request 107 depends on this one to render the depthclouds
+    correctly in this new resolution.
+  repo: 'https://api.github.com/repos/RobotWebTools/depthcloud_encoder'
+  labels: []

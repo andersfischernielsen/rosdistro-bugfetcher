@@ -1,0 +1,113 @@
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/pull/95'
+  title: Export architecture_independent flag in package.xml
+  body: >
+    This package doesn't have any binaries in it, so it can be marked as
+    architecture independent.
+
+
+    Tested on the RPM buildfarm (http://csc.mcs.sdsmt.edu/jenkins/):
+
+    - [x] No regressions
+
+    - [x] No binaries installed
+
+
+    See:
+
+    - https://github.com/ros/rosdistro/issues/4037
+
+    - https://github.com/ros-infrastructure/bloom/pull/270
+
+    - http://www.ros.org/reps/rep-0127.html#architecture-independent
+
+
+    Thanks!
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/issues/90'
+  title: rocon_device_msgs erroneous in metapackage
+  body: >
+    References exist to both `rocon_device_msgs` (metapackage) and
+    `rocon_devices_msgs`. In english it should be `rocon_device_msgs` - only one
+    sssssss!
+
+
+    Also don't need to refer to the package inside the package when creating
+    dependant msg variables.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/issues/62'
+  title: 'rocon_app_manager_msgs: CMake error on message generation'
+  body: >
+    Several times lately, when updating my hydro-devel workspace and then
+    rebuilding, I get a CMake failure like this:
+
+
+    ```
+
+    -- +++ processing catkin package: 'rocon_app_manager_msgs'
+
+    -- ==> add_subdirectory(rocon_msgs/rocon_app_manager_msgs)
+
+    CMake Error at
+    /home/joq/ros/wet/rocon/build/rocon_msgs/rocon_app_manager_msgs/cmake/rocon_app_manager_msgs-genmsg.cmake:3
+    (message):
+      Could not find messages which
+      '/home/joq/ros/wet/rocon/src/rocon_msgs/rocon_app_manager_msgs/msg/PairingClient.msg'
+      depends on.  Did you forget to specify generate_messages(DEPENDENCIES ...)?
+
+      Cannot locate message [KeyValue] in package [rocon_std_msgs] with paths
+      [['/home/joq/ros/wet/scheduler/src/rocon_msgs/rocon_std_msgs/msg']]
+    Call Stack (most recent call first):
+      /opt/ros/hydro/share/genmsg/cmake/genmsg-extras.cmake:288 (include)
+      rocon_msgs/rocon_app_manager_msgs/CMakeLists.txt:41 (generate_messages)
+
+
+    -- Configuring incomplete, errors occurred!
+
+    make: *** [cmake_check_build_system] Error 1
+
+    ```
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels:
+    - bug
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/pull/59'
+  title: 'scheduler_msgs: minor cleanup for hydro-devel branch'
+  body: |
+    Fix minor problems discovered while back-porting to hydro branch, see: #57.
+    - remove unneeded dependency on concert_msgs
+    - make package version agree with rest of hydro_devel rocon_msgs
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/issues/57'
+  title: 'scheduler_msgs and rocon_std_msgs: please release to Hydro'
+  body: >
+    It would be more convenient to me if reasonable versions of
+    **scheduler_msgs** and **rocon_std_msgs** could be added to the current
+    Hydro release of **rocon_msgs**. Otherwise **rocon_scheduler_requests**
+    fails its devel tests and cannot generate API documentation in the wiki
+    because those packages are missing.
+
+
+    I don't believe it will break any old Hydro code, because they are new
+    packages. The dependency on **concert_msgs** is unused and should be
+    removed, anyway.
+
+    - If this is acceptable, I will provide a pull request to update the hydro
+    branch.
+
+    - If it's not worth the hassle, please just close this issue.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels: []
+- url: 'https://github.com/robotics-in-concert/rocon_msgs/issues/21'
+  title: rocon_msgs depend on missing rocon-demo-msgs in Groovy
+  body: >
+    Looks like someone deleted those demo msgs, but forgot to remove them from
+    the Groovy dependency list (they are removed in Hydro).
+
+
+    We need to re-release the messages for Groovy with that change.
+  repo: 'https://api.github.com/repos/robotics-in-concert/rocon_msgs'
+  labels:
+    - bug

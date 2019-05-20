@@ -1,0 +1,23 @@
+- url: 'https://github.com/ROBOTIS-GIT/turtlebot3_autorace/issues/33'
+  title: Cannot install autorace dependent package in turtlebot.
+  body: "I am using raspian in the turtlebot. When I follow the autorace tutorial 13.2.3 Tutorial 3\r\nThe installation fail because of no package found.\r\nAnd when I run tutorial 4.3  step 3 on the turtlebot an error stated the image/proc node is not available."
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/turtlebot3_autorace'
+  labels:
+    - question
+- url: 'https://github.com/ROBOTIS-GIT/turtlebot3_autorace/issues/26'
+  title: No module named turtlebot3_autorace_camera.cfg
+  body: >-
+    After I did the both camera calibration and intrinsic calibration, I went
+    ahead to extrinsic calibration. I got an error after ```roslaunch
+    turtlebot3_autorace_camera
+    turtlebot3_autorace_extrinsic_camera_calibration.launch``` From what I read
+    on the console it is a Python error showing the
+    **turtlebot3_autorace_camera.cfg** cannot be imported.
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/turtlebot3_autorace'
+  labels:
+    - question
+- url: 'https://github.com/ROBOTIS-GIT/turtlebot3_autorace/pull/3'
+  title: fixed system dependents
+  body: ''
+  repo: 'https://api.github.com/repos/ROBOTIS-GIT/turtlebot3_autorace'
+  labels: []

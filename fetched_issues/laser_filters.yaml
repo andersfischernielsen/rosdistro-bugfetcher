@@ -1,0 +1,622 @@
+- url: 'https://github.com/ros-perception/laser_filters/pull/67'
+  title: '[laser_filters] ROS2 Migration '
+  body: "This PR adds following changes for laser_filters pkg on crystal.\r\n\r\n  1. Replaced Ros1 build/buildtool/exec dependency packages with respective Ros2 or newer packages\r\n     Removed certain Ros1 packages that are not availabe in Ros2\r\n      e.g. ament_cmake --> ament_cmake_ros\r\n           rostime --> removed\r\n  2. Header files are renamed w.r.t. Ros2 specifications and packages.\r\n      e.g. <geometry_msgs/msg/Point32.h> --> <geometry_msgs/msg/point32.hpp>\r\n  3. Code changes to make use of new rclcpp::Parameter, rclcpp::Clock, rclcpp::Node APIs\r\n  4. Code changes w.r.t. 'filters' migration PR https://github.com/ros/filters/pull/24\r\n  5. Added new ROS2 style '.yaml' and '.launch.py' files under launch folder\r\n  6. Tests files are updated w.r.t. Ros2 packages headers and classes.\r\n     All gtests have passed successfully.\r\n  7. Logging enabled w.r.t. Ros2 logging APIs\r\n  8. Cosmetic tests: cppcheck. cpplint, uncrustify passed.\r\n  9. General clean up\r\n  10. README explains build and run steps for laser_filters and dependent packages,\r\n     limitations of current implementation, .yaml file structure w.r.t. Ros2 specifications.\r\n\r\n@jonbinney  and @tfoote Requesting you to review this PR and provide your valueable commets.\r\n\r\nThank you."
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/issues/64'
+  title: Release into Melodic
+  body: >-
+    It looks like all of the dependencies for this package are available in
+    Melodic, so it would be great to get this released.  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/42'
+  title: catkin_make requires cmake_modules in run_depends
+  body: null
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/41'
+  title: Restore cmake_modules build dependency
+  body: >
+    Was removed in https://github.com/ros-perception/laser_filters/pull/38 , and
+    broke the build on the buildfarm.
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/39'
+  title: Update CMakeLists.txt
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/38'
+  title: Update package.xml
+  body: |
+    remove eigen dependency and tidy up cmake list reduncy
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/19'
+  title: remove superfluous DEPENDS
+  body: |
+    There never was a DEPENDS flag in add_dependencies...
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/pull/17'
+  title: add cmake_modules run dependency
+  body: |
+    so that it compiles
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels: []
+- url: 'https://github.com/ros-perception/laser_filters/issues/15'
+  title: laser_filters 1.6.13 released in indigo doesn't work on hydro
+  body: >
+    If this should either be forked for indigo and renumbered or fixed in hydro:
+    https://github.com/ros/rosdistro/commit/ee2fb5b21991714ed31159688fa3c7b24f300db9
+
+
+    Error: 
+
+
+    ```
+
+    [100%] Building CXX object
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o
+
+    /usr/lib/ccache/c++   -DROSCONSOLE_BACKEND_LOG4CXX
+    -DROS_PACKAGE_NAME=\"laser_filters\"
+    -I/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/include
+    -I/opt/ros/hydro/include -I/usr/include/eigen3    -o
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o -c
+    /tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/test/test_scan_filter_chain.cpp
+
+    Linking CXX executable devel/lib/laser_filters/test_scan_filter_chain
+
+    /usr/bin/cmake -E cmake_link_script
+    CMakeFiles/test_scan_filter_chain.dir/link.txt --verbose=1
+
+    /usr/lib/ccache/c++      
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o  -o
+    devel/lib/laser_filters/test_scan_filter_chain -rdynamic
+    devel/lib/liblaser_scan_filters.so /opt/ros/hydro/lib/libtf.so
+    /opt/ros/hydro/lib/libtf2_ros.so /opt/ros/hydro/lib/libactionlib.so
+    /opt/ros/hydro/lib/libtf2.so /opt/ros/hydro/lib/libmean.so
+    /opt/ros/hydro/lib/libparams.so /opt/ros/hydro/lib/libincrement.so
+    /opt/ros/hydro/lib/libmedian.so /opt/ros/hydro/lib/libtransfer_function.so
+    /opt/ros/hydro/lib/libmessage_filters.so /opt/ros/hydro/lib/libroscpp.so
+    -lboost_signals-mt /opt/ros/hydro/lib/libroscpp_serialization.so
+    /opt/ros/hydro/lib/libxmlrpcpp.so /opt/ros/hydro/lib/liblaser_geometry.so
+    -ltinyxml -lboost_filesystem-mt /opt/ros/hydro/lib/libclass_loader.so
+    -lPocoFoundation -ldl /opt/ros/hydro/lib/librosconsole.so
+    /opt/ros/hydro/lib/librosconsole_log4cxx.so
+    /opt/ros/hydro/lib/librosconsole_backend_interface.so -llog4cxx
+    -lboost_regex-mt /opt/ros/hydro/lib/librostime.so -lboost_date_time-mt
+    -lboost_system-mt -lboost_thread-mt -lpthread
+    /opt/ros/hydro/lib/libcpp_common.so /opt/ros/hydro/lib/libconsole_bridge.so
+    /opt/ros/hydro/lib/libroslib.so -lboost_signals-mt
+    /opt/ros/hydro/lib/libroscpp_serialization.so
+    /opt/ros/hydro/lib/libxmlrpcpp.so /opt/ros/hydro/lib/liblaser_geometry.so
+    -ltinyxml -lboost_filesystem-mt /opt/ros/hydro/lib/libclass_loader.so
+    -lPocoFoundation -ldl /opt/ros/hydro/lib/librosconsole.so
+    /opt/ros/hydro/lib/librosconsole_log4cxx.so
+    /opt/ros/hydro/lib/librosconsole_backend_interface.so -llog4cxx
+    -lboost_regex-mt /opt/ros/hydro/lib/librostime.so -lboost_date_time-mt
+    -lboost_system-mt -lboost_thread-mt -lpthread
+    /opt/ros/hydro/lib/libcpp_common.so /opt/ros/hydro/lib/libconsole_bridge.so
+    /opt/ros/hydro/lib/libroslib.so
+    -Wl,-rpath,/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/obj-i686-linux-gnu/devel/lib:/opt/ros/hydro/lib 
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `ScanToScanFilterChain_BadConfiguration_Test::TestBody()':
+
+    test_scan_filter_chain.cpp:(.text+0x3c2): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x4ba): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x4f5): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x50d): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x51b): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `ScanToScanFilterChain_IntensityFilter_Test::TestBody()':
+
+    test_scan_filter_chain.cpp:(.text+0x84d): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x888): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x8a0): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x8ae): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x99a): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x9d5): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x9ed): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x9fb): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0xab2): undefined reference to
+    `testing::internal::DoubleNearPredFormat(char const*, char const*, char
+    const*, double, double, double)'
+
+    test_scan_filter_chain.cpp:(.text+0xb0d): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0xb25): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0xb33): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0xcc1): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0xd27): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0xd75): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `ScanToScanFilterChain_InterpFilter_Test::TestBody()':
+
+    test_scan_filter_chain.cpp:(.text+0x10d7): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x1112): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x112a): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x1138): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1224): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x125f): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x1277): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x1285): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x133c): undefined reference to
+    `testing::internal::DoubleNearPredFormat(char const*, char const*, char
+    const*, double, double, double)'
+
+    test_scan_filter_chain.cpp:(.text+0x1397): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x13af): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x13bd): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x154b): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x15b1): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x15ff): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `ScanToScanFilterChain_ShadowFilter_Test::TestBody()':
+
+    test_scan_filter_chain.cpp:(.text+0x1961): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x199c): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x19b4): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x19c2): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1aae): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x1ae9): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x1b01): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x1b0f): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1bc6): undefined reference to
+    `testing::internal::DoubleNearPredFormat(char const*, char const*, char
+    const*, double, double, double)'
+
+    test_scan_filter_chain.cpp:(.text+0x1c21): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x1c39): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x1c47): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1dd5): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1e3b): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x1e89): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `ScanToScanFilterChain_ArrayFilter_Test::TestBody()':
+
+    test_scan_filter_chain.cpp:(.text+0x21eb): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x2226): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x223e): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x224c): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2338): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x2373): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x238b): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x2399): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2522): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x255d): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x2575): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x2583): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x266f): undefined reference to
+    `testing::internal::GetBoolAssertionFailureMessage(testing::AssertionResult
+    const&, char const*, char const*, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x26aa): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x26c2): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x26d0): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2787): undefined reference to
+    `testing::internal::DoubleNearPredFormat(char const*, char const*, char
+    const*, double, double, double)'
+
+    test_scan_filter_chain.cpp:(.text+0x27e2): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x27fa): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x2808): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x28a2): undefined reference to
+    `testing::internal::DoubleNearPredFormat(char const*, char const*, char
+    const*, double, double, double)'
+
+    test_scan_filter_chain.cpp:(.text+0x28fd): undefined reference to
+    `testing::internal::AssertHelper::AssertHelper(testing::TestPartResult::Type,
+    char const*, int, char const*)'
+
+    test_scan_filter_chain.cpp:(.text+0x2915): undefined reference to
+    `testing::internal::AssertHelper::operator=(testing::Message const&) const'
+
+    test_scan_filter_chain.cpp:(.text+0x2923): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2abf): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2b25): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2b8b): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    test_scan_filter_chain.cpp:(.text+0x2bf1): undefined reference to
+    `testing::internal::AssertHelper::~AssertHelper()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:test_scan_filter_chain.cpp:(.text+0x2c3f):
+    more undefined references to
+    `testing::internal::AssertHelper::~AssertHelper()' follow
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `main':
+
+    test_scan_filter_chain.cpp:(.text+0x2d4f): undefined reference to
+    `testing::InitGoogleTest(int*, char**)'
+
+    test_scan_filter_chain.cpp:(.text+0x2db6): undefined reference to
+    `testing::UnitTest::GetInstance()'
+
+    test_scan_filter_chain.cpp:(.text+0x2dbe): undefined reference to
+    `testing::UnitTest::Run()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `__static_initialization_and_destruction_0(int, int)':
+
+    test_scan_filter_chain.cpp:(.text+0x2f58): undefined reference to
+    `testing::internal::GetTestTypeId()'
+
+    test_scan_filter_chain.cpp:(.text+0x2f94): undefined reference to
+    `testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char
+    const*, char const*, void const*, void (*)(), void (*)(),
+    testing::internal::TestFactoryBase*)'
+
+    test_scan_filter_chain.cpp:(.text+0x2fb4): undefined reference to
+    `testing::internal::GetTestTypeId()'
+
+    test_scan_filter_chain.cpp:(.text+0x2ff0): undefined reference to
+    `testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char
+    const*, char const*, void const*, void (*)(), void (*)(),
+    testing::internal::TestFactoryBase*)'
+
+    test_scan_filter_chain.cpp:(.text+0x3010): undefined reference to
+    `testing::internal::GetTestTypeId()'
+
+    test_scan_filter_chain.cpp:(.text+0x304c): undefined reference to
+    `testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char
+    const*, char const*, void const*, void (*)(), void (*)(),
+    testing::internal::TestFactoryBase*)'
+
+    test_scan_filter_chain.cpp:(.text+0x306c): undefined reference to
+    `testing::internal::GetTestTypeId()'
+
+    test_scan_filter_chain.cpp:(.text+0x30a8): undefined reference to
+    `testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char
+    const*, char const*, void const*, void (*)(), void (*)(),
+    testing::internal::TestFactoryBase*)'
+
+    test_scan_filter_chain.cpp:(.text+0x30c8): undefined reference to
+    `testing::internal::GetTestTypeId()'
+
+    test_scan_filter_chain.cpp:(.text+0x3104): undefined reference to
+    `testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char
+    const*, char const*, void const*, void (*)(), void (*)(),
+    testing::internal::TestFactoryBase*)'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_BadConfiguration_Test::ScanToScanFilterChain_BadConfiguration_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN43ScanToScanFilterChain_BadConfiguration_TestC2Ev[_ZN43ScanToScanFilterChain_BadConfiguration_TestC5Ev]+0xd):
+    undefined reference to `testing::Test::Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_IntensityFilter_Test::ScanToScanFilterChain_IntensityFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN42ScanToScanFilterChain_IntensityFilter_TestC2Ev[_ZN42ScanToScanFilterChain_IntensityFilter_TestC5Ev]+0xd):
+    undefined reference to `testing::Test::Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_InterpFilter_Test::ScanToScanFilterChain_InterpFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN39ScanToScanFilterChain_InterpFilter_TestC2Ev[_ZN39ScanToScanFilterChain_InterpFilter_TestC5Ev]+0xd):
+    undefined reference to `testing::Test::Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_ShadowFilter_Test::ScanToScanFilterChain_ShadowFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN39ScanToScanFilterChain_ShadowFilter_TestC2Ev[_ZN39ScanToScanFilterChain_ShadowFilter_TestC5Ev]+0xd):
+    undefined reference to `testing::Test::Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_ArrayFilter_Test::ScanToScanFilterChain_ArrayFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN38ScanToScanFilterChain_ArrayFilter_TestC2Ev[_ZN38ScanToScanFilterChain_ArrayFilter_TestC5Ev]+0xd):
+    undefined reference to `testing::Test::Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `testing::internal::scoped_ptr<std::string>::reset(std::string*)':
+
+    test_scan_filter_chain.cpp:(.text._ZN7testing8internal10scoped_ptrISsE5resetEPSs[_ZN7testing8internal10scoped_ptrISsE5resetEPSs]+0x19):
+    undefined reference to `testing::internal::IsTrue(bool)'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function `testing::internal::scoped_ptr<std::basic_stringstream<char,
+    std::char_traits<char>, std::allocator<char> >
+    >::reset(std::basic_stringstream<char, std::char_traits<char>,
+    std::allocator<char> >*)':
+
+    test_scan_filter_chain.cpp:(.text._ZN7testing8internal10scoped_ptrISt18basic_stringstreamIcSt11char_traitsIcESaIcEEE5resetEPS6_[_ZN7testing8internal10scoped_ptrISt18basic_stringstreamIcSt11char_traitsIcESaIcEEE5resetEPS6_]+0x18):
+    undefined reference to `testing::internal::IsTrue(bool)'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV38ScanToScanFilterChain_ArrayFilter_Test[_ZTV38ScanToScanFilterChain_ArrayFilter_Test]+0x10):
+    undefined reference to `testing::Test::SetUp()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV38ScanToScanFilterChain_ArrayFilter_Test[_ZTV38ScanToScanFilterChain_ArrayFilter_Test]+0x14):
+    undefined reference to `testing::Test::TearDown()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_ArrayFilter_Test::~ScanToScanFilterChain_ArrayFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN38ScanToScanFilterChain_ArrayFilter_TestD2Ev[_ZN38ScanToScanFilterChain_ArrayFilter_TestD5Ev]+0x16):
+    undefined reference to `testing::Test::~Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV39ScanToScanFilterChain_ShadowFilter_Test[_ZTV39ScanToScanFilterChain_ShadowFilter_Test]+0x10):
+    undefined reference to `testing::Test::SetUp()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV39ScanToScanFilterChain_ShadowFilter_Test[_ZTV39ScanToScanFilterChain_ShadowFilter_Test]+0x14):
+    undefined reference to `testing::Test::TearDown()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_ShadowFilter_Test::~ScanToScanFilterChain_ShadowFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN39ScanToScanFilterChain_ShadowFilter_TestD2Ev[_ZN39ScanToScanFilterChain_ShadowFilter_TestD5Ev]+0x16):
+    undefined reference to `testing::Test::~Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV39ScanToScanFilterChain_InterpFilter_Test[_ZTV39ScanToScanFilterChain_InterpFilter_Test]+0x10):
+    undefined reference to `testing::Test::SetUp()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV39ScanToScanFilterChain_InterpFilter_Test[_ZTV39ScanToScanFilterChain_InterpFilter_Test]+0x14):
+    undefined reference to `testing::Test::TearDown()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_InterpFilter_Test::~ScanToScanFilterChain_InterpFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN39ScanToScanFilterChain_InterpFilter_TestD2Ev[_ZN39ScanToScanFilterChain_InterpFilter_TestD5Ev]+0x16):
+    undefined reference to `testing::Test::~Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV42ScanToScanFilterChain_IntensityFilter_Test[_ZTV42ScanToScanFilterChain_IntensityFilter_Test]+0x10):
+    undefined reference to `testing::Test::SetUp()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV42ScanToScanFilterChain_IntensityFilter_Test[_ZTV42ScanToScanFilterChain_IntensityFilter_Test]+0x14):
+    undefined reference to `testing::Test::TearDown()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_IntensityFilter_Test::~ScanToScanFilterChain_IntensityFilter_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN42ScanToScanFilterChain_IntensityFilter_TestD2Ev[_ZN42ScanToScanFilterChain_IntensityFilter_TestD5Ev]+0x16):
+    undefined reference to `testing::Test::~Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV43ScanToScanFilterChain_BadConfiguration_Test[_ZTV43ScanToScanFilterChain_BadConfiguration_Test]+0x10):
+    undefined reference to `testing::Test::SetUp()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTV43ScanToScanFilterChain_BadConfiguration_Test[_ZTV43ScanToScanFilterChain_BadConfiguration_Test]+0x14):
+    undefined reference to `testing::Test::TearDown()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o: In
+    function
+    `ScanToScanFilterChain_BadConfiguration_Test::~ScanToScanFilterChain_BadConfiguration_Test()':
+
+    test_scan_filter_chain.cpp:(.text._ZN43ScanToScanFilterChain_BadConfiguration_TestD2Ev[_ZN43ScanToScanFilterChain_BadConfiguration_TestD5Ev]+0x16):
+    undefined reference to `testing::Test::~Test()'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTI38ScanToScanFilterChain_ArrayFilter_Test[_ZTI38ScanToScanFilterChain_ArrayFilter_Test]+0x8):
+    undefined reference to `typeinfo for testing::Test'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTI39ScanToScanFilterChain_ShadowFilter_Test[_ZTI39ScanToScanFilterChain_ShadowFilter_Test]+0x8):
+    undefined reference to `typeinfo for testing::Test'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTI39ScanToScanFilterChain_InterpFilter_Test[_ZTI39ScanToScanFilterChain_InterpFilter_Test]+0x8):
+    undefined reference to `typeinfo for testing::Test'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTI42ScanToScanFilterChain_IntensityFilter_Test[_ZTI42ScanToScanFilterChain_IntensityFilter_Test]+0x8):
+    undefined reference to `typeinfo for testing::Test'
+
+    CMakeFiles/test_scan_filter_chain.dir/test/test_scan_filter_chain.cpp.o:(.rodata._ZTI43ScanToScanFilterChain_BadConfiguration_Test[_ZTI43ScanToScanFilterChain_BadConfiguration_Test]+0x8):
+    undefined reference to `typeinfo for testing::Test'
+
+    collect2: error: ld returned 1 exit status
+
+    make[4]: *** [devel/lib/laser_filters/test_scan_filter_chain] Error 1
+
+    make[4]: Leaving directory
+    `/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/obj-i686-linux-gnu'
+
+    make[3]: *** [CMakeFiles/test_scan_filter_chain.dir/all] Error 2
+
+    make[3]: Leaving directory
+    `/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/obj-i686-linux-gnu'
+
+    make[2]: *** [all] Error 2
+
+    make[2]: Leaving directory
+    `/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739/obj-i686-linux-gnu'
+
+    dh_auto_build: make -j1 returned exit code 2
+
+    make[1]: *** [override_dh_auto_build] Error 2
+
+    make[1]: Leaving directory
+    `/tmp/buildd/ros-hydro-laser-filters-1.6.13-0raring-20140304-0739'
+
+    make: *** [build] Error 2
+
+    dpkg-buildpackage: error: debian/rules build gave error exit status 2
+
+    E: Failed autobuilding of package
+
+    ```
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels:
+    - bug
+- url: 'https://github.com/ros-perception/laser_filters/pull/12'
+  title: missing dependency break isolated build without --install
+  body: >
+    `scan_shadows_filter.h` includes `angles/angles.h` without
+    find_package()-ing it. Therefore it fails to find the header in isolated
+    builds without --install.
+
+
+    Experienced it on hydro - did not check groovy.
+  repo: 'https://api.github.com/repos/ros-perception/laser_filters'
+  labels:
+    - bug

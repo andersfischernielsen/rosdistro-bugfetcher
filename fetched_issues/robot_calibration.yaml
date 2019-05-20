@@ -1,0 +1,129 @@
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/61'
+  title: Problem in waitToSettle() function in manual mode
+  body: "Hello Mike,\r\n\r\nThere was 1 more issue in the function waitToSettle(), if we use the manual mode to move the arm.\r\n\r\n1. At line 269 in function waitToSettle() in [file](https://github.com/mikeferguson/robot_calibration/blob/master/robot_calibration/src/chain_manager.cpp), ros::spinOnce() is being called. Because of this spin call, the callback will be called and joint state values will be updated.\r\n2. It will be working without any problem, if arm is moved as per poses in calibration_poses.bag file, as after the movement, it will take sometime to settle the arm.\r\n3. So at first iteration in while(true) loop at line 236, the variable settle will be false and this loop will not break at line 266.\r\n4. But if we are moving the arm manually like mine case, I am first moving the arm to some desired position and then pressing enter to capture the pose.\r\n5. In this case, the arm is already settled, when it comes in waitToSettle() function.\r\n6. So loop will break at line 266, and ros::spinOnce() will never called.\r\n7. So we will not get the joint states.\r\n\r\nSo here I would like to propose a solution:\r\n1. We can place ros::spinOnce() before line 266.\r\n2. Or we can place ros::spinOnce() at the beginning or at last only, so that inspite of whether arm has been settled or not, ros::spinOnce() should be called.\r\n3. I tried by putting ros::spinOnce() at the beginning and it is working fine.\r\n\r\nPlease let me know if you agree or find any issue with it.\r\n\r\nThanks,\r\nSaurabh\r\n"
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/58'
+  title: LED finder not work for any other number of led than 4
+  body: "Hello Mark,\r\n\r\nI am using `robot_calibration` package to calibrate my robot. And its a very helpful.\r\nI am using only 1 led for calibration. So I defined only 1 led in the .yaml file.\r\n\r\nBut it was not working. So I got the issue and would like to suggest a solution for it as below:\r\n- In `led_finder.cpp` file ([link](https://github.com/mikeferguson/robot_calibration/blob/master/robot_calibration/src/finders/led_finder.cpp)) at `line number 188`, the code is as below:\r\n\r\n> code_idx = (code_idx + 1) % 8;\r\n\r\nSo this can be replaced with \r\n\r\n> code_idx = (code_idx + 1) % codes_.size();\r\n\r\nCan you please have a look over it and change in main code.\r\n\r\nRegards,\r\nSaurabh"
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/48'
+  title: TF buffer should be class member
+  body: 'As noted in https://github.com/mikeferguson/robot_calibration/pull/45'
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/43'
+  title: Optimization not happening on Kinetic
+  body: "I've been preparing the kinetic-devel branch mainly on my indigo/14.04 machine (ceres 1.8.0) -- it works fine. I've been adding additional tests to help validate new changes -- in particular, I've added these lines: https://github.com/mikeferguson/robot_calibration/blob/50bc057398dc491e19ad383972b9615e46508ed8/robot_calibration/test/error_block_tests.cpp#L288-L290, which work fine under ceres 1.8.0, but fail under 1.12.0 (which is the version in 16.04).\r\n\r\nFrom the buildfarm log:\r\n```\r\n/tmp/catkin_workspace/src/robot_calibration/robot_calibration/test/error_block_tests.cpp:288\r\nExpected: (opt.summary()->final_cost) < (1e-26), actual: 1.67796e-25 vs 1e-26\r\n\r\n/tmp/catkin_workspace/src/robot_calibration/robot_calibration/test/error_block_tests.cpp:289\r\nExpected: (opt.summary()->final_cost) < (opt.summary()->initial_cost), actual: 1.67796e-25 vs 1.67796e-25\r\n\r\n/tmp/catkin_workspace/src/robot_calibration/robot_calibration/test/error_block_tests.cpp:290\r\nExpected: (opt.summary()->iterations.size()) > (10), actual: 1 vs 10\r\n```\r\n\r\nWith ceres 1.8.0, I get:\r\n```\r\ninitial_cost: 1.67796e-25\r\nfinal_cost: 1.43174e-27\r\niterations: 17\r\n```"
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/40'
+  title: Finish improving PlaneToPlaneError
+  body: " * Instead of computing planes in the error block, push it down into models (which can be specialized)\r\n * Add support for residual based on the minimum distance between the resulting planes. Still need to determine if this is based on the plane models, or directly on the projected points (which might make more sense), but this seems like a very important aspect."
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - enhancement
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/33'
+  title: LED finder appends empty observations when it fails
+  body: "led_finder.cpp has the same problem that was fixed in commit added19 (#32) for the checkerboard finder. It can be fixed in the same way: create a temporary copy of `msg`, throw away changes if `find()` returns false.\r\n\r\nBTW, coolest commit id ever: added19 . :)"
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/31'
+  title: >-
+    Using opencv calibration function to return checkerboard finder's depth
+    information
+  body: "Hi, I find that in the checkerboard_finder.cpp, the position of the corner seems returned by the depth information returned by the depth camera. This method, however, relay's on accurately calibrate the depth of the camera. Plus, this method also requires the checkerboard to be big enough for the camera to see them and meanwhile in the working range of the IR camera. And most importantly, the relative position of corner points are fixed, so they can only only reflex the orientation of the checkerboard but nothing else.\r\n\r\nSo I was thinking could we use the pose of the checkerboard returned from OpenCV's calibration program instead? Have you consider this method? "
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels: []
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/29'
+  title: 'Kinetic: ceres-solver broken in 16.04'
+  body: |
+    https://bugs.launchpad.net/ubuntu/+source/ceres-solver/+bug/1595692
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/pull/22'
+  title: remove dependency on PCL
+  body: ''
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels: []
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/20'
+  title: Centroid refinement likely not doing what we think it is
+  body: >
+    The function defines p and point (both PointStamped). We set point to the
+    initial centroid, and then later compare each additional point to the
+    centroid -- except, that we use p instead of point (which is probably
+    initialized to 0,0,0). Since the gripper is usually > 0.5m from the origin
+    of the camera, this probably always fails:
+    https://github.com/mikeferguson/robot_calibration/blob/indigo-devel/robot_calibration/src/led_finder.cpp#L478
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/17'
+  title: need to parameterize checkerboard starting offset
+  body: >
+    Currently the checkerboard "world" poses are poorly defined and not easily
+    changed. The orientation is hard-coded for the Fetch configuration as to
+    where the checkerboard points are relative to the kinematic chain tip link.
+    Additionally, there is currently no way to define a starting position, so a
+    number of cycles of the optimizer are spent simply moving the checkerboard
+    to a relatively good starting position.
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/14'
+  title: Should not capture if motion plan failed
+  body: >
+    If the motion planning failed for any reason, should not try to capture
+    points.
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/13'
+  title: Callback queues are not properly processed
+  body: >
+    Problem has manifested itself in the form of bagfiles that have incorrect
+    joint_states -- the messages appear not to be processed. This is especially
+    true with the checkerboard detector, it appears that many messages get
+    dropped and not processed.
+    https://github.com/mikeferguson/robot_calibration/commit/c7bd5515915c5beb49c6f3e267f0f09178aa099b
+    is a temporary hack to add an extra callback processing thread, but may
+    cause other issues.
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/12'
+  title: Does not exit nicely on CTRL-C
+  body: ''
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/11'
+  title: Error block test is failing
+  body: >
+    Needs to be updated for new messages
+
+
+    See
+    http://jenkins.ros.org/job/devel-indigo-robot_calibration/ARCH_PARAM=amd64,UBUNTU_PARAM=trusty,label=devel/2/console
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/6'
+  title: Need support for planning into move_state()
+  body: ''
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/robot_calibration/issues/3'
+  title: Add message for commanding gripper leds
+  body: ''
+  repo: 'https://api.github.com/repos/mikeferguson/robot_calibration'
+  labels:
+    - bug

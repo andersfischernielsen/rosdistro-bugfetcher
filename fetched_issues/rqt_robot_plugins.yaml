@@ -1,0 +1,426 @@
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/pull/112'
+  title: add missing dependency
+  body: >
+    ```
+
+    PluginHandlerDirect._restore_settings() plugin "rqt_tf_tree/RosTfTree#1"
+    raised an exception:
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 116, in _restore_settings
+        self._plugin.restore_settings(plugin_settings_plugin, instance_settings_plugin)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 128, in restore_settings
+        self._refresh_tf_graph()
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 137, in _refresh_tf_graph
+        self._update_graph_view(self._generate_dotcode())
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 152, in _update_graph_view
+        self._redraw_graph_view()
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 166, in _redraw_graph_view
+        highlight_level)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_dotgraph/dot_to_qt.py", line 248, in dotcode_to_qt_items
+        graph = pydot.graph_from_dot_data(dotcode.encode("ascii", "ignore"))
+      File "/usr/lib/python2.7/dist-packages/pydot.py", line 220, in graph_from_dot_data
+        return dot_parser.parse_dot_data(data)
+    NameError: global name 'dot_parser' is not defined
+
+    ```
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/109'
+  title: rqt_tf_tree throws an exception
+  body: >
+    rqt_tf_tree throws this exception:
+
+
+    PluginHandlerDirect._restore_settings() plugin "rqt_tf_tree/RosTfTree#1"
+    raised an exception:
+
+    Traceback (most recent call last):
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 116, in _restore_settings
+        self._plugin.restore_settings(plugin_settings_plugin, instance_settings_plugin)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 128, in restore_settings
+        self._refresh_tf_graph()
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 137, in _refresh_tf_graph
+        self._update_graph_view(self._generate_dotcode())
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/tf_tree.py", line 146, in _generate_dotcode
+        force_refresh=force_refresh)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/dotcode_tf.py", line 97, in generate_dotcode
+        self.graph = self.generate(data, timer.now().to_sec())
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/rqt_tf_tree/dotcode_tf.py", line 128, in generate
+        label=edge_label)
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_dotgraph/pydotfactory.py", line 148, in add_edge_to_graph
+        edge = pydot.Edge(self.escape_name(nodename1), self.escape_name(nodename2))
+      File "/opt/ros/indigo/lib/python2.7/dist-packages/qt_dotgraph/pydotfactory.py", line 56, in escape_name
+        ret = urllib.quote(name.strip())
+    AttributeError: 'int' object has no attribute 'strip'
+
+
+    possible solution: cast to str()? .... label=str(edge_label))
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/103'
+  title: Runtime_Monitor_Widget AttributeError
+  body: >
+    On Kinetic (probably more because of my qt version, 5.5.1)
+    Runtime_Monitor_Widget crashes rqt_gui with
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_runtime_monitor/runtime_monitor_widget.py", line 174, in _update_messages
+        if self.tree_widget.isItemSelected(item.tree_node):
+    AttributeError: 'QTreeWidget' object has no attribute 'isItemSelected'
+
+
+    Python is correct, QTreeWidget::isItemSelected is deprecated according to
+    [QT](http://doc.qt.io/qt-4.8/qtreewidget-obsolete.html#isItemSelected) in
+    favor of QTreeWidgetItem::isSelected()
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/102'
+  title: rqt_rviz needs a build dependency on qtbase5-dev
+  body: >
+    Like rviz
+    [here](https://github.com/ros-visualization/rviz/blob/kinetic-devel/package.xml#L30)
+
+    This is the package with the cmake config files:
+    https://packages.debian.org/jessie/amd64/qtbase5-dev/filelist
+
+
+    I think on ubuntu targets it's getting pulled in by an indirect dependency
+    but on debian jessie it's not. 
+
+    Jessie package not installed:
+    http://build.ros.org:8080/view/Kbin_dJ64/job/Kbin_dJ64__rqt_rviz__debian_jessie_amd64__binary/8/consoleFull
+
+    Xenial:
+    http://build.ros.org:8080/view/Kbin_uX64/job/Kbin_uX64__rqt_rviz__ubuntu_xenial_amd64__binary/lastSuccessfulBuild/consoleFull
+    It's brought in indirectly by rqt-gui
+
+
+    Rviz installed explicitly:
+    http://build.ros.org:8080/view/Kbin_dJ64/job/Kbin_dJ64__rviz__debian_jessie_amd64__binary/10/consoleFull
+    and works on debian. 
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/pull/101'
+  title: additionally support Qt5
+  body: >
+    With these patches the same code base can run with:
+
+    - ROS Indigo / Jade using Qt 4
+
+    - ROS Kinetic (and higher) using Qt 5
+
+
+    The version dependency on `python_qt_binding` ensures that the packages
+    which use `QtWidgets` are getting the changes from
+    ros-visualization/python_qt_binding#31.
+
+
+    This is required for a release into Kinetic.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/78'
+  title: 'rqt_robot_monitor: Apparent threading bug'
+  body: >
+    While running rqt_robot_monitor I get a continuous stream of the following
+    in the parent terminal:
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/home/alex/ros_rocksteady_gui/src/rqt_robot_plugins/rqt_robot_monitor/src/rqt_robot_monitor/timeline_view.py", line 194, in _slot_redraw
+        for i, m in enumerate(self._timeline):
+      File "/home/alex/ros_rocksteady_gui/src/rqt_robot_plugins/rqt_robot_monitor/src/rqt_robot_monitor/timeline.p  y", line 158, in __iter__
+        for msg in self._queue:
+    RuntimeError: deque mutated during iteration
+
+    ```
+
+
+    Looks like the timeline queue is being modified by the ROS message callback
+    in the `Timeline` class while at the same time being iterated over by
+    `TimelineView`. I'm not what a good fix is, but I'm guessing this is causing
+    more than just annoying error messages because I also see frequent
+    rqt_robot_monitor freezes and crashes - most often when using the inspector
+    window.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/77'
+  title: 'rqt_moveit: load error '
+  body: |
+    When loading rqt_moveit it does not load and instead shows this error:
+    `
+    PluginManager._load_plugin() could not load plugin "rqt_moveit/Moveit":
+    Traceback (most recent call last):
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/qt_gui/plugin_handler.py", line 98, in load
+        self._load()
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 54, in _load
+        self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/rqt_gui_py/ros_py_plugin_provider.py", line 60, in load
+        return super(RosPyPluginProvider, self).load(plugin_id, plugin_context)
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 94, in load
+        return class_ref(plugin_context)
+      File "/home/ablasdel/workspace/src/rqt_robot_plugins/rqt_moveit/src/rqt_moveit/moveit_plugin.py", line 47, in __init__
+        self._moveit_widget = MoveitWidget(self, plugin_context)
+      File "/home/ablasdel/workspace/src/rqt_robot_plugins/rqt_moveit/src/rqt_moveit/moveit_widget.py", line 111, in __init__
+        self.sig_sysmsg = self._widget_topic.sig_sysmsg
+    AttributeError: 'TopicWidget' object has no attribute 'sig_sysmsg'
+    `
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/76'
+  title: 'rqt_moveit: Required topics unavailable errors should show in GUI'
+  body: >
+    GUI should robustly handle common error cases
+
+
+    Currently if topic requirements are not met the console is repeatedly
+    spammed as follows:
+
+    `
+
+    cannot ping [/move_group]: unknown node
+
+    [ERROR] [WallTime: 1416589782.318666] None of the following required topics
+    are found.
+
+    (NAME, TYPE): [('/pointcloud', 'sensor_msgs/PointCloud'), ('/pointcloud2',
+    'sensor_msgs/PointCloud2'), ('/image', 'sensor_msgs/Image'),
+    ('/camera_info', 'sensor_msgs/CameraInfo')]
+
+    [ERROR] [WallTime: 1416589783.318618] None of the following required topics
+    are found.
+
+    (NAME, TYPE): [('/pointcloud', 'sensor_msgs/PointCloud'), ('/pointcloud2',
+    'sensor_msgs/PointCloud2'), ('/image', 'sensor_msgs/Image'),
+    ('/camera_info', 'sensor_msgs/CameraInfo')]
+
+    [ERROR] [WallTime: 1416589784.318618] None of the following required topics
+    are found.
+
+    (NAME, TYPE): [('/pointcloud', 'sensor_msgs/PointCloud'), ('/pointcloud2',
+    'sensor_msgs/PointCloud2'), ('/image', 'sensor_msgs/Image'),
+    ('/camera_info', 'sensor_msgs/CameraInfo')]
+
+    [ERROR] [WallTime: 1416589785.318577] None of the following required topics
+    are found.
+
+    (NAME, TYPE): [('/pointcloud', 'sensor_msgs/PointCloud'), ('/pointcloud2',
+    'sensor_msgs/PointCloud2'), ('/image', 'sensor_msgs/Image'),
+    ('/camera_info', 'sensor_msgs/CameraInfo')]
+
+    [ERROR] [WallTime: 1416589786.318605] None of the following required topics
+    are found.
+
+    (NAME, TYPE): [('/pointcloud', 'sensor_msgs/PointCloud'), ('/pointcloud2',
+    'sensor_msgs/PointCloud2'), ('/image', 'sensor_msgs/Image'),
+    ('/camera_info', 'sensor_msgs/CameraInfo')]
+
+    `
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/69'
+  title: 'rqt_runtime_monitor: items go stale when using simulated time'
+  body: >
+    When playing back log files and displaying the results in
+    rqt_runtime_monitor, all of the diagnostics go stale when the log file is
+    paused for a few seconds.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/56'
+  title: 'rqt_moveit: does not stop the thread it starts'
+  body: ''
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/49'
+  title: 'rqt_runtime_monitor: does not update like old RX-based runtime_monitor'
+  body: >
+    If I click on a particular diagnostics entry, it will show me the current
+    data, but it does not update until I unselect and reselect it. In the old rx
+    runtime_monintor, data was updated when new messages came in (and, the
+    updated data was also highlighted in a bold font and sort of a yellow/gold
+    color).
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - Major
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/pull/46'
+  title: 'rewrites BatterDashWidget to fix #42'
+  body: >
+    I took a quick look around, which simple Qt class supports both visualising
+    an image (pixmap) and allows setting tool tips. What I found was the QLabel.
+    This new version is now independent from the QToolButton.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/42'
+  title: BatteryDashWidget not showing coloured images
+  body: >
+    We use the BatteryDashWidget in both the create and kobuki dashboards. When
+    the battery is running low (below 50%), the widget should be showing orange
+    or red battery icons. However, only a slightly lighter grey image is shown.
+
+
+    I took a look at both the dashboard and the widget code, but couldn't find
+    an obvious bug. Any idea what is causing this?
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/39'
+  title: Python traceback when using runtime_monitor
+  body: >
+    I don't see anything breaking in the actual usage, nor could I figure out
+    what causes it, but it just looks like a typo?
+
+
+    ```
+
+    Traceback (most recent call last):
+      File "/opt/ros/hydro/lib/python2.7/dist-packages/rqt_runtime_monitor/runtime_monitor_widget.py", line 301, in _on_key_press
+        event.Skip()
+    AttributeError: 'QKeyEvent' object has no attribute 'Skip'
+
+    ```
+
+
+    It should probably be `event.skip()`?
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/38'
+  title: remove unit test data from the source repo
+  body: >
+    Test data files (which are more than some kB) do not belong into the source
+    repo (e.g.  bag files under rqt_robot_monitor/test). Please move them to an
+    external location (e.g. pr.willowgarage.com/download) and download them
+    using the functions provided by catkin. Also make sure to cleanly remove the
+    related commits from the Git history. Increasing the Git repo by 20 MB
+    forever is not acceptable.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/35'
+  title: 'rqt_robot_monitor: tree does not go stale when diagnostics stop'
+  body: >
+    When diagnostics are no longer published, the diagnostics tree that is
+    displayed should reflect this.
+
+
+    The old RX dashboard did this by graying out the dashboard panes if no
+    diagnostics were received within 10 seconds.
+
+
+    You can reproduce this behavior by playing back any bag file with
+    diagnostics data, and observing the dashboard behavior for 10-15 seconds
+    after the bag file finishes.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/34'
+  title: 'rqt_robot_monitor: inspection window scrolls on new data'
+  body: >
+    When inspecting the detailed information for a single diagnostics item, the
+    the window scrolls back to the top whenever new data it received.
+
+
+    This makes it very difficult to watch the status of diagnostics items that
+    don't fit in a single pane.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - Major
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/33'
+  title: 'rqt_robot_monitor: stale items left in tree'
+  body: >
+    If diagnostics are published for an item, and then later removed, it does
+    not disappear from the diagnostics window.
+
+
+    This happens for example on the PR2 at startup, where the calibration
+    controllers publish some diagnostics, and then are unloaded and stop
+    publishing diagnostics.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - Major
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/32'
+  title: 'rqt_robot_monitor: /diagnostics_agg should be a relative topic name'
+  body: >
+    The plugin is listening to /diagnostics_agg instead of the relative
+    diagnostics_agg.
+
+
+    This makes it unusable in case we want to push the rqt_gui into a namespace.
+
+
+    With the stand alone robot_monitor this could be circumvented by remapping
+    the topic to a namespaced version of itself, e.g.
+    /diagnostics_agg:=/rh/diagnostics_agg
+
+    But this is not possible with rqt_gui, as it filters out the remapping
+    arguments.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/27'
+  title: rqt_nav_view) save_settings not found although it's called
+  body: >
+    When shutdown the plugin the following error is printed:
+
+
+    ```
+
+    PluginHandlerDirect._restore_settings() plugin
+    "rqt_nav_view/NavigationView#1" raised an exception:
+
+    Traceback (most recent call last):
+      File "/home/ros_noodle/catkin_ws/src/qt_gui_core/qt_gui/src/qt_gui/plugin_handler_direct.py", line 116, in _restore_settings
+        self._plugin.restore_settings(plugin_settings_plugin, instance_settings_plugin)
+      File "/home/ros_noodle/catkin_ws/src/rqt_robot_plugins/rqt_nav_view/src/rqt_nav_view/nav_view_plugin.py", line 53, in restore_settings
+        self._widget.restore_settings(plugin_settings, instance_settings)
+    AttributeError: 'NavViewWidget' object has no attribute 'restore_settings'
+
+
+    PluginHandlerDirect._save_settings() plugin "rqt_nav_view/NavigationView#1"
+    raised an exception:
+
+    Traceback (most recent call last):
+      File "/home/ros_noodle/catkin_ws/src/qt_gui_core/qt_gui/src/qt_gui/plugin_handler_direct.py", line 106, in _save_settings
+        self._plugin.save_settings(plugin_settings_plugin, instance_settings_plugin)
+      File "/home/ros_noodle/catkin_ws/src/rqt_robot_plugins/rqt_nav_view/src/rqt_nav_view/nav_view_plugin.py", line 50, in save_settings
+        self._widget.save_settings(plugin_settings, instance_settings)
+    AttributeError: 'NavViewWidget' object has no attribute 'save_settings'
+
+    ```
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/issues/25'
+  title: >-
+    rqt_moveit) Monitoring parameter doesn't turn to "No" even after the params
+    are gone
+  body: |
+    It can be seen by re-booting rosmaster 
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_robot_plugins/pull/24'
+  title: >-
+    Merge hydro-devel (omit unavailable pkg due to dependent pkg isn't available
+    on buildfarm)
+  body: ''
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_robot_plugins'
+  labels: []

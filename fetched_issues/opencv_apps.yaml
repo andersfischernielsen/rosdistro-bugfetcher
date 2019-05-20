@@ -1,0 +1,17 @@
+- url: 'https://github.com/ros-perception/opencv_apps/pull/89'
+  title: make opencv_apps depend to OpenCV
+  body: "in CMakeLists.txt, this line is commented out.\r\ncc. @k-okada "
+  repo: 'https://api.github.com/repos/ros-perception/opencv_apps'
+  labels: []
+- url: 'https://github.com/ros-perception/opencv_apps/issues/44'
+  title: opencv3 is not used on travis even OPENCV_VERSION = 3
+  body: >
+    on debugging at https://github.com/ros-perception/opencv_apps/pull/41, I
+    noticed that errors from `opencv3` compatibility occur only on `kinetic`.
+
+    further investigated, and found that `rosinstall_generator` at `.travis.sh`
+    downloads only files of metapackages but not files of its dependencies.
+
+    https://github.com/ros-perception/opencv_apps/blob/indigo/.travis.sh#L59-L60
+  repo: 'https://api.github.com/repos/ros-perception/opencv_apps'
+  labels: []

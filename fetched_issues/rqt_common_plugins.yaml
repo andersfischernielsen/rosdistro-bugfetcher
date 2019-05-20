@@ -1,0 +1,513 @@
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/454'
+  title: Release into Melodic
+  body: >-
+    I'm sorry for the extremely short notice, but all of the dependencies of
+    this package are now available in Melodic.  Since I'd like to release
+    Melodic beta very soon, I'm going to go ahead and release for it; sorry for
+    the inconvenience.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/449'
+  title: add missing webkit dependency
+  body: 'Fixes #447.'
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/447'
+  title: >-
+    rqt_web doesn't declare dependency on python-pyqt5.qtwebkit / the PySide
+    equivalent
+  body: " Hello, rqt_web no longer works on Kinetic/Ubuntu 16.04. It must be related to moving to Qt5 in kinetic.\r\n\r\n```\r\nRosPluginProvider.load(rqt_web/Web) exception raised in __builtin__.__import__(rqt_web.web, [Web]):\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py\", line 80, in load\r\n    module = __builtin__.__import__(attributes['module_name'], fromlist=[attributes['class_from_class_type']], level=0)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_web/web.py\", line 35, in <module>\r\n    from rqt_web.web_widget import WebWidget\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_web/web_widget.py\", line 49, in <module>\r\n    from python_qt_binding.QtWebKit import QWebPage, QWebView\r\nImportError: No module named QtWebKit\r\n\r\nPluginManager._load_plugin() could not load plugin \"rqt_web/Web\":\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler.py\", line 99, in load\r\n    self._load()\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py\", line 54, in _load\r\n    self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py\", line 71, in load\r\n    instance = plugin_provider.load(plugin_id, plugin_context)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py\", line 86, in load\r\n    raise e\r\nImportError: No module named QtWebKit\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/445'
+  title: Add option to show system dependencies using rospack.get_rosdeps
+  body: Code modeled after hide_transitives
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - enhancement
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/443'
+  title: rqt_top/node_info.py
+  body: "In /opt/ros/kinetic/lib/python2.7/dist-packages/rqt_top/node_info.py is the line \"from xmlrpclib.socket import error\".  This causes an exception.\r\n\r\nI eliminated the exception by replacing that line with \"import xmlrpclib\" and \"error = xmlrpclib.socket.error\".  I am not confident that this is a good solution but it's working for me."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/437'
+  title: >-
+    rqt_image_view: image shrinks when resolution changes, or has wrong aspect
+    if '1' is enabled
+  body: "When the '1' button is disabled, the first image received will fill the available widget space properly, and a following image with a different resolution may work properly (I think depending on if the vertical resolution fills the widget or not), but a third image will be the same width or height as the previous image, and therefore be far smaller than available space, and each following image which changes resolution will also choose the wrong width or height to match which continues to shrink the image.\r\n\r\nThis continues until some minimal size has been reached, after that the aspect ratio no longer changes, the image is updated in the aspect ratio of that minimal size.\r\n\r\n```\r\n#!/usr/bin/env python\r\n\r\nimport cv2\r\nimport numpy as np\r\nimport rospy\r\n\r\nfrom sensor_msgs.msg import Image\r\n\r\n\r\nclass AlternateImage:\r\n    def __init__(self):\r\n        self.pub = rospy.Publisher(\"image\", Image, queue_size=4)\r\n\r\n        self.height = 1024\r\n        self.width = 768\r\n        self.channels = 3\r\n\r\n        image1 = np.zeros((self.height, self.width, self.channels), np.uint8)\r\n        msg1 = Image()\r\n        msg1.encoding = \"bgr8\"\r\n        msg1.height = self.height\r\n        msg1.width = self.width\r\n        msg1.step = self.width * self.channels\r\n        msg1.data = image1.tostring()\r\n\r\n        image2 = np.ones((self.width, self.height, self.channels), np.uint8) * 255\r\n        msg2 = Image()\r\n        msg2.encoding = \"bgr8\"\r\n        msg2.height = self.width\r\n        msg2.width = self.height\r\n        msg2.step = self.height * self.channels\r\n        msg2.data = image2.tostring()\r\n\r\n        while not rospy.is_shutdown():\r\n            msg1.header.stamp = rospy.Time.now()\r\n            self.pub.publish(msg1)\r\n            rospy.sleep(1.0)\r\n            msg2.header.stamp = rospy.Time.now()\r\n            self.pub.publish(msg2)\r\n            rospy.sleep(1.0)\r\n\r\nif __name__ == '__main__':\r\n    rospy.init_node(\"alternate_image\")\r\n    alternate_image = AlternateImage()\r\n\r\n```\r\n\r\nResizing the rqt window causes the image to be properly sized.\r\n\r\nIf the '1' button is enabled, then the first image received will define the aspect ratio, then following images will conform to that aspect ratio wrongly, but the images continue to fill the widget.\r\n\r\nI tried this with the latest master branch code, looks to behave the same as the Jade release version."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/432'
+  title: rqt_topic crashes
+  body: "how to reproduce:\r\n1. rosrun rqt_topic rqt_topic\r\n2. select a topic\r\n\r\nthis gives an error:\r\n```\r\n[ERROR] [1487596624.452584, 40.374000]: bad callback: <bound method TopicInfo.message_callback of <rqt_topic.topic_info.TopicInfo object at 0x7f94480baed0>>\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/topics.py\", line 720, in _invoke_callback\r\n    cb(msg)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_topic/topic_info.py\", line 100, in message_callback\r\n    self.sizes.append(buff.len)\r\nAttributeError: 'cStringIO.StringO' object has no attribute 'len'\r\n```"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/426'
+  title: '[fix][rqt_bag_plugins] ''image_helper'' is not defined" error.'
+  body: "Similar to https://github.com/ros-visualization/rqt_common_plugins/issues/424, without this PR I get the following error when I click `Toggle Thumbnail` button after loading a `.bag` file that contains image topics.\r\n\r\n```\r\n$ rqt&\r\n$ Loading /home/rosnoodle/Desktop/2017-01-30-15-03-19.bag\r\nDone loading /home/rosnoodele/Desktop/2017-01-30-15-03-19.bag\r\nError loading image on topic /camera/image_raw: global name 'image_helper' is not defined\r\nDisabling renderer on /camera/image_raw\r\n\r\n$ rospack find rqt_bag\r\n/home/rosnoodele/cws_viz/src/ros-visualization/rqt_common_plugins/rqt_bag\r\n$ roscd rqt_bag\r\n$ git log\r\ncommit 2c2487a02c83628a14be7bde318d20249167ffdb\r\nAuthor: Dirk Thomas <dthomas@osrfoundation.org>\r\nDate:   Tue Jan 31 12:35:55 2017 -0800\r\n\r\n    fix bag_helper import\r\n:\r\n```\r\n\r\n(For testing I used [this bag file](http://opensource-robotics.tokyo.jp/ar_track_alvar_4markers_tork_2017-01-30-15-03-19.bag) that contains images (500+MB though, and URL will likely change soon)."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/424'
+  title: '"use Python 3 compatible syntax" breaks build'
+  body: "Trying to run rqt_bag with Python2 gave the following error (sanitized console output for brevity):\r\n> $ rqt_bag\r\n> Loading input.bag\r\n> Traceback (most recent call last):\r\n> ...\r\n>   File \".../lib/python2.7/dist-packages/rqt_bag/bag_timeline.py\", line 152, in add_bag\r\n>     bag_topics = bag_helper.get_topics(bag)\r\n> NameError: global name 'bag_helper' is not defined\r\n> \r\n\r\n`import rqt_bag.bag_helper`\r\nshould be\r\n`from rqt_bag import bag_helper`\r\nin order to refer to the function on its own.  This applies throughout."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/422'
+  title: rqt_launch crashes on ros kinetic
+  body: "Hi,\r\n\r\nI get the following error when launching rqt_launch in conjunction with ros kinetic:\r\n\r\n```\r\n~$ rqt --standalone rqt_launch\r\n[INFO] [1485795137.664887]: LaunchWidget master_uri=http://172.24.1.1:11311\r\n/usr/lib/python2.7/threading.py:1151: RuntimeWarning: tp_compare didn't return -1 or -2 for exception\r\n  return _active[_get_ident()]\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_launch/launch_widget.py\", line 138, in _load_launchfile_slot\r\n    self._create_widgets_for_launchfile(_config)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_launch/launch_widget.py\", line 184, in _create_widgets_for_launchfile\r\n    proxy = NodeProxy(self._run_id, self._config.master.uri, node)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_launch/node_proxy.py\", line 69, in __init__\r\n    self._process = self.recreate_process()\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_launch/node_proxy.py\", line 97, in recreate_process\r\n    self._run_id, self.config, self.master_uri)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/roslaunch/nodeprocess.py\", line 116, in create_node_process\r\n    _logger.info(\"create_node_process: package[%s] type[%s] machine[%s] master_uri[%s]\", node.package, node.type, node.machine, master_uri)\r\n  File \"/usr/lib/python2.7/logging/__init__.py\", line 1167, in info\r\n    self._log(INFO, msg, args, **kwargs)\r\n  File \"/usr/lib/python2.7/logging/__init__.py\", line 1285, in _log\r\n    record = self.makeRecord(self.name, level, fn, lno, msg, args, exc_info, func, extra)\r\n  File \"/usr/lib/python2.7/logging/__init__.py\", line 1259, in makeRecord\r\n    rv = LogRecord(name, level, fn, lno, msg, args, exc_info, func)\r\n  File \"/usr/lib/python2.7/logging/__init__.py\", line 285, in __init__\r\n    self.threadName = threading.current_thread().name\r\n  File \"/usr/lib/python2.7/threading.py\", line 1151, in currentThread\r\n    return _active[_get_ident()]\r\nTypeError: cannot create weak reference to 'NodeController' object\r\n```\r\n\r\n[rqt-crash.txt](https://github.com/ros-visualization/rqt_common_plugins/files/739632/rqt-crash.txt)\r\n\r\nRunning the plugin within rqt produces the same result.\r\nAny ideas how i can get rqt_launch to work?\r\n\r\nKind regards\r\n"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/414'
+  title: 'rqt_console: TypeError signal has 2 argument(s) but 3 provided'
+  body: "This week I started getting the following error when starting rqt_console on Indigo:\r\n\r\n    TypeError: QAbstractItemModel.dataChanged[QModelIndex, QModelIndex] signal has 2 argument(s) but 3 provided\r\n    Traceback (most recent call last):\r\n      File \"/opt/ros/indigo/lib/python2.7/dist-packages/rqt_console/message_proxy_model.py\", line 118, in handle_highlight_filters_changed\r\n        self.dataChanged.emit(self.index(0, 0), self.index(self.rowCount() - 1, self.columnCount() - 1), [])\r\n\r\nThe console doesn't work at all due to this error."
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/409'
+  title: '[rqt_console] add missing dependency on rqt_py_common'
+  body: 'Fixes #408.'
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/408'
+  title: Add rqt_common_plugins as runtime dependency for rqt_console
+  body: "If I don't have the `rqt-common-plugins` packages installed in the system the rqt_console invocation failed with:\r\n\r\n```\r\nRosPluginProvider.load(rqt_console/Console) exception raised in __builtin__.__import__(rqt_console.console, [Console]):\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py\", line 77, in load\r\n    module = __builtin__.__import__(attributes['module_name'], fromlist=[attributes['class_from_class_type']], level=0)\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_console/console.py\", line 42, in <module>\r\n    from .console_widget import ConsoleWidget\r\n  File \"/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_console/console_widget.py\", line 43, in <module>\r\n    from rqt_py_common.ini_helper import pack, unpack\r\nImportError: No module named rqt_py_common.ini_helper\r\n```\r\n\r\nSeem like the code is using it, at least in the [console_widget](https://github.com/ros-visualization/rqt_common_plugins/blob/master/rqt_console/src/rqt_console/console_widget.py#L43)"
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/402'
+  title: rqt_plot topic syntax is ambiguous "Invalid topic spec"
+  body: >
+    rqt_plot uses slashes to specify the value in a published message that
+    should be plotted. This syntax leads to the error "PlotWidget.update_plot():
+    error in rosplot: Invalid topic spec [...]" in cases like the following
+
+
+    To reproduce
+
+    1. save the following as simple_pub.py and make it executable with chmod
+       
+       ```
+       #!/usr/bin/env python
+       
+       import rospy
+       import std_msgs
+       import sys
+       import random
+       rospy.init_node("simple_pub", anonymous=True)
+       pub = rospy.Publisher(sys.argv[1], std_msgs.msg.Float32, queue_size=10)
+       r = rospy.Rate(10)
+       while not rospy.is_shutdown():
+           r.sleep()
+           msg = std_msgs.msg.Float32()
+           msg.data = random.random()
+           pub.publish(msg)
+       ```
+    2. open 4 terminals, one with each command
+       - roscore
+       - ./simple_pub.py imu/data
+       - ./simple_pub.py imu/data/processed
+       - rqt_plot
+    3. Type the following into the topic box and press the green + to add them
+    to the plot
+       1. /imu/data/data
+       2. /imu/data/processed/data
+    4. rqt_plot will correctly plot the first topic, /imu/data/data. The second
+    topic will not be plotted, and the terminal from which rqt_plot was started
+    will spam
+       
+       ```
+       PlotWidget.update_plot(): error in rosplot: Invalid topic spec [/imu/data/processed/data]: 'Float32' object has no attribute 'processed'
+       ```
+
+    This can be fixed by changing the character used to separate message fields.
+    I think the ':' character is a good choice
+
+    - /imu/data:data
+
+    - /imu/data/processed:data
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/396'
+  title: 'rqt_plot: add missing dependency on numpy'
+  body: |
+    Fix regression of #239.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/394'
+  title: 'ImportError: No module named numpy'
+  body: >
+    Hello everyone! I have the next trouble:
+
+    when I run rqt_bag bag-file
+
+    I get the next error:
+
+    RosPluginProvider.load(rqt_bag_plugins/BagPlotPlugin) exception raised in
+    **builtin**.**import**(rqt_bag_plugins.plot_plugin, [PlotPlugin]):
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 77, in load
+        module = **builtin**.**import**(attributes['module_name'], fromlist=[attributes['class_from_class_type']], level=0)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag_plugins/plot_plugin.py", line 35, in <module>
+        from .plot_view import PlotView
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag_plugins/plot_view.py", line 77, in <module>
+        from rqt_plot.data_plot import DataPlot
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_plot/data_plot/**init**.py", line 34, in <module>
+        import numpy
+    ImportError: No module named numpy
+
+
+    How can I fix it? I tried pip install numpy but no luck. Any help!
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/393'
+  title: rqt_graph dot_to_qt raises an exception
+  body: >
+    I get the following error with ROS indigo version 1.11.20, pydot version
+    1.2.2 and rqt_graph version 0.3.13 (according to the package.xml) when
+    launching rqt_graph (just roscore running):
+
+
+    > PluginHandlerDirect._restore_settings() plugin "rqt_graph/RosGraph#0"
+    raised an exception:
+
+    > Traceback (most recent call last):
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/qt_gui/plugin_handler_direct.py",
+    line 116, in _restore_settings
+
+    >     self._plugin.restore_settings(plugin_settings_plugin,
+    instance_settings_plugin)
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/rqt_graph/ros_graph.py", line
+    202, in restore_settings
+
+    >     self._refresh_rosgraph()
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/rqt_graph/ros_graph.py", line
+    226, in _refresh_rosgraph
+
+    >     self._update_graph_view(self._generate_dotcode())
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/rqt_graph/ros_graph.py", line
+    259, in _update_graph_view
+
+    >     self._redraw_graph_view()
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/rqt_graph/ros_graph.py", line
+    292, in _redraw_graph_view
+
+    >     same_label_siblings=True)
+
+    >   File
+    "/opt/ros/indigo/lib/python2.7/site-packages/qt_dotgraph/dot_to_qt.py", line
+    254, in dotcode_to_qt_items
+
+    >     graph.nodes_iter = graph.get_node_list
+
+    > AttributeError: 'list' object has no attribute 'get_node_list'
+
+
+    However, when downgrading to pydot version 1.0.29 rqt_graph works fine. I'm
+    guessing this might just be a dependency issue, but I'm posting it here just
+    in case something needs to be updated according to pydot.
+
+
+    See also
+    http://answers.ros.org/question/239274/rqt_graph-rqt_tf_tree-issue-ros-indigo/
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/380'
+  title: 'rqt_bag:thumbnail toggle causes crash'
+  body: >
+    ```
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/timeline_frame.py", line 280, in paint
+        self._draw_topic_histories(painter)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/timeline_frame.py", line 384, in _draw_topic_histories
+        self._draw_topic_history(painter, topic)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag/timeline_frame.py", line 464, in _draw_topic_history
+        renderer.draw_timeline_segment(painter, topic, stamp_start, stamp_end, region_x_start, msg_y, region_width, msg_height)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_bag_plugins/image_timeline_renderer.py", line 130, in draw_timeline_segment
+        painter.setPen(QPen(QBrush(Qt.black)))
+    TypeError: QPen(): argument 1 has unexpected type 'QBrush'
+
+    ```
+
+
+    Toggling the thumbnails in rqt_bag causes a crash in
+    image_timeline_renderer.py.
+
+    Seems like the constructor of `Qt.black` should have `Qt.black` and not
+    `QBrush(Qt.black)`.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - bug
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/377'
+  title: Generic UI plugin for rqt?
+  body: >
+    Hello all,
+
+
+    I have opened this issue to do some brainstorming before start implementing
+    a new plugin.
+
+
+    Problem: I often find manipulating/monitoring topics with the Topic monitor
+    and the Message publisher plugin no so intuitive. For e.g. when adjusting
+    something servo driven mechanical structure using a knob widget is more easy
+    and straightforward than typing in a number to the Message publisher. Also
+    visualizing a position of something sometimes more handful with a
+    dial/slider. Building a separate plugin each time is a little bit
+    problematic.
+
+
+    Proposal: I would like to create a plugin which would have a file browse
+    input and an interval spinbox (ms). I think the Qt Designer is a pretty good
+    tool to create user interfaces pretty quickly. The plugin would be able to
+    load the designed ui files. The Qt has a QUiLoader class to acheieve this
+    functionality:http://doc.qt.io/qt-4.8/quiloader.html In Qt designer it is
+    possible to add further properties to the widgets. There would be two
+    dedicated property names: the publish_topic and the subscribe_topic. The
+    widget tree would be traversed by recursively iterating through the
+    children() method and if one of these properties found the widget would be
+    connected to ros through the proper signals/slots. The proper slots/signals
+    are dependent on the widget class, so some QMetaObject magic will be
+    required, but it can be implemented.
+
+
+    If you have any ideas recommendations please let me know!
+
+
+    Thanks in advance! 
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/374'
+  title: rqt_graph missing svg module in kinetic/Kenial
+  body: |
+    May want to add/list python-pyqt5.qtsvg as a dependency
+
+    Synopsis:
+    # Missing dependency for rqt_graph (and friends)
+
+    > rosrun rqt_graph rqt_graph
+    > # ImportError: No module named QtSvg
+
+    Solution:
+
+    > apt-get install python-pyqt5.qtsvg
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - duplicate
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/373'
+  title: >-
+    rqt_graph fails to launch on jessie due to missing dependency on
+    python-pyqt5.qtsvg
+  body: >
+    I suspect that this should be fixed in one of the dependencies such as
+    rqt_gui, python_qt_bindings or qt_gui but I'm not sure where is the correct
+    place. Or maybe a rosdep rule just needs to be extended. 
+
+
+    Traceback: 
+
+
+    ```
+
+    linaro@linaro-alip:~$ rqt_graph 
+
+    RosPluginProvider.load(rqt_graph/RosGraph) exception raised in
+    __builtin__.__import__(rqt_graph.ros_graph, [RosGraph]):
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 77, in load
+        module = __builtin__.__import__(attributes['module_name'], fromlist=[attributes['class_from_class_type']], level=0)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_graph/ros_graph.py", line 39, in <module>
+        from python_qt_binding.QtSvg import QSvgGenerator
+    ImportError: No module named QtSvg
+
+
+    PluginManager._load_plugin() could not load plugin "rqt_graph/RosGraph":
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler.py", line 99, in load
+        self._load()
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 54, in _load
+        self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui_py/ros_py_plugin_provider.py", line 60, in load
+        return super(RosPyPluginProvider, self).load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 83, in load
+        raise e
+    ImportError: No module named QtSvg
+
+
+    ```
+
+
+    Installing `python-pyqt5.qtsvg` lets it run w/o error.  
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/371'
+  title: rqt_image_view needs build depends on qtbase5-dev
+  body: >
+    This is the same problem as
+    https://github.com/ros-visualization/rqt_robot_plugins/issues/102 breaking
+    the build on debian jessie. 
+
+
+    http://build.ros.org:8080/view/Kbin_dJ64/job/Kbin_dJ64__rqt_image_view__debian_jessie_amd64__binary/9/consoleFull
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/367'
+  title: '[qt5] rqt_graph on xenial: "cannot import name QGraphicsPathItem"'
+  body: >
+    I'm trying to set up a new machine running Ubuntu Xenial and ROS kinetic.
+    Because `rqt_common_plugins` isn't available in the repos yet, I cloned the
+    `qt5` branch, installed a lot of dependencies, `catkin_make install`, `.
+    install/setup.sh` and that works now.
+
+
+    But when running `rosrun rqt_graph rqt_graph` I get this nice error message:
+
+
+    ```
+
+    Could not initialize OpenGL for RasterGLSurface, reverting to RasterSurface.
+
+    RosPluginProvider.load(rqt_graph/RosGraph) exception raised in
+    __builtin__.__import__(rqt_graph.ros_graph, [RosGraph]):
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 77, in load
+        module = __builtin__.__import__(attributes['module_name'], fromlist=[attributes['class_from_class_type']], level=0)
+      File "/home/neopostmodern/University/6/Robotics/rqt_common_plugins/install/lib/python2.7/dist-packages/rqt_graph/ros_graph.py", line 45, in <module>
+        from qt_dotgraph.dot_to_qt import DotToQtGenerator
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_dotgraph/dot_to_qt.py", line 41, in <module>
+        from .edge_item import EdgeItem
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_dotgraph/edge_item.py", line 32, in <module>
+        from python_qt_binding.QtGui import QBrush, QGraphicsPathItem, QGraphicsPolygonItem, QGraphicsSimpleTextItem, QPainterPath, QPen, QPolygonF
+    ImportError: cannot import name QGraphicsPathItem
+
+
+    PluginManager._load_plugin() could not load plugin "rqt_graph/RosGraph":
+
+    Traceback (most recent call last):
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler.py", line 99, in load
+        self._load()
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/plugin_handler_direct.py", line 54, in _load
+        self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui_py/ros_py_plugin_provider.py", line 60, in load
+        return super(RosPyPluginProvider, self).load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/qt_gui/composite_plugin_provider.py", line 71, in load
+        instance = plugin_provider.load(plugin_id, plugin_context)
+      File "/opt/ros/kinetic/lib/python2.7/dist-packages/rqt_gui/ros_plugin_provider.py", line 83, in load
+        raise e
+    ImportError: cannot import name QGraphicsPathItem
+
+    ```
+
+
+    (This is specific to `qt_graph`. I ran `rqt_topic` and some other packages
+    without issues.)
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/363'
+  title: rqt_bag error on kinetic
+  body: |
+    ``` bash
+    $ rqt_bag
+    Traceback (most recent call last):
+      File "/home/jgoppert/git/catkin/devel/bin/rqt_bag", line 6, in <module>
+        exec(fh.read())
+      File "<string>", line 5, in <module>
+      File "/home/jgoppert/git/catkin/devel/lib/python2.7/dist-packages/rqt_bag/__init__.py", line 35, in <module>
+        exec(__fh.read())
+      File "<string>", line 35, in <module>
+      File "/home/jgoppert/git/catkin/src/rqt_common_plugins/rqt_bag/src/rqt_bag/plugins/topic_message_view.py", line 34, in <module>
+        from python_qt_binding.QtGui import QAction, QIcon, QToolBar
+    ImportError: cannot import name QAction
+    ```
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/359'
+  title: additionally support Qt5
+  body: >
+    With these patches the same code base can satisfy both of the following use
+    cases (with only minimal `try / except` logic:
+
+    - continue to work with Qt 4 (in Indigo and Jade) relying on the forward
+    compatibility provided by:
+      - ros-visualization/python_qt_binding#31
+    - support Qt 5 (in Kinetic) using these changes:
+      - ros-visualization/python_qt_binding#30
+      - ros-visualization/qt_gui_core#64
+      - ros-visualization/rqt#106
+
+    The version dependency on `python_qt_binding` ensures that the packages
+    which use `QtWidgets` are getting the changes from
+    ros-visualization/python_qt_binding#31.
+
+
+    This is required for a release into Kinetic.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/pull/358'
+  title: check alternative matplotplot 1.5 module name
+  body: >
+    Replaces #343.
+
+
+    It uses a more defensive approach in case users are using an older version
+    which doesn't have the new import.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels: []
+- url: 'https://github.com/ros-visualization/rqt_common_plugins/issues/356'
+  title: 'rqt_dep: display package info from different distro?'
+  body: >
+    We are approaching releasing season for ROS K, and a common question is
+    which packages are blocking the release of other packages. The `rqt_dep`
+    tool is great for visualizing package dependencies. It would be great if we
+    could use this tool to visualize which packages have been released into a
+    new ROS distro, to identify the blockages.
+
+
+    In discussing this in the past, a known complicating factor is that
+    dependencies may change from one ROS distro to the next, so this can be an
+    ill-posed problem in some cases.
+
+
+    Most of the time, though, the dependencies don't change from one distro to
+    the next. As a first step, I would load `rqt_dep` with the most recently
+    released ROS distro (jade at the moment) and would like to select another
+    distro from a drop-down combo-box and then colorize the graph.
+
+
+    Any hints are welcome.
+  repo: 'https://api.github.com/repos/ros-visualization/rqt_common_plugins'
+  labels:
+    - enhancement

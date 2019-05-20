@@ -1,0 +1,15 @@
+- url: 'https://github.com/astuff/network_interface/issues/21'
+  title: Replace Boost.Asio with Asio
+  body: >-
+    Asio is available as a standalone, header only implementation. This removes
+    the dependency on Boost and is easier to use cross-platform.
+  repo: 'https://api.github.com/repos/astuff/network_interface'
+  labels:
+    - enhancement
+- url: 'https://github.com/astuff/network_interface/issues/2'
+  title: Need To Implement Timeouts
+  body: >-
+    Implement timeouts (most importantly for TCP) in support of Ibeo Lux driver.
+    This will allow a much smaller loop rate.
+  repo: 'https://api.github.com/repos/astuff/network_interface'
+  labels: []

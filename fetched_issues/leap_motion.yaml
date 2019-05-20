@@ -1,0 +1,82 @@
+- url: 'https://github.com/ros-drivers/leap_motion/issues/47'
+  title: sudo apt-get install ros-kinetic-leap-motion does not include config folder
+  body: "I just installed this package from command line, and encountered the following error:\r\n\r\n```\r\nerror loading <rosparam> tag: \r\n\tfile does not exist [/opt/ros/kinetic/share/leap_motion/config/listener_params.yaml]\r\nXML is <rosparam command=\"load\" file=\"$(find leap_motion)/config/listener_params.yaml\"/>\r\nThe traceback for the exception was written to the log file\r\n```\r\n\r\nI checked my /opt/ros/kinetic/share/leap_motion path, and saw there was no config folder there, but there is one if you install from source.\r\n\r\nJust a heads up"
+  repo: 'https://api.github.com/repos/ros-drivers/leap_motion'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/leap_motion/pull/26'
+  title: Add a dependency of the driver library Leap-2*.deb
+  body: >
+    Looks like the manufacturer's driver `Leap-2.2.5+23475-x64.deb` depends on
+    `libgl1-mesa-glx-lts` (and also on other packages that are transitively
+    depended). I thought it's friendlier for ROS driver to re-iterate this
+    dependency so that users won't miss these dependencies, despite redundancy.
+
+
+    ```
+
+    $ dpkg -I Leap-2.2.5+26752-x64.deb 
+     new debian package, version 2.0.
+     size 78297358 bytes: control archive=4261 bytes.
+         568 bytes,    10 lines      control              
+        7034 bytes,    97 lines      md5sums              
+        2216 bytes,    50 lines   *  postinst             #!/bin/bash
+         459 bytes,    15 lines   *  postrm               #!/bin/bash
+         112 bytes,     4 lines   *  prerm                #!/bin/bash
+     Package: leap
+     Version: 2.2.5+26752
+     Section: Utilities
+     Priority: optional
+     Architecture: amd64
+     Depends: libc6 (>= 2.15-0), libgl1-mesa-glx (>= 7.7.1) | libgl1-mesa-glx-lts-precise (>= 7.7.1) | libgl1-mesa-glx-lts-quantal (>= 7.7.1) | libgl1-mesa-glx-lts-raring (>= 7.7.1) | libgl1-mesa-glx-lts-saucy (>= 7.7.1) | libgl1-mesa-glx-lts-trusty (>= 7.7.1), libglu1-mesa (>= 7.7.1), libxi6 (>= 2:1.3-3), libxxf86vm1 (>= 1:1.1.0-2), libdbus-1-3 (>= 1.0.2)
+     Installed-Size: 246004
+     Maintainer: Leap Motion Support <support@leapmotion.com>
+     Description: Leap Motion Debian package
+    ```
+
+
+    This requires https://github.com/ros/rosdistro/pull/10277 to be merged.
+  repo: 'https://api.github.com/repos/ros-drivers/leap_motion'
+  labels: []
+- url: 'https://github.com/ros-drivers/leap_motion/issues/7'
+  title: 0.0.6 fails to build locally and on buildfarm
+  body: >
+    http://jenkins.ros.org/job/devel-hydro-leap_motion/ARCH_PARAM=amd64,UBUNTU_PARAM=precise,label=devel/1/console
+
+
+    ```
+
+    Scanning dependencies of target leap_camera
+
+    [ 11%] Building CXX object
+    leap_motion/CMakeFiles/leap_camera.dir/src/leap_camera.cpp.o
+
+    /tmp/test_repositories/src_repository/leap_motion/src/leap_camera.cpp:3:18:
+    fatal error: Leap.h: No such file or directory
+
+    compilation terminated.
+
+    make[2]: *** [leap_motion/CMakeFiles/leap_camera.dir/src/leap_camera.cpp.o]
+    Error 1
+
+    make[1]: *** [leap_motion/CMakeFiles/leap_camera.dir/all] Error 2
+
+    make: *** [all] Error 2
+
+    /
+
+    ```
+
+
+    I didn't realize upon https://github.com/ros-drivers/leap_motion/pull/3 that
+    depends on LeapMotion SDK and the environment variable.
+  repo: 'https://api.github.com/repos/ros-drivers/leap_motion'
+  labels:
+    - bug
+- url: 'https://github.com/ros-drivers/leap_motion/pull/5'
+  title: Typo in dependency
+  body: |
+    x camera_info_maneger
+    o camera_info_manager
+  repo: 'https://api.github.com/repos/ros-drivers/leap_motion'
+  labels: []

@@ -1,0 +1,35 @@
+- url: 'https://github.com/ros/urdf_tutorial/issues/35'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are available in Melodic now, can
+    we please get this released there?  Thanks in advance.
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []
+- url: 'https://github.com/ros/urdf_tutorial/issues/24'
+  title: dependency on gazebo_ros
+  body: "While installing `ros-lunar-desktop` I was surprised to see it needing to pull in `ros-lunar-gazebo-ros` and therefore `libgazebo8`. These are being pulled in by this repository (only this one AFAICT).\r\n\r\nFrom my perspective, the difference in \"desktop\" and \"desktop-full\" is that \"desktop\" has less dependencies, avoiding things like Stage, Gazebo, PCL, etc... This is particularly important on systems like macOS where building gazebo and PCL and stuff can be an undesired time sync.\r\n\r\nSo I'd propose that we either move these tutorials to \"desktop-full\" or split out the part of the tutorials that depend on `gazebo_ros` and `gazebo_ros_control`. I think those parts are useful and I would like to see them in at least \"desktop-full\", but I also would like to see a slightly slimmer set of dependencies for just plain \"desktop\".\r\n\r\nAnyone have an opinion on what direction to take, or maybe other ideas for how to accomplish this?\r\n\r\n@mikaelarguedas\r\n\r\n----\r\n\r\nOne other use case I'll put forward for why this is important is that if Gazebo7 (used in Kinetic) and Gazebo8 (used in Lunar) cannot be installed at the same time (still working out if that is intended to be the case) then on a system with `ros-kinetic-desktop-full` (or more) installed cannot also install `ros-lunar-desktop` at the same time. That's really unfortunate from my perspective. I'd love to see `ros-kinetic-desktop-full` and `ros-lunar-desktop-full` side by side, but at least if desktop did not include a dependency on `gazebo_ros` it would enable the other case I described for now."
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []
+- url: 'https://github.com/ros/urdf_tutorial/issues/23'
+  title: Update urdf_tutorial to not depend on pr2_common repository
+  body: '@wjwwood FYI: opening this as discussed offline'
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []
+- url: 'https://github.com/ros/urdf_tutorial/pull/20'
+  title: Adds missing dependency on gazebo_ros_control.
+  body: ''
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []
+- url: 'https://github.com/ros/urdf_tutorial/pull/17'
+  title: 'add roslaunch to build dependencies, since it is required in cmakelist'
+  body: |
+    fix #16
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []
+- url: 'https://github.com/ros/urdf_tutorial/issues/16'
+  title: missing roslaunch dependency
+  body: >
+    I believe since CMakeLists.txt find_packages roslaunch, it should be listed
+    in package.xml as build_depend
+  repo: 'https://api.github.com/repos/ros/urdf_tutorial'
+  labels: []

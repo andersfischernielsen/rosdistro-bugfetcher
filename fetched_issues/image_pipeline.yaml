@@ -1,0 +1,61 @@
+- url: 'https://github.com/ros-perception/image_pipeline/issues/383'
+  title: image_publisher crashes with OpenCV 4
+  body: "```\r\n____________________________________________________________________________________________________________________________________\r\nErrors     << image_publisher:make /Users/kshitijgoel/software/ros-install-osx/melodic_desktop_full_ws/logs/image_publisher/build.make.002.log\r\n/Users/kshitijgoel/software/ros-install-osx/melodic_desktop_full_ws/src/image_pipeline/image_publisher/src/nodelet/image_publisher_nodelet.cpp:97:20: error: use of undeclared identifier 'CV_CAP_PROP_POS_FRAMES'; did you mean 'cv::CAP_PROP_POS_FRAMES'?\r\n          cap_.set(CV_CAP_PROP_POS_FRAMES, 0);\r\n                   ^~~~~~~~~~~~~~~~~~~~~~\r\n                   cv::CAP_PROP_POS_FRAMES\r\n/usr/local/include/opencv4/opencv2/videoio.hpp:132:8: note: 'cv::CAP_PROP_POS_FRAMES' declared here\r\n       CAP_PROP_POS_FRAMES     =1, //!< 0-based index of the frame to be decoded/captured next.\r\n       ^\r\n/Users/kshitijgoel/software/ros-install-osx/melodic_desktop_full_ws/src/image_pipeline/image_publisher/src/nodelet/image_publisher_nodelet.cpp:138:38: error: use of undeclared identifier 'CV_LOAD_IMAGE_COLOR'\r\n      image_ = cv::imread(filename_, CV_LOAD_IMAGE_COLOR);\r\n                                     ^\r\n/Users/kshitijgoel/software/ros-install-osx/melodic_desktop_full_ws/src/image_pipeline/image_publisher/src/nodelet/image_publisher_nodelet.cpp:148:18: error: use of undeclared identifier 'CV_CAP_PROP_POS_FRAMES'; did you mean 'cv::CAP_PROP_POS_FRAMES'?\r\n        cap_.set(CV_CAP_PROP_POS_FRAMES, 0);\r\n                 ^~~~~~~~~~~~~~~~~~~~~~\r\n                 cv::CAP_PROP_POS_FRAMES\r\n/usr/local/include/opencv4/opencv2/videoio.hpp:132:8: note: 'cv::CAP_PROP_POS_FRAMES' declared here\r\n       CAP_PROP_POS_FRAMES     =1, //!< 0-based index of the frame to be decoded/captured next.\r\n       ^\r\n3 errors generated.\r\nmake[2]: *** [CMakeFiles/image_publisher.dir/src/nodelet/image_publisher_nodelet.cpp.o] Error 1\r\nmake[1]: *** [CMakeFiles/image_publisher.dir/all] Error 2\r\nmake: *** [all] Error 2\r\ncd /Users/kshitijgoel/software/ros-install-osx/melodic_desktop_full_ws/build/image_publisher; catkin build --get-env image_publisher | catkin env -si  /usr/bin/make --jobserver-fds=6,7 -j; cd -\r\n```\r\n\r\nOS : MacOS Mojave\r\nROS Melodic"
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []
+- url: 'https://github.com/ros-perception/image_pipeline/issues/370'
+  title: ros2 bloom release
+  body: >-
+    @mjcarroll  As image_common be released in [crystal
+    rosdistro](https://github.com/ros2/rosdistro/pull/376)  ,  there should be
+    no dependence block for ros2 image_pipeline/image_depth_proc release. I
+    would also like to add image_depth_proc from image_pipeline in this Crystal
+    release, but I cannot to run bloom-release for this package, sync I have no
+    permission to create a tag on image_pipeline project. Will you please help
+    to maintain this package's releasing? 
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []
+- url: 'https://github.com/ros-perception/image_pipeline/issues/360'
+  title: Port Image_pipeline on ROS2
+  body: "If no one started porting image_pipeline on ROS2, I would like to do it in following weeks.\r\n\r\nPorting task lists:\r\n\r\n- [x] [depth_image_proc] - **Merged (PR: #362)**\r\n- [x] [image_publisher] - **Merged(PR: #366 )**\r\n- [ ] [image_proc] - **in review(PR: #369)**\r\n- [ ] [image_view] - **in review(PR: #374)**\r\n- [x] [image_rotate] -  **Merged(PR:https://github.com/ros-perception/image_pipeline/pull/385)**\r\n- [ ] [stereo_image_proc] - start, depends on image_proc\r\n- [ ] [camera_calibration] - **in review (PR: #376)**\r\n"
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels:
+    - ros2
+- url: 'https://github.com/ros-perception/image_pipeline/pull/349'
+  title: >-
+    [stereo_image_proc] Removed disparity pre-adjustment (cx_l - cx_r
+    subtraction).
+  body: "First of all, this change has no effect if the two cameras are parallel (cx_l == cx_r).\r\n**The following description is for the case that they are verged (cx_l != cx_r).**\r\n\r\nhttps://github.com/ros/common_msgs/blob/42e6a7d87f6bdf17c6dce5f7fe9456ceedc014b8/stereo_msgs/msg/DisparityImage.msg#L5-L8\r\nsays that\r\n  \\# Floating point disparity image. The disparities are pre-adjusted for any\r\n  \\# x-offset between the principal points of the two cameras (in the case\r\n  \\# that they are verged). That is: d = x_l - x_r - (cx_l - cx_r)\r\n, but with this pre-adjustment we get incorrect depth (Z) values.\r\n\r\nIt should be not '_d = x_l - x_r - (cx_l - cx_r)_' but '**d = x_l - x_r**'.\r\n\r\nFor example, PointCloud2Nodelet calculates point cloud using these pre-adjusted disparities\r\n(\r\nhttps://github.com/ros-perception/image_pipeline/blob/8d01c930e66bdeb58c4b138539a64ddea0b17e10/stereo_image_proc/src/nodelets/point_cloud2.cpp#L170\r\nhttps://github.com/ros-perception/vision_opencv/blob/a3736d24554166142981fa2bcf3d7d3c6e3ce366/image_geometry/src/stereo_camera_model.cpp#L132-L138\r\n),\r\nbut `cv::reprojectImageTo3D()` uses Q_ matrix and Q_ includes cx_l and cx_r information!\r\nSo if we pre-adjust disparities, we get incorrect depth values.\r\n\r\nSimpler exaple:\r\nhttps://github.com/ros-perception/vision_opencv/blob/a3736d24554166142981fa2bcf3d7d3c6e3ce366/image_geometry/include/image_geometry/stereo_camera_model.h#L116-L120\r\nis correct if the disparity is NOT pre-adjusted.\r\n\r\n(And I found an implementation bug...\r\nBoth\r\nhttps://github.com/ros-perception/image_pipeline/blob/8d01c930e66bdeb58c4b138539a64ddea0b17e10/stereo_image_proc/src/libstereo_image_proc/processor.cpp#L113\r\nand\r\nhttps://github.com/ros-perception/image_pipeline/blob/8d01c930e66bdeb58c4b138539a64ddea0b17e10/stereo_image_proc/src/nodelets/disparity.cpp#L209\r\nsubtract cx_l - cx_r, so\r\nd = x_l - x_r - 2 * (cx_l - cx_r).\r\nBut by this commit, these subtraction codes are removed, so we don't care about it.\r\n(Now d = cx_l - cx_r.))\r\n\r\nAfter this pull request is merged, I'll create two pull requests.\r\n1. remove comment of\r\nhttps://github.com/ros-perception/vision_opencv/blob/a3736d24554166142981fa2bcf3d7d3c6e3ce366/image_geometry/src/stereo_camera_model.cpp#L112\r\n2. change comments of\r\nhttps://github.com/ros/common_msgs/blob/jade-devel/stereo_msgs/msg/DisparityImage.msg\r\n\r\n**And I have one concern...**\r\nhttps://github.com/ros-perception/vision_opencv/blob/kinetic/image_geometry/src/image_geometry/cameramodels.py\r\nseems to depend on this pre-adjustment, so **if we remove disparity pre-adjustment, we need to change cameramodels.py also?**\r\n(I don't use python, so I can't test it.)"
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []
+- url: 'https://github.com/ros-perception/image_pipeline/pull/341'
+  title: >-
+    distortion_coefficients size (cols) is not fixed, it depends on distortion
+    mododel
+  body: |-
+    discussed in #278, as discussed CameraInfo.msg, 
+    ```
+    float64[] D
+    ```
+    the size of D should not be fixed number (5)
+
+    c.f. http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html
+
+
+    NOTE : I haven't tested this code yet, someone?
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []
+- url: 'https://github.com/ros-perception/image_pipeline/issues/331'
+  title: >-
+    [image_view] window hangs because callback can be dispatched from multiple
+    threads
+  body: "I found that the image_view nodelet (image_view/image) does not update its window and hangs in some cases.  I think this is because the nodelet manager can execute a callback in multiple threads even if the callback is associated to a threaded callback queue (see https://github.com/ros/nodelet_core/blob/2f25b775fd0241fc949a5fc002e718dbd142d5d7/nodelet/src/callback_queue_manager.cpp#L206), although the callback must be called by a specific thread to successfully update the window.\r\n\r\nThe following is a launch script to reproduce the problem.  I am afraid that the problem may not be reproduced in different environment because the problem depends on environment-specific threading but I hope this is helpful.\r\n```\r\n<launch>\r\n    <node name=\"image_view_node\" pkg=\"nodelet\" type=\"nodelet\" \r\n          args=\"manager image_view_node\" output=\"screen\"/>\r\n\r\n    <node name=\"image_view_loader\" pkg=\"nodelet\" type=\"nodelet\" \r\n          args=\"load image_view/image image_view_node\" output=\"screen\"/>\r\n\r\n    <node name=\"image_view_loader2\" pkg=\"nodelet\" type=\"nodelet\" \r\n          args=\"load image_view/image image_view_node\" output=\"screen\"/>\r\n\r\n    <!-- An external node publishing sensor_msgs/Image on the \"image\" topic is required -->\r\n</launch>\r\n```\r\n\r\nI think the only solution is to add a new thread updating the window and am writing a workaround.  Please see if interested.\r\nhttps://github.com/yoshito-okada/image_pipeline/tree/fix_image_view_nodelet"
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []
+- url: 'https://github.com/ros-perception/image_pipeline/issues/328'
+  title: Release into Melodic
+  body: >-
+    All of the dependencies for this package are now available in Melodic, so it
+    would be great to get this package released there.  Thanks in advance!
+  repo: 'https://api.github.com/repos/ros-perception/image_pipeline'
+  labels: []

@@ -1,0 +1,19 @@
+- url: 'https://github.com/mikeferguson/moveit_python/issues/13'
+  title: '"from pyassimp import pyassimp" in planning_scene_interface.py is correct?'
+  body: "Hello \r\nAcording to pyassimp's [README.md](https://github.com/assimp/assimp/tree/master/port/PyAssimp), \r\nI think \r\n` import pyassimp` \r\nis correct rather than \"from pyassimp import pyassimp\" at line 31 in planning_scene_interface.py.\r\n\r\nI've failed launching Moveit! while trying [fetch robot demo](http://docs.fetchrobotics.com/gazebo.html) and get below error\r\n```\r\n☁  ~  roslaunch fetch_gazebo_demo demo.launch\r\n... \r\nChecking log directory for disk usage. This may take awhile.\r\nPress Ctrl-C to interrupt\r\nDone checking log file disk usage. Usage is <1GB.\r\n\r\nstarted roslaunch server http://E440:40788/\r\n.\r\n.\r\n.\r\nTraceback (most recent call last):\r\n  File \"/opt/ros/indigo/lib/fetch_gazebo_demo/demo.py\", line 36, in <module>\r\n    from moveit_python import (MoveGroupInterface,\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/moveit_python/__init__.py\", line 4, in <module>\r\n    from planning_scene_interface import PlanningSceneInterface\r\n  File \"/opt/ros/indigo/lib/python2.7/dist-packages/moveit_python/planning_scene_interface.py\", line 31, in <module>\r\n    from pyassimp import pyassimp\r\nImportError: cannot import name pyassimp\r\n[demo-7] process has died [pid 9461, exit code 1, cmd /opt/ros/indigo/lib/fetch_gazebo_demo/demo.py __name:=demo __log:=/hom\r\n```\r\nAnd changing ` from pyassimp import pyassimp` to ` import pyassimp` make demo work correctly.\r\nBut this line hasn't been edited long time and I don't know why it worked at past time.\r\nmy pyassimp version is 3.3\r\n```\r\n☁  ~  pip freeze | grep pyassimp\r\npyassimp==3.3\r\n```\r\nSorry for my poor English \r\nThank you\r\n"
+  repo: 'https://api.github.com/repos/mikeferguson/moveit_python'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/moveit_python/issues/8'
+  title: 'Kinetic: implosion due to pyassimp bug'
+  body: |
+    https://bugs.launchpad.net/ubuntu/+source/assimp/+bug/1589949
+  repo: 'https://api.github.com/repos/mikeferguson/moveit_python'
+  labels:
+    - bug
+- url: 'https://github.com/mikeferguson/moveit_python/issues/1'
+  title: PlanningSceneInterface deletes all objects on startup
+  body: ''
+  repo: 'https://api.github.com/repos/mikeferguson/moveit_python'
+  labels:
+    - bug

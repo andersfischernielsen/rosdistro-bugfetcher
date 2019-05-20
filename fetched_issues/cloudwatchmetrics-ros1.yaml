@@ -1,0 +1,22 @@
+- url: 'https://github.com/aws-robotics/cloudwatchmetrics-ros1/issues/10'
+  title: Metrics are published with a timestamp of several minutes in the future
+  body: "When processing `MetricList` messages we convert the nanoseconds time on the metrics `time_stamp` to milliseconds incorrectly. Instead of dividing by `1000000` [we divide by `1000`](https://github.com/aws-robotics/cloudwatchmetrics-ros1/blob/ad347e3b847c7ca7738250230025d351f3a91855/cloudwatch_metrics_collector/src/cloudwatch_metrics_collector.cpp#L75). As a result metrics are sent to CloudWatch metrics with a time stamp displaced to the future. \r\n\r\nWe will send a patch to fix this bug to have this fixed in the next two days"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchmetrics-ros1'
+  labels:
+    - bug
+    - pending
+- url: 'https://github.com/aws-robotics/cloudwatchmetrics-ros1/pull/6'
+  title: Modifying build instructions in README.md
+  body: "The current build instructions tell you to git clone this repository and all the dependent repositories from the master branch. However, we want to consider the master branch unstable for development and instruct users to build from source using the release branches if they don't need the cutting edge features.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchmetrics-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchmetrics-ros1/pull/5'
+  title: use master branch for cloud extension dependencies
+  body: "*Description of changes:*\r\n\r\nProperly implementing the \"master\" Travis build pipeline, where dependencies should come from HEAD instead of release tags or released binaries.\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license."
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchmetrics-ros1'
+  labels: []
+- url: 'https://github.com/aws-robotics/cloudwatchmetrics-ros1/pull/4'
+  title: Get dependencies from rosdep instead of building from source.
+  body: "The release branch of cloud extension packages should take dependencies from rosdep(apt) instead of building from source.\r\n\r\n*Issue #, if available:*\r\n\r\n*Description of changes:*\r\n\r\n\r\nBy submitting this pull request, I confirm that my contribution is made under the terms of the Apache 2.0 license.\r\n"
+  repo: 'https://api.github.com/repos/aws-robotics/cloudwatchmetrics-ros1'
+  labels: []

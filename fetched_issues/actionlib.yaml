@@ -1,0 +1,73 @@
+- url: 'https://github.com/ros/actionlib/pull/133'
+  title: Reorganize repository to fix `ros-core` dependencies
+  body: 'This implements the proposed repository layout from #129 '
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/pull/130'
+  title: 'Trigger goal cancelling depending on client state. Fixes #126'
+  body: "This prevents an undesirable transition from DONE to WAITING_FOR_CANCEL_ACK.\r\nSee https://github.com/ros/actionlib/issues/126"
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/issues/129'
+  title: Actionlib pulls GUI dependencies
+  body: >-
+    When installing ROS, the `ros-base` set of packages is documented as having
+    "no GUI tools", making it ideal for lightweight headless systems. Actionlib,
+    as part of the core ROS stack, is included as part of this configuration.
+    However, Actionlib includes two GUI tools, written in Python (`axclient.py`
+    and `axserver.py`), and as of #79, includes their dependency
+    `python-wxtools`, which pulls in nearly 100 additional packages, including
+    GTK and `x11-common`.
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/pull/79'
+  title: add missing runtime dependencies
+  body: 'Fixes #78 '
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/issues/78'
+  title: axclient.py crashes with missing module on ROS Kinetic
+  body: >-
+    I just ran ```rosrun actionlib axclient.py``` on a system with ROS Kinetic.
+    It crashed giving this error ```No module named wx```. Installing
+    ```python-wxtools``` fixed the issue for me. Maybe there is a missing
+    dependency?
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/pull/63'
+  title: Removed unused variables warnings
+  body: >-
+    This PR removes a few warnings that show up when building a package that
+    depends on `actionlib` and that has `-Wunused` enabled. There may be more of
+    these warnings, but these were the only one that showed up for me.
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/pull/43'
+  title: Python code cleanup
+  body: >
+    This PR represents a significant step toward cleaning up the Python
+    implementation of actionlib.  I focused on removing unused imports, removing
+    semicolons, spacing, indentation.
+
+
+    I did not clean up line lengths.
+
+
+    I did not clean up any of the docstrings as I don't have experience with
+    Doxygen and don't want to break anything.
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
+- url: 'https://github.com/ros/actionlib/pull/42'
+  title: Python 3 compatibility changes
+  body: >
+    I've tried these with python 2.7 also to make sure they don't break
+    backwards compatibility
+
+    - `except Exception, foo` syntax is now `except Exception as foo`
+
+    - all imports are now absolute
+
+    - `Dict.iteritems` no longer exists in python3 (replaced with a lazy
+    `Dict.items`) 
+  repo: 'https://api.github.com/repos/ros/actionlib'
+  labels: []
